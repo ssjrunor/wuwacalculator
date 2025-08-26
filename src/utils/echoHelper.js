@@ -128,3 +128,40 @@ export function getSetCounts(equippedEchoes) {
 
     return counts;
 }
+
+export function getSubstatScore(key) {
+    const idealScore = idealSubScoreMap[key];
+    const substatScore = idealSubScoreMap.critDmg;
+    return substatScore/idealScore;
+}
+
+export function getMainstatScore(key, cost) {
+    const idealScore = idealMainScoreMap(cost)[key];
+    const substatScore = idealSubScoreMap.critDmg;
+    return substatScore/idealScore;
+}
+
+const idealSubScoreMap = {
+    hpPercent: 30, atkPercent: 30, defPercent: 38,
+    critRate: 22, critDmg: 44, energyRegen: 32,
+    resonanceLiberation: 30, basicAtk: 30, resonanceSkill: 30, heavyAtk: 30
+}
+
+function idealMainScoreMap(cost) {
+    if (cost === 1) {
+        return {hpPercent: 22.8, atkPercent: 18, defPercent: 18,}
+    } else if (cost === 3) {
+        return {
+            hpPercent: 30,
+            atkPercent: 30,
+            defPercent: 38,
+            aero: 30, glacio: 30, electro: 30, fusion: 30, havoc: 30, spectro: 30,
+            energyRegen: 32
+        }
+    } else {
+        return {
+            hpPercent: 33, atkPercent: 33, defPercent: 41.5,
+            critRate: 22, critDmg: 44
+        }
+    }
+}

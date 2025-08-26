@@ -21,11 +21,12 @@ import EchoParser from "./EchoParser.jsx";
 import {applyParsedEchoesToEquipped} from "../utils/buildEchoObjectsFromParsedResults.js";
 import {
     applyFixedSecondMainStat, formatDescription, formatStatKey,
-    getEchoStatsFromEquippedEchoes,
-    getSetCounts,
+    getEchoStatsFromEquippedEchoes, getMainstatScore,
+    getSetCounts, getSubstatScore,
     getValidMainStats, statDisplayOrder, statIconMap
 } from "../utils/echoHelper.js";
 import {preloadImages} from "../pages/calculator.jsx";
+import {getWeight} from "../constants/charStatWeights.js";
 
 export default function EchoesPane({
                                        charId,
@@ -181,10 +182,10 @@ export default function EchoesPane({
 
     const critRate = echoStatTotals.critRate ?? 0;
     const critDmg = echoStatTotals.critDmg ?? 0;
-    const critValue = critRate * 2 + critDmg;
+    let critValue = critRate * 2 + critDmg;
     const extendedTotals = {
         ...echoStatTotals,
-        critValue
+        ...(critValue && { critValue })
     };
 
     const echoesPaneRef = useRef(null);
@@ -205,6 +206,48 @@ export default function EchoesPane({
 
         return () => observer.disconnect();
     }, []);
+
+    const FLAT_TO_PERCENT = {
+        atkFlat: 'atkPercent',
+        hpFlat: 'hpPercent',
+        defFlat: 'defPercent',
+    };
+
+    function resolveScoreValue(key, isSubStat, cost) {
+        if (key in FLAT_TO_PERCENT) {
+            const pctKey = FLAT_TO_PERCENT[key];
+            const factor = key === 'hpFlat' ? 0.05 : 0.4;
+            return factor * getSubstatScore(pctKey);
+        }
+        return isSubStat ? getSubstatScore(key) : getMainstatScore(key, cost);
+    }
+
+    function getEchoScores(echo) {
+        if (!echo) return { mainScore: 0, subScore: 0, totalScore: 0 };
+
+        const cost = echo?.cost ?? 1;
+        let mainScore = 0;
+        let subScore = 0;
+
+        for (const [key, val] of Object.entries(echo.mainStats ?? {})) {
+            if (typeof val === 'number' && !Number.isNaN(val) && !key.endsWith('Flat')) {
+                const scoreVal = resolveScoreValue(key, false, cost);
+                const weight = getWeight(charId, key);
+                mainScore += scoreVal * val * weight;
+            }
+        }
+
+        for (const [key, val] of Object.entries(echo.subStats ?? {})) {
+            if (typeof val === 'number' && !Number.isNaN(val)) {
+                const scoreVal = resolveScoreValue(key, true, cost);
+                const weight = getWeight(charId, key);
+                //console.log(weight);
+                subScore += scoreVal * val * weight;
+            }
+        }
+
+        return { mainScore, subScore, totalScore: mainScore + subScore };
+    }
 
     return (
         <div className="echoes-pane" ref={echoesPaneRef}>
@@ -227,6 +270,8 @@ export default function EchoesPane({
             {echoSlots.map((slotIndex) => {
                 const echo = echoData[slotIndex];
                 const isMain = slotIndex === 0;
+                const cv = (echo?.subStats?.critRate ?? 0) * 2 + (echo?.subStats?.critDmg ?? 0);
+                const score = getEchoScores(echo).totalScore;
                 return (
                     <React.Fragment key={slotIndex}>
                         <div key={slotIndex} className="inherent-skills-box echo">
@@ -407,6 +452,18 @@ export default function EchoesPane({
                                         <span className="text-muted"></span>
                                     )}
                                 </div>
+                                <div className="cv-container-container">
+                                    {cv > 0 && (
+                                        <div className="cv-container overview-weapon-details echo-buff">
+                                            CV {cv.toFixed(1)}%
+                                        </div>
+                                    )}
+                                    {score > 0 && (
+                                        <div className="cv-container overview-weapon-details echo-buff">
+                                            Score {score.toFixed(1)}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -553,8 +610,8 @@ export default function EchoesPane({
                 </div>
             )}
 
-            <ExpandableSection title="Totals">
-                {Object.keys(extendedTotals).length > 0 && (
+            {Object.keys(extendedTotals).length > 0 && (
+                <ExpandableSection title="Totals">
                     <div className="stats-grid">
                         {Object.entries(extendedTotals)
                             .sort(([a], [b]) => {
@@ -613,8 +670,8 @@ export default function EchoesPane({
                                 );
                             })}
                     </div>
-                )}
-            </ExpandableSection>
+                </ExpandableSection>
+            )}
 
             <EchoMenu
                 echoes={echoes}

@@ -186,9 +186,8 @@
     text-align: center;
     font-size: 0.75rem;
     font-weight: 600;
-    padding: 2px 8px;
+    padding: 0 3px;
     border-radius: 1rem;
-    margin-top: 4px;
     width: 3.1rem;
 }
 
@@ -462,4 +461,30 @@
     .echo-slot-content {
         grid-template-columns: unset;
     }
+}
+
+.cv-container {
+    border-radius: 1rem;
+    justify-self: flex-start;
+    padding: 2px 5px;
+    background-color: rgba(255,87,123,0.09);
+    border-color: rgba(255,87,123,0.32);
+}
+
+.dark-alt .cv-container {
+    background-color: rgba(255, 87, 123, 0.16) !important;
+    border-color: rgba(177, 60, 83, 0.81) !important;
+    color: rgb(255, 255, 255);
+}
+
+.dark .cv-container {
+    background-color: rgba(255, 87, 123, 0.16) !important;
+    border-color: rgba(177, 60, 83, 0.81) !important;
+    color: rgb(255, 255, 255);
+}
+
+.cv-container-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
 }
