@@ -1,6 +1,5 @@
 export function getWeight(charId, key) {
     const weights = charStatWeights[charId] ?? {};
-    console.log(charId);
     return weights[key] ?? 0;
 }
 
