@@ -3,6 +3,10 @@ export function getWeight(charId, key) {
     return weights[key] ?? 0;
 }
 
+export function getWeightObj(charId) {
+    return charStatWeights[charId] ?? {};
+}
+
 const charStatWeights = {
     '1506': {
         atkPercent: 1,
@@ -336,7 +340,6 @@ const charStatWeights = {
     '1608': {
         atkPercent: 1,
         atkFlat: 0.75,
-        energyRegen: 1,
         critRate: 1,
         critDmg: 1,
         resonanceSkill: 1,

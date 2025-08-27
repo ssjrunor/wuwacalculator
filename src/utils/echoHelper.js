@@ -1,3 +1,6 @@
+import {validSubstatRanges} from "../constants/echoSetData.jsx";
+import {getWeight, getWeightObj} from "../constants/charStatWeights.js";
+
 export const formatStatKey = (key) => {
     const labelMap = {
         atkPercent: 'ATK', atkFlat: 'ATK',
@@ -130,8 +133,8 @@ export function getSetCounts(equippedEchoes) {
 }
 
 export function getSubstatScore(key) {
-    const idealScore = idealSubScoreMap[key];
-    const substatScore = idealSubScoreMap.critDmg;
+    const idealScore = validSubstatRanges[key].max;
+    const substatScore = validSubstatRanges?.critDmg.max;
     return substatScore/idealScore;
 }
 
@@ -164,4 +167,159 @@ function idealMainScoreMap(cost) {
             critRate: 22, critDmg: 44
         }
     }
+}
+
+const MIN_GRADE = 30;
+const MAX_GRADE = 100;
+
+function computeRollForStat(key, value) {
+    const spec = validSubstatRanges[key];
+    if (!spec) return null;
+
+    const { min, max, divisions } = spec;
+    const step = (max - min) / divisions;
+
+    // clamp into [min, max]
+    const v = Math.min(Math.max(value, min), max);
+
+    // step index (0 .. divisions)
+    const kFloat = (v - min) / step;
+    const k = Math.round(kFloat);
+
+    // grade % (30 → 100)
+    const grade = MIN_GRADE + (k / divisions) * (MAX_GRADE - MIN_GRADE);
+
+    return Number(grade.toFixed(2));
+}
+
+export function getRollValue(echo) {
+    const out = {};
+    for (const [key, value] of Object.entries(echo?.subStats ?? {})) {
+        const grade = computeRollForStat(key, value);
+        if (grade != null) out[key] = grade;
+    }
+
+    return out;
+}
+
+export const statLabelMap = {
+    atkFlat: 'ATK',
+    atkPercent: 'ATK',
+    hpFlat: 'HP',
+    hpPercent: 'HP',
+    defFlat: 'DEF',
+    defPercent: 'DEF',
+    energyRegen: 'Energy Regen',
+    critRate: 'Crit Rate',
+    critDmg: 'Crit DMG',
+    basicAtk: 'Basic Attack DMG Bonus',
+    heavyAtk: 'Heavy Attack DMG Bonus',
+    resonanceSkill: 'Resonance Skill DMG Bonus',
+    resonanceLiberation: 'Resonance Liberation DMG Bonus',
+    aero: 'Aero DMG Bonus',
+    glacio: 'Glacio DMG Bonus',
+    spectro: 'Spectro DMG Bonus',
+    fusion: 'Fusion DMG Bonus',
+    electro: 'Electro DMG Bonus',
+    havoc: 'Havoc DMG Bonus',
+};
+
+const FLAT_TO_PERCENT = {
+    atkFlat: 'atkPercent',
+    hpFlat: 'hpPercent',
+    defFlat: 'defPercent',
+};
+
+function resolveScoreValue(key, isSubStat, cost) {
+    if (key in FLAT_TO_PERCENT) {
+        const pctKey = FLAT_TO_PERCENT[key];
+        const factor = key === 'hpFlat' ? 0.05 : 0.6;
+        return factor * getSubstatScore(key);
+    }
+    return isSubStat ? getSubstatScore(key) : getMainstatScore(key, cost);
+}
+
+export function getEchoScores(charId, echo) {
+    if (!echo) return { mainScore: 0, subScore: 0, totalScore: 0 };
+
+    const cost = echo?.cost ?? 1;
+    let mainScore = 0;
+    let subScore = 0;
+
+    for (const [key, val] of Object.entries(echo.mainStats ?? {})) {
+        if (typeof val === 'number' && !Number.isNaN(val) && !key.endsWith('Flat')) {
+            const scoreVal = resolveScoreValue(key, false, cost);
+            const weight = getWeight(charId, key);
+            mainScore += scoreVal * val * weight;
+        }
+    }
+
+    for (const [key, val] of Object.entries(echo.subStats ?? {})) {
+        if (typeof val === 'number' && !Number.isNaN(val)) {
+            const scoreVal = resolveScoreValue(key, true, cost);
+            const weight = getWeight(charId, key);
+            subScore += scoreVal * val * weight;
+        }
+    }
+
+    mainScore = isNaN(mainScore) ? 0 : mainScore;
+
+    return { mainScore, subScore, totalScore: mainScore + subScore };
+}
+
+function isValidSubstatKey(key) {
+    return key in validSubstatRanges;
+}
+
+function safeNumber(x, fallback = 0) {
+    return (typeof x === 'number' && Number.isFinite(x)) ? x : fallback;
+}
+
+export function getTop5SubstatScoreSum(charId) {
+    const weights = getWeightObj(charId) ?? {};
+
+
+    const scored = Object.entries(weights)
+        .filter(([key]) => isValidSubstatKey(key))
+        .map(([key]) => {
+            const rawScore = safeNumber(resolveScoreValue(key, true, undefined));
+            const spec = validSubstatRanges[key];
+            const specMax = spec?.max ?? 0;
+            const computedScore = rawScore * specMax;
+            return { key, rawScore, specMax, computedScore };
+        })
+        .filter(item => item.specMax > 0 && Number.isFinite(item.computedScore));
+
+
+    const top5 = scored.sort((a, b) => b.computedScore - a.computedScore).slice(0, 5);
+    return top5.reduce((acc, it) => acc + it.computedScore, 0) + 44;
+}
+
+export function getTop5SubstatScoreDetails(charId) {
+    const weights = getWeightObj(charId) ?? {};
+
+    const scored = Object.entries(weights)
+        .filter(([key]) => isValidSubstatKey(key))
+        .map(([key, weight]) => {
+            const rawScore = safeNumber(resolveScoreValue(key, true, undefined)) * weight;
+            const spec = validSubstatRanges[key];
+            const specMax = spec?.max ?? 0;
+            const computedScore = rawScore * specMax;
+
+            return {
+                key,
+                weight,
+                rawScore,
+                computedScore,
+                max: spec?.max,
+                min: spec?.min,
+                divisions: spec?.divisions,
+            };
+        })
+        .filter(it => it.max > 0 && Number.isFinite(it.computedScore))
+        .sort((a, b) => b.computedScore - a.computedScore);
+
+    const top5 = scored.slice(0, 5);
+    const total = top5.reduce((acc, it) => acc + it.computedScore, 0) + 44;
+    return { total, top5, allItems: scored };
 }

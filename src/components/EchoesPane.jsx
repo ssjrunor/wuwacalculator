@@ -20,10 +20,10 @@ import ExpandableSection from "./Expandable";
 import EchoParser from "./EchoParser.jsx";
 import {applyParsedEchoesToEquipped} from "../utils/buildEchoObjectsFromParsedResults.js";
 import {
-    applyFixedSecondMainStat, formatDescription, formatStatKey,
-    getEchoStatsFromEquippedEchoes, getMainstatScore,
-    getSetCounts, getSubstatScore,
-    getValidMainStats, statDisplayOrder, statIconMap
+    applyFixedSecondMainStat, formatDescription, formatStatKey, getEchoScores,
+    getEchoStatsFromEquippedEchoes, getMainstatScore, getRollValue,
+    getSetCounts, getSubstatScore, getTop5SubstatScoreDetails, getTop5SubstatScoreSum,
+    getValidMainStats, statDisplayOrder, statIconMap, statLabelMap
 } from "../utils/echoHelper.js";
 import {preloadImages} from "../pages/calculator.jsx";
 import {getWeight} from "../constants/charStatWeights.js";
@@ -207,48 +207,6 @@ export default function EchoesPane({
         return () => observer.disconnect();
     }, []);
 
-    const FLAT_TO_PERCENT = {
-        atkFlat: 'atkPercent',
-        hpFlat: 'hpPercent',
-        defFlat: 'defPercent',
-    };
-
-    function resolveScoreValue(key, isSubStat, cost) {
-        if (key in FLAT_TO_PERCENT) {
-            const pctKey = FLAT_TO_PERCENT[key];
-            const factor = key === 'hpFlat' ? 0.05 : 0.4;
-            return factor * getSubstatScore(pctKey);
-        }
-        return isSubStat ? getSubstatScore(key) : getMainstatScore(key, cost);
-    }
-
-    function getEchoScores(echo) {
-        if (!echo) return { mainScore: 0, subScore: 0, totalScore: 0 };
-
-        const cost = echo?.cost ?? 1;
-        let mainScore = 0;
-        let subScore = 0;
-
-        for (const [key, val] of Object.entries(echo.mainStats ?? {})) {
-            if (typeof val === 'number' && !Number.isNaN(val) && !key.endsWith('Flat')) {
-                const scoreVal = resolveScoreValue(key, false, cost);
-                const weight = getWeight(charId, key);
-                mainScore += scoreVal * val * weight;
-            }
-        }
-
-        for (const [key, val] of Object.entries(echo.subStats ?? {})) {
-            if (typeof val === 'number' && !Number.isNaN(val)) {
-                const scoreVal = resolveScoreValue(key, true, cost);
-                const weight = getWeight(charId, key);
-                //console.log(weight);
-                subScore += scoreVal * val * weight;
-            }
-        }
-
-        return { mainScore, subScore, totalScore: mainScore + subScore };
-    }
-
     return (
         <div className="echoes-pane" ref={echoesPaneRef}>
             <EchoParser
@@ -271,7 +229,9 @@ export default function EchoesPane({
                 const echo = echoData[slotIndex];
                 const isMain = slotIndex === 0;
                 const cv = (echo?.subStats?.critRate ?? 0) * 2 + (echo?.subStats?.critDmg ?? 0);
-                const score = getEchoScores(echo).totalScore;
+                const rv = getRollValue(echo);
+                const maxScore = getTop5SubstatScoreDetails(charId).total;
+                const score = (getEchoScores(charId, echo).totalScore / maxScore) * 100;
                 return (
                     <React.Fragment key={slotIndex}>
                         <div key={slotIndex} className="inherent-skills-box echo">
@@ -452,18 +412,47 @@ export default function EchoesPane({
                                         <span className="text-muted"></span>
                                     )}
                                 </div>
-                                <div className="cv-container-container">
-                                    {cv > 0 && (
-                                        <div className="cv-container overview-weapon-details echo-buff">
-                                            CV {cv.toFixed(1)}%
+                            </div>
+                            <div className="cv-container-container">
+                                {score > 0 && (
+                                    <div className="cv-container overview-weapon-details echo-buff">
+                                        Score — {score.toFixed(1)}%
+                                    </div>
+                                )}
+                                {cv > 0 && (
+                                    <div className="cv-container overview-weapon-details echo-buff">
+                                        CV — {cv.toFixed(1)}%
+                                    </div>
+                                )}
+                                {/*{Object.entries(rv).map(([key, value]) => {
+                                    const label = statLabelMap[key];
+                                    const iconUrl = label && statIconMap[label];
+                                    const isFlat = key.toLowerCase().includes('flat');
+                                    return (
+                                        <div key={key} className="rv-container overview-weapon-details echo-buff rv"
+                                             style={{ gap: '0.3rem'}}
+                                        >
+                                            <span style={{display: 'flex', alignItems: 'center', flexDirection: 'row'}}>
+                                                {iconUrl && (
+                                                    <div className="cv-container-icon"
+                                                         style={{
+                                                             width: 18,
+                                                             height: 18,
+                                                             WebkitMaskImage: `url(${iconUrl})`,
+                                                             maskImage: `url(${iconUrl})`,
+                                                             WebkitMaskRepeat: 'no-repeat',
+                                                             maskRepeat: 'no-repeat',
+                                                             WebkitMaskSize: 'contain',
+                                                             maskSize: 'contain'
+                                                         }}
+                                                    />
+                                                )}{isFlat ? '' : '%'}
+                                            </span>
+                                            —
+                                            <span>{value}%</span>
                                         </div>
-                                    )}
-                                    {score > 0 && (
-                                        <div className="cv-container overview-weapon-details echo-buff">
-                                            Score {score.toFixed(1)}
-                                        </div>
-                                    )}
-                                </div>
+                                    );
+                                })}*/}
                             </div>
                         </div>
 
