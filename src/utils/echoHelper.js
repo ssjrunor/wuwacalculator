@@ -133,7 +133,7 @@ export function getSetCounts(equippedEchoes) {
 }
 
 export function getSubstatScore(key) {
-    const idealScore = validSubstatRanges[key].max;
+    const idealScore = validSubstatRanges[key]?.max;
     const substatScore = validSubstatRanges?.critDmg.max;
     return substatScore/idealScore;
 }
