@@ -316,7 +316,7 @@ export function getTop5SubstatScoreDetails(charId) {
                 divisions: spec?.divisions,
             };
         })
-        .filter(it => it.max > 0 && Number.isFinite(it.computedScore))
+        .filter(it => it?.max > 0 && Number.isFinite(it.computedScore))
         .sort((a, b) => b.computedScore - a.computedScore);
 
     const top5 = scored.slice(0, 5);
