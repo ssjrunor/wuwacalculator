@@ -183,9 +183,14 @@ export default function EchoesPane({
     const critRate = echoStatTotals.critRate ?? 0;
     const critDmg = echoStatTotals.critDmg ?? 0;
     let critValue = critRate * 2 + critDmg;
+    const maxScore = getTop5SubstatScoreDetails(charId).total;
+    const buildScore = getEquippedEchoesScoreDetails(charId, characterRuntimeStates);
+    const maxBuildScore = maxScore * 5;
+    const percentScore = (buildScore.total / maxBuildScore) * 100
     const extendedTotals = {
         ...echoStatTotals,
-        ...(critValue && { critValue })
+        ...(critValue && { critValue }),
+        ...(percentScore && { percentScore })
     };
 
     const echoesPaneRef = useRef(null);
@@ -229,8 +234,7 @@ export default function EchoesPane({
                 const echo = echoData[slotIndex];
                 const isMain = slotIndex === 0;
                 const cv = (echo?.subStats?.critRate ?? 0) * 2 + (echo?.subStats?.critDmg ?? 0);
-                const rv = getRollValue(echo);
-                const maxScore = getTop5SubstatScoreDetails(charId).total;
+                //const rv = getRollValue(echo);
                 const score = (getEchoScores(charId, echo).totalScore / maxScore) * 100;
                 return (
                     <React.Fragment key={slotIndex}>
@@ -639,16 +643,15 @@ export default function EchoesPane({
                                                       }}
                                                   />
                                               )}
-                                              {key === 'critValue' ? (
+                                              {key === 'critValue' || key === 'percentScore' ? (
                                                   <span className="highlight">{label}</span>
                                               ) : (
                                                   `${label}`
-
                                               )}
                                           </span>
                                         <div className="stat-total">
-                                            {key === 'critValue' ? (
-                                                <span className="highlight">{val.toFixed(1)}</span>
+                                            {key === 'critValue' || key === 'percentScore' ? (
+                                                <span className="highlight">{val.toFixed(1)}%</span>
                                             ) : key.endsWith('Flat') ? (
                                                 val
                                             ) : (
@@ -783,4 +786,18 @@ export function highlightKeywordsInText(text, extraKeywords = []) {
             })
         }} />
     );
+}
+
+export function getEquippedEchoesScoreDetails(charId, characterRuntimeStates) {
+    const echoes = characterRuntimeStates?.[charId]?.equippedEchoes ?? [];
+    const items = echoes.map((echo, idx) => {
+        const result = getEchoScores(charId, echo);
+        return {
+            index: idx,
+            echo,
+            totalScore: result?.totalScore ?? 0
+        };
+    });
+    const total = items.reduce((acc, it) => acc + it.totalScore, 0);
+    return { total, items };
 }
