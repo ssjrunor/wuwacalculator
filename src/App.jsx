@@ -7,6 +7,7 @@ import Setting from "./pages/settings.jsx";
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
+import {useSEO} from "./hooks/useSEO.js";
 
 const GA_ID = 'G-W502BDD62S';
 
@@ -31,6 +32,8 @@ export default function App() {
         document.cookie = "wwa_cookie_consent=false;path=/;max-age=" + 60 * 60 * 24 * 365;
         console.log('[GA] Consent rejected — tracking disabled');
     };
+
+    useSEO();
 
     return (
         <>
