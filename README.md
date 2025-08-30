@@ -26,9 +26,3 @@ Have ideas, found a bug, or just want to hang out?
 
 Join the Discord:  
 <a href="https://discord.gg/8Zs8mX5z">https://discord.gg/wNaauhE4uH</a>
-
----
-
-<p align="center">
-  <em>Made with love for theorycrafters and min-maxers ❤️ (myself)</em>
-</p>
