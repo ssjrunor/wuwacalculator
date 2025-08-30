@@ -414,3 +414,26 @@
     font-size: 0.75rem;
     max-width: unset;
 }
+.cv-container.overview {
+    max-height: 1.5rem;
+}
+
+.cv-container-tooltip {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+
+.cv-container-tooltip::after {
+    font-size: 0.75rem;
+    padding: 1px 5px;
+}
+
+.portrait-inner {
+    display: flex;
+    flex-direction: column;
+}
+
+.portrait-inner .overview-weapon-details {
+    justify-content: flex-start;
+}

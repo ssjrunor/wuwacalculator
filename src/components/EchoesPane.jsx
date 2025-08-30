@@ -5,7 +5,7 @@ import echoSets, {setIconMap, skillKeywords, statKeywords} from "../constants/ec
 import { getEchoSetUIOverrides } from "../data/set-ui/index.js";
 import { echoes } from '../json-data-scripts/getEchoes.js';
 import {attributeColors} from "../utils/attributeHelpers.js";
-import {Backpack, X, Save} from "lucide-react";
+import {Backpack, X, Save, Info} from "lucide-react";
 import {mainEchoBuffs} from "../data/buffs/setEffect.js";
 import DropdownSelect from "./DropdownSelect.jsx";
 import EchoBagMenu from "./EchoBagMenu.jsx";
@@ -20,7 +20,7 @@ import ExpandableSection from "./Expandable";
 import EchoParser from "./EchoParser.jsx";
 import {applyParsedEchoesToEquipped} from "../utils/buildEchoObjectsFromParsedResults.js";
 import {
-    applyFixedSecondMainStat, formatDescription, formatStatKey, getEchoScores,
+    applyFixedSecondMainStat, computeRollForStat, formatDescription, formatStatKey, getEchoScores,
     getEchoStatsFromEquippedEchoes, getMainstatScore, getRollValue,
     getSetCounts, getSubstatScore, getTop5SubstatScoreDetails, getTop5SubstatScoreSum,
     getValidMainStats, statDisplayOrder, statIconMap, statLabelMap
@@ -234,15 +234,19 @@ export default function EchoesPane({
                 const echo = echoData[slotIndex];
                 const isMain = slotIndex === 0;
                 const cv = (echo?.subStats?.critRate ?? 0) * 2 + (echo?.subStats?.critDmg ?? 0);
-                //const rv = getRollValue(echo);
                 const score = (getEchoScores(charId, echo).totalScore / maxScore) * 100;
                 return (
                     <React.Fragment key={slotIndex}>
                         <div key={slotIndex} className="inherent-skills-box echo">
+                            <div className="damage-tooltip-wrapper echo-info"
+                                 data-tooltip={`Hover over substat values to see their individual roll value`}>
+                                <Info size={20} />
+                            </div>
                             <div
                                 className="echo-slot-content"
                                 style={{ gridTemplateColumns: isNarrow ? 'unset' : '1fr 1fr' }}
                             >
+
                                 <div className="echo-slot-left">
                                     <div className="echo-slot-icon-wrapper">
                                         {echo ? (
@@ -378,35 +382,37 @@ export default function EchoesPane({
                                                 {Object.entries(echo.subStats ?? {}).map(([key, val]) => {
                                                     const label = formatStatKey(key);
                                                     const iconUrl = statIconMap[label];
+                                                    const rv = computeRollForStat(key, val);
 
                                                     return (
                                                         <div key={key} className="stat-row">
-                                                        <span className="echo-stat-label">
-                                                            {iconUrl && (
-                                                                <div
-                                                                    className="stat-icon"
-                                                                    style={{
-                                                                        width: 18,
-                                                                        height: 18,
-                                                                        backgroundColor: '#999',
-                                                                        WebkitMaskImage: `url(${iconUrl})`,
-                                                                        maskImage: `url(${iconUrl})`,
-                                                                        WebkitMaskRepeat: 'no-repeat',
-                                                                        maskRepeat: 'no-repeat',
-                                                                        WebkitMaskSize: 'contain',
-                                                                        maskSize: 'contain',
-                                                                        display: 'inline-block',
-                                                                        marginRight: '0.25rem',
-                                                                        verticalAlign: 'middle',
-                                                                        paddingRight: '0.25rem',
-                                                                    }}
-                                                                />
-                                                            )}
-                                                            {label}
-                                                        </span>
-                                                            <span className="echo-stat-value">
-                                                            {key.endsWith('Flat') ? val : `${val.toFixed(1)}%`}
-                                                        </span>
+                                                            <span className="echo-stat-label">
+                                                                {iconUrl && (
+                                                                    <div
+                                                                        className="stat-icon"
+                                                                        style={{
+                                                                            width: 18,
+                                                                            height: 18,
+                                                                            backgroundColor: '#999',
+                                                                            WebkitMaskImage: `url(${iconUrl})`,
+                                                                            maskImage: `url(${iconUrl})`,
+                                                                            WebkitMaskRepeat: 'no-repeat',
+                                                                            maskRepeat: 'no-repeat',
+                                                                            WebkitMaskSize: 'contain',
+                                                                            maskSize: 'contain',
+                                                                            display: 'inline-block',
+                                                                            marginRight: '0.25rem',
+                                                                            verticalAlign: 'middle',
+                                                                            paddingRight: '0.25rem',
+                                                                        }}
+                                                                    />
+                                                                )}
+                                                                {label}
+                                                            </span>
+                                                            <span className="damage-tooltip-wrapper echo-stat-value" data-tooltip={`${rv.toFixed(1)}%`}>
+                                                                {key.endsWith('Flat') ? val : `${val.toFixed(1)}%`}
+                                                            </span>
+
                                                         </div>
                                                     );
                                                 })}
@@ -418,11 +424,9 @@ export default function EchoesPane({
                                 </div>
                             </div>
                             <div className="cv-container-container">
-                                {score > 0 && (
-                                    <div className="cv-container overview-weapon-details echo-buff">
-                                        Score — {score.toFixed(1)}%
-                                    </div>
-                                )}
+                                <div className="cv-container overview-weapon-details echo-buff overview">
+                                    Score — {score > 0 ? score.toFixed(1) : '??'}%
+                                </div>
                                 {cv > 0 && (
                                     <div className="cv-container overview-weapon-details echo-buff">
                                         CV — {cv.toFixed(1)}%
@@ -790,6 +794,7 @@ export function highlightKeywordsInText(text, extraKeywords = []) {
 
 export function getEquippedEchoesScoreDetails(charId, characterRuntimeStates) {
     const echoes = characterRuntimeStates?.[charId]?.equippedEchoes ?? [];
+    console.log(characterRuntimeStates);
     const items = echoes.map((echo, idx) => {
         const result = getEchoScores(charId, echo);
         return {

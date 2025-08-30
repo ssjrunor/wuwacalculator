@@ -1,7 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { highlightKeywordsInText, setIconMap } from '../constants/echoSetData';
 import {imageCache} from '../pages/calculator.jsx';
-import { formatStatKey } from '../utils/echoHelper.js';
+import {
+    formatStatKey,
+    getEchoScores,
+    getEchoStatsFromEquippedEchoes,
+    getTop5SubstatScoreDetails
+} from '../utils/echoHelper.js';
 import { statIconMap } from './CharacterStats';
 import { attributeColors } from '../utils/attributeHelpers';
 import {formatStatValue} from "./WeaponPane.jsx";
@@ -9,6 +14,7 @@ import {getActiveStateWeapons} from "../data/buffs/weaponBuffs.js";
 import weaponsRaw from '../data/weapons.json';
 import {getActiveEchoes} from "../data/buffs/applyEchoLogic.js";
 import {calculateRotationTotals} from "./Rotations.jsx";
+import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
 
 export default function OverviewDetailPane({
                                                character,
@@ -120,28 +126,47 @@ export default function OverviewDetailPane({
     };
 
     const displayValue = (key, val) => ['atk', 'hp', 'def'].includes(key) ? Math.floor(val) : `${val.toFixed(1)}%`;
+    const maxScore = getTop5SubstatScoreDetails(character.link).total;
+
+    const echoData = runtime?.equippedEchoes ?? [null, null, null, null, null];
+
+    const echoStatTotals = getEchoStatsFromEquippedEchoes(echoData);
+
+    const critRate = echoStatTotals.critRate ?? 0;
+    const critDmg = echoStatTotals.critDmg ?? 0;
+    let critValue = critRate * 2 + critDmg;
+    const buildScore = getEquippedEchoesScoreDetails(character.link, { [character.link]: runtime });
+    const maxBuildScore = maxScore * 5;
+    const percentScore = (buildScore.total / maxBuildScore) * 100
+
 
     return (
         <>
             <div className="overview-panel-container inherent-skills-box" style={{margin: 'unset'}}>
                 <div className="character-portrait-section">
-                    <div className="character-overview-details">
-                        <span className="character-name highlight details" style={{ fontSize: '1.5rem', fontWeight:'bold', margin: 'unset' }}>{displayName}</span>
-                        <span className="character-level">Lv.{level ?? 1}</span>
-                    </div>
-                    <div
-                        className="character-portrait-content"
-                        onClick={() => switchLeftPane('characters')}
-                    >
-                        <img
-                            src={splashArt || '/assets/splash/default.webp'}
-                            alt={displayName}
-                            className="character-splash"
-                            onError={(e) => {
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.src = '/assets/splash/default.webp';
-                            }}
-                        />
+                    <div className="portrait-inner">
+                        <div className="character-overview-details">
+                            <span className="character-name highlight details" style={{ fontSize: '1.5rem', fontWeight:'bold', margin: 'unset' }}>{displayName}</span>
+                            <span className="character-level">Lv.{level ?? 1}</span>
+                        </div>
+                        <div
+                            className="character-portrait-content"
+                            onClick={() => switchLeftPane('characters')}
+                        >
+                            <img
+                                src={splashArt || '/assets/splash/default.webp'}
+                                alt={displayName}
+                                className="character-splash"
+                                onError={(e) => {
+                                    e.currentTarget.onerror = null;
+                                    e.currentTarget.src = '/assets/splash/default.webp';
+                                }}
+                            />
+                        </div>
+                        <div className="overview-weapon-details">
+                            <span>Build Score — {percentScore > 0 ? percentScore.toFixed(1) : '??'}%</span> |
+                            <span>Crit Value — {critValue.toFixed(1)}%</span>
+                        </div>
                     </div>
                     <div className="overview-dmg">
                         {runtime?.FinalStats &&(
@@ -513,6 +538,7 @@ export default function OverviewDetailPane({
                     <div className="echo-grid">
                         {[...Array(5)].map((_, index) => {
                             const echo = echoes[index] ?? null;
+                            const score = (getEchoScores(character.link, echo).totalScore / maxScore) * 100;
 
                             return (
                                 <div
@@ -533,6 +559,13 @@ export default function OverviewDetailPane({
                                                         />
                                                     )}
                                                     <div className="echo-slot-cost-badge bag overview">{echo.cost}</div>
+                                                </div>
+                                                <div className="damage-tooltip-wrapper cv-container-tooltip" data-tooltip={`Echo Score`}>
+                                                    {score && (
+                                                        <div className="cv-container overview-weapon-details echo-buff overview">
+                                                            {score > 0 ? score.toFixed(1) : '??'}%
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
 

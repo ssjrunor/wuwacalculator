@@ -172,21 +172,18 @@ function idealMainScoreMap(cost) {
 const MIN_GRADE = 30;
 const MAX_GRADE = 100;
 
-function computeRollForStat(key, value) {
+export function computeRollForStat(key, value) {
     const spec = validSubstatRanges[key];
     if (!spec) return null;
 
     const { min, max, divisions } = spec;
     const step = (max - min) / divisions;
 
-    // clamp into [min, max]
     const v = Math.min(Math.max(value, min), max);
 
-    // step index (0 .. divisions)
     const kFloat = (v - min) / step;
     const k = Math.round(kFloat);
 
-    // grade % (30 → 100)
     const grade = MIN_GRADE + (k / divisions) * (MAX_GRADE - MIN_GRADE);
 
     return Number(grade.toFixed(2));
