@@ -169,9 +169,6 @@ function idealMainScoreMap(cost) {
     }
 }
 
-const MIN_GRADE = 30;
-const MAX_GRADE = 100;
-
 export function computeRollForStat(key, value) {
     const spec = validSubstatRanges[key];
     if (!spec) return null;
@@ -184,7 +181,18 @@ export function computeRollForStat(key, value) {
     const kFloat = (v - min) / step;
     const k = Math.round(kFloat);
 
-    const grade = MIN_GRADE + (k / divisions) * (MAX_GRADE - MIN_GRADE);
+    let grade;
+
+    if (divisions === 7) {
+        const MIN_GRADE = 30;
+        const MAX_GRADE = 100;
+        grade = MIN_GRADE + (k / divisions) * (MAX_GRADE - MIN_GRADE);
+    } else if (divisions === 3) {
+        const MIN_GRADE = 40;
+        grade = MIN_GRADE + k * 20;
+    } else {
+        grade = (k / divisions) * 100;
+    }
 
     return Number(grade.toFixed(2));
 }
