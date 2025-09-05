@@ -9,7 +9,7 @@ import {
     removeEchoFromBag,
     updateEchoInBag
 } from '../state/echoBagStore';
-import {formatStatKey, getValidMainStats} from "../utils/echoHelper.js";
+import {formatStatKey, getValidMainStats, statIconMap} from "../utils/echoHelper.js";
 import {imageCache} from "../pages/calculator.jsx";
 import {ExpandableEchoSection} from "./Expandable.jsx";
 
@@ -255,23 +255,77 @@ function EchoTile({ echo, imageCache, echoBag, removeEchoFromBag, setEditingEcho
                 }}
             >
                 <div className="echo-bag-info-main">
-                    {Object.entries(echo.mainStats ?? {}).map(([key, val]) => (
+                    {Object.entries(echo.mainStats ?? {}).map(([key, val]) => {
+                        const label = formatStatKey(key);
+                        const iconUrl = statIconMap[label];
+
+                        return (
+                            <div key={key} className="stat-row">
+                                <span className="echo-stat-label">
+                                    {iconUrl && (
+                                        <div
+                                            className="stat-icon"
+                                            style={{
+                                                width: 15,
+                                                height: 15,
+                                                backgroundColor: '#999',
+                                                WebkitMaskImage: `url(${iconUrl})`,
+                                                maskImage: `url(${iconUrl})`,
+                                                WebkitMaskRepeat: 'no-repeat',
+                                                maskRepeat: 'no-repeat',
+                                                WebkitMaskSize: 'contain',
+                                                maskSize: 'contain',
+                                                display: 'inline-block',
+                                                marginRight: '0.2rem',
+                                                verticalAlign: 'middle',
+                                                paddingRight: '0.2rem',
+                                            }}
+                                        />
+                                    )}
+                                    {label}
+                                </span>
+                                <span className="echo-stat-value">
+                                    {key.endsWith('Flat') ? val : `${val.toFixed(1)}%`}
+                                </span>
+                            </div>
+                        );
+                    })}
+                </div>
+                {Object.entries(echo.subStats ?? {}).map(([key, val]) => {
+                    const label = formatStatKey(key);
+                    const iconUrl = statIconMap[label];
+
+                    return (
                         <div key={key} className="stat-row">
-                            <span className="echo-stat-label">{formatStatKey(key)}</span>
+                            <span className="echo-stat-label">
+                                {iconUrl && (
+                                    <div
+                                        className="stat-icon"
+                                        style={{
+                                            width: 15,
+                                            height: 15,
+                                            backgroundColor: '#999',
+                                            WebkitMaskImage: `url(${iconUrl})`,
+                                            maskImage: `url(${iconUrl})`,
+                                            WebkitMaskRepeat: 'no-repeat',
+                                            maskRepeat: 'no-repeat',
+                                            WebkitMaskSize: 'contain',
+                                            maskSize: 'contain',
+                                            display: 'inline-block',
+                                            marginRight: '0.2rem',
+                                            verticalAlign: 'middle',
+                                            paddingRight: '0.2rem',
+                                        }}
+                                    />
+                                )}
+                                {label}
+                            </span>
                             <span className="echo-stat-value">
-                                {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
+                                {key.endsWith('Flat') ? val : `${val.toFixed(1)}%`}
                             </span>
                         </div>
-                    ))}
-                </div>
-                {Object.entries(echo.subStats ?? {}).map(([key, val]) => (
-                    <div key={key} className="stat-row">
-                        <span className="echo-stat-label">{formatStatKey(key)}</span>
-                        <span className="echo-stat-value">
-                            {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
-                        </span>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             <div className="modal-footer">

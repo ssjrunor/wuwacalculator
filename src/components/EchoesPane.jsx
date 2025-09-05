@@ -794,7 +794,7 @@ export function highlightKeywordsInText(text, extraKeywords = []) {
 
 export function getEquippedEchoesScoreDetails(charId, characterRuntimeStates) {
     const echoes = characterRuntimeStates?.[charId]?.equippedEchoes ?? [];
-    console.log(characterRuntimeStates);
+    //console.log(characterRuntimeStates);
     const items = echoes.map((echo, idx) => {
         const result = getEchoScores(charId, echo);
         return {

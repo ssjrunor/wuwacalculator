@@ -154,6 +154,9 @@
     font-weight: 600;
     color: #606060;
     text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .dark .echo-stat-label {
@@ -207,7 +210,7 @@
 }
 
 .echo-card-section .stat-row {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 2fr 4rem;
 }
 
 .echo-card-section.main{

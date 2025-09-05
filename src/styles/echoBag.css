@@ -130,9 +130,9 @@
 .echo-stats-preview .stat-row {
     border-radius: 5px;
     border: none;
-    display: flex;
+    display: grid;
     background: rgba(154, 154, 154, 0.13);
-    justify-content: space-between;
+    grid-template-columns: 2fr 3rem;
     padding: 0 4px;
 }
 

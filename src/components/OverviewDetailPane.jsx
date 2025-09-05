@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { highlightKeywordsInText, setIconMap } from '../constants/echoSetData';
 import {imageCache} from '../pages/calculator.jsx';
 import {
@@ -15,6 +15,8 @@ import weaponsRaw from '../data/weapons.json';
 import {getActiveEchoes} from "../data/buffs/applyEchoLogic.js";
 import {calculateRotationTotals} from "./Rotations.jsx";
 import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
+import {downloadFixedSizePNG} from "../utils/ScreenshotUtil.js";
+import {Download, Camera} from 'lucide-react';
 
 export default function OverviewDetailPane({
                                                character,
@@ -32,13 +34,36 @@ export default function OverviewDetailPane({
                                                allRotations
                                            }) {
     if (!character || !runtime) return null;
+
+    let { displayName, level } = character;
+
+    const paneRef = useRef(null);
+    const handleDownload = async () => {
+        await downloadFixedSizePNG(paneRef.current, {
+            width: 1243,
+            height: 1310,
+            filename: `${displayName.toLowerCase()}-overview.png`,
+        });
+    };
+
+    const handleCopyScreenshot = async () => {
+        const { copied } = await downloadFixedSizePNG(paneRef.current, {
+            width: 1243,
+            height: 1310,
+            filename: `${displayName.toLowerCase()}-overview.png`,
+            copyToClipboard: true,
+            shouldDownload: false
+        });
+        alert(copied ? 'Screenshot copied to clipboard!' :
+            'Copied a data URL (image clipboard not supported).');
+    };
+
     const weaponMap = {};
     (weaponsRaw ?? []).forEach(w => {
         weaponMap[w.id] = w;
     });
     const buffWeapons = getActiveStateWeapons(runtime.activeStates);
     const activeEchoes = getActiveEchoes(runtime.activeStates);
-    let { displayName, level } = character;
     level = runtime.CharacterLevel ?? level;
     const echoes = runtime.equippedEchoes ?? [];
     const weapon = runtime.CombatState ?? {};
@@ -139,477 +164,588 @@ export default function OverviewDetailPane({
     const maxBuildScore = maxScore * 5;
     const percentScore = (buildScore.total / maxBuildScore) * 100
 
-
     return (
         <>
-            <div className="overview-panel-container inherent-skills-box" style={{margin: 'unset'}}>
-                <div className="character-portrait-section">
-                    <div className="portrait-inner">
-                        <div className="character-overview-details">
-                            <span className="character-name highlight details" style={{ fontSize: '1.5rem', fontWeight:'bold', margin: 'unset' }}>{displayName}</span>
-                            <span className="character-level">Lv.{level ?? 1}</span>
-                        </div>
-                        <div
-                            className="character-portrait-content"
-                            onClick={() => switchLeftPane('characters')}
-                        >
-                            <img
-                                src={splashArt || '/assets/splash/default.webp'}
-                                alt={displayName}
-                                className="character-splash"
-                                onError={(e) => {
-                                    e.currentTarget.onerror = null;
-                                    e.currentTarget.src = '/assets/splash/default.webp';
-                                }}
-                            />
-                        </div>
-                        <div className="overview-weapon-details">
-                            <span>Build Score — {percentScore > 0 ? percentScore.toFixed(1) : '??'}%</span> |
-                            <span>Crit Value — {critValue.toFixed(1)}%</span>
-                        </div>
-                    </div>
-                    <div className="overview-dmg">
-                        {runtime?.FinalStats &&(
-                            <div className="stats-grid overview" style={{marginTop: '0.5rem'}}>
-                                {statGroups.flat().map((stat, i) => {
-                                    const val = finalStats[stat.key];
-                                    return (
-                                        <div key={stat.key ?? i} className="stat-row" style={{ display: 'flex', gap: '1rem', justifyContent: 'space-between' }}>
-                                            <div
-                                                className="stat-label"
-                                                style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: '6px',
-                                                    ...(stat.color ? { color: stat.color } : {})
-                                                }}
-                                            >
-                                                {statIconMap[stat.label] && (
-                                                    <div
-                                                        className="stat-icon"
-                                                        style={{
-                                                            width: 18,
-                                                            height: 18,
-                                                            backgroundColor: stat.color ?? '#999',
-                                                            WebkitMaskImage: `url(${statIconMap[stat.label]})`,
-                                                            maskImage: `url(${statIconMap[stat.label]})`,
-                                                            WebkitMaskRepeat: 'no-repeat',
-                                                            maskRepeat: 'no-repeat',
-                                                            WebkitMaskSize: 'contain',
-                                                            maskSize: 'contain'
-                                                        }}
-                                                    />
-                                                )}
-                                                {stat.label}
-                                            </div>
-                                            <div className="stat-total">
-                                                <span>{displayValue(stat.key, val)}</span>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: '1rem', marginBottom: '1rem' }}>
+                <button
+                    className="download-btn rotation-button screenshot"
+                    onClick={handleCopyScreenshot}
+                >
+                    <Camera size={24} />
+                    <span className="label">Copy screenshot</span>
+                </button>
+                <button
+                    className="download-btn rotation-button screenshot"
+                    onClick={handleDownload}
+                >
+                    <Download size={24} />
+                    <span className="label">Download screenshot</span>
+                </button>
+            </div>
+
+            <div ref={paneRef} >
+                <div className="overview-panel-container inherent-skills-box" style={{margin: 'unset'}}>
+                    <div className="character-portrait-section">
+                        <div className="portrait-inner">
+                            <div className="character-overview-details">
+                                <span className="character-name highlight details" style={{ fontSize: '1.5rem', fontWeight:'bold', margin: 'unset' }}>{displayName}</span>
+                                <span className="character-level">Lv.{level ?? 1}</span>
                             </div>
-                        )}
-                        <div className="rotations-overview-boxes">
-                            {allRotations?.personalRotations?.length > 0 && (
-                                <div
-                                    className="rotation-box inherent-skills-box"
-                                    onClick={() => {
-                                        const selected = allRotations.personalRotations[selectedRotationIndex];
-                                        const skillKeys = Object.keys(selected?.breakdownMap ?? {});
-                                        if (skillKeys.length > 0) {
-                                            setPersonalBreakdownCycleIndex((prev) => (prev + 1) % (skillKeys.length + 1));
-                                        }
-                                    }}
-                                >
-                                    <select
-                                        className="box-header entry-detail-dropdown"
-                                        value={selectedRotationIndex}
-                                        onChange={(e) => {
-                                            setSelectedRotationIndex(Number(e.target.value));
-                                            setPersonalBreakdownCycleIndex(0);
-                                        }}
-                                        onClick={(e) => e.stopPropagation()}
-                                    >
-                                        {allRotations.personalRotations.map((entry, index) => (
-                                            <option key={entry.id} value={index}>
-                                                {entry.id === 'live'
-                                                    ? "Rotation DMG"
-                                                    : entry.name ?? `Saved #${index}`}
-                                            </option>
-                                        ))}
-                                    </select>
-
-                                    {(() => {
-                                        const selected = allRotations.personalRotations[selectedRotationIndex];
-                                        const skillKeys = Object.keys(selected?.breakdownMap ?? {});
-                                        const hasBreakdown = skillKeys.length > 0;
-
-                                        const selectedKey = hasBreakdown && personalBreakdownCycleIndex > 0
-                                            ? skillKeys[personalBreakdownCycleIndex - 1]
-                                            : null;
-
-                                        const displayed = selectedKey
-                                            ? selected?.breakdownMap?.[selectedKey]
-                                            : selected?.total;
-
-                                        const totalAvg = selected?.total?.avg ?? 0;
-                                        const currentAvg = displayed?.avg ?? 0;
-                                        const percent = selectedKey && totalAvg > 0
-                                            ? `${((currentAvg / totalAvg) * 100).toFixed(1)}%`
-                                            : null;
-
-                                        return (
-                                            <>
-                                                <div className="box-stat dashed-line">
-                                                    <strong className="label">Normal</strong>
-                                                    <div className="dash-separator" />
-                                                    <div className="damage-tooltip-wrapper" data-tooltip={displayed?.normal?.toLocaleString()}>
-                                                        <span className="value">{formatNumber(displayed?.normal)}</span>
-                                                    </div>
-                                                </div>
-                                                <div className="box-stat dashed-line">
-                                                    <strong className="label">CRIT</strong>
-                                                    <div className="dash-separator" />
-                                                    <div className="damage-tooltip-wrapper" data-tooltip={displayed?.crit?.toLocaleString()}>
-                                                        <span className="value">{formatNumber(displayed?.crit)}</span>
-                                                    </div>
-                                                </div>
-                                                <div className="box-stat dashed-line">
-                                                    <strong className="label">AVG</strong>
-                                                    <div className="dash-separator" />
-                                                    <div className="damage-tooltip-wrapper" data-tooltip={displayed?.avg?.toLocaleString()}>
-                                                        <span className="value avg">{formatNumber(displayed?.avg)}</span>
-                                                    </div>
-                                                </div>
-                                                <div className="overview-weapon-details">
-                                                    {!selected?.breakdownMap ? (
-                                                        <div
-                                                             className="damage-tooltip-wrapper text"
-                                                             data-tooltip={'Load in saved rotation and save again :3'}>
-                                                            Re-save to see breakdown
-                                                        </div>
-                                                    ) : (
-                                                        <>
-                                                            {selectedKey ?? 'Total'}
-                                                            {percent ? ` · ${percent}` : ''}
-                                                        </>
-                                                    )}
-                                                </div>
-                                            </>
-                                        );
-                                    })()}
-                                </div>
-                            )}
-                            {allRotations?.teamRotations?.length > 0 && (
-                                <div
-                                    className="rotation-box inherent-skills-box"
-                                    onClick={handleCycleClick}
-                                >
-                                    <select
-                                        className="box-header entry-detail-dropdown"
-                                        style={{ width: '11.2rem' }}
-                                        value={selectedTeamRotationIndex}
-                                        onChange={(e) => {
-                                            setSelectedTeamRotationIndex(Number(e.target.value));
-                                            setContributorCycleIndex(0);
-                                        }}
-                                        onClick={(e) => e.stopPropagation()}
-                                    >
-                                        {allRotations.teamRotations.map((entry, index) => (
-                                            <option key={entry.id} value={index}>
-                                                {entry.id === 'live Team'
-                                                    ? "Team Rotation DMG"
-                                                    : entry.name ?? `Saved #${index}`}
-                                            </option>
-                                        ))}
-                                    </select>
-
-                                    {(() => {
-                                        const selected = allRotations.teamRotations[selectedTeamRotationIndex];
-                                        const contributors = selected?.contributors ?? {};
-                                        const contributorIds = Object.keys(contributors);
-                                        const contributorId = contributorIds[contributorCycleIndex - 1];
-                                        const contributorCharacter = characters.find(c => String(c.link) === String(contributors[contributorId]?.id));
-
-                                        const displayed = contributorCycleIndex === 0
-                                            ? selected?.total
-                                            : contributors[contributorId]?.total;
-
-                                        const contributor = contributors?.[contributorId];
-                                        const teamAvg = teamRotationDmg?.avg ?? 0;
-                                        const percent = teamAvg > 0 && contributor?.total?.avg
-                                            ? ((contributor?.total?.avg / teamAvg) * 100).toFixed(1)
-                                            : null;
-
-                                        return (
-                                            <>
-                                                <div className="box-stat dashed-line">
-                                                    <strong className="label">Normal</strong>
-                                                    <div className="dash-separator" />
-                                                    <div className="damage-tooltip-wrapper" data-tooltip={displayed?.normal?.toLocaleString()}>
-                                                        <span className="value">{formatNumber(displayed?.normal)}</span>
-                                                    </div>
-                                                </div>
-                                                <div className="box-stat dashed-line">
-                                                    <strong className="label">CRIT</strong>
-                                                    <div className="dash-separator" />
-                                                    <div className="damage-tooltip-wrapper" data-tooltip={displayed?.crit?.toLocaleString()}>
-                                                        <span className="value">{formatNumber(displayed?.crit)}</span>
-                                                    </div>
-                                                </div>
-                                                <div className="box-stat dashed-line">
-                                                    <strong className="label">AVG</strong>
-                                                    <div className="dash-separator" />
-                                                    <div className="damage-tooltip-wrapper" data-tooltip={displayed?.avg?.toLocaleString()}>
-                                                        <span className="value avg">{formatNumber(displayed?.avg)}</span>
-                                                    </div>
-                                                </div>
-                                                <div className="overview-weapon-details">
-                                                    {contributorCycleIndex === 0 ? 'Total' : `${contributorCharacter?.displayName ?? ''}`}
-                                                    {percent ? ' · ' : ''}
-                                                    {percent ? `${percent}%` : ''}
-                                                </div>
-                                            </>
-                                        );
-                                    })()}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="overview-gear">
-                    <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(25rem, 1fr))' }}>
-                        <div
-                            className="inherent-skills-box weapon-container"
-                            onClick={() => switchLeftPane('weapon')}
-                        >
-                            <div className="gear-content">
+                            <div
+                                className="character-portrait-content"
+                                onClick={() => switchLeftPane('characters')}
+                            >
                                 <img
-                                    src={activeWeaponIconPath}
-                                    alt="Weapon"
-                                    loading="lazy"
-                                    decoding="async"
-                                    className="gear-icon overview-weapon"
+                                    src={splashArt || '/assets/splash/default.webp'}
+                                    alt={displayName}
+                                    className="character-splash"
                                     onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src = '/assets/weapon-icons/default.webp';
-                                        e.currentTarget.classList.add('fallback-icon');
+                                        e.currentTarget.onerror = null;
+                                        e.currentTarget.src = '/assets/splash/default.webp';
                                     }}
                                 />
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <div className="gear-title highlight" style={{ display: 'flex', alignSelf: 'flex-start' }}>
-                                        {weaponDetail.Name || 'No Weapon'}
-                                    </div>
-                                    <span className="gear-desc">
-                                        {highlightKeywordsInText(formatWeaponEffect(weapon), keywords)}
-                                    </span>
-                                </div>
                             </div>
-                            {weapon.weaponStat && (
-                                <div className="overview-weapon-details">
-                                    <span>Lv.{weapon.weaponLevel ?? 1} - R{weapon.weaponRank ?? 1}</span> |
-                                    <span>{formatStatValue(weapon.weaponStat)}</span>
-                                    <span>ATK: {weapon.weaponBaseAtk}</span>
-                                </div>
-                            )}
+                            <div className="overview-weapon-details">
+                                <span>Build Score — {percentScore > 0 ? percentScore.toFixed(1) : '??'}%</span> |
+                                <span>Crit Value — {critValue.toFixed(1)}%</span>
+                            </div>
                         </div>
-                        <div
-                            className="inherent-skills-box overview-teammates-box"
-                            style={{ margin: 'unset', minHeight: '7rem', display: 'grid', gridTemplateColumns: '1fr minmax(10rem, 30%)' }}
-                            onClick={() => switchLeftPane('teams')}
-                        >
-                            <div className="overview-teammates">
-                                <span className="character-level">Teammates</span>
-                                <div className="icon-body">
-                                    {[1, 2].map(index => {
-                                        const charId = runtime.Team?.[index];
-                                        const character = characters.find(c => String(c.link) === String(charId));
-
+                        <div className="overview-dmg">
+                            {runtime?.FinalStats &&(
+                                <div className="stats-grid overview" style={{marginTop: '0.5rem'}}>
+                                    {statGroups.flat().map((stat, i) => {
+                                        const val = finalStats[stat.key];
                                         return (
-                                            <div key={charId ?? index} className="team-slot-wrapper">
-                                                {character?.icon ? (
-                                                    <img
-                                                        src={character.icon}
-                                                        alt={`Character ${index + 1}`}
-                                                        className="header-icon overview"
-                                                        style={{
-                                                            width: '7rem',
-                                                            height: '7rem',
-                                                            pointerEvents: 'none'
-                                                        }}
-                                                        loading="lazy"
-                                                    />
-                                                ) : (
-                                                    <div className="team-icon empty-slot overview" />
-                                                )}
-                                                <div className="character-name highlight">
-                                                    {character?.displayName ?? ''}
+                                            <div key={stat.key ?? i} className="stat-row" style={{ display: 'flex', gap: '1rem', justifyContent: 'space-between' }}>
+                                                <div
+                                                    className="stat-label"
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '6px',
+                                                        ...(stat.color ? { color: stat.color } : {})
+                                                    }}
+                                                >
+                                                    {statIconMap[stat.label] && (
+                                                        <div
+                                                            className="stat-icon"
+                                                            style={{
+                                                                width: 18,
+                                                                height: 18,
+                                                                backgroundColor: stat.color ?? '#999',
+                                                                WebkitMaskImage: `url(${statIconMap[stat.label]})`,
+                                                                maskImage: `url(${statIconMap[stat.label]})`,
+                                                                WebkitMaskRepeat: 'no-repeat',
+                                                                maskRepeat: 'no-repeat',
+                                                                WebkitMaskSize: 'contain',
+                                                                maskSize: 'contain'
+                                                            }}
+                                                        />
+                                                    )}
+                                                    {stat.label}
+                                                </div>
+                                                <div className="stat-total">
+                                                    <span>{displayValue(stat.key, val)}</span>
                                                 </div>
                                             </div>
                                         );
                                     })}
                                 </div>
-                            </div>
-                            <div className="overview-buffs-container">
-                                <div className="overview-buffs-container-item">
-                                    <span className="character-level">Weapons</span>
-                                    <div>
-                                        {buffWeapons.length === 0 ? (
-                                            <div className="overview-buff-placeholder">hmm...</div>
-                                        ) : (
-                                            buffWeapons.map(({ id, value }) => {
-                                                const weaponData = weaponMap[id];
-                                                if (!weaponData) return null;
+                            )}
+                            <div className="rotations-overview-boxes">
+                                {allRotations?.personalRotations?.length > 0 && (
+                                    <div
+                                        className="rotation-box inherent-skills-box"
+                                        onClick={() => {
+                                            const selected = allRotations.personalRotations[selectedRotationIndex];
+                                            const skillKeys = Object.keys(selected?.breakdownMap ?? {});
+                                            if (skillKeys.length > 0) {
+                                                setPersonalBreakdownCycleIndex((prev) => (prev + 1) % (skillKeys.length + 1));
+                                            }
+                                        }}
+                                    >
+                                        <select
+                                            className="box-header entry-detail-dropdown"
+                                            value={selectedRotationIndex}
+                                            onChange={(e) => {
+                                                setSelectedRotationIndex(Number(e.target.value));
+                                                setPersonalBreakdownCycleIndex(0);
+                                            }}
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            {allRotations.personalRotations.map((entry, index) => (
+                                                <option key={entry.id} value={index}>
+                                                    {entry.id === 'live'
+                                                        ? "Rotation DMG"
+                                                        : entry.name ?? `Saved #${index}`}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                                return (
-                                                    <div key={id}>
-                                                        <div className="echo-buff-header overview-buffs">
-                                                            <img
-                                                                src={`/assets/weapon-icons/${id}.webp`}
-                                                                alt={weaponData.name}
-                                                                className="echo-buff-icon overview-weapon mini"
-                                                                loading="lazy"
-                                                                onError={(e) => {
-                                                                    e.target.onerror = null;
-                                                                    e.currentTarget.src = '/assets/weapon-icons/default.webp';
-                                                                    e.currentTarget.classList.add('fallback-icon');
-                                                                }}
-                                                            />
-                                                            <div className="character-name"
-                                                                 style={{
-                                                                     margin: 'unset',
-                                                                     maxWidth: '65%',
-                                                                     fontSize: '0.85rem',
-                                                                     opacity: '0.7',
-                                                                     fontWeight: 'bold'
-                                                                 }}>
-                                                                R{value} {weaponData.name}
+                                        {(() => {
+                                            const selected = allRotations.personalRotations[selectedRotationIndex];
+                                            const skillKeys = Object.keys(selected?.breakdownMap ?? {});
+                                            const hasBreakdown = skillKeys.length > 0;
+
+                                            const selectedKey = hasBreakdown && personalBreakdownCycleIndex > 0
+                                                ? skillKeys[personalBreakdownCycleIndex - 1]
+                                                : null;
+
+                                            const displayed = selectedKey
+                                                ? selected?.breakdownMap?.[selectedKey]
+                                                : selected?.total;
+
+                                            const totalAvg = selected?.total?.avg ?? 0;
+                                            const currentAvg = displayed?.avg ?? 0;
+                                            const percent = selectedKey && totalAvg > 0
+                                                ? `${((currentAvg / totalAvg) * 100).toFixed(1)}%`
+                                                : null;
+
+                                            return (
+                                                <>
+                                                    <div className="box-stat dashed-line">
+                                                        <strong className="label">Normal</strong>
+                                                        <div className="dash-separator" />
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.normal?.toLocaleString()}>
+                                                            <span className="value">{formatNumber(displayed?.normal)}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="box-stat dashed-line">
+                                                        <strong className="label">CRIT</strong>
+                                                        <div className="dash-separator" />
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.crit?.toLocaleString()}>
+                                                            <span className="value">{formatNumber(displayed?.crit)}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="box-stat dashed-line">
+                                                        <strong className="label">AVG</strong>
+                                                        <div className="dash-separator" />
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.avg?.toLocaleString()}>
+                                                            <span className="value avg">{formatNumber(displayed?.avg)}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="overview-weapon-details">
+                                                        {!selected?.breakdownMap ? (
+                                                            <div
+                                                                className="damage-tooltip-wrapper text"
+                                                                data-tooltip={'Load in saved rotation and save again :3'}>
+                                                                Re-save to see breakdown
                                                             </div>
-                                                        </div>
+                                                        ) : (
+                                                            <>
+                                                                {selectedKey ?? 'Total'}
+                                                                {percent ? ` · ${percent}` : ''}
+                                                            </>
+                                                        )}
                                                     </div>
-                                                );
-                                            })
-                                        )}
+                                                </>
+                                            );
+                                        })()}
                                     </div>
-                                </div>
+                                )}
+                                {allRotations?.teamRotations?.length > 0 && (
+                                    <div
+                                        className="rotation-box inherent-skills-box"
+                                        onClick={handleCycleClick}
+                                    >
+                                        <select
+                                            className="box-header entry-detail-dropdown"
+                                            style={{ width: '11.2rem' }}
+                                            value={selectedTeamRotationIndex}
+                                            onChange={(e) => {
+                                                setSelectedTeamRotationIndex(Number(e.target.value));
+                                                setContributorCycleIndex(0);
+                                            }}
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            {allRotations.teamRotations.map((entry, index) => (
+                                                <option key={entry.id} value={index}>
+                                                    {entry.id === 'live Team'
+                                                        ? "Team Rotation DMG"
+                                                        : entry.name ?? `Saved #${index}`}
+                                                </option>
+                                            ))}
+                                        </select>
 
-                                <div className="overview-buffs-container-item">
-                                    <span className="character-level">Set Buffs</span>
-                                    <div>
-                                        {activeEchoes.length === 0 ? (
-                                            <div className="overview-buff-placeholder">hmm...</div>
-                                        ) : (
-                                            activeEchoes.map(({ id, name, icon }) => (
-                                                <div key={id}>
-                                                    <div className="echo-buff-header overview-buffs">
-                                                        <img
-                                                            src={icon}
-                                                            alt={name}
-                                                            className="echo-buff-icon overview-weapon mini"
-                                                            loading="lazy"
-                                                            onError={(e) => {
-                                                                e.target.onerror = null;
-                                                                e.currentTarget.src = '/assets/echoes/default.webp';
-                                                                e.currentTarget.classList.add('fallback-icon');
-                                                            }}
-                                                        />
-                                                        <div className="character-name"
-                                                             style={{
-                                                                 margin: 'unset',
-                                                                 maxWidth: '65%',
-                                                                 fontSize: '0.85rem',
-                                                                 opacity: '0.7',
-                                                                 fontWeight: 'bold'
-                                                             }}>
-                                                            {name}
+                                        {(() => {
+                                            const selected = allRotations.teamRotations[selectedTeamRotationIndex];
+                                            const contributors = selected?.contributors ?? {};
+                                            const contributorIds = Object.keys(contributors);
+                                            const contributorId = contributorIds[contributorCycleIndex - 1];
+                                            const contributorCharacter = characters.find(c => String(c.link) === String(contributors[contributorId]?.id));
+
+                                            const displayed = contributorCycleIndex === 0
+                                                ? selected?.total
+                                                : contributors[contributorId]?.total;
+
+                                            const contributor = contributors?.[contributorId];
+                                            const teamAvg = teamRotationDmg?.avg ?? 0;
+                                            const percent = teamAvg > 0 && contributor?.total?.avg
+                                                ? ((contributor?.total?.avg / teamAvg) * 100).toFixed(1)
+                                                : null;
+
+                                            return (
+                                                <>
+                                                    <div className="box-stat dashed-line">
+                                                        <strong className="label">Normal</strong>
+                                                        <div className="dash-separator" />
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.normal?.toLocaleString()}>
+                                                            <span className="value">{formatNumber(displayed?.normal)}</span>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            ))
-                                        )}
+                                                    <div className="box-stat dashed-line">
+                                                        <strong className="label">CRIT</strong>
+                                                        <div className="dash-separator" />
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.crit?.toLocaleString()}>
+                                                            <span className="value">{formatNumber(displayed?.crit)}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="box-stat dashed-line">
+                                                        <strong className="label">AVG</strong>
+                                                        <div className="dash-separator" />
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.avg?.toLocaleString()}>
+                                                            <span className="value avg">{formatNumber(displayed?.avg)}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="overview-weapon-details">
+                                                        {contributorCycleIndex === 0 ? 'Total' : `${contributorCharacter?.displayName ?? ''}`}
+                                                        {percent ? ' · ' : ''}
+                                                        {percent ? `${percent}%` : ''}
+                                                    </div>
+                                                </>
+                                            );
+                                        })()}
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>
 
-                    <div className="echo-grid">
-                        {[...Array(5)].map((_, index) => {
-                            const echo = echoes[index] ?? null;
-                            const score = (getEchoScores(character.link, echo).totalScore / maxScore) * 100;
+                    <div className="overview-gear">
+                        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(25rem, 1fr))' }}>
+                            <div
+                                className="inherent-skills-box weapon-container"
+                                onClick={() => switchLeftPane('weapon')}
+                            >
+                                <div className="gear-content">
+                                    <img
+                                        src={activeWeaponIconPath}
+                                        alt="Weapon"
+                                        loading="lazy"
+                                        decoding="async"
+                                        className="gear-icon overview-weapon"
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = '/assets/weapon-icons/default.webp';
+                                            e.currentTarget.classList.add('fallback-icon');
+                                        }}
+                                    />
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <div className="gear-title highlight" style={{ display: 'flex', alignSelf: 'flex-start' }}>
+                                            {weaponDetail.Name || 'No Weapon'}
+                                        </div>
+                                        <span className="gear-desc">
+                                            {highlightKeywordsInText(formatWeaponEffect(weapon), keywords)}
+                                        </span>
+                                    </div>
+                                </div>
+                                {weapon.weaponStat && (
+                                    <div className="overview-weapon-details">
+                                        <span>Lv.{weapon.weaponLevel ?? 1} - R{weapon.weaponRank ?? 1}</span> |
+                                        <span>{formatStatValue(weapon.weaponStat)}</span>
+                                        <span>ATK: {weapon.weaponBaseAtk}</span>
+                                    </div>
+                                )}
+                            </div>
+                            <div
+                                className="inherent-skills-box overview-teammates-box"
+                                style={{ margin: 'unset', display: 'grid', gridTemplateColumns: '1fr minmax(10rem, 30%)' }}
+                                onClick={() => switchLeftPane('teams')}
+                            >
+                                <div className="overview-teammates">
+                                    <span className="character-level">Teammates</span>
+                                    <div className="icon-body">
+                                        {[1, 2].map(index => {
+                                            const charId = runtime.Team?.[index];
+                                            const character = characters.find(c => String(c.link) === String(charId));
 
-                            return (
-                                <div
-                                    key={index}
-                                    className="echo-tile overview inherent-skills-box"
-                                    style={{ margin: 'unset' }}
-                                    onClick={() => switchLeftPane('echoes')}
-                                >
-                                    {echo ? (
-                                        <>
-                                            <div className="gear-header">
-                                                <div className="echo-set-cost-header">
-                                                    {echo?.selectedSet && (
+                                            return (
+                                                <div key={charId ?? index} className="team-slot-wrapper">
+                                                    {character?.icon ? (
                                                         <img
-                                                            src={setIconMap[echo.selectedSet]}
-                                                            alt={`Set ${echo.selectedSet}`}
-                                                            className="echo-set-icon overview"
+                                                            src={character.icon}
+                                                            alt={`Character ${index + 1}`}
+                                                            className="header-icon overview"
+                                                            style={{
+                                                                width: '7rem',
+                                                                height: '7rem',
+                                                                pointerEvents: 'none'
+                                                            }}
+                                                            loading="lazy"
                                                         />
+                                                    ) : (
+                                                        <div className="team-icon empty-slot overview" />
                                                     )}
-                                                    <div className="echo-slot-cost-badge bag overview">{echo.cost}</div>
+                                                    <div className="character-name highlight">
+                                                        {character?.displayName ?? ''}
+                                                    </div>
                                                 </div>
-                                                <div className="damage-tooltip-wrapper cv-container-tooltip" data-tooltip={`Echo Score`}>
-                                                    {score && (
-                                                        <div className="cv-container overview-weapon-details echo-buff overview">
-                                                            {score > 0 ? score.toFixed(1) : '??'}%
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                                <div className="overview-buffs-container">
+                                    <div className="overview-buffs-container-item">
+                                    <span className="character-level">
+                                      Weapons{buffWeapons.length > 2 ? ` (+${buffWeapons.length - 2})` : ''}
+                                    </span>
+
+                                        <div>
+                                            {buffWeapons.length === 0 ? (
+                                                <div className="overview-buff-placeholder">hmm...</div>
+                                            ) : (
+                                                <>
+                                                    {buffWeapons.slice(0, 2).map(({ id, value }) => {
+                                                        const weaponData = weaponMap[id];
+                                                        if (!weaponData) return null;
+
+                                                        return (
+                                                            <div key={`weapon-${id}`}>
+                                                                <div className="echo-buff-header overview-buffs">
+                                                                    <img
+                                                                        src={`/assets/weapon-icons/${id}.webp`}
+                                                                        alt={weaponData.name}
+                                                                        className="echo-buff-icon overview-weapon mini"
+                                                                        loading="lazy"
+                                                                        onError={(e) => {
+                                                                            e.target.onerror = null;
+                                                                            e.currentTarget.src = '/assets/weapon-icons/default.webp';
+                                                                            e.currentTarget.classList.add('fallback-icon');
+                                                                        }}
+                                                                    />
+                                                                    <div
+                                                                        className="character-name"
+                                                                        style={{
+                                                                            margin: 'unset',
+                                                                            maxWidth: '65%',
+                                                                            fontSize: '0.85rem',
+                                                                            opacity: '0.7',
+                                                                            fontWeight: 'bold',
+                                                                            whiteSpace: 'nowrap',
+                                                                            overflow: 'hidden',
+                                                                            textOverflow: 'ellipsis',
+                                                                        }}
+                                                                        title={`R${value} ${weaponData.name}`}
+                                                                    >
+                                                                        R{value} {weaponData.name}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
+
+                                                    {/*{buffWeapons.length > 2 && (
+                                                        <div className="echo-buff-header overview-buffs" style={{ opacity: 0.6 }}>
+                                                            <div className="character-name" style={{ fontSize: '0.8rem', fontWeight: 600 }}>
+                                                                Weapons (+{buffWeapons.length - 2})
+                                                            </div>
                                                         </div>
-                                                    )}
-                                                </div>
-                                            </div>
+                                                    )}*/}
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
 
-                                            <img
-                                                src={getImageSrc(echo.icon || '/assets/echoes/default.webp')}
-                                                alt={echo.name || 'Echo'}
-                                                className="gear-icon"
-                                                onError={(e) => {
-                                                    e.currentTarget.onerror = null;
-                                                    e.currentTarget.src = '/assets/echoes/default.webp';
-                                                }}
-                                            />
-                                            <div className="gear-title highlight">{echo.name || 'Echo'}</div>
+                                    <div className="overview-buffs-container-item">
+                                    <span className="character-level">
+                                      Set Buffs{activeEchoes.length > 2 ? ` (+${activeEchoes.length - 2})` : ''}
+                                    </span>
 
-                                            <div className="echo-stats-preview" style={{ cursor: 'unset' }}>
-                                                <div className="echo-bag-info-main">
-                                                    {Object.entries(echo.mainStats ?? {}).map(([key, val]) => (
-                                                        <div key={key} className="stat-row">
-                                                            <span className="echo-stat-label">{formatStatKey(key)}</span>
-                                                            <span className="echo-stat-value">
-                                                            {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
-                                                        </span>
+                                        <div>
+                                            {activeEchoes.length === 0 ? (
+                                                <div className="overview-buff-placeholder">hmm...</div>
+                                            ) : (
+                                                <>
+                                                    {activeEchoes.slice(0, 2).map(({ id, name, icon }) => (
+                                                        <div key={`set-${id}`}>
+                                                            <div className="echo-buff-header overview-buffs">
+                                                                <img
+                                                                    src={icon}
+                                                                    alt={name}
+                                                                    className="echo-buff-icon overview-weapon mini"
+                                                                    loading="lazy"
+                                                                    onError={(e) => {
+                                                                        e.target.onerror = null;
+                                                                        e.currentTarget.src = '/assets/echoes/default.webp';
+                                                                        e.currentTarget.classList.add('fallback-icon');
+                                                                    }}
+                                                                />
+                                                                <div
+                                                                    className="character-name"
+                                                                    style={{
+                                                                        margin: 'unset',
+                                                                        maxWidth: '65%',
+                                                                        fontSize: '0.85rem',
+                                                                        opacity: '0.7',
+                                                                        fontWeight: 'bold',
+                                                                        whiteSpace: 'nowrap',
+                                                                        overflow: 'hidden',
+                                                                        textOverflow: 'ellipsis',
+                                                                    }}
+                                                                    title={name}
+                                                                >
+                                                                    {name}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     ))}
-                                                </div>
-                                                {Object.entries(echo.subStats ?? {}).map(([key, val]) => (
-                                                    <div key={key} className="stat-row">
-                                                        <span className="echo-stat-label">{formatStatKey(key)}</span>
-                                                        <span className="echo-stat-value">
-                                                        {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
-                                                    </span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <div className="empty-echo-tile">Empty</div>
-                                    )}
+
+                                                    {/*{activeEchoes.length > 2 && (
+                                                        <div className="echo-buff-header overview-buffs" style={{ opacity: 0.6 }}>
+                                                            <div className="character-name" style={{ fontSize: '0.8rem', fontWeight: 600 }}>
+                                                                Set Buffs (+{activeEchoes.length - 2})
+                                                            </div>
+                                                        </div>
+                                                    )}*/}
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
-                            );
-                        })}
+                            </div>
+                        </div>
+
+                        <div className="echo-grid">
+                            {[...Array(5)].map((_, index) => {
+                                const echo = echoes[index] ?? null;
+                                const score = (getEchoScores(character.link, echo).totalScore / maxScore) * 100;
+
+                                return (
+                                    <div
+                                        key={index}
+                                        className="echo-tile overview inherent-skills-box"
+                                        style={{ margin: 'unset' }}
+                                        onClick={() => switchLeftPane('echoes')}
+                                    >
+                                        {echo ? (
+                                            <>
+                                                <div className="gear-header">
+                                                    <div className="echo-set-cost-header">
+                                                        {echo?.selectedSet && (
+                                                            <img
+                                                                src={setIconMap[echo.selectedSet]}
+                                                                alt={`Set ${echo.selectedSet}`}
+                                                                className="echo-set-icon overview"
+                                                            />
+                                                        )}
+                                                        <div className="echo-slot-cost-badge bag overview">{echo.cost}</div>
+                                                    </div>
+                                                    <div className="damage-tooltip-wrapper cv-container-tooltip" data-tooltip={`Echo Score`}>
+                                                        {score && (
+                                                            <div className="cv-container overview-weapon-details echo-buff overview">
+                                                                {score > 0 ? score.toFixed(1) : '??'}%
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <img
+                                                    src={getImageSrc(echo.icon || '/assets/echoes/default.webp')}
+                                                    alt={echo.name || 'Echo'}
+                                                    className="gear-icon"
+                                                    onError={(e) => {
+                                                        e.currentTarget.onerror = null;
+                                                        e.currentTarget.src = '/assets/echoes/default.webp';
+                                                    }}
+                                                />
+                                                <div className="gear-title highlight">{echo.name || 'Echo'}</div>
+
+                                                <div className="echo-stats-preview" style={{ cursor: 'unset' }}>
+                                                    <div className="echo-bag-info-main">
+                                                        {Object.entries(echo.mainStats ?? {}).map(([key, val]) => {
+                                                            const label = formatStatKey(key);
+                                                            const iconUrl = statIconMap[label];
+
+                                                            return (
+                                                                <div key={key} className="stat-row">
+                                                                    <span className="echo-stat-label">
+                                                                        {iconUrl && (
+                                                                            <div
+                                                                                className="stat-icon"
+                                                                                style={{
+                                                                                    width: 12,
+                                                                                    height: 12,
+                                                                                    backgroundColor: '#999',
+                                                                                    WebkitMaskImage: `url(${iconUrl})`,
+                                                                                    maskImage: `url(${iconUrl})`,
+                                                                                    WebkitMaskRepeat: 'no-repeat',
+                                                                                    maskRepeat: 'no-repeat',
+                                                                                    WebkitMaskSize: 'contain',
+                                                                                    maskSize: 'contain',
+                                                                                    display: 'inline-block',
+                                                                                    marginRight: '0.125rem',
+                                                                                    verticalAlign: 'middle',
+                                                                                    paddingRight: '0.125rem',
+                                                                                }}
+                                                                            />
+                                                                        )}
+                                                                        {label}
+                                                                    </span>
+                                                                    <span className="echo-stat-value">
+                                                                        {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
+                                                                    </span>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                    {Object.entries(echo.subStats ?? {}).map(([key, val]) => {
+                                                        const label = formatStatKey(key);
+                                                        const iconUrl = statIconMap[label];
+
+                                                        return (
+                                                            <div key={key} className="stat-row">
+                                                                <span className="echo-stat-label">
+                                                                    {iconUrl && (
+                                                                        <div
+                                                                            className="stat-icon"
+                                                                            style={{
+                                                                                width: 12,
+                                                                                height: 12,
+                                                                                backgroundColor: '#999',
+                                                                                WebkitMaskImage: `url(${iconUrl})`,
+                                                                                maskImage: `url(${iconUrl})`,
+                                                                                WebkitMaskRepeat: 'no-repeat',
+                                                                                maskRepeat: 'no-repeat',
+                                                                                WebkitMaskSize: 'contain',
+                                                                                maskSize: 'contain',
+                                                                                display: 'inline-block',
+                                                                                marginRight: '0.125rem',
+                                                                                verticalAlign: 'middle',
+                                                                                paddingRight: '0.125rem',
+                                                                            }}
+                                                                        />
+                                                                    )}
+                                                                    {label}
+                                                                </span>
+                                                                <span className="echo-stat-value">
+                                                                    {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
+                                                                </span>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="empty-echo-tile">Empty</div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div className="delete-character-wrapper" style={{ padding: '2rem', textAlign: 'center' }}>
                 <button
                     className="clear-button"
