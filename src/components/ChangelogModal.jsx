@@ -302,7 +302,7 @@ export default function ChangelogModal({ open, onClose, shouldScroll }) {
             entries: [
                 {
                     type: 'paragraph',
-                    content: `Added all <strong>2.7</strong> beta content excluding <strong>Galbrena</strong>.<strong>Galbrena</strong> will be added... later...`
+                    content: `Added all <strong>2.7</strong> beta content excluding <strong>Galbrena</strong>.`
                 },
                 {
                     type: 'paragraph',
