@@ -192,6 +192,11 @@ const echoSets = [
         id: 21,
         name: 'Law of Harmony',
         threePiece: 'Casting Echo Skill grants 30% Heavy Attack DMG Bonus to the caster for 4s. Additionally, all Resonators in the team gain 4% Echo Skill DMG Bonus for 30s, stacking up to 4 times. Echoes of the same name can only trigger this effect once. The record of Echo triggering this effect is cleared along with this effect. At 4 stacks, casting Echo Skill again resets the duration of this effect.'
+    },
+    {
+        id: 22,
+        name: 'Flamewing\'s Shadow',
+        threePiece: 'Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by 20% for 6s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by 20% for 6s. While both effects are active, gain 16% Fusion DMG Bonus.'
     }
 ];
 
@@ -216,6 +221,7 @@ export const setIconMap = {
     19: '/assets/echo-icons/dreamOfTheLost.webp',
     20: '/assets/echo-icons/crownOfValor.webp',
     21: '/assets/echo-icons/lawOfHarmony.webp',
+    22: '/assets/echo-icons/flamewing\'sShadow.webp',
 };
 
 export const validSubstatRanges = {

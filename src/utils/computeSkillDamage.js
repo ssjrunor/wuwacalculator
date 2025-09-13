@@ -1,4 +1,4 @@
-import {getCharacterOverride} from "../data/character-behaviour/index.js";
+import {getBuffsLogic, getCharacterOverride, skillMetaBuffsLogic} from "../data/character-behaviour/index.js";
 import {getWeaponOverride} from "../data/weapon-behaviour/index.js";
 import {calculateSupportEffect} from "./supportCalculator.js";
 import {calculateDamage} from "./damageCalculator.js";
@@ -103,6 +103,29 @@ export function computeSkillDamage({
         localMergedBuffs = result.mergedBuffs ?? localMergedBuffs;
     }
 
+    characterRuntimeStates[charId]?.Team?.forEach((id, index) => {
+        if (!id || index === 0) return;
+
+        const buffsLogic = skillMetaBuffsLogic(id);
+        if (!buffsLogic) return;
+
+        const characterState = {
+            activeStates: characterRuntimeStates?.[charId]?.activeStates ?? {}
+        };
+
+        const result = buffsLogic({
+            mergedBuffs,
+            characterState,
+            activeCharacter,
+            combatState,
+            skillMeta
+        });
+
+        if (result?.skillMeta) {
+            skillMeta = result.skillMeta ?? skillMeta;
+        }
+    });
+
     const weaponLogic = getWeaponOverride(combatState?.weaponId);
 
     if (typeof weaponLogic?.updateSkillMeta === 'function') {
@@ -186,7 +209,8 @@ export function computeSkillDamage({
         skillDmgBonus: skillMeta.skillDmgBonus ?? 0,
         critDmgBonus: skillMeta.critDmgBonus ?? 0,
         critRateBonus: skillMeta.critRateBonus ?? 0,
-        skillDefIgnore: skillMeta.skillDefIgnore ?? 0
+        skillDefIgnore: skillMeta.skillDefIgnore ?? 0,
+        skillResIgnore: skillMeta.skillResIgnore ?? 0
     });
 
     let subHits = [];
@@ -225,7 +249,8 @@ export function computeSkillDamage({
                     skillDmgBonus: skillMeta.skillDmgBonus ?? 0,
                     critDmgBonus: skillMeta.critDmgBonus ?? 0,
                     critRateBonus: skillMeta.critRateBonus ?? 0,
-                    skillDefIgnore: skillMeta.skillDefIgnore ?? 0
+                    skillDefIgnore: skillMeta.skillDefIgnore ?? 0,
+                    skillResIgnore: skillMeta.skillResIgnore ?? 0
                 });
 
                 subHits.push({
@@ -256,7 +281,8 @@ export function computeSkillDamage({
                     skillDmgBonus: oneHitMeta.skillDmgBonus ?? 0,
                     critDmgBonus: oneHitMeta.critDmgBonus ?? 0,
                     critRateBonus: oneHitMeta.critRateBonus ?? 0,
-                    skillDefIgnore: oneHitMeta.skillDefIgnore ?? 0
+                    skillDefIgnore: oneHitMeta.skillDefIgnore ?? 0,
+                    skillResIgnore: skillMeta.skillResIgnore ?? 0
                 });
 
                 subHits.push({

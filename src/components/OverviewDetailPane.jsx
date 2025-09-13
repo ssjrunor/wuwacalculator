@@ -442,7 +442,7 @@ export default function OverviewDetailPane({
                                     />
                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                                         <div className="gear-title highlight" style={{ display: 'flex', alignSelf: 'flex-start' }}>
-                                            {weaponDetail.Name || 'No Weapon'}
+                                            {weaponDetail?.Name || 'No Weapon'}
                                         </div>
                                         <span className="gear-desc">
                                             {highlightKeywordsInText(formatWeaponEffect(weapon), keywords)}
@@ -641,9 +641,9 @@ export default function OverviewDetailPane({
                                                         <div className="echo-slot-cost-badge bag overview">{echo.cost}</div>
                                                     </div>
                                                     <div className="damage-tooltip-wrapper cv-container-tooltip" data-tooltip={`Echo Score`}>
-                                                        {score && (
+                                                        {score > 0 && (
                                                             <div className="cv-container overview-weapon-details echo-buff overview">
-                                                                {score > 0 ? score.toFixed(1) : '??'}%
+                                                                {score.toFixed(1)}%
                                                             </div>
                                                         )}
                                                     </div>

@@ -232,6 +232,14 @@
     "type": 2
   },
   {
+    "id": "21020030",
+    "name": "Bloodpact's Pledge",
+    "description": "This weapon is a testament to the unbreakable blood pact: One shall never betray, never surrender, and fight until the last drop of blood is shed.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020026_UI.T_IconWeapon21020026_UI.webp",
+    "rank": 1,
+    "type": 2
+  },
+  {
     "id": "21020034",
     "name": "Sword#18",
     "description": "An improved version of a mass-produced sword model developed in Huanglong. With its sleek blade and minimalist design, this sword is exclusively crafted for the skilled hands of seasoned warriors.",
@@ -282,7 +290,7 @@
   {
     "id": "21020056",
     "name": "Defier's Thorn",
-    "description": "The surging tides force the crown of thorns upon the knight, out of which the knight forges this sword.\nUnburdened by the crown, the knight waded through the roaring waves unwaveringly.",
+    "description": "Bamboo, hollow yet full; People, whole yet seldom true.\nBamboo speaks without deceit, acts without conceit, seeks no vanity. Few ever measure up thus.",
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020056_UI.T_IconWeapon21020056_UI.webp",
     "rank": 5,
     "type": 2
@@ -293,6 +301,14 @@
     "description": "The Sword born from the aerial phenomenon. The forger integrates the feelings of witnessing the alien star into the weapon, making it look light and sharp, but it can exert the energy of breaking the sky and cutting iron like mud.",
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020064_UI.T_IconWeapon21020064_UI.webp",
     "rank": 4,
+    "type": 2
+  },
+  {
+    "id": "21020066",
+    "name": "Emerald Sentence",
+    "description": "Bamboo, hollow yet full; People, whole yet seldom true.\nBamboo speaks without deceit, acts without conceit, seeks no vanity. Few ever measure up thus.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020066_UI.T_IconWeapon21020066_UI.webp",
+    "rank": 5,
     "type": 2
   },
   {
@@ -392,11 +408,27 @@
     "type": 3
   },
   {
+    "id": "21030030",
+    "name": "Woodland Aria",
+    "description": "All things exist within the lines of poetry. Every sound has its meters and rhymes.\nThe forest's melodies ascend in spirals toward the moon's silvered grace, harmonized by the nightingales' chorus. When the final note falls and vanishes into the silent earth, a flawless chord echoes endlessly in the depths of this boundless realm.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030026_UI.T_IconWeapon21030026_UI.webp",
+    "rank": 1,
+    "type": 3
+  },
+  {
     "id": "21030034",
     "name": "Pistols#26",
     "description": "The Huaxu Academy has developed practical, high-performance pistols based on previous source energy weapons, showcasing their meticulous research and aiming for excellence.",
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030034_UI.T_IconWeapon21030034_UI.webp",
     "rank": 4,
+    "type": 3
+  },
+  {
+    "id": "21030036",
+    "name": "Lux & Umbra",
+    "description": "From darkness she seizes power, layering sins upon herself. To hunt. To kill. To deliver a relentless and fatal blow to all evil.\nFrom the light she falls, with her vows etched in her mind. For the deceased. For the living. For her pistol's true targets.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030036_UI.T_IconWeapon21030036_UI.webp",
+    "rank": 5,
     "type": 3
   },
   {

@@ -92,6 +92,16 @@ export function applySetEffect({ mergedBuffs, characterState, activeCharacter, c
     }
     mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + 4 * lawOfHarmonyStack;
 
+    if (effect.flamewingsShadow2pcP1) {
+        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
+    }
+    if (effect.flamewingsShadow2pcP2) {
+        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
+    }
+    if (effect.flamewingsShadow2pcP1 && effect.flamewingsShadow2pcP2) {
+        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 16;
+    }
+
     return mergedBuffs;
 }
 
@@ -293,7 +303,7 @@ export const mainEchoBuffs = {
         always: { havoc: 12, echoSkill: 20 }
     },
     '6000116': {
-        always: { aero: 20}
+        always: { aero: 12, heavyAtk: 12 }
     },
     '6000121': {
         always: { electro: 12, heavyAtk: 12 }
@@ -414,6 +424,15 @@ export const mainEchoBuffs = {
         skillMetaModifier: (skillMeta) => {
             if (skillMeta.name.includes('Calcified Junrock')) {
                 skillMeta.tags = ['healing'];
+            }
+            return skillMeta;
+        }
+    },
+    '6000167': {
+        always: { havoc: 12, resonanceLiberation: 12 },
+        skillMetaModifier: (skillMeta, {combatState}) => {
+            if (skillMeta.name.includes('Reminiscence: Threnodian - Leviathan Skill 2') && combatState.havocBane > 0) {
+                skillMeta.dmgReduction = (skillMeta.dmgReduction ?? 0) + 100;
             }
             return skillMeta;
         }

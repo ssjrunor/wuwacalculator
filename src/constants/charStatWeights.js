@@ -385,4 +385,22 @@ const charStatWeights = {
         resonanceLiberation: 0.75,
         spectro: 1
     },
+    '1411': {
+        atkPercent: 1,
+        atkFlat: 0.5,
+        energyRegen: 1,
+        critRate: 1,
+        critDmg: 1,
+        heavyAtk: 1,
+        aero: 1
+    },
+    '1208': {
+        atkPercent: 1,
+        atkFlat: 0.5,
+        energyRegen: 1,
+        critRate: 1,
+        critDmg: 1,
+        heavyAtk: 1,
+        fusion: 1
+    },
 };

@@ -37,6 +37,8 @@ import AaltoUI, {aaltoSequenceToggles, CustomInherentSkills as AaltoInherents} f
 import PhrolovaUI, {phrolovaSequenceToggles, CustomInherentSkills as PhrolovaInherents} from "./1608.jsx";
 import AugustaUI, {AugustaSequenceToggles} from "./1306.jsx";
 import IunoUI, {IunoSequenceToggles} from "./1410.jsx";
+import QiuyuanUI, {QiuyuanSequenceToggles, CustomInherentSkills as QiuyuanInherents} from "./1411.jsx";
+import GalbrenaUI, {GalbrenaSequenceToggles, CustomInherentSkills as GalbrenaInherents} from "./1208.jsx";
 
 
 export function getCharacterUIComponent(characterId) {
@@ -62,6 +64,8 @@ export function getCharacterUIComponent(characterId) {
         case '1608': return PhrolovaUI;
         case '1306': return AugustaUI;
         case '1410': return IunoUI;
+        case '1411': return QiuyuanUI;
+        case '1208': return GalbrenaUI;
         default: return null;
     }
 }
@@ -98,6 +102,8 @@ export function getCustomInherentSkillsComponent(characterId) {
         case '1607': return CantInherents;
         case '1403': return AaltoInherents;
         case '1608': return PhrolovaInherents;
+        case '1411': return QiuyuanInherents;
+        case '1208': return GalbrenaInherents;
         default: return null;
     }
 }
@@ -146,6 +152,8 @@ export function getSequenceToggleComponent(characterId) {
         case '1608': return phrolovaSequenceToggles;
         case '1306': return AugustaSequenceToggles;
         case '1410': return IunoSequenceToggles;
+        case '1411': return QiuyuanSequenceToggles;
+        case '1208': return GalbrenaSequenceToggles;
         default: return null;
     }
 }
@@ -191,6 +199,8 @@ const characterBuffUIMap = {
     '1608': () => import('./1608.jsx').then(mod => mod.buffUI),
     '1306': () => import('./1306.jsx').then(mod => mod.buffUI),
     '1410': () => import('./1410.jsx').then(mod => mod.buffUI),
+    '1411': () => import('./1411.jsx').then(mod => mod.buffUI),
+    '1208': () => import('./1208.jsx').then(mod => mod.buffUI),
 
 };
 

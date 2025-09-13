@@ -296,6 +296,19 @@ export default function ChangelogModal({ open, onClose, shouldScroll }) {
                     content: `Added <strong>2.6</strong> beta content.`
                 }
                 ]
+        },
+        {
+            date: '13/09/2025',
+            entries: [
+                {
+                    type: 'paragraph',
+                    content: `Added all <strong>2.7</strong> beta content excluding <strong>Galbrena</strong>.<strong>Galbrena</strong> will be added... later...`
+                },
+                {
+                    type: 'paragraph',
+                    content: `<strong>Galbrena</strong> will be added later...`
+                }
+            ]
         }
     ];
 

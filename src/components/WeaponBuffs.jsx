@@ -69,6 +69,17 @@ export const weaponBuffs = [
                 Dealing Heavy Attack DMG extends this effect by <span className="highlight">4s</span>, up to 1 time. Each successful extension gives <span className="highlight">{param[0] ?? '—'}%</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion DMG Bonus</span> to all Resonators in the team for <span className="highlight">30s</span>. Effects of the same name cannot be stacked.
             </>
         )
+    },
+    {
+        key: 'emeraldSentence',
+        name: 'Emerald Sentence',
+        icon: '/assets/weapon-icons/21020066.webp',
+        param: [[20, 25, 30, 35, 40]],
+        effect: (param = []) => (
+            <>
+                Casting Intro Skill grants <span className="highlight">{param[0] ?? '—'}% Echo Skill DMG Bonus</span> to all Resonators in the team for 30s.
+            </>
+        )
     }
 ];
 

@@ -12,7 +12,8 @@ export function calculateDamage({
                                     skillDmgBonus = 0,
                                     critDmgBonus = 0,
                                     critRateBonus = 0,
-                                    skillDefIgnore = 0
+                                    skillDefIgnore = 0,
+                                    skillResIgnore = 0,
                                 }) {
     const skillTypes = Array.isArray(skillType) ? skillType : [skillType];
 
@@ -35,7 +36,7 @@ export function calculateDamage({
     }
     baseDmg += (combatState.flatDmg ?? 0);
 
-    const enemyResShred = mergedBuffs?.enemyResShred ?? 0;
+    const enemyResShred = (mergedBuffs?.enemyResShred ?? 0) + skillResIgnore;
     const enemyRes = (combatState.enemyRes ?? 0) - enemyResShred;
 
     let resMult = 1;

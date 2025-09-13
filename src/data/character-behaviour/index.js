@@ -37,6 +37,7 @@ import {applyAaltoLogic, aaltoMultipliers, aaltoBuffsLogic} from "./1403.js";
 import {applyPhrolovaLogic, phrolovaBuffsLogic, phrolovaMultipliers} from "./1608.js";
 import {applyAugustaLogic, augustaBuffsLogic, augustaMultipliers} from "./1306.js";
 import {applyIunoLogic, iunoBuffsLogic, iunoMultipliers} from "./1410.js";
+import {applyQYLogic, QYBuffsLogic, qyMultipliers, QYSkillMetaBuffsLogic} from "./1411.js";
 
 const overrides = {
     '1506': {
@@ -240,6 +241,12 @@ const overrides = {
         logic: applyIunoLogic,
         multipliers: iunoMultipliers,
         buffsLogic: iunoBuffsLogic,
+    },
+    "1411": {
+        logic: applyQYLogic,
+        multipliers: qyMultipliers,
+        buffsLogic: QYBuffsLogic,
+        skillMetaBuffsLogic: QYSkillMetaBuffsLogic
     }
 };
 
@@ -253,4 +260,8 @@ export function getHardcodedMultipliers(charId) {
 
 export function getBuffsLogic(charId) {
     return overrides[String(charId)]?.buffsLogic ?? null;
+}
+
+export function skillMetaBuffsLogic(charId) {
+    return overrides[String(charId)]?.skillMetaBuffsLogic ?? null;
 }

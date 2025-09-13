@@ -33,7 +33,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_988_UI.T_MstSkil_988_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_988_UI.T_MstSkil_988_UI",
+      "Damage": {
+        "20004501": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 260,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 11000
+        }
+      }
     },
     "Group": {
       "4": {
@@ -143,7 +157,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B3_UI.T_MstSkil_Z_B3_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B3_UI.T_MstSkil_Z_B3_UI",
+      "Damage": {
+        "28000401": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            6405,
+            7365,
+            8326,
+            9287,
+            10248
+          ],
+          "Energy": 160,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 6405
+        },
+        "28000402": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10980,
+            12627,
+            14274,
+            15921,
+            17568
+          ],
+          "Energy": 274,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10980
+        }
+      }
     },
     "Group": {
       "3": {
@@ -211,7 +259,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_989_UI.T_MstSkil_989_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_989_UI.T_MstSkil_989_UI",
+      "Damage": {
+        "20004601": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        }
+      }
     },
     "Group": {
       "4": {
@@ -299,7 +365,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_987_UI.T_MstSkil_987_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_987_UI.T_MstSkil_987_UI",
+      "Damage": {
+        "20004301": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 260,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 11000
+        }
+      }
     },
     "Group": {
       "8": {
@@ -415,7 +495,57 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B8_UI.T_MstSkil_Z_B8_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B8_UI.T_MstSkil_Z_B8_UI",
+      "Damage": {
+        "28000501": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            8380,
+            9637,
+            10894,
+            12151,
+            13408
+          ],
+          "Energy": 209,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 8380
+        },
+        "28000502": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            6285,
+            7227,
+            8170,
+            9113,
+            10056
+          ],
+          "Energy": 157,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 6285
+        },
+        "28000503": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4190,
+            4818,
+            5447,
+            6075,
+            6704
+          ],
+          "Energy": 104,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4190
+        }
+      }
     },
     "Group": {
       "6": {
@@ -508,7 +638,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_996_UI.T_Mstskil_996_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_996_UI.T_Mstskil_996_UI",
+      "Damage": {
+        "28000601": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14490,
+            16663,
+            18837,
+            21010,
+            23184
+          ],
+          "Energy": 362,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14490
+        },
+        "28000602": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17710,
+            20366,
+            23023,
+            25679,
+            28336
+          ],
+          "Energy": 442,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17710
+        }
+      }
     },
     "Group": {
       "4": {
@@ -604,7 +768,57 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_994_UI.T_Mstskil_994_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_994_UI.T_Mstskil_994_UI",
+      "Damage": {
+        "28000701": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            12510,
+            14386,
+            16263,
+            18139,
+            20016
+          ],
+          "Energy": 312,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 12510
+        },
+        "28000702": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            12510,
+            14386,
+            16263,
+            18139,
+            20016
+          ],
+          "Energy": 312,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 12510
+        },
+        "28000703": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            16680,
+            19182,
+            21684,
+            24186,
+            26688
+          ],
+          "Energy": 417,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 16680
+        }
+      }
     },
     "Group": {
       "1": {
@@ -692,7 +906,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_997_UI.T_MstSkil_997_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_997_UI.T_MstSkil_997_UI",
+      "Damage": {
+        "28000800": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            9840,
+            11316,
+            12792,
+            14268,
+            15744
+          ],
+          "Energy": 246,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 9840
+        },
+        "28000801": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14760,
+            16974,
+            19188,
+            21402,
+            23616
+          ],
+          "Energy": 369,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14760
+        }
+      }
     },
     "Group": {
       "5": {
@@ -768,7 +1016,41 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_970_UI.T_MstSkil_970_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_970_UI.T_MstSkil_970_UI",
+      "Damage": {
+        "20004701": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7000,
+            8050,
+            9100,
+            10150,
+            11200
+          ],
+          "Energy": 175,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7000
+        },
+        "20004702": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10500,
+            12075,
+            13650,
+            15225,
+            16800
+          ],
+          "Energy": 262,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10500
+        }
+      }
     },
     "Group": {
       "4": {
@@ -861,7 +1143,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_971_UI.T_MstSkil_971_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_971_UI.T_MstSkil_971_UI",
+      "Damage": {
+        "20002701": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "4": {
@@ -970,7 +1270,57 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_1001_UI.T_MstSkil_1001_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_1001_UI.T_MstSkil_1001_UI",
+      "Damage": {
+        "28000901": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3040,
+            3496,
+            3952,
+            4408,
+            4864
+          ],
+          "Energy": 76,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3040
+        },
+        "28000902": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 7,
+          "RateLv": [
+            20000,
+            23000,
+            26000,
+            29000,
+            32000
+          ],
+          "Energy": 152,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 20000
+        },
+        "28000903": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 7,
+          "RateLv": [
+            10000,
+            11500,
+            13000,
+            14500,
+            16000
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10000
+        }
+      }
     },
     "Group": {
       "9": {
@@ -1040,7 +1390,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_1000_UI.T_MstSkil_1000_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_1000_UI.T_MstSkil_1000_UI",
+      "Damage": {
+        "20004801": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17000,
+            19550,
+            22100,
+            24650,
+            27200
+          ],
+          "Energy": 425,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17000
+        }
+      }
     },
     "Group": {
       "1": {
@@ -1128,7 +1496,8 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_999_UI.T_MstSkil_999_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_999_UI.T_MstSkil_999_UI",
+      "Damage": {}
     },
     "Group": {
       "2": {
@@ -1236,7 +1605,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_998_UI.T_MstSkil_998_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_998_UI.T_MstSkil_998_UI",
+      "Damage": {
+        "20005001": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 275,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 5800
+        }
+      }
     },
     "Group": {
       "1": {
@@ -1333,7 +1716,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_995_UI.T_MstSkil_995_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_995_UI.T_MstSkil_995_UI",
+      "Damage": {
+        "28001001": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3483,
+            4005,
+            4527,
+            5050,
+            5572
+          ],
+          "Energy": 87,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3483
+        },
+        "28001002": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            19410,
+            22321,
+            25233,
+            28144,
+            31056
+          ],
+          "Energy": 485,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 19410
+        }
+      }
     },
     "Group": {
       "8": {
@@ -1420,7 +1837,73 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B8_1_UI.T_MstSkil_Z_B8_1_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B8_1_UI.T_MstSkil_Z_B8_1_UI",
+      "Damage": {
+        "28001101": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4976,
+            5971,
+            6966,
+            7961,
+            8956
+          ],
+          "Energy": 124,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4976
+        },
+        "28001102": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            16900,
+            19435,
+            21970,
+            24505,
+            27040
+          ],
+          "Energy": 422,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 16900
+        },
+        "28001103": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7400,
+            8510,
+            9620,
+            10730,
+            11840
+          ],
+          "Energy": 185,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7400
+        },
+        "28001104": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3380,
+            3887,
+            4394,
+            4901,
+            5408
+          ],
+          "Energy": 84,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3380
+        }
+      }
     },
     "Group": {
       "6": {
@@ -1493,7 +1976,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_327_UI.T_MstSkil_327_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_327_UI.T_MstSkil_327_UI",
+      "Damage": {
+        "20005401": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "2": {
@@ -1593,7 +2094,57 @@
           "0.00%"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_331_UI.T_MstSkil_331_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_331_UI.T_MstSkil_331_UI",
+      "Damage": {
+        "20005102": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        },
+        "20005103": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        },
+        "20005104": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "4": {
@@ -1691,7 +2242,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_326_UI.T_MstSkil_326_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_326_UI.T_MstSkil_326_UI",
+      "Damage": {
+        "20005501": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            13400,
+            15410,
+            17420,
+            19430,
+            21440
+          ],
+          "Energy": 335,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 13400
+        },
+        "20005502": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2000,
+            2300,
+            2600,
+            2900,
+            3200
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2000
+        }
+      }
     },
     "Group": {
       "1": {
@@ -1785,7 +2370,41 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_330_UI.T_MstSkil_330_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_330_UI.T_MstSkil_330_UI",
+      "Damage": {
+        "20005301": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17300,
+            19895,
+            22490,
+            25085,
+            27680
+          ],
+          "Energy": 432,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17300
+        },
+        "20005302": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            34600,
+            39790,
+            44980,
+            50170,
+            55360
+          ],
+          "Energy": 865,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 34600
+        }
+      }
     },
     "Group": {
       "1": {
@@ -1888,7 +2507,73 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_329_UI.T_MstSkil_329_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_329_UI.T_MstSkil_329_UI",
+      "Damage": {
+        "20005201": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            8460,
+            9729,
+            10998,
+            12267,
+            13536
+          ],
+          "Energy": 211,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 8460
+        },
+        "20005202": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            9693,
+            11146,
+            12600,
+            14054,
+            15508
+          ],
+          "Energy": 242,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 9693
+        },
+        "20005203": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            9693,
+            11146,
+            12600,
+            14054,
+            15508
+          ],
+          "Energy": 242,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 9693
+        },
+        "20005204": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            940,
+            1081,
+            1222,
+            1363,
+            1504
+          ],
+          "Energy": 23,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 940
+        }
+      }
     },
     "Group": {
       "5": {
@@ -1989,7 +2674,89 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_328_UI.T_MstSkil_328_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_328_UI.T_MstSkil_328_UI",
+      "Damage": {
+        "28001201": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 4,
+          "RateLv": [
+            4000,
+            4600,
+            5200,
+            5800,
+            6400
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4000
+        },
+        "28001202": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 4,
+          "RateLv": [
+            1000,
+            1150,
+            1300,
+            1450,
+            1600
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 800
+        },
+        "280012002": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3040,
+            3496,
+            3952,
+            4408,
+            4864
+          ],
+          "Energy": 76,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3040
+        },
+        "280012003": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1216,
+            1398,
+            1580,
+            1763,
+            1945
+          ],
+          "Energy": 30,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1216
+        },
+        "280012004": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3040,
+            3496,
+            3952,
+            4408,
+            4864
+          ],
+          "Energy": 76,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3040
+        }
+      }
     },
     "Group": {
       "5": {
@@ -2066,7 +2833,57 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_350_UI.T_MstSkil_350_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_350_UI.T_MstSkil_350_UI",
+      "Damage": {
+        "280013010": {
+          "Element": 5,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            991,
+            1139,
+            1288,
+            1436,
+            1585
+          ],
+          "Energy": 304,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 12160
+        },
+        "280013020": {
+          "Element": 5,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            99,
+            113,
+            128,
+            143,
+            158
+          ],
+          "Energy": 30,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1216
+        },
+        "280013030": {
+          "Element": 5,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            1239,
+            1424,
+            1610,
+            1796,
+            1982
+          ],
+          "Energy": 380,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15200
+        }
+      }
     },
     "Group": {
       "7": {
@@ -2138,7 +2955,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32037_UI.MstSkil_32037_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32037_UI.MstSkil_32037_UI",
+      "Damage": {
+        "20007501": {
+          "Element": 0,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            150,
+            180,
+            210,
+            240,
+            270
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 0,
+          "ToughLv": 0
+        }
+      }
     },
     "Group": {
       "10": {
@@ -2231,7 +3066,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31038_UI.MstSkil_31038_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31038_UI.MstSkil_31038_UI",
+      "Damage": {
+        "20007401": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2880,
+            3360,
+            3840,
+            4320
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "12": {
@@ -2322,7 +3175,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31039_UI.MstSkil_31039_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31039_UI.MstSkil_31039_UI",
+      "Damage": {
+        "20007301": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200
+        }
+      }
     },
     "Group": {
       "11": {
@@ -2415,7 +3286,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31040_UI.MstSkil_31040_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31040_UI.MstSkil_31040_UI",
+      "Damage": {
+        "20006701": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200
+        }
+      }
     },
     "Group": {
       "11": {
@@ -2508,7 +3397,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31041_UI.MstSkil_31041_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31041_UI.MstSkil_31041_UI",
+      "Damage": {
+        "20006501": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200
+        }
+      }
     },
     "Group": {
       "10": {
@@ -2601,7 +3508,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31042_UI.MstSkil_31042_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31042_UI.MstSkil_31042_UI",
+      "Damage": {
+        "20006601": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200
+        }
+      }
     },
     "Group": {
       "10": {
@@ -2694,7 +3619,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31043_UI.MstSkil_31043_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31043_UI.MstSkil_31043_UI",
+      "Damage": {
+        "20006801": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200
+        }
+      }
     },
     "Group": {
       "11": {
@@ -2807,7 +3750,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31044_UI.MstSkil_31044_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31044_UI.MstSkil_31044_UI",
+      "Damage": {
+        "20006901": {
+          "Element": 0,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            150,
+            180,
+            210,
+            240,
+            270
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 0,
+          "ToughLv": 0
+        }
+      }
     },
     "Group": {
       "12": {
@@ -2850,6 +3811,24 @@
               "80%",
               "20%",
               "4"
+            ]
+          }
+        }
+      },
+      "22": {
+        "Id": 22,
+        "Name": "Flamewing's Shadow",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA.T_IconElementAttriFireA",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by {0} for {1}s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by {2} for {3}s. While both effects are active, gain {4} Fusion DMG Bonus.",
+            "Param": [
+              "20%",
+              "6",
+              "20%",
+              "6",
+              "16%"
             ]
           }
         }
@@ -2902,7 +3881,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31045_UI.MstSkil_31045_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31045_UI.MstSkil_31045_UI",
+      "Damage": {
+        "20007001": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2880,
+            3360,
+            3840,
+            4320
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "10": {
@@ -2995,7 +3992,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31046_UI.MstSkil_31046_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31046_UI.MstSkil_31046_UI",
+      "Damage": {
+        "20007101": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200
+        }
+      }
     },
     "Group": {
       "10": {
@@ -3088,7 +4103,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31047_UI.MstSkil_31047_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31047_UI.MstSkil_31047_UI",
+      "Damage": {
+        "20007201": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        }
+      }
     },
     "Group": {
       "11": {
@@ -3185,7 +4218,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31048_UI.MstSkil_31048_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_31048_UI.MstSkil_31048_UI",
+      "Damage": {
+        "20007601": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3566,
+            4280,
+            4993,
+            5706,
+            6420
+          ],
+          "Energy": 89,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3566
+        }
+      }
     },
     "Group": {
       "10": {
@@ -3304,7 +4355,25 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32022_UI.MstSkil_32022_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32022_UI.MstSkil_32022_UI",
+      "Damage": {
+        "20005601": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17400,
+            20880,
+            24360,
+            27840,
+            31320
+          ],
+          "Energy": 435,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17400
+        }
+      }
     },
     "Group": {
       "10": {
@@ -3406,7 +4475,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32023_UI.MstSkil_32023_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32023_UI.MstSkil_32023_UI",
+      "Damage": {
+        "20005701": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        }
+      }
     },
     "Group": {
       "11": {
@@ -3499,7 +4586,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32024_UI.MstSkil_32024_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32024_UI.MstSkil_32024_UI",
+      "Damage": {
+        "20005801": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        }
+      }
     },
     "Group": {
       "12": {
@@ -3595,7 +4700,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32025_UI.MstSkil_32025_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32025_UI.MstSkil_32025_UI",
+      "Damage": {
+        "20006101": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        }
+      }
     },
     "Group": {
       "10": {
@@ -3698,7 +4821,41 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32027_UI.MstSkil_32027_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32027_UI.MstSkil_32027_UI",
+      "Damage": {
+        "20005901": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        },
+        "20005902": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            37250,
+            44700,
+            52150,
+            59600,
+            67050
+          ],
+          "Energy": 931,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 37250
+        }
+      }
     },
     "Group": {
       "12": {
@@ -3789,7 +4946,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32026_UI.MstSkil_32026_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32026_UI.MstSkil_32026_UI",
+      "Damage": {
+        "20006001": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4966,
+            5960,
+            6953,
+            7946,
+            8940
+          ],
+          "Energy": 124,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4966
+        }
+      }
     },
     "Group": {
       "10": {
@@ -3889,7 +5064,41 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32028_UI.MstSkil_32028_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32028_UI.MstSkil_32028_UI",
+      "Damage": {
+        "20006201": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1070,
+            1284,
+            1498,
+            1712,
+            1926
+          ],
+          "Energy": 26,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1070
+        },
+        "20006202": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4280,
+            5136,
+            5992,
+            6848,
+            7704
+          ],
+          "Energy": 107,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4280
+        }
+      }
     },
     "Group": {
       "13": {
@@ -4001,7 +5210,25 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32029_UI.MstSkil_32029_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32029_UI.MstSkil_32029_UI",
+      "Damage": {
+        "20006301": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17400,
+            20880,
+            24360,
+            27840,
+            31320
+          ],
+          "Energy": 435,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17400
+        }
+      }
     },
     "Group": {
       "11": {
@@ -4103,7 +5330,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32030_UI.MstSkil_32030_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_32030_UI.MstSkil_32030_UI",
+      "Damage": {
+        "20006401": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2610,
+            3132,
+            3654,
+            4176,
+            4698
+          ],
+          "Energy": 65,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2610
+        },
+        "20006402": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            6960,
+            8352,
+            9744,
+            11136,
+            12528
+          ],
+          "Energy": 174,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 6960
+        }
+      }
     },
     "Group": {
       "10": {
@@ -4210,7 +5471,25 @@
           "25"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_33011_UI.MstSkil_33011_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_33011_UI.MstSkil_33011_UI",
+      "Damage": {
+        "28001701": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            22500,
+            27000,
+            31500,
+            36000,
+            40500
+          ],
+          "Energy": 562,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 22500
+        }
+      }
     },
     "Group": {
       "12": {
@@ -4298,7 +5577,41 @@
           "25"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_33012_UI.MstSkil_33012_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_33012_UI.MstSkil_33012_UI",
+      "Damage": {
+        "28001401": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            22500,
+            27000,
+            31500,
+            36000,
+            40500
+          ],
+          "Energy": 562,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 22500
+        },
+        "28001402": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            22500,
+            27000,
+            31500,
+            36000,
+            40500
+          ],
+          "Energy": 562,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 22500
+        }
+      }
     },
     "Group": {
       "10": {
@@ -4383,7 +5696,25 @@
           "25"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_33013_UI.MstSkil_33013_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_33013_UI.MstSkil_33013_UI",
+      "Damage": {
+        "28001501": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2045,
+            2454,
+            2863,
+            3272,
+            3681
+          ],
+          "Energy": 51,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2045
+        }
+      }
     },
     "Group": {
       "14": {
@@ -4457,7 +5788,25 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_34010_UI.MstSkil_34010_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_34010_UI.MstSkil_34010_UI",
+      "Damage": {
+        "28001601": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2533,
+            3040,
+            3546,
+            4053,
+            4559
+          ],
+          "Energy": 63,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 0
+        }
+      }
     },
     "Group": {
       "13": {
@@ -4541,7 +5890,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_996_UI.T_Mstskil_996_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_996_UI.T_Mstskil_996_UI",
+      "Damage": {
+        "28001801": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            9120,
+            10944,
+            12768,
+            14592,
+            16416
+          ],
+          "Energy": 228,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 9120
+        },
+        "28001802": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1216,
+            1459,
+            1702,
+            1945,
+            2188
+          ],
+          "Energy": 30,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1216
+        }
+      }
     },
     "Group": {
       "4": {
@@ -4618,7 +6001,25 @@
           "25"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_995_UI.T_MstSkil_995_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_995_UI.T_MstSkil_995_UI",
+      "Damage": {
+        "28001901": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2250,
+            2700,
+            3150,
+            3600,
+            4050
+          ],
+          "Energy": 56,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2250
+        }
+      }
     },
     "Group": {
       "12": {
@@ -4697,7 +6098,25 @@
           "25"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B3_1_UI.T_MstSkil_Z_B3_1_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B3_1_UI.T_MstSkil_Z_B3_1_UI",
+      "Damage": {
+        "28002001": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            22500,
+            27000,
+            31500,
+            36000,
+            40500
+          ],
+          "Energy": 562,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 22500
+        }
+      }
     },
     "Group": {
       "3": {
@@ -4775,7 +6194,25 @@
           "25"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B3_UI.T_MstSkil_Z_B3_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B3_UI.T_MstSkil_Z_B3_UI",
+      "Damage": {
+        "28002101": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            22500,
+            27000,
+            31500,
+            36000,
+            40500
+          ],
+          "Energy": 562,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 22500
+        }
+      }
     },
     "Group": {
       "3": {
@@ -4895,7 +6332,25 @@
           "2"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B8_UI.T_MstSkil_Z_B8_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B8_UI.T_MstSkil_Z_B8_UI",
+      "Damage": {
+        "28002201": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14700,
+            17640,
+            20580,
+            23520,
+            26460
+          ],
+          "Energy": 367,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14700
+        }
+      }
     },
     "Group": {
       "6": {
@@ -4983,7 +6438,25 @@
           "25"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_325_UI.T_MstSkil_325_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_325_UI.T_MstSkil_325_UI",
+      "Damage": {
+        "28002301": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            22500,
+            27000,
+            31500,
+            36000,
+            40500
+          ],
+          "Energy": 562,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 22500
+        }
+      }
     },
     "Group": {
       "2": {
@@ -5064,7 +6537,25 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_997_UI.T_MstSkil_997_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_997_UI.T_MstSkil_997_UI",
+      "Damage": {
+        "28002401": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            15200,
+            18240,
+            21280,
+            24320,
+            27360
+          ],
+          "Energy": 380,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15200
+        }
+      }
     },
     "Group": {
       "11": {
@@ -5135,7 +6626,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31049_UI.T_Mstskil_31049_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31049_UI.T_Mstskil_31049_UI",
+      "Damage": {
+        "20007701": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200
+        }
+      }
     },
     "Group": {
       "10": {
@@ -5248,7 +6757,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31050_UI.T_Mstskil_31050_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31050_UI.T_Mstskil_31050_UI",
+      "Damage": {
+        "20007801": {
+          "Element": 0,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            140,
+            168,
+            196,
+            224,
+            252
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 0,
+          "ToughLv": 0
+        }
+      }
     },
     "Group": {
       "13": {
@@ -5357,7 +6884,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31051_UI.T_Mstskil_31051_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31051_UI.T_Mstskil_31051_UI",
+      "Damage": {
+        "20007901": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1070,
+            1284,
+            1498,
+            1712,
+            1926
+          ],
+          "Energy": 26,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1070
+        }
+      }
     },
     "Group": {
       "11": {
@@ -5455,7 +7000,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31031_UI.T_Mstskil_31031_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31031_UI.T_Mstskil_31031_UI",
+      "Damage": {
+        "20008001": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17400,
+            20880,
+            24360,
+            27840,
+            31320
+          ],
+          "Energy": 435,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17400
+        },
+        "20008002": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            26100,
+            31320,
+            36540,
+            41760,
+            46980
+          ],
+          "Energy": 652,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 26100
+        }
+      }
     },
     "Group": {
       "11": {
@@ -5571,7 +7150,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31032_UI.T_Mstskil_31032_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31032_UI.T_Mstskil_31032_UI",
+      "Damage": {
+        "20008101": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            8700,
+            10440,
+            12180,
+            13920,
+            15660
+          ],
+          "Energy": 217,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 8700
+        },
+        "20008102": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            8700,
+            10440,
+            12180,
+            13920,
+            15660
+          ],
+          "Energy": 217,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 8700
+        }
+      }
     },
     "Group": {
       "14": {
@@ -5695,7 +7308,57 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31052_UI.T_MstSkil_31052_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31052_UI.T_MstSkil_31052_UI",
+      "Damage": {
+        "20008201": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        },
+        "20008202": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        },
+        "20008203": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            993,
+            1192,
+            1390,
+            1589,
+            1788
+          ],
+          "Energy": 24,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 993
+        }
+      }
     },
     "Group": {
       "12": {
@@ -5818,7 +7481,57 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31053.T_Mstskil_31053"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31053.T_Mstskil_31053",
+      "Damage": {
+        "20008301": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        },
+        "20008302": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        },
+        "20008303": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2980,
+            3576,
+            4172,
+            4768,
+            5364
+          ],
+          "Energy": 74,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2980
+        }
+      }
     },
     "Group": {
       "11": {
@@ -5933,7 +7646,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31054.T_Mstskil_31054"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31054.T_Mstskil_31054",
+      "Damage": {
+        "20008401": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3600,
+            4320,
+            5040,
+            5760,
+            6480
+          ],
+          "Energy": 90,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3600
+        }
+      }
     },
     "Group": {
       "16": {
@@ -6024,7 +7755,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31055_UI.T_Mstskil_31055_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31055_UI.T_Mstskil_31055_UI",
+      "Damage": {
+        "20008501": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200
+        }
+      }
     },
     "Group": {
       "14": {
@@ -6137,7 +7886,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31056_UI.T_Mstskil_31056_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31056_UI.T_Mstskil_31056_UI",
+      "Damage": {
+        "20008601": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2880,
+            3360,
+            3840,
+            4320
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "12": {
@@ -6250,7 +8017,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31057_UI.T_Mstskil_31057_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_31057_UI.T_Mstskil_31057_UI",
+      "Damage": {
+        "20008701": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1440,
+            1728,
+            2016,
+            2304,
+            2592
+          ],
+          "Energy": 36,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1440
+        }
+      }
     },
     "Group": {
       "16": {
@@ -6356,7 +8141,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32033_UI.T_MstSkil_32033_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32033_UI.T_MstSkil_32033_UI",
+      "Damage": {
+        "20008801": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            6600,
+            7920,
+            9240,
+            10560,
+            11880
+          ],
+          "Energy": 165,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 6600
+        },
+        "20008802": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3300,
+            3960,
+            4620,
+            5280,
+            5940
+          ],
+          "Energy": 82,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3300
+        }
+      }
     },
     "Group": {
       "11": {
@@ -6485,7 +8304,25 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_994_UI.T_Mstskil_994_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_994_UI.T_Mstskil_994_UI",
+      "Damage": {
+        "28002501": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            15200,
+            18240,
+            21280,
+            24320,
+            27360
+          ],
+          "Energy": 380,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15200
+        }
+      }
     },
     "Group": {
       "10": {
@@ -6593,7 +8430,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34012_UI.T_MstSkil_34012_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34012_UI.T_MstSkil_34012_UI",
+      "Damage": {
+        "28002601": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1520,
+            1824,
+            2128,
+            2432,
+            2736
+          ],
+          "Energy": 38,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1520
+        },
+        "28002602": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7600,
+            9120,
+            10640,
+            12160,
+            13680
+          ],
+          "Energy": 190,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7600
+        }
+      }
     },
     "Group": {
       "16": {
@@ -6684,7 +8555,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31058_UI.T_MstSkil_31058_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31058_UI.T_MstSkil_31058_UI",
+      "Damage": {
+        "20008901": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1440,
+            1728,
+            2016,
+            2304,
+            2592
+          ],
+          "Energy": 36,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1440
+        }
+      }
     },
     "Group": {
       "17": {
@@ -6775,7 +8664,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31059_UI.T_MstSkil_31059_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31059_UI.T_MstSkil_31059_UI",
+      "Damage": {
+        "20009001": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2880,
+            3360,
+            3840,
+            4320
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "17": {
@@ -6866,7 +8773,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31060_UI.T_MstSkil_31060_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31060_UI.T_MstSkil_31060_UI",
+      "Damage": {
+        "20009101": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200
+        }
+      }
     },
     "Group": {
       "17": {
@@ -6957,7 +8882,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31061_UI.T_MstSkil_31061_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31061_UI.T_MstSkil_31061_UI",
+      "Damage": {
+        "20009201": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2880,
+            3360,
+            3840,
+            4320
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "16": {
@@ -7070,7 +9013,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32034_UI.T_MstSkil_32034_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32034_UI.T_MstSkil_32034_UI",
+      "Damage": {
+        "20009301": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        }
+      }
     },
     "Group": {
       "17": {
@@ -7176,7 +9137,41 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31062_UI.T_MstSkil_31062_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31062_UI.T_MstSkil_31062_UI",
+      "Damage": {
+        "20009401": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        },
+        "20009402": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        }
+      }
     },
     "Group": {
       "17": {
@@ -7219,6 +9214,24 @@
               "15%",
               "20%",
               "35"
+            ]
+          }
+        }
+      },
+      "22": {
+        "Id": 22,
+        "Name": "Flamewing's Shadow",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA.T_IconElementAttriFireA",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by {0} for {1}s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by {2} for {3}s. While both effects are active, gain {4} Fusion DMG Bonus.",
+            "Param": [
+              "20%",
+              "6",
+              "20%",
+              "6",
+              "16%"
             ]
           }
         }
@@ -7286,7 +9299,41 @@
           "25"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_33021_UI.T_MstSkil_33021_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_33021_UI.T_MstSkil_33021_UI",
+      "Damage": {
+        "28002701": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            22500,
+            27000,
+            31500,
+            36000,
+            40500
+          ],
+          "Energy": 281,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 22500
+        },
+        "28002702": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            22500,
+            27000,
+            31500,
+            36000,
+            40500
+          ],
+          "Energy": 281,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 22500
+        }
+      }
     },
     "Group": {
       "16": {
@@ -7392,7 +9439,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_33022_UI.T_MstSkil_33022_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_33022_UI.T_MstSkil_33022_UI",
+      "Damage": {
+        "28002801": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4560,
+            5472,
+            6384,
+            7296,
+            8208
+          ],
+          "Energy": 114,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4560
+        },
+        "28002802": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10640,
+            12768,
+            14896,
+            17024,
+            19152
+          ],
+          "Energy": 266,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10640
+        }
+      }
     },
     "Group": {
       "18": {
@@ -7471,7 +9552,25 @@
           "25"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_34010_UI.MstSkil_34010_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/MstSkil_34010_UI.MstSkil_34010_UI",
+      "Damage": {
+        "28002901": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            8466,
+            10159,
+            11852,
+            13545,
+            15238
+          ],
+          "Energy": 105,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 8466
+        }
+      }
     },
     "Group": {
       "19": {
@@ -7544,7 +9643,25 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_34015_UI.T_Mstskil_34015_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_34015_UI.T_Mstskil_34015_UI",
+      "Damage": {
+        "28003001": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            15200,
+            18240,
+            21280,
+            24320,
+            27360
+          ],
+          "Energy": 380,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15200
+        }
+      }
     },
     "Group": {
       "19": {
@@ -7625,7 +9742,57 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z8_UI.T_MstSkil_Z_Z8_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z8_UI.T_MstSkil_Z_Z8_UI",
+      "Damage": {
+        "20001301": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10733,
+            12343,
+            13953,
+            15563,
+            17173
+          ],
+          "Energy": 268,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10733
+        },
+        "20001302": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10733,
+            12343,
+            13953,
+            15563,
+            17173
+          ],
+          "Energy": 268,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10733
+        },
+        "20001303": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10733,
+            12343,
+            13953,
+            15563,
+            17173
+          ],
+          "Energy": 268,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10733
+        }
+      }
     },
     "Group": {
       "19": {
@@ -7698,7 +9865,57 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z9_UI.T_MstSkil_Z_Z9_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z9_UI.T_MstSkil_Z_Z9_UI",
+      "Damage": {
+        "20001401": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2880,
+            3312,
+            3744,
+            4176,
+            4608
+          ],
+          "Energy": 72,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2880
+        },
+        "20001402": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            288,
+            331,
+            374,
+            417,
+            460
+          ],
+          "Energy": 7,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 288
+        },
+        "20001403": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1440,
+            1656,
+            1872,
+            2088,
+            2304
+          ],
+          "Energy": 36,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1440
+        }
+      }
     },
     "Group": {
       "19": {
@@ -7761,7 +9978,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_205_UI.T_MstSkil_205_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_205_UI.T_MstSkil_205_UI",
+      "Damage": {
+        "20002001": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            900,
+            1035,
+            1170,
+            1305,
+            1440
+          ],
+          "Energy": 22,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 900
+        }
+      }
     },
     "Group": {
       "19": {
@@ -7834,7 +10069,25 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32044_UI.T_MstSkil_32044_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32044_UI.T_MstSkil_32044_UI",
+      "Damage": {
+        "20009801": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            15200,
+            18240,
+            21280,
+            24320,
+            27360
+          ],
+          "Energy": 380,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15200
+        }
+      }
     },
     "Group": {
       "18": {
@@ -7855,6 +10108,24 @@
               "15%",
               "20%",
               "35"
+            ]
+          }
+        }
+      },
+      "22": {
+        "Id": 22,
+        "Name": "Flamewing's Shadow",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA.T_IconElementAttriFireA",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by {0} for {1}s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by {2} for {3}s. While both effects are active, gain {4} Fusion DMG Bonus.",
+            "Param": [
+              "20%",
+              "6",
+              "20%",
+              "6",
+              "16%"
             ]
           }
         }
@@ -7933,7 +10204,41 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34017_UI.T_MstSkil_34017_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34017_UI.T_MstSkil_34017_UI",
+      "Damage": {
+        "28003101": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3075,
+            3690,
+            4305,
+            4920,
+            5535
+          ],
+          "Energy": 76,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3075
+        },
+        "28003102": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            22500,
+            27000,
+            31500,
+            36000,
+            40500
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 22500
+        }
+      }
     },
     "Group": {
       "20": {
@@ -8013,7 +10318,41 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34018_UI.T_MstSkil_34018_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34018_UI.T_MstSkil_34018_UI",
+      "Damage": {
+        "28003201": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            760,
+            912,
+            1064,
+            1216,
+            1368
+          ],
+          "Energy": 19,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 760
+        },
+        "28003202": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            9120,
+            10944,
+            12768,
+            14592,
+            16416
+          ],
+          "Energy": 228,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 9120
+        }
+      }
     },
     "Group": {
       "20": {
@@ -8083,7 +10422,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B2_UI.T_MstSkil_Z_B2_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B2_UI.T_MstSkil_Z_B2_UI",
+      "Damage": {
+        "20001701": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            18000,
+            20700,
+            23400,
+            26100,
+            28800
+          ],
+          "Energy": 450,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 18000
+        }
+      }
     },
     "Group": {
       "20": {
@@ -8148,7 +10505,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B1_UI.T_MstSkil_Z_B1_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B1_UI.T_MstSkil_Z_B1_UI",
+      "Damage": {
+        "20001801": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14800,
+            17020,
+            19240,
+            21460,
+            23680
+          ],
+          "Energy": 370,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14800
+        }
+      }
     },
     "Group": {
       "21": {
@@ -8218,7 +10593,41 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z1_UI.T_MstSkil_Z_Z1_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z1_UI.T_MstSkil_Z_Z1_UI",
+      "Damage": {
+        "20001501": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1080,
+            1242,
+            1404,
+            1566,
+            1728
+          ],
+          "Energy": 27,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1080
+        },
+        "20001502": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2880,
+            3312,
+            3744,
+            4176,
+            4608
+          ],
+          "Energy": 72,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2880
+        }
+      }
     },
     "Group": {
       "20": {
@@ -8283,7 +10692,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_235_UI.T_MstSkil_235_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_235_UI.T_MstSkil_235_UI",
+      "Damage": {
+        "20001601": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1800,
+            2070,
+            2340,
+            2610,
+            2880
+          ],
+          "Energy": 45,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1800
+        }
+      }
     },
     "Group": {
       "20": {
@@ -8353,7 +10780,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_115_UI.T_MstSkil_115_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_115_UI.T_MstSkil_115_UI",
+      "Damage": {
+        "20002601": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1440,
+            1656,
+            1872,
+            2088,
+            2304
+          ],
+          "Energy": 36,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1440
+        }
+      }
     },
     "Group": {
       "21": {
@@ -8423,7 +10868,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_971_UI.T_MstSkil_971_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_971_UI.T_MstSkil_971_UI",
+      "Damage": {
+        "20002701": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "21": {
@@ -8453,6 +10916,360 @@
     ],
     "IntensityCode": 0,
     "MonsterInfo": 310000680
+  },
+  {
+    "id": "6000167",
+    "Id": 6000167,
+    "Code": "Z03-",
+    "Name": "Reminiscence: Threnodian - Leviathan",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34020_1_UI.T_IconMonsterHead_34020_1_UI",
+    "Skill": {
+      "Desc": "Summon a Collapsing Horizon, dealing two instances of {0} Havoc DMG to the nearby enemies and obtaining the Core of Collapse for {1}s.\n\nWhile it lasts, Core of Collapse deals {2} Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every {4}s, up to <SapTag=3>{3}</SapTag> {Cus:Sap,S=time P=times SapTag=3}. Enemies with Havoc Bane take {5} more DMG from this effect.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Havoc DMG Bonus and {7} Resonance Liberation DMG Bonus.\n\nCD: {8}s",
+      "SimpleDesc": "Summon Collapsing Horizon, dealing Havoc DMG. Resonators in the team deal additional Havoc DMG to enemies on hit.\n\nThe Resonator with this Echo equipped in the main slot deals more Havoc DMG and Resonance Liberation DMG.",
+      "Param": [
+        [
+          "72.80%",
+          "15",
+          "24.57%",
+          "8",
+          "0.5",
+          "100%",
+          "12.00%",
+          "12.00%",
+          "25"
+        ],
+        [
+          "87.36%",
+          "15",
+          "24.57%",
+          "8",
+          "0.5",
+          "100%",
+          "12.00%",
+          "12.00%",
+          "25"
+        ],
+        [
+          "101.92%",
+          "15",
+          "24.57%",
+          "8",
+          "0.5",
+          "100%",
+          "12.00%",
+          "12.00%",
+          "25"
+        ],
+        [
+          "116.48%",
+          "15",
+          "24.57%",
+          "8",
+          "0.5",
+          "100%",
+          "12.00%",
+          "12.00%",
+          "25"
+        ],
+        [
+          "131.04%",
+          "15",
+          "24.57%",
+          "8",
+          "0.5",
+          "100%",
+          "12.00%",
+          "12.00%",
+          "25"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Damage": {
+        "28003301": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7280,
+            8736,
+            10192,
+            11648,
+            13104
+          ],
+          "Energy": 91,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7280
+        }
+      }
+    },
+    "Group": {
+      "22": {
+        "Id": 22,
+        "Name": "Flamewing's Shadow",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA.T_IconElementAttriFireA",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by {0} for {1}s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by {2} for {3}s. While both effects are active, gain {4} Fusion DMG Bonus.",
+            "Param": [
+              "20%",
+              "6",
+              "20%",
+              "6",
+              "16%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 3,
+    "MonsterInfo": 340000201
+  },
+  {
+    "id": "6000168",
+    "Id": 6000168,
+    "Code": "H46-",
+    "Name": "Nightmare: Viridblaze Saurian",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32047_UI.T_IconMonsterHead_32047_UI",
+    "Skill": {
+      "Desc": "Summon a Viridblaze Saurian to continuously spit fire, dealing {0} Fusion DMG 10 times.\r\n\r\nCD: {1}s",
+      "SimpleDesc": "Summon a Viridblaze Saurian to continuously spit fire, dealing Fusion DMG.",
+      "Param": [
+        [
+          "10.70%",
+          "15"
+        ],
+        [
+          "12.31%",
+          "15"
+        ],
+        [
+          "13.91%",
+          "15"
+        ],
+        [
+          "15.52%",
+          "15"
+        ],
+        [
+          "17.12%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_295_UI.T_MstSkil_295_UI",
+      "Damage": {
+        "20003001": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1070,
+            1230,
+            1391,
+            1551,
+            1712
+          ],
+          "Energy": 26,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1070
+        }
+      }
+    },
+    "Group": {
+      "22": {
+        "Id": 22,
+        "Name": "Flamewing's Shadow",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA.T_IconElementAttriFireA",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by {0} for {1}s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by {2} for {3}s. While both effects are active, gain {4} Fusion DMG Bonus.",
+            "Param": [
+              "20%",
+              "6",
+              "20%",
+              "6",
+              "16%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000470
+  },
+  {
+    "id": "6000169",
+    "Id": 6000169,
+    "Code": "H06-",
+    "Name": "Nightmare: Baby Viridblaze Saurian",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31072_UI.T_IconMonsterHead_31072_UI",
+    "Skill": {
+      "Desc": "Transform into Baby Viridblaze Saurian to rest in place, and slowly restore HP.\n\nCD: {0}s",
+      "SimpleDesc": "Transform into Baby Viridblaze Saurian, rest in place to restore HP.",
+      "Param": [
+        [
+          "8"
+        ],
+        [
+          "8"
+        ],
+        [
+          "8"
+        ],
+        [
+          "8"
+        ],
+        [
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_285_UI.T_MstSkil_285_UI",
+      "Damage": {
+        "20002902": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 0,
+          "RateLv": [
+            0
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 0,
+          "ToughLv": 0
+        }
+      }
+    },
+    "Group": {
+      "22": {
+        "Id": 22,
+        "Name": "Flamewing's Shadow",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA.T_IconElementAttriFireA",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by {0} for {1}s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by {2} for {3}s. While both effects are active, gain {4} Fusion DMG Bonus.",
+            "Param": [
+              "20%",
+              "6",
+              "20%",
+              "6",
+              "16%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000720
+  },
+  {
+    "id": "6000170",
+    "Id": 6000170,
+    "Code": "S05-",
+    "Name": "Nightmare: Baby Roseshroom",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31073_UI.T_IconMonsterHead_31073_UI",
+    "Skill": {
+      "Desc": "Summon a Baby Roseshroom that fires a laser, dealing {0} Havoc DMG.\n\nCD: {1}s",
+      "SimpleDesc": "Summon a Baby Roseshroom to fire a laser, and deal Havoc DMG.",
+      "Param": [
+        [
+          "20.00%+40",
+          "8"
+        ],
+        [
+          "23.00%+46",
+          "8"
+        ],
+        [
+          "26.00%+52",
+          "8"
+        ],
+        [
+          "29.00%+58",
+          "8"
+        ],
+        [
+          "32.00%+64",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_305_UI.T_MstSkil_305_UI",
+      "Damage": {
+        "20003101": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7500
+        }
+      }
+    },
+    "Group": {
+      "22": {
+        "Id": 22,
+        "Name": "Flamewing's Shadow",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA.T_IconElementAttriFireA",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by {0} for {1}s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by {2} for {3}s. While both effects are active, gain {4} Fusion DMG Bonus.",
+            "Param": [
+              "20%",
+              "6",
+              "20%",
+              "6",
+              "16%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000730
   },
   {
     "id": "390070051",
@@ -8488,7 +11305,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z2_UI.T_MstSkil_Z_Z2_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z2_UI.T_MstSkil_Z_Z2_UI",
+      "Damage": {
+        "20000201": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7500
+        }
+      }
     },
     "Group": {
       "3": {
@@ -8600,7 +11431,21 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z3_UI.T_MstSkil_Z_Z3_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z3_UI.T_MstSkil_Z_Z3_UI",
+      "Damage": {
+        "20000301": {
+          "Element": 0,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            200
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 0,
+          "ToughLv": 100
+        }
+      }
     },
     "Group": {
       "3": {
@@ -8715,7 +11560,41 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z1_UI.T_MstSkil_Z_Z1_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z1_UI.T_MstSkil_Z_Z1_UI",
+      "Damage": {
+        "20001501": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1080,
+            1242,
+            1404,
+            1566,
+            1728
+          ],
+          "Energy": 27,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1080
+        },
+        "20001502": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2880,
+            3312,
+            3744,
+            4176,
+            4608
+          ],
+          "Energy": 72,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2880
+        }
+      }
     },
     "Group": {
       "2": {
@@ -8808,7 +11687,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B5_UI.T_MstSkil_Z_B5_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B5_UI.T_MstSkil_Z_B5_UI",
+      "Damage": {
+        "20001201": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            18000,
+            20700,
+            23400,
+            26100,
+            28800
+          ],
+          "Energy": 450,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 18000
+        }
+      }
     },
     "Group": {
       "2": {
@@ -8916,7 +11813,57 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z8_UI.T_MstSkil_Z_Z8_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z8_UI.T_MstSkil_Z_Z8_UI",
+      "Damage": {
+        "20001301": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10733,
+            12343,
+            13953,
+            15563,
+            17173
+          ],
+          "Energy": 268,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10733
+        },
+        "20001302": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10733,
+            12343,
+            13953,
+            15563,
+            17173
+          ],
+          "Energy": 268,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10733
+        },
+        "20001303": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10733,
+            12343,
+            13953,
+            15563,
+            17173
+          ],
+          "Energy": 268,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10733
+        }
+      }
     },
     "Group": {
       "5": {
@@ -9005,7 +11952,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z11_UI.T_MstSkil_Z_Z11_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z11_UI.T_MstSkil_Z_Z11_UI",
+      "Damage": {
+        "20000401": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7500
+        }
+      }
     },
     "Group": {
       "2": {
@@ -9116,7 +12077,21 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z10_UI.T_MstSkil_Z_Z10_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z10_UI.T_MstSkil_Z_Z10_UI",
+      "Damage": {
+        "20000601": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 260,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 11000
+        }
+      }
     },
     "Group": {
       "5": {
@@ -9237,7 +12212,41 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z12_UI.T_MstSkil_Z_Z12_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z12_UI.T_MstSkil_Z_Z12_UI",
+      "Damage": {
+        "20000501": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3210,
+            3691,
+            4173,
+            4654,
+            5136
+          ],
+          "Energy": 80,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3210
+        },
+        "20000502": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1248,
+            1435,
+            1622,
+            1810,
+            1997
+          ],
+          "Energy": 31,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1248
+        }
+      }
     },
     "Group": {
       "4": {
@@ -9361,7 +12370,41 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_095_UI.T_Mstskil_095_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_095_UI.T_Mstskil_095_UI",
+      "Damage": {
+        "20000701": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4280,
+            4922,
+            5564,
+            6206,
+            6848
+          ],
+          "Energy": 107,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4280
+        },
+        "20000702": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            6420,
+            7383,
+            8346,
+            9309,
+            10272
+          ],
+          "Energy": 160,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 6420
+        }
+      }
     },
     "Group": {
       "6": {
@@ -9484,7 +12527,57 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z9_UI.T_MstSkil_Z_Z9_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z9_UI.T_MstSkil_Z_Z9_UI",
+      "Damage": {
+        "20001401": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2880,
+            3312,
+            3744,
+            4176,
+            4608
+          ],
+          "Energy": 72,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2880
+        },
+        "20001402": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            288,
+            331,
+            374,
+            417,
+            460
+          ],
+          "Energy": 7,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 288
+        },
+        "20001403": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1440,
+            1656,
+            1872,
+            2088,
+            2304
+          ],
+          "Energy": 36,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1440
+        }
+      }
     },
     "Group": {
       "1": {
@@ -9572,7 +12665,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_235_UI.T_MstSkil_235_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_235_UI.T_MstSkil_235_UI",
+      "Damage": {
+        "20001601": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1800,
+            2070,
+            2340,
+            2610,
+            2880
+          ],
+          "Energy": 45,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1800
+        }
+      }
     },
     "Group": {
       "3": {
@@ -9665,7 +12776,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_255_UI.T_MstSkil_255_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_255_UI.T_MstSkil_255_UI",
+      "Damage": {
+        "20014501": {
+          "Element": 0,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            100,
+            120,
+            140,
+            160,
+            180
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 0,
+          "ToughLv": 0
+        }
+      }
     },
     "Group": {
       "5": {
@@ -9774,7 +12903,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_265_UI.T_MstSkil_265_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_265_UI.T_MstSkil_265_UI",
+      "Damage": {
+        "20002501": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7500
+        }
+      }
     },
     "Group": {
       "1": {
@@ -9888,7 +13031,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_115_UI.T_MstSkil_115_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_115_UI.T_MstSkil_115_UI",
+      "Damage": {
+        "20002601": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1440,
+            1656,
+            1872,
+            2088,
+            2304
+          ],
+          "Energy": 36,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1440
+        }
+      }
     },
     "Group": {
       "1": {
@@ -9975,7 +13136,8 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_275_UI.T_MstSkil_275_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_275_UI.T_MstSkil_275_UI",
+      "Damage": {}
     },
     "Group": {
       "1": {
@@ -10060,7 +13222,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_285_UI.T_MstSkil_285_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_285_UI.T_MstSkil_285_UI",
+      "Damage": {
+        "20002902": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 0,
+          "RateLv": [
+            0
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 0,
+          "ToughLv": 0
+        }
+      }
     },
     "Group": {
       "2": {
@@ -10171,7 +13347,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_305_UI.T_MstSkil_305_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_305_UI.T_MstSkil_305_UI",
+      "Damage": {
+        "20003101": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7500
+        }
+      }
     },
     "Group": {
       "4": {
@@ -10260,7 +13450,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_980_UI.T_MstSkil_980_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_980_UI.T_MstSkil_980_UI",
+      "Damage": {
+        "20003901": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7500
+        }
+      }
     },
     "Group": {
       "2": {
@@ -10343,7 +13547,8 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B10_UI.T_MstSkil_Z_B10_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B10_UI.T_MstSkil_Z_B10_UI",
+      "Damage": {}
     },
     "Group": {
       "1": {
@@ -10440,7 +13645,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B2_UI.T_MstSkil_Z_B2_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B2_UI.T_MstSkil_Z_B2_UI",
+      "Damage": {
+        "20001701": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            18000,
+            20700,
+            23400,
+            26100,
+            28800
+          ],
+          "Energy": 450,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 18000
+        }
+      }
     },
     "Group": {
       "2": {
@@ -10528,7 +13751,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B1_UI.T_MstSkil_Z_B1_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B1_UI.T_MstSkil_Z_B1_UI",
+      "Damage": {
+        "20001801": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14800,
+            17020,
+            19240,
+            21460,
+            23680
+          ],
+          "Energy": 370,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14800
+        }
+      }
     },
     "Group": {
       "4": {
@@ -10615,7 +13856,21 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z6_UI.T_MstSkil_Z_Z6_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z6_UI.T_MstSkil_Z_Z6_UI",
+      "Damage": {
+        "20000901": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            0
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7500
+        }
+      }
     },
     "Group": {
       "1": {
@@ -10726,7 +13981,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z5_UI.T_MstSkil_Z_Z5_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z5_UI.T_MstSkil_Z_Z5_UI",
+      "Damage": {
+        "20000801": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
     },
     "Group": {
       "1": {
@@ -10842,7 +14115,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z7_UI.T_MstSkil_Z_Z7_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z7_UI.T_MstSkil_Z_Z7_UI",
+      "Damage": {
+        "20001001": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            900,
+            1035,
+            1170,
+            1305,
+            1440
+          ],
+          "Energy": 22,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 900
+        }
+      }
     },
     "Group": {
       "2": {
@@ -10950,7 +14241,25 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z4_UI.T_MstSkil_Z_Z4_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_Z4_UI.T_MstSkil_Z_Z4_UI",
+      "Damage": {
+        "20001101": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1440,
+            1656,
+            1872,
+            2088,
+            2304
+          ],
+          "Energy": 36,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1440
+        }
+      }
     },
     "Group": {
       "3": {
@@ -11075,7 +14384,41 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B4_UI.T_MstSkil_Z_B4_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B4_UI.T_MstSkil_Z_B4_UI",
+      "Damage": {
+        "20000101": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7040,
+            8096,
+            9152,
+            10208,
+            11264
+          ],
+          "Energy": 176,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7040
+        },
+        "20000102": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10560,
+            12144,
+            13728,
+            15312,
+            16896
+          ],
+          "Energy": 264,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10560
+        }
+      }
     },
     "Group": {
       "7": {
@@ -11169,7 +14512,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B6_UI.T_MstSkil_Z_B6_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B6_UI.T_MstSkil_Z_B6_UI",
+      "Damage": {
+        "20001901": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3330,
+            3829,
+            4329,
+            4828,
+            5328
+          ],
+          "Energy": 83,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3330
+        }
+      }
     },
     "Group": {
       "3": {
@@ -11260,7 +14621,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_205_UI.T_MstSkil_205_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_205_UI.T_MstSkil_205_UI",
+      "Damage": {
+        "20002001": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            900,
+            1035,
+            1170,
+            1305,
+            1440
+          ],
+          "Energy": 22,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 900
+        }
+      }
     },
     "Group": {
       "1": {
@@ -11360,7 +14739,73 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_245_UI.T_MstSkil_245_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_245_UI.T_MstSkil_245_UI",
+      "Damage": {
+        "20002201": {
+          "Element": 5,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            345,
+            397,
+            449,
+            501,
+            552
+          ],
+          "Energy": 106,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3533
+        },
+        "20002202": {
+          "Element": 5,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            287,
+            331,
+            374,
+            417,
+            460
+          ],
+          "Energy": 88,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4240
+        },
+        "20002207": {
+          "Element": 5,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            518,
+            596,
+            673,
+            751,
+            829
+          ],
+          "Energy": 159,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 6360
+        },
+        "20002211": {
+          "Element": 5,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            518,
+            596,
+            673,
+            751,
+            829
+          ],
+          "Energy": 159,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 6360
+        }
+      }
     },
     "Group": {
       "5": {
@@ -11467,7 +14912,49 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B9_UI.T_MstSkil_Z_B9_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B9_UI.T_MstSkil_Z_B9_UI",
+      "Damage": {
+        "20002301": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17100,
+            19665,
+            22230,
+            24795,
+            27360
+          ],
+          "Energy": 427,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17100
+        },
+        "20002302": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 0,
+          "RateLv": [
+            0
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 0
+        },
+        "20002303": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 0,
+          "RateLv": [
+            0
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 0,
+          "ToughLv": 0
+        }
+      }
     },
     "Group": {
       "7": {
@@ -11558,7 +15045,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_295_UI.T_MstSkil_295_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_295_UI.T_MstSkil_295_UI",
+      "Damage": {
+        "20003001": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1070,
+            1230,
+            1391,
+            1551,
+            1712
+          ],
+          "Energy": 26,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1070
+        }
+      }
     },
     "Group": {
       "2": {
@@ -11651,7 +15156,25 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_315_UI.T_MstSkil_315_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_315_UI.T_MstSkil_315_UI",
+      "Damage": {
+        "20003201": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3566,
+            4101,
+            4636,
+            5171,
+            5706
+          ],
+          "Energy": 89,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3566
+        }
+      }
     },
     "Group": {
       "1": {
@@ -11746,7 +15269,73 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_984_UI.T_MstSkil_984_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_984_UI.T_MstSkil_984_UI",
+      "Damage": {
+        "20003701": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7290,
+            8383,
+            9477,
+            10570,
+            11664
+          ],
+          "Energy": 182,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7290
+        },
+        "20003702": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4860,
+            5589,
+            6318,
+            7047,
+            7776
+          ],
+          "Energy": 121,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4860
+        },
+        "20003703": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7290,
+            8383,
+            9477,
+            10570,
+            11664
+          ],
+          "Energy": 182,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7290
+        },
+        "20003704": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4860,
+            5589,
+            6318,
+            7047,
+            7776
+          ],
+          "Energy": 121,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4860
+        }
+      }
     },
     "Group": {
       "2": {
@@ -11840,7 +15429,41 @@
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_986_UI.T_MstSkil_986_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_986_UI.T_MstSkil_986_UI",
+      "Damage": {
+        "20003401": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1872,
+            2153,
+            2434,
+            2715,
+            2996
+          ],
+          "Energy": 46,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1872
+        },
+        "20003402": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3210,
+            3691,
+            4173,
+            4654,
+            5136
+          ],
+          "Energy": 80,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3210
+        }
+      }
     },
     "Group": {
       "8": {
@@ -11956,7 +15579,57 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B3_1_UI.T_MstSkil_Z_B3_1_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_Z_B3_1_UI.T_MstSkil_Z_B3_1_UI",
+      "Damage": {
+        "28000101": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            8288,
+            9531,
+            10774,
+            12017,
+            13260
+          ],
+          "Energy": 207,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 8288
+        },
+        "28000102": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            11840,
+            13616,
+            15392,
+            17168,
+            18944
+          ],
+          "Energy": 296,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 11840
+        },
+        "28000103": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1973,
+            2268,
+            2564,
+            2860,
+            3156
+          ],
+          "Energy": 49,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1973
+        }
+      }
     },
     "Group": {
       "3": {
@@ -12048,7 +15721,25 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_992_UI.T_MstSkil_992_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_992_UI.T_MstSkil_992_UI",
+      "Damage": {
+        "28000301": {
+          "Element": 1,
+          "RelatedProperty": "DEF",
+          "Type": 5,
+          "RateLv": [
+            9120,
+            10488,
+            11856,
+            13224,
+            14592
+          ],
+          "Energy": 455,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15200
+        }
+      }
     },
     "Group": {
       "7": {
@@ -12162,7 +15853,73 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_325_UI.T_MstSkil_325_UI"
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_325_UI.T_MstSkil_325_UI",
+      "Damage": {
+        "28000201": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            15150,
+            17422,
+            19695,
+            21967,
+            24240
+          ],
+          "Energy": 378,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15150
+        },
+        "28000202": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17675,
+            20326,
+            22977,
+            25628,
+            28280
+          ],
+          "Energy": 441,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17675
+        },
+        "28000203": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17675,
+            20326,
+            22977,
+            25628,
+            28280
+          ],
+          "Energy": 441,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17675
+        },
+        "28000266": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            17675,
+            20326,
+            22977,
+            25628,
+            28280
+          ],
+          "Energy": 441,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 17675
+        }
+      }
     },
     "Group": {
       "2": {

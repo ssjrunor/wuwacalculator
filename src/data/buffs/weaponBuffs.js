@@ -43,6 +43,11 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
             const rank = state['wildfireMark_rank'] ?? 0;
             const values = [0, 24, 30, 36, 42, 48];
             mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + values[rank];
+        },
+        emeraldSentence: () => {
+            const rank = state['emeraldSentence_rank'] ?? 0;
+            const values = [0, 20, 25, 30, 35, 40];
+            mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + values[rank];
         }
     };
 
@@ -64,7 +69,8 @@ export function getActiveStateWeapons(activeStates) {
         luminousHymn: 21050046,
         bloodpactsPledge: 21020046,
         woodlandAria: 21030026,
-        wildfireMark: 21010036
+        wildfireMark: 21010036,
+        emeraldSentence: 21020066,
     };
 
     return Object.entries(weaponIdMap)
