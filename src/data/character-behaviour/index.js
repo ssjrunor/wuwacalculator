@@ -38,6 +38,7 @@ import {applyPhrolovaLogic, phrolovaBuffsLogic, phrolovaMultipliers} from "./160
 import {applyAugustaLogic, augustaBuffsLogic, augustaMultipliers} from "./1306.js";
 import {applyIunoLogic, iunoBuffsLogic, iunoMultipliers} from "./1410.js";
 import {applyQYLogic, QYBuffsLogic, qyMultipliers, QYSkillMetaBuffsLogic} from "./1411.js";
+import {applyGalbrenaLogic, GalbrenaBuffsLogic, galbrenaMultipliers} from "./1208.js";
 
 const overrides = {
     '1506': {
@@ -247,7 +248,12 @@ const overrides = {
         multipliers: qyMultipliers,
         buffsLogic: QYBuffsLogic,
         skillMetaBuffsLogic: QYSkillMetaBuffsLogic
-    }
+    },
+    "1208": {
+        logic: applyGalbrenaLogic,
+        multipliers: galbrenaMultipliers,
+        buffsLogic: GalbrenaBuffsLogic,
+    },
 };
 
 export function getCharacterOverride(charId) {

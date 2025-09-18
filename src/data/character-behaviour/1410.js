@@ -84,7 +84,7 @@ export function applyIunoLogic({
     }
 
     if (name.includes('absolute fullness dmg') && isActiveSequence(6)) {
-        skillMeta.multiplier *= 16;
+        skillMeta.multiplier *= 17;
     }
 
     return {mergedBuffs, combatState, skillMeta};

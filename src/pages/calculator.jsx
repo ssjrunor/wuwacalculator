@@ -41,7 +41,7 @@ export default function Calculator() {
     const [characters, setCharacters] = useState([]);
     loadBase( characters );
     const navigate = useNavigate();
-    const LATEST_CHANGELOG_VERSION = '2025-09-13 19:13';
+    const LATEST_CHANGELOG_VERSION = '2025-09-19 19:39';
     const [showChangelog, setShowChangelog] = useState(false);
     const [shouldScrollChangelog, setShouldScrollChangelog] = useState(false);
     const [characterLevel, setCharacterLevel] = useState(1);
@@ -96,9 +96,9 @@ export default function Calculator() {
         Promise.all([fetchCharacters(), fetchWeapons()]).then(([charData, weaponData]) => {
             setWeapons(weaponData);
 
-            const withoutTarget = charData.filter(c => String(c.link) !== "1208");
+            //const withoutTarget = charData.filter(c => String(c.link) !== "1208");
 
-            const sorted = [...withoutTarget].sort((a, b) =>
+            const sorted = [...charData].sort((a, b) =>
                 a.displayName.localeCompare(b.displayName, undefined, { sensitivity: 'base' })
             );
             setCharacters(sorted);

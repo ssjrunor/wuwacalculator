@@ -309,6 +309,15 @@ export default function ChangelogModal({ open, onClose, shouldScroll }) {
                     content: `<strong>Galbrena</strong> will be added later...`
                 }
             ]
+        },
+        {
+            date: '18/09/2025',
+            entries: [
+                {
+                    type: 'paragraph',
+                    content: `Added <strong>Galbrena</strong>.`
+                }
+            ]
         }
     ];
 
