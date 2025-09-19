@@ -273,6 +273,7 @@ export function computeSkillDamage({
                     critRateBonus: skillMeta.critRateBonus ?? 0,
                     skillDefIgnore: skillMeta.skillDefIgnore ?? 0,
                     skillResIgnore: skillMeta.skillResIgnore ?? 0,
+                    skillCritDmg: skillMeta.skillCritDmg ?? 0,
                     skillCritRate: skillMeta.skillCritRate ?? 0,
                 });
 
@@ -306,6 +307,7 @@ export function computeSkillDamage({
                     critRateBonus: oneHitMeta.critRateBonus ?? 0,
                     skillDefIgnore: oneHitMeta.skillDefIgnore ?? 0,
                     skillResIgnore: skillMeta.skillResIgnore ?? 0,
+                    skillCritDmg: skillMeta.skillCritDmg ?? 0,
                     skillCritRate: skillMeta.skillCritRate ?? 0,
                 });
 
