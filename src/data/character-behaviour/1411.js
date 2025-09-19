@@ -127,7 +127,7 @@ export function QYBuffsLogic({
                                     mergedBuffs, characterState,
                                 }) {
     const state = characterState?.activeStates ?? {};
-    const critDmg = Math.min(state.sunderingCr * 2, 30);
+    const critDmg = Math.min((state.sunderingCr ?? 0) * 2, 30);
 
     if (state.strikeBeforeReady) {
         mergedBuffs.damageTypeAmplify.echoSkill = (mergedBuffs.damageTypeAmplify.echoSkill ?? 0) + 50;
