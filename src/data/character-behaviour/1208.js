@@ -67,7 +67,7 @@ export function applyGalbrenaLogic({
     }
 
     if (isActiveSequence(3) && name.includes('resonance liberation - hellfire absolution')) {
-        skillMeta.multiplier += 1.2;
+        skillMeta.multiplier *= 2.2;
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__galbrenaS4) {
