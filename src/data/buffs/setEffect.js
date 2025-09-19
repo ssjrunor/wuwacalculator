@@ -92,12 +92,6 @@ export function applySetEffect({ mergedBuffs, characterState, activeCharacter, c
     }
     mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + 4 * lawOfHarmonyStack;
 
-    if (effect.flamewingsShadow2pcP1) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
-    }
-    if (effect.flamewingsShadow2pcP2) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
-    }
     if (effect.flamewingsShadow2pcP1 && effect.flamewingsShadow2pcP2) {
         mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 16;
     }

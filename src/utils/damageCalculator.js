@@ -15,6 +15,7 @@ export function calculateDamage({
                                     skillDefIgnore = 0,
                                     skillResIgnore = 0,
                                     skillCritDmg = 0,
+                                    skillCritRate = 0,
                                 }) {
     const skillTypes = Array.isArray(skillType) ? skillType : [skillType];
 
@@ -90,7 +91,7 @@ export function calculateDamage({
 
     const normal = baseDmg * resMult * defMult * dmgReductionTotal * elementReductionTotal * dmgBonus * dmgAmplify * special;
 
-    const critRate = Math.min(((finalStats.critRate ?? 0) / 100) + (critRateBonus / 100), 1);
+    const critRate = Math.min(((finalStats.critRate ?? 0) / 100) + ((critRateBonus + skillCritRate) / 100), 1);
     const critDmg = ((finalStats.critDmg ?? 0) / 100) + ((critDmgBonus + skillCritDmg) / 100);
     const crit = normal * (critDmg);
 

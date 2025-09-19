@@ -6,6 +6,8 @@ import { elementToAttribute } from './attributeHelpers';
 import {echoScalingRatios} from "../data/echoes/echoMultipliers.js";
 import {mainEchoBuffs} from "../data/buffs/setEffect.js";
 import {applyWeaponLogic} from "../data/weapon-behaviour/21040036.jsx";
+import {getSetCounts} from "./echoHelper.js";
+import {getEchoSetSkillMeta} from "../data/set-ui/index.js";
 
 export function computeSkillDamage({
                                        entry,
@@ -126,6 +128,25 @@ export function computeSkillDamage({
         }
     });
 
+    const echoData = characterRuntimeStates?.[charId]?.equippedEchoes ?? [null, null, null, null, null];
+    const setCounts = getSetCounts(echoData);
+    for (const setId of Object.keys(setCounts)) {
+        const skillMetaBuffs = getEchoSetSkillMeta(setId);
+        if (skillMetaBuffs) {
+            const result = skillMetaBuffs({
+                mergedBuffs,
+                activeStates: characterRuntimeStates?.[charId]?.activeStates ?? {},
+                activeCharacter,
+                combatState,
+                skillMeta
+            });
+
+            if (result?.skillMeta) {
+                skillMeta = result.skillMeta ?? skillMeta;
+            }
+        }
+    }
+
     const weaponLogic = getWeaponOverride(combatState?.weaponId);
 
     if (typeof weaponLogic?.updateSkillMeta === 'function') {
@@ -167,7 +188,6 @@ export function computeSkillDamage({
     const mainEcho = characterRuntimeStates?.[charId]?.equippedEchoes?.[0];
     const echoBuffEntry = mainEcho && mainEchoBuffs?.[mainEcho.id];
     const echoModifier = echoBuffEntry?.skillMetaModifier;
-
 
     if (typeof echoModifier === 'function') {
         skillMeta = echoModifier(skillMeta, {
@@ -212,6 +232,7 @@ export function computeSkillDamage({
         skillDefIgnore: skillMeta.skillDefIgnore ?? 0,
         skillResIgnore: skillMeta.skillResIgnore ?? 0,
         skillCritDmg: skillMeta.skillCritDmg ?? 0,
+        skillCritRate: skillMeta.skillCritRate ?? 0,
     });
 
     let subHits = [];
@@ -252,7 +273,7 @@ export function computeSkillDamage({
                     critRateBonus: skillMeta.critRateBonus ?? 0,
                     skillDefIgnore: skillMeta.skillDefIgnore ?? 0,
                     skillResIgnore: skillMeta.skillResIgnore ?? 0,
-                    skillCritDmg: skillMeta.skillCritDmg ?? 0,
+                    skillCritRate: skillMeta.skillCritRate ?? 0,
                 });
 
                 subHits.push({
@@ -285,7 +306,7 @@ export function computeSkillDamage({
                     critRateBonus: oneHitMeta.critRateBonus ?? 0,
                     skillDefIgnore: oneHitMeta.skillDefIgnore ?? 0,
                     skillResIgnore: skillMeta.skillResIgnore ?? 0,
-                    skillCritDmg: skillMeta.skillCritDmg ?? 0,
+                    skillCritRate: skillMeta.skillCritRate ?? 0,
                 });
 
                 subHits.push({

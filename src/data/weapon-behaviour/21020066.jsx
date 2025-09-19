@@ -69,6 +69,5 @@ export function applyWeaponLogic({
         mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + echoSkill;
     }
 
-
     return { mergedBuffs, combatState, skillMeta };
 }
