@@ -28,6 +28,9 @@ export function applyAugustaLogic({
 
     if (tab === 'forteCircuit') {
         skillMeta.skillType = 'skill';
+        if ( name.includes('undying sunlight: plunge')) {
+            skillMeta.skillType = 'heavy';
+        }
     } else if (tab === 'resonanceLiberation') {
         skillMeta.skillType = 'heavy';
     }
