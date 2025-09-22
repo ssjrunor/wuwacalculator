@@ -42,7 +42,7 @@ export function WeaponUI({
                         Enable
                     </label>
                     <p>
-                        {highlightKeywordsInText(`DMG Amplification on each attack is capped at ${currentParamValues[1]}. While both effects are active, dealing damage ignores ${currentParamValues[1]} of the target's DEF.`, keywords)}
+                        {highlightKeywordsInText(`DMG Amplification on each attack is capped at ${currentParamValues[1]}. While both effects are active, dealing damage ignores ${currentParamValues[6]} of the target's DEF.`, keywords)}
                     </p>
                 </div>
             </div>
@@ -60,6 +60,7 @@ export function applyWeaponLogic({
                                  }) {
     const atk = parseFloat(currentParamValues[0]);
     const heavy = parseFloat(currentParamValues[1]);
+    const defIgnore = currentParamValues[6];
 
     mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
 
@@ -72,7 +73,7 @@ export function applyWeaponLogic({
     }
 
     if (characterState?.activeStates?.firstP1 && characterState?.activeStates?.firstP2) {
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + heavy;
+        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + defIgnore;
     }
 
     return { mergedBuffs, combatState, skillMeta };
