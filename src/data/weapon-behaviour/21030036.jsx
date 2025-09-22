@@ -60,7 +60,7 @@ export function applyWeaponLogic({
                                  }) {
     const atk = parseFloat(currentParamValues[0]);
     const heavy = parseFloat(currentParamValues[1]);
-    const defIgnore = currentParamValues[6];
+    const defIgnore = parseFloat(currentParamValues[6]);
 
     mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
 
