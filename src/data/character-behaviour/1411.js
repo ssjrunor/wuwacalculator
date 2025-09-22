@@ -85,6 +85,18 @@ export function applyQYLogic({
         }
     }
 
+    if (name.includes('straw cape in dizzy rain')) {
+        skillMeta.multiplier = 5;
+        skillMeta.visible = isActiveSequence(3);
+        skillMeta.skillType = 'echoSkill';
+    }
+
+    if (name.includes('sheath fallen, new shoots revealed')) {
+        skillMeta.multiplier = 5;
+        skillMeta.visible = isActiveSequence(3);
+        skillMeta.skillType = 'echoSkill';
+    }
+
     if (name.includes('bamboo cascade')) {
         skillMeta.multiplier = 5;
         skillMeta.skillType = 'echoSkill';
@@ -126,6 +138,10 @@ export const qyMultipliers = {
     outroSkill: [
         {
             name: "Strike Before Ready DMG",
+            scaling: { atk: 1 },
+        },
+        {
+            name: "O Blade, I, Who Save No More: Sheath Fallen, New Shoots Revealed DMG",
             scaling: { atk: 1 },
         }
     ]
