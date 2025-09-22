@@ -12,7 +12,7 @@ export default function GalbrenaUI( {setCharacterRuntimeStates, charId, activeSt
             >
                 <h4 className={'highlight'} style={{ fontSize: '16px', fontWeight: 'bold' }}>Demon Hypostasis</h4>
                 <div>
-                    <p>Gain <span className="highlight">85%</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion DMG Bonus</span> for <span className="highlight">Resonance Liberation - Hellfire Absolution</span> and all attacks while in <span className="highlight">Demon Hypostasis</span> for 14s</p>
+                    <p>Gain <span className="highlight">85%</span> DMG Multiplier increase for  <span className="highlight">Basic Attack - Seraphic Execution</span>, <span className="highlight">Heavy Attack - Flamewing Verdict</span>, <span className="highlight">Mid-air Attack - Hellsent Barrage</span>, and <span className="highlight">Dodge Counter - Purgatory Scourge</span> while in <span className="highlight">Demon Hypostasis</span> for 14s.</p>
                 </div>
                 <label className="modern-checkbox" onClick={(e) => e.stopPropagation()}>
                     <input

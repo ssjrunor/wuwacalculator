@@ -7,8 +7,23 @@ export function WeaponUI({
                              activeStates,
                              toggleState,
                              currentParamValues = [],
-    keywords
+                             characterRuntimeStates, setCharacterRuntimeStates, charId, keywords
                          }) {
+    const stacks = characterRuntimeStates?.[charId]?.activeStates?.stacks ?? 0;
+
+    const handleChange = (newValue) => {
+        setCharacterRuntimeStates(prev => ({
+            ...prev,
+            [charId]: {
+                ...(prev[charId] ?? {}),
+                activeStates: {
+                    ...(prev[charId]?.activeStates ?? {}),
+                    stacks: newValue
+                }
+            }
+        }));
+    };
+
     return (
         <div className="status-toggles">
             <div className="status-toggle-box">
@@ -18,20 +33,22 @@ export function WeaponUI({
 
                 <div className="status-toggle-box-inner">
                     <p>
-                        {highlightKeywordsInText(`Casting Echo Skill grants ${currentParamValues[1]} 
-                        Heavy Attack DMG Bonus to the wielder for 4s.`, keywords)}
+                        {highlightKeywordsInText(`Casting Echo Skill grants 1 stack of Bamboo Cleaver, which grants ${currentParamValues[1]} Heavy Attack DMG Bonus to the wielder. This effect can be triggered by Echoes of the same name once only, stacking up to 2 times, lasting for 30s.
+                        When Bamboo Cleaver reaches max stacks, casting Echo Skill resets its duration.`, keywords)}
                     </p>
                     <label className="modern-checkbox">
-                        <input
-                            type="checkbox"
-                            checked={activeStates.firstP1 || false}
-                            onChange={() => toggleState('firstP1')}
+                        <DropdownSelect
+                            label=""
+                            options={[0, 1, 2]}
+                            value={stacks}
+                            onChange={handleChange}
+                            width="80px"
                         />
-                        Enable
+                        Stacks
                     </label>
                     <p>
-                        {highlightKeywordsInText(`Casting Intro Skill grants ${currentParamValues[3]}
-                        Echo Skill DMG Bonus to all Resonators in the team for 30s.`, keywords)}
+                        {highlightKeywordsInText(`Casting Intro Skill grants ${currentParamValues[3]} Echo Skill DMG
+                        Bonus to all Resonators in the team for 30s. Effects of the same name cannot be stacked.`, keywords)}
                     </p>
                     <label className="modern-checkbox">
                         <input
@@ -57,13 +74,11 @@ export function applyWeaponLogic({
                                  }) {
     const atk = parseFloat(currentParamValues[0]);
     const heavy = parseFloat(currentParamValues[1]);
+    const stacks = characterState?.activeStates?.stacks ?? 0;
     const echoSkill = parseFloat(currentParamValues[3]);
 
     mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
-
-    if (characterState?.activeStates?.firstP1) {
-        mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + heavy;
-    }
+    mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + heavy * stacks;
 
     if (characterState?.activeStates?.firstP2) {
         mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + echoSkill;

@@ -57858,7 +57858,7 @@
         ]
       }
     },
-    "Effect": "ATK is increased by {0}. Casting Echo Skill grants {1} Heavy Attack DMG Bonus to the wielder for {2}s. Casting Intro Skill grants {3} Echo Skill DMG Bonus to all Resonators in the team for {4}s.",
+    "Effect": "ATK is increased by {0}. Casting Echo Skill grants 1 stack of Bamboo Cleaver, which grants {1} Heavy Attack DMG Bonus to the wielder. This effect can be triggered by Echoes of the same name once only, stacking up to 2 times, lasting for {2}s.\nWhen Bamboo Cleaver reaches max stacks, casting Echo Skill resets its duration. Casting Intro Skill grants {3} Echo Skill DMG Bonus to all Resonators in the team for {4}s. Effects of the same name cannot be stacked.",
     "EffectName": "When A Heart Settles",
     "Param": [
       [
@@ -57869,18 +57869,18 @@
         "24%"
       ],
       [
-        "40%",
-        "50%",
-        "60%",
-        "70%",
-        "80%"
+        "30%",
+        "37.5%",
+        "45%",
+        "52.5%",
+        "60%"
       ],
       [
-        "4",
-        "4",
-        "4",
-        "4",
-        "4"
+        "30",
+        "30",
+        "30",
+        "30",
+        "30"
       ],
       [
         "20%",
@@ -80175,7 +80175,7 @@
         ]
       }
     },
-    "Effect": "ATK is increased by {0}. Upon dealing Echo Skill DMG, gain {1} Heavy Attack DMG Amplification for {2}s. Upon dealing Heavy Attack DMG, gain {3} Echo Skill DMG Amplification for {4}s. DMG Amplification on each attack is capped at {5}. While both effects are active, dealing damage ignores {5} of the target's DEF.",
+    "Effect": "ATK is increased by {0}. Upon dealing Echo Skill DMG, gain {1} Heavy Attack DMG Amplification for {2}s. Upon dealing Heavy Attack DMG, gain {3} Echo Skill DMG Amplification for {4}s. DMG Amplification on each attack is capped at {5}. While both effects are active, dealing damage ignores {6} of the target's DEF.",
     "EffectName": "To Fire She Returns",
     "Param": [
       [

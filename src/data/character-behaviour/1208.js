@@ -36,9 +36,8 @@ export function applyGalbrenaLogic({
         skillMeta.skillType = 'echoSkill';
     }
 
-    if (characterState?.activeStates?.demonHypostasis && !mergedBuffs.__demonHypostasis) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 85;
-        mergedBuffs.__demonHypostasis = true;
+    if (characterState?.activeStates?.demonHypostasis && (tab === 'forteCircuit' && !name.includes('resonance skill'))) {
+        skillMeta.multiplier *= 1.85;
     }
 
     if ( characterState?.activeStates?.demonHypostasis && tab === 'forteCircuit' ) {
@@ -57,17 +56,17 @@ export function applyGalbrenaLogic({
     }
 
     if ( isActiveSequence(1) && isToggleActive(1) && characterState?.activeStates?.demonHypostasis && tab === 'forteCircuit' ) {
-        const bonus = Math.min((characterState?.activeStates?.afterflame ?? 0) * 3, 120);
+        const bonus = Math.min((characterState?.activeStates?.afterflame ?? 0) * 2, 80);
         skillMeta.skillCritDmg = (skillMeta.skillCritDmg ?? 0) + bonus;
     }
 
     if (isActiveSequence(2) && isToggleActive(2) && !mergedBuffs.__galbrenaS2) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 250;
+        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 350;
         mergedBuffs.__galbrenaS2 = true;
     }
 
     if (isActiveSequence(3) && name.includes('resonance liberation - hellfire absolution')) {
-        skillMeta.multiplier *= 2.2;
+        skillMeta.multiplier *= 2.3;
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__galbrenaS4) {

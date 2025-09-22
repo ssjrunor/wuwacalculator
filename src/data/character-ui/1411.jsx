@@ -12,7 +12,7 @@ export default function QiuyuanUI({ activeStates, toggleState }) {
                 <div>
                     <p>
                         When <span className='highlight'>Qiuyuan</span> holds <span className='highlight'>400</span> points of <span className='highlight'>Swordster's Soliloquy</span>,
-                        he gains the <span className='highlight'>Bamboo's Shade</span> effect, allowing all Resonators in the team to gain <span className='highlight'>30% Echo Skill DMG Bonus</span> for 30s.</p>
+                        he gains the <span className='highlight'>Bamboo's Shade</span> effect, allowing all nearby active Resonators in the team to gain <span className='highlight'>30% Echo Skill DMG Bonus</span> for 30s.</p>
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -28,7 +28,7 @@ export default function QiuyuanUI({ activeStates, toggleState }) {
             <div className="status-toggle-box-inner">
                 <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Sundering Strike</h4>
                 <div>
-                    <p> For every <span className='highlight'>1%</span> of <span className='highlight'>Qiuyuan</span>'s Crit. Rate over <span className='highlight'>50%</span>, this skill increases the Crit. DMG of all Resonators in the team by <span className='highlight'>2%</span> for 30s, maxed at <span className='highlight'>30%</span>.</p>
+                    <p> For every <span className='highlight'>1%</span> of <span className='highlight'>Qiuyuan</span>'s Crit. Rate over <span className='highlight'>50%</span>, this skill increases the Crit. DMG of all nearby active Resonators in the team by <span className='highlight'>2%</span> for 30s, maxed at <span className='highlight'>30%</span>.</p>
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -249,7 +249,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                 <div className="echo-buff-effect">
                     <p>
                         When <span className='highlight'>Qiuyuan</span> holds <span className='highlight'>400</span> points of <span className='highlight'>Swordster's Soliloquy</span>,
-                        he gains the <span className='highlight'>Bamboo's Shade</span> effect, allowing all Resonators in the team to gain <span className='highlight'>30% Echo Skill DMG Bonus</span> for 30s.</p>
+                        he gains the <span className='highlight'>Bamboo's Shade</span> effect, allowing all nearby active Resonators in the team to gain <span className='highlight'>30% Echo Skill DMG Bonus</span> for 30s.</p>
                     <label className="modern-checkbox">
                         <input
                             type="checkbox"
@@ -265,7 +265,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                     <div className="echo-buff-name">Sundering Strike</div>
                 </div>
                 <div className="echo-buff-effect">
-                    <p> For every <span className='highlight'>1%</span> of <span className='highlight'>Qiuyuan</span>'s Crit. Rate over <span className='highlight'>50%</span>, this skill increases the Crit. DMG of all Resonators in the team by <span className='highlight'>2%</span> for 30s, maxed at <span className='highlight'>30%</span>.</p>
+                    <p> For every <span className='highlight'>1%</span> of <span className='highlight'>Qiuyuan</span>'s Crit. Rate over <span className='highlight'>50%</span>, this skill increases the Crit. DMG of all nearby active Resonators in the team by <span className='highlight'>2%</span> for 30s, maxed at <span className='highlight'>30%</span>.</p>
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -299,7 +299,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                     <div className="echo-buff-name">S2: O Blade, I, Who Teach No More</div>
                 </div>
                 <div className="echo-buff-effect">
-                    <span className="highlight">Bamboo's Shade</span> now grants <span className="highlight">30% Echo Skill</span> DMG Amplification to all Resonators in the team.
+                    <span className="highlight">Bamboo's Shade</span> now grants <span className="highlight">30% Echo Skill</span> DMG Amplification to all nearby active Resonators in the team.
                 </div>
                 <label
                     className="modern-checkbox"
@@ -322,7 +322,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                 </label>
             </div>
 
-            <div className="echo-buff">
+            {/*<div className="echo-buff">
                 <div className="echo-buff-header">
                     <div className="echo-buff-name">S6: Thus I Heard, Thus I Saw, Thus I Spoke</div>
                 </div>
@@ -337,7 +337,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                     />
                     Enable
                 </label>
-            </div>
+            </div>*/}
         </div>
     );
 }

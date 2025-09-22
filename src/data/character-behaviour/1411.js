@@ -22,6 +22,12 @@ export function applyQYLogic({
 
     if (tab === 'forteCircuit') {
         skillMeta.skillType = 'heavy';
+    } else if (tab === 'resonanceLiberation') {
+        skillMeta.skillType = 'echoSkill';
+    }
+
+    if (name.includes('strike before ready')) {
+        skillMeta.multiplier = 1;
     }
 
     const inherent1 = [
@@ -60,7 +66,7 @@ export function applyQYLogic({
     }
 
     if (isActiveSequence(1) && !mergedBuffs.__qyS1) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 15;
+        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
         mergedBuffs.__qyS1 = true;
     }
 
@@ -70,39 +76,35 @@ export function applyQYLogic({
     }
 
     if (isActiveSequence(3)) {
-        if (!mergedBuffs.__qyS3) {
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
-            mergedBuffs.__qyS3 = true;
+        if (tab === 'resonanceLiberation') {
+            skillMeta.multiplier *= 4;
         }
 
         if (isToggleActive(3) && inherent1) {
-            skillMeta.multiplier *= 5;
+            skillMeta.multiplier += 4;
         }
     }
 
     if (name.includes('bamboo cascade')) {
-        skillMeta.multiplier = 8;
+        skillMeta.multiplier = 5;
         skillMeta.skillType = 'echoSkill';
         skillMeta.visible = isActiveSequence(3);
     }
 
-    if (isActiveSequence(4) && tab === 'resonanceLiberation') {
-        skillMeta.multiplier *= 7;
+    if (isActiveSequence(4) && !mergedBuffs.__qyS4) {
+        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.__qyS4 = true;
     }
 
     if (isActiveSequence(5) && !mergedBuffs.__qyS5) {
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 20;
+        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 15;
         mergedBuffs.__qyS5 = true;
     }
 
     if (name.includes('inksplash of mind dmg')) {
-        skillMeta.multiplier = 5;
+        skillMeta.multiplier = 6;
         skillMeta.visible = isActiveSequence(6);
         skillMeta.skillType = 'echoSkill';
-    }
-
-    if (isActiveSequence(6) && skillMeta.skillType.includes('echoSkill')) {
-        skillMeta.skillResIgnore = (mergedBuffs.skillResIgnore ?? 0) + 10;
     }
 
     return {mergedBuffs, combatState, skillMeta};
@@ -111,13 +113,19 @@ export function applyQYLogic({
 export const qyMultipliers = {
     resonanceSkill: [
         {
-            name: "O Blade, I, Who Save No More: Bamboo Cascade DMG",
+            name: "O Blade, I, Who Save No More: Straw Cape In Dizzy Rain DMG",
             scaling: { atk: 1 },
         }
     ],
     forteCircuit: [
         {
             name: "Thus I Heard, Thus I Saw, Thus I Spoke: Inksplash of Mind DMG",
+            scaling: { atk: 1 },
+        }
+    ],
+    outroSkill: [
+        {
+            name: "Strike Before Ready DMG",
             scaling: { atk: 1 },
         }
     ]
@@ -148,6 +156,7 @@ export function QYBuffsLogic({
     return { mergedBuffs };
 }
 
+/*
 export function QYSkillMetaBuffsLogic({
                                  characterState, skillMeta,
                              }) {
@@ -161,3 +170,4 @@ export function QYSkillMetaBuffsLogic({
     return { skillMeta };
 }
 
+*/
