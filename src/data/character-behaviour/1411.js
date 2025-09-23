@@ -22,7 +22,7 @@ export function applyQYLogic({
 
     if (tab === 'forteCircuit' || tab === 'introSkill') {
         skillMeta.skillType = 'heavy';
-    } else if (tab === 'resonanceLiberation') {
+    } else if (tab === 'resonanceLiberation' || tab === 'resonanceSkill') {
         skillMeta.skillType = 'echoSkill';
     }
 
