@@ -20,7 +20,7 @@ export function applyQYLogic({
     const name = skillMeta.name?.toLowerCase();
     const tab = skillMeta.tab ?? '';
 
-    if (tab === 'forteCircuit') {
+    if (tab === 'forteCircuit' || tab === 'introSkill') {
         skillMeta.skillType = 'heavy';
     } else if (tab === 'resonanceLiberation') {
         skillMeta.skillType = 'echoSkill';
