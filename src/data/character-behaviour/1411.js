@@ -20,9 +20,9 @@ export function applyQYLogic({
     const name = skillMeta.name?.toLowerCase();
     const tab = skillMeta.tab ?? '';
 
-    if (tab === 'forteCircuit' || tab === 'introSkill') {
+    if (tab === 'forteCircuit' || tab === 'introSkill' || name.includes('dodge counter')) {
         skillMeta.skillType = 'heavy';
-    } else if (tab === 'resonanceLiberation' || tab === 'resonanceSkill') {
+    } else if (tab === 'resonanceLiberation' || tab === 'resonanceSkill' || tab === 'outroSkill') {
         skillMeta.skillType = 'echoSkill';
     }
 
@@ -93,13 +93,6 @@ export function applyQYLogic({
 
     if (name.includes('sheath fallen, new shoots revealed')) {
         skillMeta.multiplier = 5;
-        skillMeta.visible = isActiveSequence(3);
-        skillMeta.skillType = 'echoSkill';
-    }
-
-    if (name.includes('bamboo cascade')) {
-        skillMeta.multiplier = 5;
-        skillMeta.skillType = 'echoSkill';
         skillMeta.visible = isActiveSequence(3);
     }
 
