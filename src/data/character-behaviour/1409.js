@@ -42,7 +42,7 @@ export function applyCartethyiaLogic({
         }
     }
 
-    if (characterLevel >= 70 && !mergedBuffs.__inherent2Cart && combatState.aeroErosion > 0) {
+    if (characterLevel >= 70 && tab.includes('o')) {
         const stacks = combatState.aeroErosion ?? 0;
         let bonus = 0;
 
@@ -52,8 +52,7 @@ export function applyCartethyiaLogic({
             bonus = Math.min(10 * stacks, 60);
         }
 
-        mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + bonus;
-        mergedBuffs.__inherent2Cart = true;
+        skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + bonus;
     }
 
     if (tab === 'resonanceLiberation') {
