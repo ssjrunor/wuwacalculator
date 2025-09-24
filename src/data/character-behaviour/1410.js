@@ -161,7 +161,7 @@ export function iunoBuffsLogic({
         mergedBuffs.__iunoWanLight = true;
     }
 
-    if (!mergedBuffs.__iunoWanLightS2 && wanLightStacks >= 40 && state.iunoS2) {
+    if (!mergedBuffs.__iunoWanLightS2 && wanLightStacks >= 10 && state.iunoS2) {
         for (const elem of Object.values(elementToAttribute)) {
             mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 40;
         }
