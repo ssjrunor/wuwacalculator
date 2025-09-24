@@ -161,6 +161,13 @@ export function iunoBuffsLogic({
         mergedBuffs.__iunoWanLight = true;
     }
 
+    if (!mergedBuffs.__iunoWanLightS2 && wanLightStacks >= 40 && state.iunoS2) {
+        for (const elem of Object.values(elementToAttribute)) {
+            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 40;
+        }
+        mergedBuffs.__iunoWanLightS2 = true;
+    }
+
     if (state.gloomtoGleam) {
         mergedBuffs.damageTypeAmplify.heavy = (mergedBuffs.damageTypeAmplify.heavy ?? 0) + 50;
     }

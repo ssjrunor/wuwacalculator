@@ -117,6 +117,22 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                     }}
                 />
             </div>
+            <div className="echo-buff">
+                <div className="echo-buff-header">
+                    <div className="echo-buff-name">S2: Day or Night, Let This Be Eternal</div>
+                </div>
+                <div className="echo-buff-effect">
+                    Resonators in the team with 10 stacks of Blessing of the Wan Light gain an additional <span className='highlight'>40%</span> all DMG Amplification.
+                </div>
+                <label className="modern-checkbox">
+                    <input
+                        type="checkbox"
+                        checked={activeStates.iunoS2 || false}
+                        onChange={() => toggleState('iunoS2')}
+                    />
+                    Enable
+                </label>
+            </div>
         </div>
     );
 }
