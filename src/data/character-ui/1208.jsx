@@ -170,7 +170,7 @@ export function CustomInherentSkills({
                                 >
                                     <DropdownSelect
                                         label=""
-                                        options={[0, 1, 2, 3, 4, 5]}
+                                        options={[0, 1, 2, 3, 4]}
                                         value={activeStates.oathbound ?? 0}
                                         onChange={(newValue) => updateState('oathbound', newValue)}
                                         width="80px"

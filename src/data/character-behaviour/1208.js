@@ -50,8 +50,8 @@ export function applyGalbrenaLogic({
         mergedBuffs.__burningDrive = true;
     }
 
-    if ( !tab.includes('echoAttacks') ) {
-        const bonus = Math.min((characterState?.activeStates?.oathbound ?? 0) * 4, 4 * 5);
+    if ( !tab.includes('echoAttacks' ) ) {
+        const bonus = Math.min((characterState?.activeStates?.oathbound ?? 0) * 5, 5 * 4);
         skillMeta.amplify = (skillMeta.amplify ?? 0) + bonus;
     }
 
@@ -91,19 +91,24 @@ export function applyGalbrenaLogic({
         }
     }
 
+    if ( name.includes('ashen pursuit dmg')) {
+        skillMeta.multiplier = (79.5*3+556.5)/100;
+    }
+
+    if ( name.includes('outro skill dmg')) {
+        skillMeta.visible = false;
+    }
+
     return {mergedBuffs, combatState, skillMeta};
 }
 
 export const galbrenaMultipliers = {
-    /*outroSkill: [
+    outroSkill: [
         {
             name: 'Ashen Pursuit DMG',
             scaling: { atk: 1},
-            Param: [
-                Array("79.5%*3+556.5%").fill(20)
-            ]
         }
-    ]*/
+    ]
 };
 
 export function GalbrenaBuffsLogic({

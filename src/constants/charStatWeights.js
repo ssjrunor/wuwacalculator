@@ -396,11 +396,11 @@ const charStatWeights = {
     },
     '1208': {
         atkPercent: 1,
-        atkFlat: 0.5,
+        atkFlat: 0.75,
         energyRegen: 1,
         critRate: 1,
         critDmg: 1,
-        heavyAtk: 1,
+        heavyAtk: 0.75,
         fusion: 1
     },
 };
