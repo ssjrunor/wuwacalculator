@@ -16,7 +16,13 @@ export function calculateDamage({
                                     skillResIgnore = 0,
                                     skillCritDmg = 0,
                                     skillCritRate = 0,
-                                }) {
+                                    fixedDmg = null
+}) {
+    if (fixedDmg) {
+        const normal = Math.max(1, Math.floor(fixedDmg));
+        return { normal: normal, crit: normal, avg: normal};
+    }
+
     const skillTypes = Array.isArray(skillType) ? skillType : [skillType];
 
     const atk = finalStats.atk ?? 0;

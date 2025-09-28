@@ -37,6 +37,11 @@ export function applyGalbrenaLogic({
         skillMeta.skillType = 'echoSkill';
     }
 
+    if (name.includes('hellstride')) {
+        skillMeta.fixedDmg = 666;
+        skillMeta.skillType = 'basic';
+    }
+
     if (characterState?.activeStates?.demonHypostasis && (tab === 'forteCircuit' && !name.includes('resonance skill'))) {
         skillMeta.multiplier *= 1.85;
     }
@@ -108,6 +113,12 @@ export const galbrenaMultipliers = {
         {
             name: 'Ashen Pursuit DMG',
             scaling: { atk: 1},
+        }
+    ],
+    forteCircuit: [
+        {
+            name: "Hellstride DMG",
+            scaling: { atk: 1}
         }
     ]
 };
