@@ -24,6 +24,7 @@ export function applyGalbrenaLogic({
         'basic attack stage 4',
         'Basic Attack - Seraphic Execution Stage 4',
         'Basic Attack - Seraphic Execution Stage 5',
+        'Heavy Attack - Volley of Death Stage 3',
         'Heavy Attack - Flamewing Verdict Stage 3',
         'Resonance Liberation - Hellfire Absolution'
     ].some(n => name.includes(n.toLowerCase()));
