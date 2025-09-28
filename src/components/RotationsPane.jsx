@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useReducer, useState} from 'react';
-import {Pencil, Trash2} from 'lucide-react';
+import {ArrowUpToLine, ArrowDownToLine, Pencil, Trash2} from 'lucide-react';
 import {closestCenter, DndContext, PointerSensor, useSensor, useSensors} from '@dnd-kit/core';
 import {arrayMove, SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable';
 import {restrictToFirstScrollableAncestor} from '@dnd-kit/modifiers';
@@ -299,6 +299,73 @@ export default function RotationsPane({
         }
     }, [charId, filterOptions, teamFilterOptions]);
 
+    function exportRotationEntries(rotationEntries) {
+        const cleanedEntries = rotationEntries.map(entry => {
+            const { snapshot, ...rest } = entry;
+            return {
+                ...rest,
+                locked: false
+            };
+        });
+
+        const exportData = {
+            charId,
+            rotationEntries: cleanedEntries
+        };
+
+        const now = new Date();
+        const timestamp = now.toISOString().replace(/[:.]/g, '-');
+        const characterName = characterRuntimeStates[charId]?.Name?.toLowerCase() || `char-${charId}`;
+
+        const dataStr = JSON.stringify(exportData, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `rotation-${characterName}-${timestamp}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    function importRotationEntries() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+
+        input.onchange = (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+
+                    if (!data || !Array.isArray(data.rotationEntries) || typeof data.charId === 'undefined') {
+                        alert('Invalid file structure.');
+                        return;
+                    }
+
+                    if (data.charId !== charId) {
+                        alert('Error: This rotation file was created for a different character.');
+                        return;
+                    }
+
+                    setRotationEntries(data.rotationEntries);
+                } catch (err) {
+                    alert('Error reading file: ' + err.message);
+                }
+            };
+
+            reader.readAsText(file);
+        };
+
+        input.click();
+    }
+
     return (
         <div className="rotation-pane">
             <div className="rotation-view-toggle">
@@ -320,6 +387,25 @@ export default function RotationsPane({
                 <>
                     <h2 className="panel-title">
                         Rotation
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: '1rem' }}>
+                            <button
+                                className="download-btn rotation-button screenshot"
+                                style={{ padding: '6px 12px' }}
+                                onClick={() => {exportRotationEntries(rotationEntries)}}
+                            >
+                                <ArrowUpToLine size={16} strokeWidth={3} />
+                                <span className="label">Export</span>
+                            </button>
+                            <button
+                                className="download-btn rotation-button screenshot"
+                                style={{ padding: '6px 12px' }}
+                                onClick={importRotationEntries}
+                            >
+                                <ArrowDownToLine size={16} strokeWidth={3} />
+                                <span className="label">Import</span>
+                            </button>
+                        </div>
                     </h2>
 
                     <div className="rotation-controls">
@@ -572,14 +658,15 @@ export default function RotationsPane({
                                                 >
                                                     Load
                                                 </button>
-                                                {/*
+
                                                 <button
                                                     className="rotation-button"
                                                     title="Export Rotation"
+                                                    onClick={() => {exportRotationEntries(saved.fullCharacterState.rotationEntries)}}
                                                 >
                                                     Export
                                                 </button>
-                                                */}
+
                                             </div>
                                         </div>
 
@@ -747,6 +834,15 @@ export default function RotationsPane({
                                             >
                                                 Load
                                             </button>
+
+                                            <button
+                                                className="rotation-button"
+                                                title="Export Rotation"
+                                                onClick={() => {exportRotationEntries(fullCharacterState.rotationEntries)}}
+                                            >
+                                                Export
+                                            </button>
+
                                         </div>
                                     </div>
                                     <div className="rotation-actions external-actions">
