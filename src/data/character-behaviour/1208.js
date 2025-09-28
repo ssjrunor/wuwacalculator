@@ -28,7 +28,7 @@ export function applyGalbrenaLogic({
         'Resonance Liberation - Hellfire Absolution'
     ].some(n => name.includes(n.toLowerCase()));
 
-    if (tab === 'normalAttack' || tab === 'forteCircuit') {
+    if (tab === 'normalAttack' || tab === 'forteCircuit' || tab === 'resonanceSkill') {
         skillMeta.skillType = 'heavy';
     }
 
