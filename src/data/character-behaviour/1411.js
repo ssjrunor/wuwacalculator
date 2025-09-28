@@ -77,11 +77,11 @@ export function applyQYLogic({
 
     if (isActiveSequence(3)) {
         if (tab === 'resonanceLiberation') {
-            skillMeta.multiplier *= 4;
+            skillMeta.multiplier *= 6;
         }
 
         if (isToggleActive(3) && inherent1) {
-            skillMeta.multiplier += 4;
+            skillMeta.multiplier += 6;
         }
     }
 
@@ -110,6 +110,11 @@ export function applyQYLogic({
         skillMeta.multiplier = 6;
         skillMeta.visible = isActiveSequence(6);
         skillMeta.skillType = 'echoSkill';
+    }
+
+    if (isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__qyS6) {
+        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + 100;
+        mergedBuffs.__qyS6 = true;
     }
 
     return {mergedBuffs, combatState, skillMeta};

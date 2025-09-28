@@ -86,7 +86,7 @@ export function applyGalbrenaLogic({
         }
 
         if ( isToggleActive(6) && characterState?.activeStates?.demonHypostasis && tab === 'forteCircuit' ) {
-            const bonus = Math.min((characterState?.activeStates?.afterflame ?? 0) * 0.625, 25);
+            const bonus = Math.min((characterState?.activeStates?.afterflame ?? 0) * 0.875, 35);
             skillMeta.amplify = (skillMeta.amplify ?? 0) + bonus;
         }
     }

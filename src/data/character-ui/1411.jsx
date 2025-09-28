@@ -188,7 +188,7 @@ export function QiuyuanSequenceToggles({
                                           setCharacterRuntimeStates,
                                           charId
                                       }) {
-    if (!['3'].includes(String(nodeKey))) return null;
+    if (!['3', '6'].includes(String(nodeKey))) return null;
 
     const requiredLevel = Number(nodeKey);
     const isDisabled = currentSequenceLevel < requiredLevel;
