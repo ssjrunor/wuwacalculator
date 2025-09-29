@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useReducer, useState} from 'react';
-import {ArrowUpToLine, ArrowDownToLine, Pencil, Trash2} from 'lucide-react';
+import {ArrowDownToLine, ArrowUpToLine, Pencil, Trash2} from 'lucide-react';
 import {closestCenter, DndContext, PointerSensor, useSensor, useSensors} from '@dnd-kit/core';
 import {arrayMove, SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable';
 import {restrictToFirstScrollableAncestor} from '@dnd-kit/modifiers';
@@ -18,6 +18,28 @@ const tabDisplayOrder = [
     'echoAttacks',
     'negativeEffect'
 ];
+
+const errorMessages = [
+    "Pro Tip: Try using this on {character} instead, unless you enjoy seeing these alerts.",
+    "Oops! Wrong character. {character} is waiting for you.",
+    "Nice try, but this file belongs to {character}.",
+    "Plot twist: this rotation is secretly for {character}.",
+    "Error 404: Correct character not found. Did you mean to use this on {character}?",
+    "Wrong file, buddy. this belongs to {character}.",
+    "Rotation mismatch! The prophecy says it belongs to {character}.",
+    "No match found. {character} is probably the right choice.",
+    "You can’t force this rotation, it only vibes with {character}.",
+    "{current} and {character} don't share the same skill set unfortunately.",
+];
+
+const errorMessagesNoChar = [
+    "This rotation doesn’t belong here. Maybe try one for {current}?",
+    "Rotation mismatch! {current} looks confused.",
+    "Oops! Wrong character file. But hey, you could try making one for {current}.",
+    "You can’t force this rotation, i'm sure {current} thinks so too.",
+    "No match found. {current} thinks you're just messing around.",
+    "If i let you load this in you may break the app... and we don't want that right?"
+]
 
 const tabDisplayNames = {
     normalAttack: 'Normal Attack',
@@ -299,7 +321,9 @@ export default function RotationsPane({
         }
     }, [charId, filterOptions, teamFilterOptions]);
 
-    function exportRotationEntries(rotationEntries) {
+    function exportRotationEntries(rotationName, characterState) {
+        const runtime = characterState ?? characterRuntimeStates[charId];
+        const rotationEntries = runtime.rotationEntries ?? [];
         const cleanedEntries = rotationEntries.map(entry => {
             const { snapshot, ...rest } = entry;
             return {
@@ -309,13 +333,26 @@ export default function RotationsPane({
         });
 
         const exportData = {
-            charId,
+            charId: runtime.Id,
+            character: runtime.Name,
+            rotation: rotationName ?? runtime.Name,
             rotationEntries: cleanedEntries
         };
 
+        const cleanedRotationName = rotationName
+            ? String(rotationName)
+                .replace(/, /g, '-')
+                .replace(/,/g, '-')
+                .replace(/\s+/g, '-')
+                .replace(/[<>:"/\\|?*\x00-\x1F]/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '')
+                .toLowerCase()
+            : null;
+
         const now = new Date();
         const timestamp = now.toISOString().replace(/[:.]/g, '-');
-        const characterName = characterRuntimeStates[charId]?.Name?.toLowerCase() || `char-${charId}`;
+        const characterName = runtime?.Name?.toLowerCase() || `char-${charId}`;
 
         const dataStr = JSON.stringify(exportData, null, 2);
         const blob = new Blob([dataStr], { type: 'application/json' });
@@ -323,7 +360,7 @@ export default function RotationsPane({
 
         const link = document.createElement('a');
         link.href = url;
-        link.download = `rotation-${characterName}-${timestamp}.json`;
+        link.download = `rotation-${cleanedRotationName ?? characterName}-${timestamp}.json`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -350,7 +387,20 @@ export default function RotationsPane({
                     }
 
                     if (data.charId !== charId) {
-                        alert('Error: This rotation file was created for a different character.');
+                        const currentChar = characterRuntimeStates[charId]?.Name || "this character";
+                        const messagesComp = [...errorMessages, ...errorMessagesNoChar];
+                        let msg = messagesComp[Math.floor(Math.random() * messagesComp.length)];
+                        if (msg.includes("{character}") && data.character) {
+                            msg = messagesComp[Math.floor(Math.random() * messagesComp.length)];
+                            msg = msg.replace("{character}", data.character);
+                            msg = msg.replace("{current}", currentChar);
+                            alert(msg);
+                        } else {
+                            msg = errorMessagesNoChar[Math.floor(Math.random() * errorMessagesNoChar.length)];
+                            msg = msg.replace("{current}", currentChar);
+                            alert(msg);
+                        }
+
                         return;
                     }
 
@@ -392,7 +442,7 @@ export default function RotationsPane({
                             <button
                                 className="download-btn rotation-button screenshot"
                                 style={{ padding: '6px 12px' }}
-                                onClick={() => {exportRotationEntries(rotationEntries)}}
+                                onClick={exportRotationEntries}
                             >
                                 <ArrowUpToLine size={16} strokeWidth={3} />
                                 <span className="label">Export</span>
@@ -662,7 +712,7 @@ export default function RotationsPane({
                                                 <button
                                                     className="rotation-button"
                                                     title="Export Rotation"
-                                                    onClick={() => {exportRotationEntries(saved.fullCharacterState.rotationEntries)}}
+                                                    onClick={() => {exportRotationEntries(saved.characterName, saved.fullCharacterState)}}
                                                 >
                                                     Export
                                                 </button>
@@ -838,7 +888,7 @@ export default function RotationsPane({
                                             <button
                                                 className="rotation-button"
                                                 title="Export Rotation"
-                                                onClick={() => {exportRotationEntries(fullCharacterState.rotationEntries)}}
+                                                onClick={() => {exportRotationEntries(name, fullCharacterState)}}
                                             >
                                                 Export
                                             </button>
