@@ -73,6 +73,17 @@ export default function CharacterSelector({
         }));
     };
 
+    const maxedSkills = (
+        characterLevel === 90 &&
+        Object.entries(sliderValues).every(([key, value]) => key === 'sequence' || value === 10) &&
+        Object.entries(activeCharacter.raw?.SkillTrees ?? {}).every(([nodeId, node]) => {
+            if (node.NodeType === 4 && node.Skill?.Name) {
+                return traceNodeBuffs.activeNodes?.[nodeId];
+            }
+            return true;
+        })
+    );
+
     return (
         <>
             <CharacterHeader
@@ -108,12 +119,13 @@ export default function CharacterSelector({
                             />
                         </div>
                         <button
-                            className="btn-primary max"
+                            className={`btn-primary max ${maxedSkills ? 'maxed' : ''}`}
                             style={{
                                 padding:'1px 5px 1px 5px',
                                 background: 'none',
                                 opacity: '0.5'
                             }}
+                            disabled={maxedSkills}
                             onClick={() => {
                                 setCharacterLevel(90);
 
@@ -151,7 +163,7 @@ export default function CharacterSelector({
                                 });
                             }}
                         >
-                            Max
+                            {maxedSkills ? 'Maxed ✓' : 'Max'}
                         </button>
                     </div>
                     <div className="slider-controls">

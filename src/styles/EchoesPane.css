@@ -352,38 +352,6 @@
     color: rgba(200, 200, 200, 0.7);
 }
 
-.popup-message {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(245, 245, 245, 0.78);
-    color: firebrick;
-    font-weight: bold;
-    padding: 12px 20px;
-    border-radius: 16px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    z-index: 9999;
-    font-size: 14px;
-    animation: shakeAndFade 3s ease forwards;
-}
-
-.dark .popup-message {
-    background: linear-gradient(145deg, #1f2937, rgba(33, 48, 58, 0.69));
-    color: #ff4b4b;
-}
-
-@keyframes shakeAndFade {
-    0% { transform: translateX(-50%) translateX(0); opacity: 0; }
-    5% { transform: translateX(-50%) translateX(-2px); opacity: 1; }
-    10% { transform: translateX(-50%) translateX(2px); }
-    15% { transform: translateX(-50%) translateX(-1px); }
-    20% { transform: translateX(-50%) translateX(1px); }
-    25% { transform: translateX(-50%) translateX(0); }
-    80% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
 .toggle-effect-button {
     margin-top: 12px;
     display: flex;

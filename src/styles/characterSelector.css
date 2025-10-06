@@ -259,6 +259,19 @@
     color: var(--primary-color);
 }
 
+.btn-primary.max.maxed {
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.dark .btn-primary.max.maxed {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark-alt .btn-primary.max.maxed {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
 .btn-primary.max:hover {
     background-color: rgba(0, 0, 0, 0.12) !important;
     opacity: 1 !important;

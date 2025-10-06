@@ -41,6 +41,9 @@ export function addEchoToBag(newEcho) {
             uid: crypto.randomUUID?.() ?? `${Date.now()}-${Math.random()}`
         });
         notify();
+        return false;
+    } else {
+        return true;
     }
 }
 

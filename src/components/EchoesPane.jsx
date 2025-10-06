@@ -27,24 +27,27 @@ import {
 } from "../utils/echoHelper.js";
 import {preloadImages} from "../pages/calculator.jsx";
 import {getWeight} from "../constants/charStatWeights.js";
+import NotificationToast from "./NotificationToast.jsx";
 
 export default function EchoesPane({
                                        charId,
                                         setCharacterRuntimeStates,
                                         characterRuntimeStates,
                                    }) {
+    const [popupMessage, setPopupMessage] = useState({
+        icon: null,
+        message: null,
+        color: null,
+    });
+    const [showToast, setShowToast] = useState(false);
+
     const echoSlots = [0, 1, 2, 3, 4];
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeSlot, setActiveSlot] = useState(null);
     const [substatModalSlot, setSubstatModalSlot] = useState(null);
     const menuRef = useRef(null);
     const echoData = characterRuntimeStates?.[charId]?.equippedEchoes ?? [null, null, null, null, null];
-    const [popupMessage, setPopupMessage] = useState('');
     const [showEffect, setShowEffect] = useState(false);
-    const showPopup = (message, duration = 3000) => {
-        setPopupMessage(message);
-        setTimeout(() => setPopupMessage(''), duration);
-    };
     const [bagOpen, setBagOpen] = useState(false);
     const [editingEcho, setEditingEcho] = useState(null);
 
@@ -121,7 +124,12 @@ export default function EchoesPane({
         const newCost = selectedEcho.cost ?? 0;
         if (totalCost + newCost > 12) {
             const badEchoCost = totalCost + newCost;
-            showPopup("Cost (" + badEchoCost + ") > 12");
+            setPopupMessage({
+                message: 'Nice Try! But... cost (' + badEchoCost + ') > 12 (￣￢￣ヾ)',
+                icon: '✘',
+                color: 'red'
+            });
+            setShowToast(true);
             return;
         }
 
@@ -220,6 +228,8 @@ export default function EchoesPane({
                 onEchoesParsed={(parsedList) => {
                     applyParsedEchoesToEquipped(parsedList, charId, setCharacterRuntimeStates);
                 }}
+                setShowToast={setShowToast}
+                setPopupMessage={setPopupMessage}
             />
             <div className="echoes-header">
                 <button
@@ -306,7 +316,22 @@ export default function EchoesPane({
                                                             onClick={() => {
                                                                 const freshEcho = characterRuntimeStates?.[charId]?.equippedEchoes?.[slotIndex];
                                                                 if (freshEcho) {
-                                                                    addEchoToBag(freshEcho);
+                                                                    const added = addEchoToBag(freshEcho);
+
+                                                                    if (added) {
+                                                                        setPopupMessage({
+                                                                            message: 'It\'s in already~! ◑ . ◑',
+                                                                            icon: '✔',
+                                                                            color: 'limegreen'
+                                                                        });
+                                                                    } else {
+                                                                        setPopupMessage({
+                                                                            message: 'Added to your bag~! (〜^∇^)〜',
+                                                                            icon: '✔',
+                                                                            color: 'limegreen'
+                                                                        });
+                                                                    }
+                                                                    setShowToast(true);
                                                                 }
                                                             }}
                                                             title="Save Echo to Bag"
@@ -715,7 +740,12 @@ export default function EchoesPane({
                         const newTotalCost = currentTotalCost + (echo.cost ?? 0);
 
                         if (newTotalCost > 12) {
-                            showPopup("Cost (" + newTotalCost + ") > 12");
+                            setPopupMessage({
+                                message: 'Nice Try! But... Cost (' + newTotalCost + ') > 12 (￣￢￣ヾ)',
+                                icon: '✘',
+                                color: 'red'
+                            });
+                            setShowToast(true);
                             return;
                         }
 
@@ -735,10 +765,17 @@ export default function EchoesPane({
                     }}
                 />
             )}
-            {popupMessage && (
-                <div className="popup-message">
-                    {popupMessage}
-                </div>
+
+            {showToast && popupMessage.message && (
+                <NotificationToast
+                    message={popupMessage.message}
+                    icon={popupMessage.icon}
+                    color={popupMessage.color}
+                    onClose={() => setShowToast(false)}
+                    position={'top'}
+                    bold={true}
+                    duration={3000}
+                />
             )}
         </div>
     );
@@ -794,7 +831,6 @@ export function highlightKeywordsInText(text, extraKeywords = []) {
 
 export function getEquippedEchoesScoreDetails(charId, characterRuntimeStates) {
     const echoes = characterRuntimeStates?.[charId]?.equippedEchoes ?? [];
-    //console.log(characterRuntimeStates);
     const items = echoes.map((echo, idx) => {
         const result = getEchoScores(charId, echo);
         return {

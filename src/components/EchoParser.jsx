@@ -48,7 +48,7 @@ const imageToCanvasContext = (image, width, height) => {
     return ctx;
 };
 
-const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates }) => {
+const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopupMessage, setShowToast }) => {
     const [imageSrc, setImageSrc] = useState(null);
     const [imageElement, setImageElement] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -91,6 +91,12 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates }) => {
         img.onload = async () => {
             if (img.naturalWidth !== 1920 || img.naturalHeight !== 1080) {
                 setErrorImageSize(true);
+                setPopupMessage({
+                    message: 'Nice Try! But... This isn\'t a valid image (￣￢￣ヾ)',
+                    icon: '✘',
+                    color: 'red'
+                });
+                setShowToast(true);
                 setIsShaking(true);
                 setImageSrc(null);
                 return;
@@ -115,6 +121,12 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates }) => {
 
             setIsLoading(false);
             setShowRulesModal(false);
+            setPopupMessage({
+                message: 'Success~! (〜^∇^)〜',
+                icon: '✔',
+                color: 'limegreen'
+            });
+            setShowToast(true);
         };
 
         img.src = URL.createObjectURL(file);

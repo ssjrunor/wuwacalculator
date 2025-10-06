@@ -17,6 +17,7 @@ import {calculateRotationTotals} from "./Rotations.jsx";
 import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
 import {downloadFixedSizePNG} from "../utils/ScreenshotUtil.js";
 import {Download, Camera} from 'lucide-react';
+import NotificationToast from "./NotificationToast.jsx";
 
 export default function OverviewDetailPane({
                                                character,
@@ -34,6 +35,14 @@ export default function OverviewDetailPane({
                                                allRotations
                                            }) {
     if (!character || !runtime) return null;
+
+    const [popupMessage, setPopupMessage] = useState({
+        icon: null,
+        message: null,
+        color: null,
+    });
+
+    const [showToast, setShowToast] = useState(false);
 
     let { displayName, level } = character;
 
@@ -54,8 +63,13 @@ export default function OverviewDetailPane({
             copyToClipboard: true,
             shouldDownload: false
         });
-        alert(copied ? 'Screenshot copied to clipboard!' :
-            'Copied a data URL (image clipboard not supported).');
+        setPopupMessage({
+            message: copied ? 'Screenshot copied to clipboard~! (〜^∇^)〜' :
+                'Copied a data URL (image clipboard not supported (・_・;)).',
+            icon: '✔',
+            color: 'limegreen'
+        });
+        setShowToast(true);
     };
 
     const weaponMap = {};
@@ -109,7 +123,6 @@ export default function OverviewDetailPane({
 
     function deleteCharacter() {
         const currentId = String(character.link);
-
         const remainingIds = sortedCharacterIds.filter(id => id !== currentId);
 
         if (remainingIds.length === 0 && currentId === '1506') {
@@ -132,6 +145,12 @@ export default function OverviewDetailPane({
         setCharacterRuntimeStates(prev => {
             const updated = { ...prev };
             delete updated[currentId];
+            setPopupMessage({
+                message: displayName + ' has been evicted~! (〜^∇^)〜',
+                icon: '✔',
+                color: 'limegreen'
+            });
+            setShowToast(true);
             return updated;
         });
     }
@@ -754,6 +773,19 @@ export default function OverviewDetailPane({
                     Delete Character
                 </button>
             </div>
+
+            {showToast && popupMessage.message && (
+                <NotificationToast
+                    message={popupMessage.message}
+                    icon={popupMessage.icon}
+                    color={popupMessage.color}
+                    onClose={() => setShowToast(false)}
+                    position={'top'}
+                    bold={true}
+                    duration={3000}
+                />
+            )}
+
         </>
     );
 }

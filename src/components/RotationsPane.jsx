@@ -7,6 +7,8 @@ import RotationItem from "./RotationItem.jsx";
 import {getSkillDamageCache} from '../utils/skillDamageCache';
 import {usePersistentState} from "../hooks/usePersistentState.js";
 import {calculateRotationTotals} from "./Rotations.jsx";
+import NotificationToast from "./NotificationToast.jsx";
+import {isEqual} from "lodash";
 
 const tabDisplayOrder = [
     'normalAttack',
@@ -103,6 +105,14 @@ export default function RotationsPane({
                                           setSavedTeamRotations,
                                           savedTeamRotations
                                       }) {
+    const [popupMessage, setPopupMessage] = useState({
+        icon: null,
+        message: null,
+        color: null,
+    });
+
+    const [showToast, setShowToast] = useState(false);
+
     const [viewMode, setViewMode] = useState('new');
     const [showSkillOptions, setShowSkillOptions] = useState(false);
     const [expandedTabs, setExpandedTabs] = useState(() =>
@@ -256,6 +266,12 @@ export default function RotationsPane({
             [id]: saved.fullCharacterState
         }));
         localStorage.setItem("activeCharacterId", JSON.stringify(id));
+        setPopupMessage({
+            message: 'Loaded Successfully~! (〜^∇^)〜',
+            icon: '✔',
+            color: 'limegreen'
+        });
+        setShowToast(true);
     };
 
     const normalizedEntries = rotationEntries.map((entry, idx) => ({
@@ -382,7 +398,12 @@ export default function RotationsPane({
                     const data = JSON.parse(e.target.result);
 
                     if (!data || !Array.isArray(data.rotationEntries) || typeof data.charId === 'undefined') {
-                        alert('Invalid file structure.');
+                        setPopupMessage({
+                            message: 'This isn\'t a rotation file... what were you trying to do...? (￣□￣)',
+                            icon: '✘',
+                            color: '#ff3f3f'
+                        });
+                        setShowToast(true);
                         return;
                     }
 
@@ -390,21 +411,41 @@ export default function RotationsPane({
                         const currentChar = characterRuntimeStates[charId]?.Name || "this character";
                         const messagesComp = [...errorMessages, ...errorMessagesNoChar];
                         let msg = messagesComp[Math.floor(Math.random() * messagesComp.length)];
+
                         if (msg.includes("{character}") && data.character) {
-                            msg = messagesComp[Math.floor(Math.random() * messagesComp.length)];
                             msg = msg.replace("{character}", data.character);
                             msg = msg.replace("{current}", currentChar);
-                            alert(msg);
                         } else {
                             msg = errorMessagesNoChar[Math.floor(Math.random() * errorMessagesNoChar.length)];
                             msg = msg.replace("{current}", currentChar);
-                            alert(msg);
                         }
 
+                        setPopupMessage({
+                            message: msg + ' (ㆆ ᴗ ㆆ)',
+                            icon: '✘',
+                            color: '#ff3f3f'
+                        });
+                        setShowToast(true);
+                        return;
+                    }
+
+                    if (isEqual(data.rotationEntries, rotationEntries)) {
+                        setPopupMessage({
+                            message: 'Same rotation but you do you i guess~! (゜。゜)',
+                            icon: '✔',
+                            color: 'limegreen'
+                        });
+                        setShowToast(true);
                         return;
                     }
 
                     setRotationEntries(data.rotationEntries);
+                    setPopupMessage({
+                        message: 'Imported successfully~! (〜^∇^)〜',
+                        icon: '✔',
+                        color: 'limegreen'
+                    });
+                    setShowToast(true);
                 } catch (err) {
                     alert('Error reading file: ' + err.message);
                 }
@@ -923,6 +964,18 @@ export default function RotationsPane({
                         })()}
                     </div>
                 </>
+            )}
+
+            {showToast && popupMessage.message && (
+                <NotificationToast
+                    message={popupMessage.message}
+                    icon={popupMessage.icon}
+                    color={popupMessage.color}
+                    onClose={() => setShowToast(false)}
+                    position={'top'}
+                    bold={true}
+                    duration={3000}
+                />
             )}
         </div>
     );

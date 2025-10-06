@@ -5,8 +5,17 @@ import useDarkMode from "../hooks/useDarkMode";
 import ResetSettingsButton from '../components/ResetSettingsButton.jsx';
 import {googleLogout, useGoogleLogin} from '@react-oauth/google';
 import {getSyncData, restoreFromDrive, uploadToDrive} from "../utils/driveSync.js";
+import NotificationToast from "../components/NotificationToast.jsx";
 
 export default function Setting() {
+    const [popupMessage, setPopupMessage] = useState({
+        icon: null,
+        message: null,
+        color: null,
+    });
+
+    const [showToast, setShowToast] = useState(false);
+
     const navigate = useNavigate();
     const { theme, setTheme, darkVariant, setDarkVariant, effectiveTheme } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
@@ -40,7 +49,12 @@ export default function Setting() {
         const id = JSON.parse(localStorage.getItem("activeCharacterId") || "null");
 
         if (!runtime[id]) {
-            alert("No cached character data found.");
+            setPopupMessage({
+                message: 'Oh... no cached character data found... (ㆆ ᴗ ㆆ)',
+                icon: '✘',
+                color: 'red'
+            });
+            setShowToast(true);
             return;
         }
 
@@ -80,7 +94,12 @@ export default function Setting() {
                 setImportPreview(data);
                 setShowImportModal(true);
             } catch (err) {
-                alert("Failed to import: " + err.message);
+                setPopupMessage({
+                    message: 'Failed to import: ' + err.message + ' (ㆆ ᴗ ㆆ)',
+                    icon: '✘',
+                    color: 'red'
+                });
+                setShowToast(true);
             }
         };
         reader.readAsText(file);
@@ -162,7 +181,7 @@ export default function Setting() {
         );
 
         const data = await res.json();
-        console.log('Files in AppData folder:');
+        //console.log('Files in AppData folder:');
     }
 
     useEffect(() => {
@@ -179,7 +198,7 @@ export default function Setting() {
             );
 
             const data = await res.json();
-            console.log('Files in AppData folder:', data.files);
+            //console.log('Files in AppData folder:', data.files);
         };
 
         //listAllDriveFiles(accessToken);
@@ -375,9 +394,19 @@ export default function Setting() {
                                                 const data = getSyncData();
                                                 try {
                                                     await uploadToDrive(accessToken, data);
-                                                    alert("Backup to Google Drive successful!");
+                                                    setPopupMessage({
+                                                        message: 'Backup to Google Drive successful~! (〜^∇^)〜',
+                                                        icon: '✔',
+                                                        color: 'limegreen'
+                                                    });
+                                                    setShowToast(true);
                                                 } catch (err) {
-                                                    alert("Drive sync failed");
+                                                    setPopupMessage({
+                                                        message: 'Drive sync failed... (ㆆ ᴗ ㆆ)',
+                                                        icon: '✘',
+                                                        color: 'red'
+                                                    });
+                                                    setShowToast(true);
                                                 }
                                             }}
                                         >
@@ -452,6 +481,17 @@ export default function Setting() {
                         </div>
                     </div>
                 </div>
+            )}
+            {showToast && popupMessage.message && (
+                <NotificationToast
+                    message={popupMessage.message}
+                    icon={popupMessage.icon}
+                    color={popupMessage.color}
+                    onClose={() => setShowToast(false)}
+                    position={'top'}
+                    bold={true}
+                    duration={3000}
+                />
             )}
         </div>
     );
