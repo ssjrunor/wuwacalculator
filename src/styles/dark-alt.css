@@ -87,10 +87,6 @@
     background-color: #1f1f1f;
     border-color: #777;
 }
-.dark-alt .modern-checkbox input[type="checkbox"]:checked {
-    background-color: #6366f1;
-    border-color: #6366f1;
-}
 
 .dark-alt .buff-row {
     background: rgba(19, 20, 23, 0.38);
