@@ -399,7 +399,7 @@ export default function RotationsPane({
 
                     if (!data || !Array.isArray(data.rotationEntries) || typeof data.charId === 'undefined') {
                         setPopupMessage({
-                            message: 'This isn\'t a rotation file... what were you trying to do...? (￣□￣)',
+                            message: 'This isn\'t a rotation file... what were you trying to do...? (゜-゜)',
                             icon: '✘',
                             color: '#ff3f3f'
                         });
@@ -483,7 +483,7 @@ export default function RotationsPane({
                             <button
                                 className="download-btn rotation-button screenshot"
                                 style={{ padding: '6px 12px' }}
-                                onClick={exportRotationEntries}
+                                onClick={() => exportRotationEntries(characterRuntimeStates[charId].Name + ' unnamed')}
                             >
                                 <ArrowUpToLine size={16} strokeWidth={3} />
                                 <span className="label">Export</span>
