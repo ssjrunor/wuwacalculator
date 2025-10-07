@@ -207,7 +207,7 @@ export function GalbrenaSequenceToggles({
                                             toggleSequence,
                                             currentSequenceLevel,
                                         }) {
-    if (!['1', '2', '4', '6'].includes(String(nodeKey))) return null;
+    if (!['1', '4', '6'].includes(String(nodeKey))) return null;
 
     const requiredLevel = Number(nodeKey);
     const isDisabled = currentSequenceLevel < requiredLevel;

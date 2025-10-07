@@ -52,7 +52,7 @@ export function applyGalbrenaLogic({
     }
 
     if (characterState?.activeStates?.burningDrive && !mergedBuffs.__burningDrive) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + (isActiveSequence(2) ? (20 * 4.5) : 20);
         mergedBuffs.__burningDrive = true;
     }
 
@@ -64,11 +64,6 @@ export function applyGalbrenaLogic({
     if ( isActiveSequence(1) && isToggleActive(1) && characterState?.activeStates?.demonHypostasis && tab === 'forteCircuit' ) {
         const bonus = Math.min((characterState?.activeStates?.afterflame ?? 0) * 2, 80);
         skillMeta.skillCritDmg = (skillMeta.skillCritDmg ?? 0) + bonus;
-    }
-
-    if (isActiveSequence(2) && isToggleActive(2) && !mergedBuffs.__galbrenaS2) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 350;
-        mergedBuffs.__galbrenaS2 = true;
     }
 
     if (isActiveSequence(3) && name.includes('resonance liberation - hellfire absolution')) {
