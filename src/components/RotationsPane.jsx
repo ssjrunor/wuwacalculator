@@ -525,6 +525,13 @@ export default function RotationsPane({
                                     fullCharacterState: characterRuntimeStates?.[characterId] ?? {}
                                 };
                                 setSavedRotations(prev => [...prev, newSaved]);
+
+                                setPopupMessage({
+                                    message: 'Added to saves~! (〜^∇^)〜',
+                                    icon: '✔',
+                                    color: 'limegreen'
+                                });
+                                setShowToast(true);
                             }}
                         >
                             ＋
@@ -837,6 +844,13 @@ export default function RotationsPane({
                                         fullCharacterState: characterRuntimeStates?.[charId] ?? {}
                                     };
                                     setSavedTeamRotations(prev => [...prev, newEntry]);
+
+                                    setPopupMessage({
+                                        message: 'Added to team saves~! (〜^∇^)〜',
+                                        icon: '✔',
+                                        color: 'limegreen'
+                                    });
+                                    setShowToast(true);
                                 }}
                             >
                                 +
