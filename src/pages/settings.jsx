@@ -251,16 +251,6 @@ export default function Setting() {
                                     <span className="label-text">Home</span>
                                 </div>
                             </button>
-                            {/*
-                                <button className="sidebar-sub-button">
-                                    <div className="icon-slot">
-                                        <HelpCircle size={24} className="help-icon" stroke="currentColor" />
-                                    </div>
-                                    <div className="label-slot">
-                                        <span className="label-text">Help</span>
-                                    </div>
-                                </button>
-                            */}
                             <button className="sidebar-sub-button" onClick={() => navigate('/info')}>
                                 <div className="icon-slot">
                                     <Info size={24} />
@@ -274,7 +264,7 @@ export default function Setting() {
                                     <HelpCircle size={24} className="help-icon" stroke="currentColor" />
                                 </div>
                                 <div className="label-slot">
-                                    <span className="label-text">Help</span>
+                                    <span className="label-text">Guides</span>
                                 </div>
                             </button>
                             <button className="sidebar-sub-button" onClick={() => navigate('/changelog')}>

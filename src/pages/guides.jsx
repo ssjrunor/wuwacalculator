@@ -777,7 +777,7 @@ export default function GuidesPage() {
                                 <HelpCircle size={24} className="help-icon" stroke="currentColor" />
                             </div>
                             <div className="label-slot">
-                                <span className="label-text">Help</span>
+                                <span className="label-text">Guides</span>
                             </div>
 
                         </button>

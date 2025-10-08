@@ -92,16 +92,6 @@ export default function InfoPage() {
                                     <span className="label-text">Home</span>
                                 </div>
                             </button>
-                            {/*
-                                <button className="sidebar-sub-button">
-                                    <div className="icon-slot">
-                                        <HelpCircle size={24} className="help-icon" stroke="currentColor" />
-                                    </div>
-                                    <div className="label-slot">
-                                        <span className="label-text">Help</span>
-                                    </div>
-                                </button>
-                                */}
                             <button className="sidebar-sub-button" onClick={() => navigate('/settings')}>
                                 <div className="icon-slot">
                                     <Settings size={24} className="settings-icon" stroke="currentColor" />
@@ -115,7 +105,7 @@ export default function InfoPage() {
                                     <HelpCircle size={24} className="help-icon" stroke="currentColor" />
                                 </div>
                                 <div className="label-slot">
-                                    <span className="label-text">Help</span>
+                                    <span className="label-text">Guides</span>
                                 </div>
                             </button>
                             <button className="sidebar-sub-button" onClick={() => navigate('/changelog')}>
