@@ -9,7 +9,7 @@ import TermsOfService from './pages/TermsOfService';
 import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
 import {useSEO} from "./hooks/useSEO.js";
 import Changelog from "./pages/changelog.jsx";
-import GuidesPage from "./pages/guides.jsx";
+import GuidesPage from "./pages/guidesPage.jsx";
 
 const GA_ID = 'G-W502BDD62S';
 

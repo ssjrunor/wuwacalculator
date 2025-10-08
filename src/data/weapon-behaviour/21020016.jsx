@@ -5,6 +5,7 @@ export function WeaponUI({
                              activeStates,
                              currentParamValues = [],
     keywords,
+                             setCharacterRuntimeStates, charId
                          }) {
     keywords.push('Searing Feather')
     return (

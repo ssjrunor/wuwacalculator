@@ -71,3 +71,16 @@
 .info-section.guides {
     max-width: unset;
 }
+
+.dropzone-click-text.go-to-guides {
+    font-size: 0.875rem;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0.5rem;
+    opacity: 0.5;
+}
+
+.dropzone-click-text.go-to-guides:hover {
+    transform: unset;
+    opacity: 1;
+}
