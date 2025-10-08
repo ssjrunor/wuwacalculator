@@ -322,13 +322,13 @@ export default function EchoesPane({
                                                                         setPopupMessage({
                                                                             message: 'It\'s in already~! ◑ . ◑',
                                                                             icon: '✔',
-                                                                            color: 'limegreen'
+                                                                            color: { light: 'green', dark: 'limegreen' },
                                                                         });
                                                                     } else {
                                                                         setPopupMessage({
                                                                             message: 'Added to your bag~! (〜^∇^)〜',
                                                                             icon: '✔',
-                                                                            color: 'limegreen'
+                                                                            color: { light: 'green', dark: 'limegreen' },
                                                                         });
                                                                     }
                                                                     setShowToast(true);

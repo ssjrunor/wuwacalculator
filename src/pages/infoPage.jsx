@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import { Sun, Moon, Sparkle, Info, Settings } from "lucide-react";
+import {Sun, Moon, Sparkle, Info, Settings, History} from "lucide-react";
 import useDarkMode from "../hooks/useDarkMode";
 
 export default function InfoPage() {
@@ -108,6 +108,14 @@ export default function InfoPage() {
                                 </div>
                                 <div className="label-slot">
                                     <span className="label-text">Settings</span>
+                                </div>
+                            </button>
+                            <button className="sidebar-sub-button" onClick={() => navigate('/changelog')}>
+                                <div className="icon-slot">
+                                    <History size={24} stroke="currentColor" />
+                                </div>
+                                <div className="label-slot">
+                                    <span className="label-text">Changelog</span>
                                 </div>
                             </button>
                         </div>

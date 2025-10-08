@@ -67,7 +67,7 @@ export default function OverviewDetailPane({
             message: copied ? 'Screenshot copied to clipboard~! (〜^∇^)〜' :
                 'Copied a data URL (image clipboard not supported (・_・;)).',
             icon: '✔',
-            color: 'limegreen'
+            color: { light: 'green', dark: 'limegreen' },
         });
         setShowToast(true);
     };

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import useDarkMode from "../hooks/useDarkMode.js";
-import {Info, Moon, Settings, Sparkle, Sun} from "lucide-react";
+import {History, Info, Moon, Settings, Sparkle, Sun} from "lucide-react";
 
 export default function TermsOfService() {
     const navigate = useNavigate();
@@ -91,6 +91,14 @@ export default function TermsOfService() {
                             </div>
                             <div className="label-slot">
                                 <span className="label-text">Info</span>
+                            </div>
+                        </button>
+                        <button className="sidebar-sub-button" onClick={() => navigate('/changelog')}>
+                            <div className="icon-slot">
+                                <History size={24} stroke="currentColor" />
+                            </div>
+                            <div className="label-slot">
+                                <span className="label-text">Changelog</span>
                             </div>
                         </button>
                         <button className="sidebar-button" onClick={toggleTheme}>

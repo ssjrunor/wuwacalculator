@@ -269,7 +269,7 @@ export default function RotationsPane({
         setPopupMessage({
             message: 'Loaded Successfully~! (〜^∇^)〜',
             icon: '✔',
-            color: 'limegreen'
+            color: { light: 'green', dark: 'limegreen' },
         });
         setShowToast(true);
     };
@@ -423,7 +423,7 @@ export default function RotationsPane({
                         setPopupMessage({
                             message: msg + ' (ㆆ ᴗ ㆆ)',
                             icon: '✘',
-                            color: '#ff3f3f'
+                            color: 'red'
                         });
                         setShowToast(true);
                         return;
@@ -433,7 +433,7 @@ export default function RotationsPane({
                         setPopupMessage({
                             message: 'Same rotation but you do you i guess~! (゜。゜)',
                             icon: '✔',
-                            color: 'limegreen'
+                            color: { light: 'green', dark: 'limegreen' },
                         });
                         setShowToast(true);
                         return;
@@ -443,7 +443,7 @@ export default function RotationsPane({
                     setPopupMessage({
                         message: 'Imported successfully~! (〜^∇^)〜',
                         icon: '✔',
-                        color: 'limegreen'
+                        color: { light: 'green', dark: 'limegreen' },
                     });
                     setShowToast(true);
                 } catch (err) {
@@ -529,7 +529,7 @@ export default function RotationsPane({
                                 setPopupMessage({
                                     message: 'Added to saves~! (〜^∇^)〜',
                                     icon: '✔',
-                                    color: 'limegreen'
+                                    color: { light: 'green', dark: 'limegreen' },
                                 });
                                 setShowToast(true);
                             }}
@@ -988,7 +988,7 @@ export default function RotationsPane({
                     onClose={() => setShowToast(false)}
                     position={'top'}
                     bold={true}
-                    duration={3000}
+                    duration={4000}
                 />
             )}
         </div>

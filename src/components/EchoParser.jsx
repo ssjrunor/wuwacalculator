@@ -124,7 +124,7 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopu
             setPopupMessage({
                 message: 'Success~! (〜^∇^)〜',
                 icon: '✔',
-                color: 'limegreen'
+                color: { light: 'green', dark: 'limegreen' },
             });
             setShowToast(true);
         };

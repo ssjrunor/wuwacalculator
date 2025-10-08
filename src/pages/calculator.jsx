@@ -36,12 +36,28 @@ import {getSkillDamageCache} from "../utils/skillDamageCache.js";
 import CharacterOverviewPane from "../components/CharacterOverview.jsx";
 import {isEqual} from "lodash";
 import {calculateRotationTotals, getMainRotationTotals, getTeamRotationTotal} from "../components/Rotations.jsx";
+import NotificationToast from "../components/NotificationToast.jsx";
+import {changelog} from "./changelog.jsx";
 
 export default function Calculator() {
     const [characters, setCharacters] = useState([]);
     loadBase( characters );
+    const [popupMessage, setPopupMessage] = useState({
+        icon: null,
+        message: null,
+        color: {},
+        duration: null,
+        prompt: {}
+    });
+
+    const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
+
     const LATEST_CHANGELOG_VERSION = '2025-09-19 19:39';
+    const latest = changelog[changelog.length - 1];
+    const latestEntry = latest?.entries?.[latest.entries.length - 1];
+    const latestMessage = latestEntry?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
+
     const [showChangelog, setShowChangelog] = useState(false);
     const [shouldScrollChangelog, setShouldScrollChangelog] = useState(false);
     const [characterLevel, setCharacterLevel] = useState(1);
@@ -200,8 +216,21 @@ export default function Calculator() {
     useEffect(() => {
         const seenVersion = localStorage.getItem('seenChangelogVersion');
         if (seenVersion !== LATEST_CHANGELOG_VERSION) {
+            setPopupMessage({
+                message: latestMessage,
+                icon: '❤',
+                color: { light: 'green', dark: 'limegreen' },
+                duration: 60000,
+                prompt: {
+                    message: 'See changelog~!',
+                    action: () => navigate('/changelog')
+                }
+            });
+            setShowToast(true);
+/*
             setShowChangelog(true);
             setShouldScrollChangelog(true);
+*/
             localStorage.setItem('seenChangelogVersion', LATEST_CHANGELOG_VERSION);
         }
     }, []);
@@ -916,17 +945,17 @@ export default function Calculator() {
                                         <span className="label-text">Settings</span>
                                     </div>
                                 </button>
-                                {/*
 
-                                <button className="sidebar-sub-button">
+
+                                {/*<button className="sidebar-sub-button">
                                     <div className="icon-slot">
                                         <HelpCircle size={24} className="help-icon" stroke="currentColor" />
                                     </div>
                                     <div className="label-slot">
                                         <span className="label-text">Help</span>
                                     </div>
-                                </button>
-                                */}
+                                </button>*/}
+
                                 <button className="sidebar-sub-button" onClick={() => navigate('/info')}>
                                     <div className="icon-slot">
                                         <Info size={24} />
@@ -935,7 +964,10 @@ export default function Calculator() {
                                         <span className="label-text">Info</span>
                                     </div>
                                 </button>
-                                <button className="sidebar-sub-button" onClick={() => setShowChangelog(true)}>
+                                <button
+                                    className="sidebar-sub-button"
+                                    onClick={() => navigate('/changelog')}
+                                >
                                     <div className="icon-slot">
                                         <History size={24} stroke="currentColor" />
                                     </div>
@@ -1243,6 +1275,19 @@ export default function Calculator() {
                 onClose={() => setShowChangelog(false)}
                 shouldScroll={shouldScrollChangelog}
             />
+            {showToast && popupMessage.message && (
+                <NotificationToast
+                    message={popupMessage.message}
+                    icon={popupMessage.icon}
+                    color={popupMessage.color}
+                    onClose={() => setShowToast(false)}
+                    position={'top'}
+                    bold={true}
+                    duration={popupMessage.duration}
+                    prompt={popupMessage.prompt}
+                    borderColor={currentSliderColor}
+                />
+            )}
         </>
     );
 }
@@ -1325,7 +1370,6 @@ export function loadBase() {
                 .map(char => char.SplashArt)
                 .filter(Boolean);
         }
-
 
         preloadImages([
             ...darkIcons,

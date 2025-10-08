@@ -269,6 +269,14 @@ export default function Setting() {
                                     <span className="label-text">Info</span>
                                 </div>
                             </button>
+                            <button className="sidebar-sub-button" onClick={() => navigate('/changelog')}>
+                                <div className="icon-slot">
+                                    <History size={24} stroke="currentColor" />
+                                </div>
+                                <div className="label-slot">
+                                    <span className="label-text">Changelog</span>
+                                </div>
+                            </button>
                         </div>
                         <button className="sidebar-button" onClick={toggleTheme}>
                             <div className="icon-slot">
@@ -397,7 +405,7 @@ export default function Setting() {
                                                     setPopupMessage({
                                                         message: 'Backup to Google Drive successful~! (〜^∇^)〜',
                                                         icon: '✔',
-                                                        color: 'limegreen'
+                                                        color: { light: 'green', dark: 'limegreen' },
                                                     });
                                                     setShowToast(true);
                                                 } catch (err) {

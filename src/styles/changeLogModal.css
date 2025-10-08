@@ -59,3 +59,7 @@
     background-color: rgba(100, 100, 100, 0.5);
     border-radius: 4px;
 }
+
+.info-section.changelog {
+    margin-bottom: 1rem;
+}
