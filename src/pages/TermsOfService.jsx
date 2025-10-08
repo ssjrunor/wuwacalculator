@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import useDarkMode from "../hooks/useDarkMode.js";
-import {History, Info, Moon, Settings, Sparkle, Sun} from "lucide-react";
+import {HelpCircle, History, Info, Moon, Settings, Sparkle, Sun} from "lucide-react";
 
 export default function TermsOfService() {
     const navigate = useNavigate();
@@ -91,6 +91,14 @@ export default function TermsOfService() {
                             </div>
                             <div className="label-slot">
                                 <span className="label-text">Info</span>
+                            </div>
+                        </button>
+                        <button className="sidebar-sub-button" onClick={() => navigate('/guides')}>
+                            <div className="icon-slot">
+                                <HelpCircle size={24} className="help-icon" stroke="currentColor" />
+                            </div>
+                            <div className="label-slot">
+                                <span className="label-text">Help</span>
                             </div>
                         </button>
                         <button className="sidebar-sub-button" onClick={() => navigate('/changelog')}>

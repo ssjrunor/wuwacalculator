@@ -9,6 +9,7 @@ import TermsOfService from './pages/TermsOfService';
 import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
 import {useSEO} from "./hooks/useSEO.js";
 import Changelog from "./pages/changelog.jsx";
+import GuidesPage from "./pages/guides.jsx";
 
 const GA_ID = 'G-W502BDD62S';
 
@@ -45,6 +46,7 @@ export default function App() {
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/changelog" element={<Changelog />} />
+                <Route path="/guides" element={<GuidesPage />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
 

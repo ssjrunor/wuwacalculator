@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import {Sun, Moon, Sparkle, Info, Settings, History} from "lucide-react";
+import {Sun, Moon, Sparkle, Info, Settings, History, HelpCircle} from "lucide-react";
 import useDarkMode from "../hooks/useDarkMode";
 import ResetSettingsButton from '../components/ResetSettingsButton.jsx';
 import {googleLogout, useGoogleLogin} from '@react-oauth/google';
@@ -267,6 +267,14 @@ export default function Setting() {
                                 </div>
                                 <div className="label-slot">
                                     <span className="label-text">Info</span>
+                                </div>
+                            </button>
+                            <button className="sidebar-sub-button" onClick={() => navigate('/guides')}>
+                                <div className="icon-slot">
+                                    <HelpCircle size={24} className="help-icon" stroke="currentColor" />
+                                </div>
+                                <div className="label-slot">
+                                    <span className="label-text">Help</span>
                                 </div>
                             </button>
                             <button className="sidebar-sub-button" onClick={() => navigate('/changelog')}>

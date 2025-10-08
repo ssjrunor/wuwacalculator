@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import useDarkMode from "../hooks/useDarkMode.js";
-import {History, Info, Moon, Settings, Sparkle, Sun} from "lucide-react";
+import {HelpCircle, History, Info, Moon, Settings, Sparkle, Sun} from "lucide-react";
 
 export default function Changelog() {
     const navigate = useNavigate();
@@ -117,6 +117,14 @@ export default function Changelog() {
                                     <span className="label-text">Info</span>
                                 </div>
                             </button>
+                            <button className="sidebar-sub-button" onClick={() => navigate('/guides')}>
+                                <div className="icon-slot">
+                                    <HelpCircle size={24} className="help-icon" stroke="currentColor" />
+                                </div>
+                                <div className="label-slot">
+                                    <span className="label-text">Help</span>
+                                </div>
+                            </button>
                         </div>
                         <button className="sidebar-button" onClick={toggleTheme}>
                             <div className="icon-slot">
@@ -177,11 +185,15 @@ export default function Changelog() {
 
 export const changelog = [
     {
-        date: '18/05/2025',
+        date: '09/10/2025',
         entries: [
             {
                 type: 'paragraph',
-                content: `<strong>Pheobe</strong> is now fully functional.`
+                content: `Added the new <strong>Guides Page</strong> with in-depth explanations for <em>Rotations</em>, <em>Team Buffs</em>, <em>Damage Calculations</em>, and <em>Echo Scoring</em>... and more stuff yeah...`
+            },
+            {
+                type: 'paragraph',
+                content: `Guides can be accessed from sidebar navigation or directly through in-app prompts (soon to be implemented).`
             }
         ]
     },

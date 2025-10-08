@@ -841,6 +841,27 @@ export default function Calculator() {
         localStorage.setItem('characterRuntimeStates', JSON.stringify(cleaned));
     }, []);
 
+    useEffect(() => {
+        const currentGuideVersion = '1.0.0-guides';
+        const hasSeenGuideToast = localStorage.getItem('guideToastShown');
+
+        if (hasSeenGuideToast !== currentGuideVersion) {
+            setPopupMessage({
+                message: 'Guides been added, CHECK THEM OUT~! (〜^∇^)〜',
+                icon: '❤',
+                color: { light: 'green', dark: 'limegreen' },
+                duration: 60000,
+                prompt: {
+                    message: 'See guides~!',
+                    action: () => navigate('/guides')
+                }
+            });
+            setShowToast(true);
+
+            localStorage.setItem('guideToastShown', currentGuideVersion);
+        }
+    }, []);
+
     const allRotations = getMainRotationTotals(charId, characterRuntimeStates, savedRotations, savedTeamRotations);
     const teamRotationDmg = getTeamRotationTotal(charId, characterRuntimeStates);
 
@@ -946,22 +967,20 @@ export default function Calculator() {
                                     </div>
                                 </button>
 
-
-                                {/*<button className="sidebar-sub-button">
-                                    <div className="icon-slot">
-                                        <HelpCircle size={24} className="help-icon" stroke="currentColor" />
-                                    </div>
-                                    <div className="label-slot">
-                                        <span className="label-text">Help</span>
-                                    </div>
-                                </button>*/}
-
                                 <button className="sidebar-sub-button" onClick={() => navigate('/info')}>
                                     <div className="icon-slot">
                                         <Info size={24} />
                                     </div>
                                     <div className="label-slot">
                                         <span className="label-text">Info</span>
+                                    </div>
+                                </button>
+                                <button className="sidebar-sub-button" onClick={() => navigate('/guides')}>
+                                    <div className="icon-slot">
+                                        <HelpCircle size={24} className="help-icon" stroke="currentColor" />
+                                    </div>
+                                    <div className="label-slot">
+                                        <span className="label-text">Help</span>
                                     </div>
                                 </button>
                                 <button

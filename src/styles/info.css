@@ -37,3 +37,37 @@
     opacity: 1;
     color: #3100ff;
 }
+
+.guide-entry h4 {
+    margin-bottom: 0.2rem;
+}
+
+.main-echo-description-wrapper.expanded.guides {
+    border: 1px solid rgba(143, 143, 143, 0.24);
+    border-radius: 10px;
+    max-height: unset;
+}
+
+.main-echo-description.guides {
+    padding: 0.5rem;
+    white-space: unset;
+    pointer-events: none;
+    color: #2a2a2a;
+}
+
+.dark .main-echo-description.guides,
+.dark-alt .main-echo-description.guides {
+    color: #cfcfcf;
+}
+
+.info-section.guides:hover .toggle-effect-button.guides{
+    opacity: 1;
+}
+
+.info-section.guides:hover {
+    cursor: pointer;
+}
+
+.info-section.guides {
+    max-width: unset;
+}

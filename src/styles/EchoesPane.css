@@ -359,24 +359,21 @@
     font-size: 12px;
     padding: 4px 0 4px 0;
     background: none;
-    color: rgba(34, 34, 34, 0.69);
+    color: #222;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
+    opacity: 0.5;
 }
 
-.dark .toggle-effect-button {
-    color: rgba(255, 255, 255, 0.42);
-}
-
-.dark .toggle-effect-button:hover {
+.dark .toggle-effect-button,
+.dark-alt .toggle-effect-button {
     color: white;
 }
 
 .toggle-effect-button:hover {
-    color: #222;
-    transform: scale(1.01);
+    opacity: 1;
 }
 
 .main-echo-description-wrapper {
