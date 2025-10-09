@@ -2,8 +2,11 @@
     display: flex;
     flex-direction: column;
     overflow-y: hidden;
-    max-width: 60rem;
     padding-top: 0 !important;
+}
+
+.settings-body .echo-buff {
+    max-width: 60rem;
 }
 
 .settings-header {
@@ -30,9 +33,6 @@
     padding: 2rem 0 2rem 0;
     overflow-y: auto;
     height: calc(100vh - 170px - 60px);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
-    mask-mode: alpha;
 }
 
 @media(max-width: 570px) {
@@ -60,6 +60,12 @@
     transition: background-color 0.2s ease;
 }
 
+.btn-primary.clear {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
 .btn-primary:hover {
     transform: scale(1.05);
     background-color: #7c7b7b;
@@ -83,4 +89,13 @@
 
 .settings-label .main-stat-select:hover {
     background-color: #7c7b7b;
+}
+
+.skills-modal-content.settings-import {
+    max-width: 950px;
+    max-height: 90vh;
+}
+
+.settings-import .btn-primary {
+    width: 100%;
 }

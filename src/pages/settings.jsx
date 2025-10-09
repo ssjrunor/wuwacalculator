@@ -2,19 +2,29 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {Sun, Moon, Sparkle, Info, Settings, History, HelpCircle} from "lucide-react";
 import useDarkMode from "../hooks/useDarkMode";
-import ResetSettingsButton from '../components/ResetSettingsButton.jsx';
 import {googleLogout, useGoogleLogin} from '@react-oauth/google';
 import {getSyncData, restoreFromDrive, uploadToDrive} from "../utils/driveSync.js";
 import NotificationToast from "../components/NotificationToast.jsx";
+import ConfirmationModal from "../components/ConfirmationModal.jsx";
+import ImportOverviewMini from "../components/ImportOverviewMini.jsx";
 
 export default function Setting() {
+    const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
         icon: null,
         message: null,
-        color: null,
+        color: null
     });
 
-    const [showToast, setShowToast] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [confirmMessage, setConfirmMessage] = useState({
+        title: null,
+        message: null,
+        confirmLabel: null,
+        cancelLabel: null,
+        onConfirm: () => {},
+        onCancel: () => {}
+    });
 
     const navigate = useNavigate();
     const { theme, setTheme, darkVariant, setDarkVariant, effectiveTheme } = useDarkMode();
@@ -95,7 +105,7 @@ export default function Setting() {
                 setShowImportModal(true);
             } catch (err) {
                 setPopupMessage({
-                    message: 'Failed to import: ' + err.message + ' (ㆆ ᴗ ㆆ)',
+                    message: 'This isn\'t a character file... what were you trying to do...? (╹ -╹)?',
                     icon: '✘',
                     color: 'red'
                 });
@@ -203,6 +213,33 @@ export default function Setting() {
 
         //listAllDriveFiles(accessToken);
     }, [accessToken]);
+
+    const handleReset = () => {
+        localStorage.clear();
+        localStorage.setItem('enemyLevel', JSON.stringify(100));
+        localStorage.setItem('enemyRes', JSON.stringify(20));
+        localStorage.setItem('characterRuntimeStates', JSON.stringify({}));
+        localStorage.setItem('sliderValues', JSON.stringify({
+            normalAttack: 1,
+            resonanceSkill: 1,
+            forteCircuit: 1,
+            resonanceLiberation: 1,
+            introSkill: 1,
+            sequence: 0
+        }));
+        localStorage.setItem('activeCharacterId', JSON.stringify(1506));
+        window.location.href = '/';
+    };
+
+    const skillNameMap = {
+        normalAttack: 'Normal Attack',
+        forteCircuit: 'Forte Circuit',
+        resonanceSkill: 'Resonance Skill',
+        resonanceLiberation: 'Resonance Liberation',
+        introSkill: 'Intro Skill',
+        outroSkill: 'Outro Skill',
+        sequence: 'Sequence',
+    };
 
     return (
         <div className="layout">
@@ -318,8 +355,14 @@ export default function Setting() {
                 )}
 
                 <div className="main-content settings-page" style={{ padding: '2rem' }}>
-                    <div className="settings-header">
+                    <div className="settings-header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                         <h1>Settings</h1>
+                        <p
+                            className={`dropzone-click-text go-to-guides`}
+                            onClick={() =>navigate('/guides?category=App%20Controls')}
+                        >
+                            See guides
+                        </p>
                     </div>
 
                     <div className="settings-body">
@@ -356,7 +399,21 @@ export default function Setting() {
                             <p style={{ marginBottom: '1rem' }}>
                                 Reset all saved characters, weapons, and buffs. This action is irreversible.
                             </p>
-                            <ResetSettingsButton />
+                            <button
+                                className="btn-primary clear rotation-button"
+                                onClick={() => {
+                                    setConfirmMessage({
+                                        title: 'Delete All Data? ( ˵ •̀ □ •́ ˵ )',
+                                        confirmLabel: 'Delete',
+                                        message: 'This will completely delete all your data and set to default. This action cannot be undone...',
+                                        onConfirm: handleReset,
+                                    });
+                                    setShowConfirm(true);
+                                }}
+                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                            >
+                                Delete
+                            </button>
                         </div>
                         <div className="echo-buff">
                             <h2>Dark Mode Theme</h2>
@@ -430,56 +487,74 @@ export default function Setting() {
             </div>
 
             {showImportModal && (
-                <div className="skills-modal-overlay" onClick={() => setShowImportModal(false)}>
-                    <div className="skills-modal-content" onClick={(e) => e.stopPropagation()}>
+                <div
+                    className="skills-modal-overlay"
+                    onClick={() => setShowImportModal(false)}
+                >
+                    <div
+                        className="skills-modal-content settings-import changelog-modal guides"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <h2>Import Preview</h2>
-                        <p>You’re about to import the following character:</p>
-                        <ul>
-                            <li><strong>Name:</strong> {importPreview?.Name ?? 'Unknown'}</li>
-                            <li><strong>Level:</strong> {importPreview?.CharacterLevel}</li>
-                            {/*
-                            <li>
-                                <strong>Skill Levels:</strong>{' '}
-                                {Object.entries(importPreview?.SkillLevels ?? {}).map(
-                                    ([k, v]) => `${k}: ${v}`
-                                ).join(', ')}
-                            </li>
-                            */}
-                        </ul>
+                        <h3 style={{ margin: 'unset'}} >You’re about to import the following character:</h3>
 
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
-                            <button className="btn-primary" onClick={() => setShowImportModal(false)}>
+                        <ImportOverviewMini importPreview={importPreview} />
+
+                        <div className="modal-footer" style={{ display: 'flex', gap: '0.5rem' }}>
+                        <button
+                                className="edit-substat-button btn-primary echoes"
+                                onClick={() => setShowImportModal(false)}
+                            >
                                 Cancel
                             </button>
                             <button
-                                className="btn-primary"
+                                className="edit-substat-button btn-primary echoes"
                                 onClick={() => {
-                                    const charId = importPreview?.Id ?? importPreview?.id ?? importPreview?.link;
-                                    const prev = JSON.parse(localStorage.getItem("characterRuntimeStates") || "{}");
+                                    const charId =
+                                        importPreview?.Id ??
+                                        importPreview?.id ??
+                                        importPreview?.link;
+                                    const prev = JSON.parse(
+                                        localStorage.getItem('characterRuntimeStates') ||
+                                        '{}'
+                                    );
 
                                     const newRuntimeStates = {
                                         ...prev,
-                                        [charId]: importPreview
+                                        [charId]: importPreview,
                                     };
 
-                                    localStorage.setItem("characterRuntimeStates", JSON.stringify(newRuntimeStates));
-                                    localStorage.setItem("activeCharacterId", JSON.stringify(charId));
+                                    localStorage.setItem(
+                                        'characterRuntimeStates',
+                                        JSON.stringify(newRuntimeStates)
+                                    );
+                                    localStorage.setItem(
+                                        'activeCharacterId',
+                                        JSON.stringify(charId)
+                                    );
 
-                                    localStorage.setItem("team", JSON.stringify([
-                                        charId,
-                                        importPreview.Team?.[1] ?? null,
-                                        importPreview.Team?.[2] ?? null
-                                    ]));
+                                    localStorage.setItem(
+                                        'team',
+                                        JSON.stringify([
+                                            charId,
+                                            importPreview.Team?.[1] ?? null,
+                                            importPreview.Team?.[2] ?? null,
+                                        ])
+                                    );
 
-                                    const rotationEntriesRaw = JSON.parse(localStorage.getItem("rotationEntriesStore") || "{}");
+                                    const rotationEntriesRaw = JSON.parse(
+                                        localStorage.getItem('rotationEntriesStore') || '{}'
+                                    );
                                     const newRotationEntries = {
                                         ...rotationEntriesRaw,
-                                        [charId]: importPreview.rotationEntries ?? []
+                                        [charId]: importPreview.rotationEntries ?? [],
                                     };
-                                    localStorage.setItem("rotationEntriesStore", JSON.stringify(newRotationEntries));
+                                    localStorage.setItem(
+                                        'rotationEntriesStore',
+                                        JSON.stringify(newRotationEntries)
+                                    );
                                     setShowImportModal(false);
-                                    window.location.href = "/";
-                                    //setImportSuccess(`Imported: ${importPreview?.Name} successfully.`);
+                                    window.location.href = '/';
                                 }}
                             >
                                 Confirm Import
@@ -488,6 +563,7 @@ export default function Setting() {
                     </div>
                 </div>
             )}
+
             {showToast && popupMessage.message && (
                 <NotificationToast
                     message={popupMessage.message}
@@ -497,6 +573,18 @@ export default function Setting() {
                     position={'top'}
                     bold={true}
                     duration={3000}
+                />
+            )}
+
+            {showConfirm && (
+                <ConfirmationModal
+                    open={showConfirm}
+                    title={confirmMessage.title}
+                    message={confirmMessage.message}
+                    confirmLabel={confirmMessage.confirmLabel}
+                    onConfirm={confirmMessage.onConfirm}
+                    onCancel={confirmMessage.onCancel}
+                    onClose={() => setShowConfirm(false)}
                 />
             )}
         </div>

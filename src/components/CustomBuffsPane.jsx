@@ -1,7 +1,34 @@
 import React, {useState} from 'react';
 import GuidesModal from "./GuideModal.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
+import NotificationToast from "./NotificationToast.jsx";
 
 export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
+    const [showToast, setShowToast] = useState(false);
+    const [popupMessage, setPopupMessage] = useState({
+        icon: null,
+        message: null,
+        color: null
+    });
+
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [confirmMessage, setConfirmMessage] = useState({
+        title: null,
+        message: null,
+        confirmLabel: null,
+        cancelLabel: null,
+        onConfirm: () => {},
+        onCancel: () => {}
+    });
+
+    const [showGuide, setShowGuide] = useState(false);
+    const [guideCategory, setGuideCategory] = useState(null);
+
+    const openGuide = React.useCallback((category) => {
+        setGuideCategory(category);
+        setShowGuide(true);
+    }, []);
+
     const percentageFields = new Set([
         'atkPercent', 'hpPercent', 'defPercent',
         'critRate', 'critDmg', 'energyRegen', 'healingBonus',
@@ -123,13 +150,22 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
         );
     };
 
-    const [showGuide, setShowGuide] = useState(false);
-    const [guideCategory, setGuideCategory] = useState(null);
+    const clearAll = () => {
+        setCustomBuffs({
+            atkFlat: 0, atkPercent: 0, hpFlat: 0, hpPercent: 0, defFlat: 0, defPercent: 0,
+            critRate: 0, critDmg: 0, energyRegen: 0, healingBonus: 0,
+            basicAtk: 0, heavyAtk: 0, resonanceSkill: 0, resonanceLiberation: 0,
+            aero: 0, glacio: 0, spectro: 0, fusion: 0, electro: 0, havoc: 0,
+            coord: 0, coordAmplify: 0, basicAtkAmplify: 0, heavyAtkAmplify: 0,
+            resonanceSkillAmplify: 0, resonanceLiberationAmplify: 0, aeroAmplify: 0,
+            glacioAmplify: 0, spectroAmplify: 0, fusionAmplify: 0, electroAmplify: 0,
+            havocAmplify: 0, enemyResShred: 0, enemyDefShred: 0, enemyDefIgnore: 0,
+            spectroFrazzleDmg: 0, aeroErosionDmg: 0, spectroFrazzleAmplify: 0,
+            aeroErosionAmplify: 0,
+        });
+    }
 
-    const openGuide = React.useCallback((category) => {
-        setGuideCategory(category);
-        setShowGuide(true);
-    }, []);
+    const allZero = Object.values(customBuffs).every(v => v === 0);
 
     return (
         <>
@@ -214,20 +250,33 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
                 </div>
             </div>
 
-            <button className="clear-button" onClick={() => {
-                setCustomBuffs({
-                    atkFlat: 0, atkPercent: 0, hpFlat: 0, hpPercent: 0, defFlat: 0, defPercent: 0,
-                    critRate: 0, critDmg: 0, energyRegen: 0, healingBonus: 0,
-                    basicAtk: 0, heavyAtk: 0, resonanceSkill: 0, resonanceLiberation: 0,
-                    aero: 0, glacio: 0, spectro: 0, fusion: 0, electro: 0, havoc: 0,
-                    coord: 0, coordAmplify: 0, basicAtkAmplify: 0, heavyAtkAmplify: 0,
-                    resonanceSkillAmplify: 0, resonanceLiberationAmplify: 0, aeroAmplify: 0,
-                    glacioAmplify: 0, spectroAmplify: 0, fusionAmplify: 0, electroAmplify: 0,
-                    havocAmplify: 0, enemyResShred: 0, enemyDefShred: 0, enemyDefIgnore: 0,
-                    spectroFrazzleDmg: 0, aeroErosionDmg: 0, spectroFrazzleAmplify: 0,
-                    aeroErosionAmplify: 0,
-                });
-            }}>
+            <button
+                className="clear-button"
+                onClick={() => {
+                    if (!customBuffs || allZero) {
+                        setPopupMessage({
+                            message: 'Looks clear to me... (゜。゜)',
+                            icon: '❤',
+                            color: { light: 'green', dark: 'limegreen' },
+                        });
+                        setShowToast(true);
+                    } else {
+                        setConfirmMessage({
+                            confirmLabel: 'Clear Custom Buffs',
+                            onConfirm: () => {
+                                clearAll();
+                                setPopupMessage({
+                                    message: 'Cleared~! (〜^∇^)〜',
+                                    icon: '✔',
+                                    color: { light: 'green', dark: 'limegreen' },
+                                });
+                                setShowToast(true);
+                            },
+                        });
+                        setShowConfirm(true);
+                    }
+                }}
+            >
                 Clear All
             </button>
 
@@ -236,6 +285,35 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
                 category={guideCategory}
                 onClose={() => setShowGuide(false)}
             />
+
+            {showConfirm && (
+                <ConfirmationModal
+                    open={showConfirm}
+                    title={confirmMessage.title}
+                    message={confirmMessage.message}
+                    confirmLabel={confirmMessage.confirmLabel}
+                    onConfirm={confirmMessage.onConfirm}
+                    onCancel={confirmMessage.onCancel}
+                    onClose={() => setShowConfirm(false)}
+                />
+            )}
+
+            {showToast && popupMessage.message && (
+                <NotificationToast
+                    message={popupMessage.message}
+                    icon={popupMessage.icon}
+                    color={popupMessage.color}
+                    duration={popupMessage.duration ?? 4000}
+                    prompt={popupMessage.prompt ?? null}
+                    onClose={
+                        popupMessage.onClose
+                            ? popupMessage.onClose
+                            : () => setTimeout(() => setShowToast(false), 300)
+                    }
+                    position="top"
+                    bold
+                />
+            )}
         </>
     );
 }

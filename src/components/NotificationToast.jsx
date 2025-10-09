@@ -55,7 +55,10 @@ export default function NotificationToast({
     };
     const posClass = positionClasses[position] || 'bottom-center';
 
-    const handlePromptClick = () => prompt?.action?.();
+    const handlePromptClick = () => {
+        closeWithAnimation();
+        prompt?.action?.();
+    };
 
     return (
         <>

@@ -73,6 +73,10 @@ export default function GuidesPage() {
                 setTimeout(() => {
                     toggleSection(category, true);
                 }, 400);
+
+                const url = new URL(window.location);
+                url.searchParams.delete('category');
+                window.history.replaceState({}, '', url);
             } else if (attempts < 10) {
                 setTimeout(() => tryScroll(attempts + 1), 100);
             }

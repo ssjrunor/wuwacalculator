@@ -142,10 +142,10 @@ export const guides = [
                 type: 'article',
                 shortDesc: 'Learn how to manage Echo, Weapon, and Team buffs and how teammate rotations contribute to total damage.',
                 content: `
-                <p>The <strong>Buffs Pane</strong> brings together all external effects from teammates that influence your character’s stats, from <strong>Echo/Sonata Set</strong> effects to <strong>Weapon</strong> passives and <strong>Teammate</strong> synergy effects. It acts as the central hub for managing and viewing every modifier that affects your character’s performance within a team.</p>
+                <p>The <strong>Team Buffs</strong> section brings together all external effects from teammates that influence your character’s stats, from <strong>Echo/Sonata Set</strong> effects to <strong>Weapon</strong> passives and <strong>Teammate</strong> synergy effects. It acts as the central hub for managing and viewing every modifier that affects your character’s performance within a team.</p>
 
                 <h4>1. Overview</h4>
-                <p>This pane automatically compiles three major buff sources:</p>
+                <p>This section automatically compiles three major buff sources:</p>
                 <ul>
                     <li><strong>Weapon Buffs</strong> – effects from teammates' weapons.</li>
                     <li><strong>Echo Buffs</strong> – effects from teammates' echoes and sonata sets.</li>

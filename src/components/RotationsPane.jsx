@@ -10,6 +10,7 @@ import {calculateRotationTotals} from "./Rotations.jsx";
 import NotificationToast from "./NotificationToast.jsx";
 import {isEqual} from "lodash";
 import GuidesModal from "./GuideModal.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 
 const tabDisplayOrder = [
     'normalAttack',
@@ -106,13 +107,22 @@ export default function RotationsPane({
                                           setSavedTeamRotations,
                                           savedTeamRotations
                                       }) {
+    const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
         icon: null,
         message: null,
-        color: null,
+        color: null
     });
 
-    const [showToast, setShowToast] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [confirmMessage, setConfirmMessage] = useState({
+        title: null,
+        message: null,
+        confirmLabel: null,
+        cancelLabel: null,
+        onConfirm: () => {},
+        onCancel: () => {}
+    });
 
     const [viewMode, setViewMode] = useState('new');
     const [showSkillOptions, setShowSkillOptions] = useState(false);
@@ -400,7 +410,7 @@ export default function RotationsPane({
 
                     if (!data || !Array.isArray(data.rotationEntries) || typeof data.charId === 'undefined') {
                         setPopupMessage({
-                            message: 'This isn\'t a rotation file... what were you trying to do...? (゜-゜)',
+                            message: 'This isn\'t a rotation file... what were you trying to do...? (╹ -╹)?',
                             icon: '✘',
                             color: '#ff3f3f'
                         });
@@ -432,7 +442,7 @@ export default function RotationsPane({
 
                     if (isEqual(data.rotationEntries, rotationEntries)) {
                         setPopupMessage({
-                            message: 'Same rotation but you do you i guess~! (゜。゜)',
+                            message: 'Same rotation but you do you i guess~! ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧',
                             icon: '✔',
                             color: { light: 'green', dark: 'limegreen' },
                         });
@@ -515,36 +525,90 @@ export default function RotationsPane({
                     <div className="rotation-controls">
                         <div className="rotation-buttons-left">
                             <button className="rotation-button" onClick={() => setShowSkillOptions(true)}>+ Skill</button>
-                            <button className="rotation-button clear" onClick={() => setRotationEntries([])}>Clear</button>
+                            <button className="rotation-button clear"
+                                    onClick={() => {
+                                        if (!rotationEntries || rotationEntries?.length === 0) {
+                                            setPopupMessage({
+                                                message: 'You\'re trying to clear nothing... maybe add something first~? (゜。゜)',
+                                                icon: '❤',
+                                                color: { light: 'green', dark: 'limegreen' },
+                                                duration: 60000,
+                                                prompt: {
+                                                    message: 'Add Something~',
+                                                    action: () => {
+                                                        setShowSkillOptions(true);
+                                                    }
+                                                },
+                                                onClose: () => setTimeout(() => setShowToast(false), 300)
+                                            });
+                                            setShowToast(true);
+                                        } else {
+                                            setConfirmMessage({
+                                                confirmLabel: 'Clear Rotation',
+                                                onConfirm: () => {
+                                                    setRotationEntries([]);
+                                                    setPopupMessage({
+                                                        message: 'Cleared~! (〜^∇^)〜',
+                                                        icon: '✔',
+                                                        color: { light: 'green', dark: 'limegreen' },
+                                                    });
+                                                    setShowToast(true);
+                                                },
+                                            });
+                                            setShowConfirm(true);
+                                        }
+                                    }}
+                            >
+                                Clear
+                            </button>
                         </div>
                         <button
                             className="rotation-button add-button"
                             title="Save Rotation"
                             onClick={() => {
-                                const characterId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
-                                const characterName = activeCharacter?.displayName ?? 'Unknown';
-                                const dateId = Date.now();
+                                if (!rotationEntries || rotationEntries?.length === 0) {
+                                    setPopupMessage({
+                                        message: 'You\'re trying to save nothing... maybe add something first~? (゜。゜)',
+                                        icon: '❤',
+                                        color: { light: 'green', dark: 'limegreen' },
+                                        duration: 60000,
+                                        prompt: {
+                                            message: 'Add Something~',
+                                            action: () => {
+                                                setShowSkillOptions(true);
+                                            }
+                                        },
+                                        onClose: () => setTimeout(() => setShowToast(false), 300)
+                                    });
+                                    setShowToast(true);
+                                } else {
+                                    const characterId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
+                                    const characterName = activeCharacter?.displayName ?? 'Unknown';
+                                    const dateId = Date.now();
 
-                                const result = calculateRotationTotals( allSkillResults, rotationEntries )
+                                    const result = calculateRotationTotals( allSkillResults, rotationEntries )
 
-                                const newSaved = {
-                                    id: dateId,
-                                    characterId,
-                                    characterName,
-                                    entries: rotationEntries,
-                                    total: result.total,
-                                    breakdownMap: result.breakdownMap,
-                                    supportTotals: result.supportTotals,
-                                    fullCharacterState: characterRuntimeStates?.[characterId] ?? {}
-                                };
-                                setSavedRotations(prev => [...prev, newSaved]);
+                                    const newSaved = {
+                                        id: dateId,
+                                        characterId,
+                                        characterName,
+                                        entries: rotationEntries,
+                                        total: result.total,
+                                        breakdownMap: result.breakdownMap,
+                                        supportTotals: result.supportTotals,
+                                        fullCharacterState: characterRuntimeStates?.[characterId] ?? {}
+                                    };
+                                    setSavedRotations(prev => [...prev, newSaved]);
 
-                                setPopupMessage({
-                                    message: 'Added to saves~! (〜^∇^)〜',
-                                    icon: '✔',
-                                    color: { light: 'green', dark: 'limegreen' },
-                                });
-                                setShowToast(true);
+                                    setPopupMessage({
+                                        message: 'Added to saves~! (〜^∇^)〜',
+                                        icon: '✔',
+                                        color: { light: 'green', dark: 'limegreen' },
+                                    });
+
+                                    console.log(popupMessage);
+                                    setShowToast(true);
+                                }
                             }}
                         >
                             ＋
@@ -601,12 +665,12 @@ export default function RotationsPane({
                             onClick={closeMenu}
                         >
                             <div
-                                className={`skill-menu-panel ${isClosing ? 'fade-out' : 'fade-in'}`}
+                                className={`skill-menu-panel guides changelog-modal ${isClosing ? 'fade-out' : 'fade-in'}`}
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 <div className="menu-header-with-buttons">
                                     <div className="menu-header">Select a Skill</div>
-                                    <button className="rotation-button clear" onClick={() => setShowSkillOptions(false)}>✕</button>
+                                    <button className="rotation-button clear" onClick={closeMenu}>✕</button>
                                 </div>
                                 <div className="skill-menu-list">
                                     {tabDisplayOrder.map((tabKey) =>
@@ -684,7 +748,38 @@ export default function RotationsPane({
                         </select>
                         <button
                             className="rotation-button clear"
-                            onClick={() => setSavedRotations([])}
+                            onClick={() => {
+                                if (!savedRotations || savedRotations?.length === 0) {
+                                    setPopupMessage({
+                                        message: 'You\'re trying to clear nothing... maybe save something first~? (゜。゜)',
+                                        icon: '❤',
+                                        color: { light: 'green', dark: 'limegreen' },
+                                        duration: 60000,
+                                        prompt: {
+                                            message: 'Save a Rotation~',
+                                            action: () => {
+                                                setViewMode('new');
+                                            }
+                                        },
+                                        onClose: () => setTimeout(() => setShowToast(false), 300)
+                                    });
+                                    setShowToast(true);
+                                } else {
+                                    setConfirmMessage({
+                                        confirmLabel: 'Clear Saved Rotations',
+                                        onConfirm: () => {
+                                            setSavedRotations([]);
+                                            setPopupMessage({
+                                                message: 'Cleared~! (〜^∇^)〜',
+                                                icon: '✔',
+                                                color: { light: 'green', dark: 'limegreen' },
+                                            });
+                                            setShowToast(true);
+                                        },
+                                    });
+                                    setShowConfirm(true);
+                                }
+                            }}
                             style={{ marginLeft: 'auto'}}
                         >Clear</button>
 
@@ -834,7 +929,27 @@ export default function RotationsPane({
                     </div>
                     <div className="rotation-controls">
                         <div className="rotation-buttons-left">
-                            <button className="rotation-button clear" onClick={() => setSavedTeamRotations([])}>Clear</button>
+                            {(savedRotations && savedRotations?.length !== 0) && (
+                                <button className="rotation-button clear"
+                                        onClick={() => {
+                                            setConfirmMessage({
+                                                confirmLabel: 'Clear Team Rotations',
+                                                onConfirm: () => {
+                                                    setSavedTeamRotations([]);
+                                                    setPopupMessage({
+                                                        message: 'Cleared~! (〜^∇^)〜',
+                                                        icon: '✔',
+                                                        color: { light: 'green', dark: 'limegreen' },
+                                                    });
+                                                    setShowToast(true);
+                                                },
+                                            });
+                                            setShowConfirm(true);
+                                        }}
+                                >
+                                    Clear
+                                </button>
+                            )}
                         </div>
                         {!hasValidTeamRotation ? (
                             <span style={{ fontSize: '0.8rem', color: 'gray', marginLeft: 'auto', fontWeight: 'bold' }}>
@@ -998,10 +1113,15 @@ export default function RotationsPane({
                     message={popupMessage.message}
                     icon={popupMessage.icon}
                     color={popupMessage.color}
-                    onClose={() => setShowToast(false)}
-                    position={'top'}
-                    bold={true}
-                    duration={4000}
+                    duration={popupMessage.duration ?? 4000}
+                    prompt={popupMessage.prompt ?? null}
+                    onClose={
+                        popupMessage.onClose
+                            ? popupMessage.onClose
+                            : () => setTimeout(() => setShowToast(false), 300)
+                    }
+                    position="top"
+                    bold
                 />
             )}
 
@@ -1010,6 +1130,18 @@ export default function RotationsPane({
                 category={guideCategory}
                 onClose={() => setShowGuide(false)}
             />
+
+            {showConfirm && (
+                <ConfirmationModal
+                    open={showConfirm}
+                    title={confirmMessage.title}
+                    message={confirmMessage.message}
+                    confirmLabel={confirmMessage.confirmLabel}
+                    onConfirm={confirmMessage.onConfirm}
+                    onCancel={confirmMessage.onCancel}
+                    onClose={() => setShowConfirm(false)}
+                />
+            )}
         </div>
     );
 }

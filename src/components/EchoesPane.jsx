@@ -26,20 +26,33 @@ import {
 import {preloadImages} from "../pages/calculator.jsx";
 import NotificationToast from "./NotificationToast.jsx";
 import GuidesModal from "./GuideModal.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 
 export default function EchoesPane({
                                        charId,
                                         setCharacterRuntimeStates,
                                         characterRuntimeStates,
                                    }) {
+    const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
         icon: null,
         message: null,
         color: null,
     });
-    const [showToast, setShowToast] = useState(false);
+
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [confirmMessage, setConfirmMessage] = useState({
+        title: null,
+        message: null,
+        confirmLabel: null,
+        cancelLabel: null,
+        onConfirm: () => {},
+        onCancel: () => {}
+    });
 
     const [showGuide, setShowGuide] = useState(false);
+    const [onGuideClose, setGuideClose] = useState(null);
+
     const [guideCategory, setGuideCategory] = useState(null);
 
     const openGuide = React.useCallback((category) => {
@@ -226,17 +239,79 @@ export default function EchoesPane({
         return () => observer.disconnect();
     }, []);
 
+    function saveAllEchoesToBag() {
+        const equippedEchoes = characterRuntimeStates?.[charId]?.equippedEchoes ?? [];
+
+        if (!Array.isArray(equippedEchoes) || equippedEchoes.length === 0) {
+            setPopupMessage({
+                message: 'You have no echoes equipped~! (゜。゜)',
+                icon: '❤',
+                color: { light: 'orange', dark: 'gold' },
+            });
+            setShowToast(true);
+            return;
+        }
+
+        const validEchoes = equippedEchoes.filter(e => e);
+
+        if (validEchoes.length === 0) {
+            setPopupMessage({
+                message: 'Those slots are emptier than your bag before~! (¬‿¬)',
+                icon: '❤',
+                color: { light: 'orange', dark: 'gold' },
+            });
+            setShowToast(true);
+            return;
+        }
+
+        let addedCount = 0;
+        let duplicateCount = 0;
+
+        for (const echo of validEchoes) {
+            const added = addEchoToBag(echo);
+            if (added) duplicateCount++;
+            else addedCount++;
+        }
+
+        if (duplicateCount === validEchoes.length) {
+            setPopupMessage({
+                message: 'They’re all in already~! ◑ . ◑',
+                icon: '✔',
+                color: { light: 'green', dark: 'limegreen' },
+            });
+        } else if (addedCount > 0 && duplicateCount > 0) {
+            setPopupMessage({
+                message: `Saved ${addedCount} new echo${addedCount > 1 ? 'es' : ''}, ${duplicateCount} duplicate${duplicateCount > 1 ? 's' : ''} ignored~! (〜^∇^)〜`,
+                icon: '✔',
+                color: { light: 'green', dark: 'limegreen' },
+            });
+        } else {
+            setPopupMessage({
+                message: `Added all ${addedCount} echoes to your bag~! (〜^∇^)〜`,
+                icon: '✔',
+                color: { light: 'green', dark: 'limegreen' },
+            });
+        }
+
+        setShowToast(true);
+    }
+
     return (
         <div className="echoes-pane" ref={echoesPaneRef}>
             <EchoParser
                 charId={charId}
+                characterRuntimeStates={characterRuntimeStates}
                 setCharacterRuntimeStates={setCharacterRuntimeStates}
                 onEchoesParsed={(parsedList) => {
                     applyParsedEchoesToEquipped(parsedList, charId, setCharacterRuntimeStates);
                 }}
+                setConfirmMessage={setConfirmMessage}
+                setShowConfirm={setShowConfirm}
                 setShowToast={setShowToast}
                 setPopupMessage={setPopupMessage}
                 openGuide={openGuide}
+                saveAllEchoesToBag={saveAllEchoesToBag}
+                setGuideClose={setGuideClose}
             />
             <div className="echoes-header">
                 <button
@@ -788,8 +863,24 @@ export default function EchoesPane({
             <GuidesModal
                 open={showGuide}
                 category={guideCategory}
-                onClose={() => setShowGuide(false)}
+                onClose={() => {
+                    setShowGuide(false);
+                    onGuideClose?.();
+                }}
             />
+
+            {showConfirm && (
+                <ConfirmationModal
+                    open={showConfirm}
+                    title={confirmMessage.title}
+                    message={confirmMessage.message}
+                    confirmLabel={confirmMessage.confirmLabel}
+                    onConfirm={confirmMessage.onConfirm}
+                    onCancel={confirmMessage.onCancel}
+                    onClose={() => setShowConfirm(false)}
+                />
+            )}
+
         </div>
     );
 }

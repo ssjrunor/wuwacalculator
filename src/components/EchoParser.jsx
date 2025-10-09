@@ -49,7 +49,19 @@ const imageToCanvasContext = (image, width, height) => {
     return ctx;
 };
 
-const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopupMessage, setShowToast, openGuide }) => {
+const EchoParser = ({
+                        onEchoesParsed,
+                        charId,
+                        setCharacterRuntimeStates,
+                        setPopupMessage,
+                        setShowToast,
+                        openGuide,
+                        characterRuntimeStates,
+                        setConfirmMessage,
+                        setShowConfirm,
+                        saveAllEchoesToBag,
+                        setGuideClose
+}) => {
     const [imageSrc, setImageSrc] = useState(null);
     const [imageElement, setImageElement] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -280,6 +292,11 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopu
         }, 300);
     };
 
+    const equippedEchoes = characterRuntimeStates[charId].equippedEchoes;
+    const name = characterRuntimeStates[charId].Name;
+    const empty = !equippedEchoes || equippedEchoes.length === 0 ||
+        (Array.isArray(equippedEchoes) && equippedEchoes.every(e => e === null));
+
     return (
         <div className="echo-parser">
             <input
@@ -302,21 +319,51 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopu
                 >
                     Import Echo
                 </button>
+                {!empty && (
+                    <button
+                        className="btn-primary echoes"
+                        onClick={saveAllEchoesToBag}
+                    >
+                        Save All
+                    </button>
+                )}
                 <button
                     onClick={() => {
-                        setCharacterRuntimeStates(prev => ({
-                            ...prev,
-                            [charId]: {
-                                ...(prev[charId] ?? {}),
-                                equippedEchoes: [null, null, null, null, null]
-                            }
-                        }));
+                        if (empty) {
+                            setPopupMessage({
+                                message: `Oops... ${name}'s got nothing on already... (゜。゜)`,
+                                icon: '❤',
+                                color: { light: 'green', dark: 'limegreen' },
+                            });
+                            setShowToast(true);
+                        } else {
+                            setConfirmMessage({
+                                confirmLabel: 'Unequip All Echoes',
+                                onConfirm: () => {
+                                    setCharacterRuntimeStates(prev => ({
+                                        ...prev,
+                                        [charId]: {
+                                            ...(prev[charId] ?? {}),
+                                            equippedEchoes: [null, null, null, null, null]
+                                        }
+                                    }));
+                                    setPopupMessage({
+                                        message: 'Stripped~! (〜^∇^)〜',
+                                        icon: '✔',
+                                        color: { light: 'green', dark: 'limegreen' },
+                                    });
+                                    setShowToast(true);
+                                },
+                            });
+                            setShowConfirm(true);
+                        }
+
                     }}
                     className="rotation-button clear echoes"
                 >
                     Unequip All
                 </button>
-                <button onClick={() => openGuide(['Echoes', 'Build and Echo Scoring'])} className="btn-primary echoes"
+                <button onClick={() => openGuide(['Echoes', 'Build and Echo Scoring', 'Echo Importing'])} className="btn-primary echoes"
                 style={{ marginLeft: 'auto'}}>
                     See Guide
                 </button>
@@ -328,7 +375,7 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopu
                     onClick={handleClose}
                 >
                     <div
-                        className={`skills-modal-content parser ${isClosing ? 'closing' : ''} ${isShaking ? 'shake' : ''}`}
+                        className={`skills-modal-content parser changelog-modal guides ${isClosing ? 'closing' : ''} ${isShaking ? 'shake' : ''}`}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="modal-main-content">
@@ -339,6 +386,7 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopu
                                     src="/assets/sample-import-image.png"
                                     alt="Sample Echo Import Format"
                                     className="modal-sample-image"
+                                    style={{ boxShadow: '0 2px 8px 0 black' }}
                                 />
                                 <li>
                                     - Image should be generated with the <strong>wuwa bot</strong> on the official Wuthering Waves Discord server <code style={{opacity: "0.7"}}>/create</code> (or anywhere else you can use the bot ¯\_(ツ)_/¯).
@@ -389,9 +437,15 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopu
                             </div>
                             <p
                                 className={`dropzone-click-text go-to-guides`}
-                                onClick={() => navigate('/guides?category=Echo%20Importing')}
+                                onClick={() => {
+                                    setGuideClose(() => () => {
+                                        setShowRulesModal(true);
+                                    });
+                                    handleClose();
+                                    setTimeout(() => openGuide(['Echoes', 'Build and Echo Scoring', 'Echo Importing']), 300);
+                                }}
                             >
-                                See full guides
+                                See guides
                             </p>
                         </div>
                     </div>

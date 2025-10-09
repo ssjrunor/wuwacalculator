@@ -102,3 +102,15 @@
 .dark .multipliers-table td {
     border-bottom: 1px solid #444;
 }
+
+.skills-modal-content.confirm {
+    width: 500px !important;
+}
+
+.confirm .btn-confirm {
+    background: rgba(220, 20, 60, 0.75);
+}
+
+.confirm .btn-confirm:hover {
+    background: crimson !important;
+}

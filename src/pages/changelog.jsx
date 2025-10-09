@@ -155,6 +155,7 @@ export default function Changelog() {
                         {[...changelog].reverse().map((log, index) => (
                             <div key={index} className="info-section changelog">
                                 <h3 className="changelog-date">{log.date}</h3>
+                                {log.shortDesc && <span className="highlight" dangerouslySetInnerHTML={{ __html: log.shortDesc }} />}
                                 <ul>
                                     {log.entries.map((entry, i) => (
                                         <li key={i}>
@@ -174,19 +175,6 @@ export default function Changelog() {
 }
 
 export const changelog = [
-    {
-        date: '09/10/2025',
-        entries: [
-            {
-                type: 'paragraph',
-                content: `Added the new <strong>Guides Page</strong> with in-depth explanations for <em>Rotations</em>, <em>Team Buffs</em>, <em>Damage Calculations</em>, and <em>Echo Scoring</em>... and more stuff yeah...`
-            },
-            {
-                type: 'paragraph',
-                content: `Guides can be accessed from sidebar navigation or directly through in-app prompts (soon to be implemented).`
-            }
-        ]
-    },
     {
         date: '20/05/2025',
         entries: [
@@ -490,8 +478,47 @@ export const changelog = [
             {
                 type: 'paragraph',
                 content: `Added <strong>Galbrena</strong>.`,
-                shortDesc: `Added <strong>Galbrena</strong>~! (〜^∇^)〜`
             }
         ]
+    },
+    {
+        date: '08/10/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `Added the new <strong>Guides Page</strong> with in-depth explanations for <em>Rotations</em>, <em>Team Buffs</em>, <em>Damage Calculations</em>, and <em>Echo Scoring</em>... and more stuff yeah...`,
+            },
+            {
+                type: 'paragraph',
+                content:
+                    `
+                        Guides can be accessed from the sidebar navigation or directly through in-app prompts.  
+                        They’re divided into clear categories — such as <strong>Echoes</strong>, <strong>Rotations</strong>, <strong>Team Buffs</strong>, and <strong>Overview</strong> — each covering a specific part of the calculator.  
+                        
+                        You’ll often see small <em>“See Guide”</em> buttons or links throughout the app, appearing where you'd expect them to be.  
+                        Clicking one of these instantly opens the relevant section or takes you to that category’s page in the <strong>Guides</strong> tab, letting you learn directly in context without hunting through menus.
+                    `
+            }
+        ],
+        shortDesc: `New <strong>Guides Page</strong> added~! Learn everything without leaving the app (〜^∇^)〜`
+    },
+    {
+        date: '09/10/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `Added <strong>confirmation modals</strong> across key actions — including <em>Clear Rotation</em>, <em>Unequip All Echoes</em>, and <em>Delete</em> operations — to prevent accidental clicks and data loss.`,
+            },
+            {
+                type: 'paragraph',
+                content: `
+                These confirmations appear before performing irreversible actions and let you review your choice before proceeding.  
+                They follow the same styling as other popups, using the same smooth open/close animations and adaptive color scheme.  
+                You can also cancel instantly without breaking your current workflow.  
+                Basically: fewer "oops" moments, more peace of mind.
+            `
+            }
+        ],
+        shortDesc: `Added <strong>confirmation modals</strong>~! No more accidental oopsies (〜^∇^)〜`
     }
 ];

@@ -13,12 +13,12 @@ import {formatStatValue} from "./WeaponPane.jsx";
 import {getActiveStateWeapons} from "../data/buffs/weaponBuffs.js";
 import weaponsRaw from '../data/weapons.json';
 import {getActiveEchoes} from "../data/buffs/applyEchoLogic.js";
-import {calculateRotationTotals} from "./Rotations.jsx";
 import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
 import {downloadFixedSizePNG} from "../utils/ScreenshotUtil.js";
 import {Download, Camera} from 'lucide-react';
 import NotificationToast from "./NotificationToast.jsx";
 import GuidesModal from "./GuideModal.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 
 export default function OverviewDetailPane({
                                                character,
@@ -191,6 +191,16 @@ export default function OverviewDetailPane({
         setGuideCategory(category);
         setShowGuide(true);
     }, []);
+
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [confirmMessage, setConfirmMessage] = useState({
+        title: null,
+        message: null,
+        confirmLabel: null,
+        cancelLabel: null,
+        onConfirm: () => {},
+        onCancel: () => {}
+    });
 
     return (
         <>
@@ -781,7 +791,13 @@ export default function OverviewDetailPane({
             <div className="delete-character-wrapper" style={{ padding: '2rem', textAlign: 'center' }}>
                 <button
                     className="clear-button"
-                    onClick={deleteCharacter}
+                    onClick={() => {
+                        setConfirmMessage({
+                            confirmLabel: 'Delete Character',
+                            onConfirm: deleteCharacter
+                        });
+                        setShowConfirm(true);
+                    }}
                 >
                     Delete Character
                 </button>
@@ -804,6 +820,18 @@ export default function OverviewDetailPane({
                 category={guideCategory}
                 onClose={() => setShowGuide(false)}
             />
+
+            {showConfirm && (
+                <ConfirmationModal
+                    open={showConfirm}
+                    title={confirmMessage.title}
+                    message={confirmMessage.message}
+                    confirmLabel={confirmMessage.confirmLabel}
+                    onConfirm={confirmMessage.onConfirm}
+                    onCancel={confirmMessage.onCancel}
+                    onClose={() => setShowConfirm(false)}
+                />
+            )}
 
         </>
     );

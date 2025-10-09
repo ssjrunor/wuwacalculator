@@ -12,7 +12,6 @@ import EnemyPane from '../components/EnemyPane';
 import BuffsPane, {getResolvedTeamRotations} from "../components/BuffsPane.jsx";
 import CustomBuffsPane from '../components/CustomBuffsPane';
 import ToolbarIconButton, {ToolbarSidebarButton} from '../components/ToolbarIconButton';
-import ResetButton, {ResetCharacter} from '../components/ResetButton.jsx';
 import { attributeColors, attributeIcons, elementToAttribute } from '../utils/attributeHelpers';
 import { getFinalStats } from '../utils/getStatsForLevel';
 import { getUnifiedStatPool } from '../utils/getUnifiedStatPool';
@@ -20,7 +19,7 @@ import { usePersistentState } from '../hooks/usePersistentState';
 import useDarkMode from '../hooks/useDarkMode';
 import {getBuffsLogic, getCharacterOverride} from '../data/character-behaviour';
 import ChangelogModal from '../components/GuideModal.jsx';
-import { Settings, HelpCircle, History, Moon, Sun, Info, Sparkle, UserRound } from 'lucide-react';
+import {Settings, HelpCircle, History, Moon, Sun, Info, Sparkle, UserRound, RotateCcw} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { fetchWeapons } from '../json-data-scripts/fetchWeapons';
 import { getWeaponOverride } from '../data/weapon-behaviour';
@@ -32,12 +31,12 @@ import {echoes} from "../json-data-scripts/getEchoes.js";
 import {applyEchoSetBuffLogic, applyMainEchoBuffLogic, applySetEffect} from "../data/buffs/setEffect.js";
 import {getEchoStatsFromEquippedEchoes, statIconMap} from "../utils/echoHelper.js";
 import { useLayoutEffect } from 'react';
-import {getSkillDamageCache} from "../utils/skillDamageCache.js";
 import CharacterOverviewPane from "../components/CharacterOverview.jsx";
 import {isEqual} from "lodash";
-import {calculateRotationTotals, getMainRotationTotals, getTeamRotationTotal} from "../components/Rotations.jsx";
+import {getMainRotationTotals, getTeamRotationTotal} from "../components/Rotations.jsx";
 import NotificationToast from "../components/NotificationToast.jsx";
 import {changelog} from "./changelog.jsx";
+import ConfirmationModal from "../components/ConfirmationModal.jsx";
 
 export default function Calculator() {
     const [characters, setCharacters] = useState([]);
@@ -53,10 +52,9 @@ export default function Calculator() {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-09-19 19:39';
+    const LATEST_CHANGELOG_VERSION = '2025-10-09 17:30';
     const latest = changelog[changelog.length - 1];
-    const latestEntry = latest?.entries?.[latest.entries.length - 1];
-    const latestMessage = latestEntry?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
+    const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
     const [showChangelog, setShowChangelog] = useState(false);
     const [shouldScrollChangelog, setShouldScrollChangelog] = useState(false);
@@ -590,34 +588,43 @@ export default function Calculator() {
     useEffect(() => {
         if (!activeCharacter) return;
 
-        const charId = activeCharacter.Id ?? activeCharacter.id ?? activeCharacter.link;
+        const charId =
+            activeCharacter.Id ?? activeCharacter.id ?? activeCharacter.link;
 
         setCharacterRuntimeStates(prev => {
-            const prevStats = prev[charId]?.FinalStats;
-            const same =
-                JSON.stringify(prevStats) === JSON.stringify(finalStats);
+            const prevChar = prev[charId];
+
+            const updatedChar = {
+                ...(prevChar ?? {}),
+                Name: activeCharacter.displayName,
+                Id: charId,
+                Attribute: activeCharacter.attribute,
+                WeaponType: activeCharacter.weaponType ?? 0,
+                Stats: baseCharacterState?.Stats ?? {},
+                CharacterLevel: characterLevel,
+                SkillLevels: sliderValues,
+                TraceNodeBuffs: traceNodeBuffs,
+                CustomBuffs: customBuffs,
+                CombatState: combatState,
+                FinalStats: finalStats,
+            };
+
+            const same = prevChar && Object.keys(updatedChar).every(key => {
+                const prevVal = prevChar[key];
+                const newVal = updatedChar[key];
+
+                return typeof prevVal === "object" && typeof newVal === "object"
+                    ? JSON.stringify(prevVal) === JSON.stringify(newVal)
+                    : prevVal === newVal;
+            });
 
             if (same) return prev;
-
-            return {
-                ...prev,
-                [charId]: {
-                    ...(prev[charId] ?? {}),
-                    Name: activeCharacter.displayName,
-                    Id: charId,
-                    Attribute: activeCharacter.attribute,
-                    WeaponType: activeCharacter.weaponType ?? 0,
-                    Stats: baseCharacterState?.Stats ?? {},
-                    CharacterLevel: characterLevel,
-                    SkillLevels: sliderValues,
-                    TraceNodeBuffs: traceNodeBuffs,
-                    CustomBuffs: customBuffs,
-                    CombatState: combatState,
-                    FinalStats: finalStats,
-                }
-            };
+            return { ...prev, [charId]: updatedChar };
         });
-    }, [characterLevel, sliderValues, traceNodeBuffs, customBuffs, combatState, finalStats]);
+    }, [activeCharacter, characterLevel, sliderValues, traceNodeBuffs, customBuffs, combatState, finalStats]);
+
+
+
 
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -732,17 +739,6 @@ export default function Calculator() {
         }
     }, [hamburgerOpen]);
 
-    const [resetModalOpen, setResetModalOpen] = useState(false);
-    const [isClosing, setIsClosing] = useState(false);
-
-    const handleClose = () => {
-        setIsClosing(true);
-        setTimeout(() => {
-            setResetModalOpen(false);
-            setIsClosing(false);
-        }, 300);
-    };
-
     const layoutRef = useRef(null);
     useLayoutEffect(() => {
         if (layoutRef.current) {
@@ -816,6 +812,12 @@ export default function Calculator() {
                 enemyRes: prev.enemyRes
             };
         });
+        setPopupMessage({
+            message: 'Success~! (〜^∇^)〜',
+            icon: '✔',
+            color: { light: 'green', dark: 'limegreen' }
+        });
+        setShowToast(true);
     };
 
     useEffect(() => {
@@ -864,6 +866,16 @@ export default function Calculator() {
 
     const allRotations = getMainRotationTotals(charId, characterRuntimeStates, savedRotations, savedTeamRotations);
     const teamRotationDmg = getTeamRotationTotal(charId, characterRuntimeStates);
+
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [confirmMessage, setConfirmMessage] = useState({
+        title: null,
+        message: null,
+        confirmLabel: null,
+        cancelLabel: null,
+        onConfirm: () => {},
+        onCancel: () => {}
+    });
 
     return (
         <>
@@ -1090,7 +1102,22 @@ export default function Calculator() {
                                 </div>
                             </a>
 
-                            <ResetButton onClick={() => setResetModalOpen(true)} />
+                            <button className="sidebar-button reset"
+                                    onClick={() => {
+                                        setConfirmMessage({
+                                            confirmLabel: 'Reset Character',
+                                            onConfirm: handleReset,
+                                        });
+                                        setShowConfirm(true);
+                                    }}
+                            >
+                                <div className="icon-slot">
+                                    <RotateCcw size={24} className="reset-icon" />
+                                </div>
+                                <div className="label-slot">
+                                    <span className="label-text">Reset</span>
+                                </div>
+                            </button>
                         </div>
                     </div>
 
@@ -1264,31 +1291,7 @@ export default function Calculator() {
 
                 </div>
             </div>
-            {resetModalOpen && (
-                <ResetCharacter
-                    activeId={charId}
-                    setCharacterRuntimeStates={setCharacterRuntimeStates}
-                    setSliderValues={setSliderValues}
-                    setCustomBuffs={setCustomBuffs}
-                    setTraceNodeBuffs={setTraceNodeBuffs}
-                    setCombatState={setCombatState}
-                    setCharacterLevel={setCharacterLevel}
-                    setRotationEntries={setRotationEntries}
-                    defaultSliderValues={defaultSliderValues}
-                    defaultCustomBuffs={defaultCustomBuffs}
-                    defaultTraceBuffs={defaultTraceBuffs}
-                    defaultCombatState={defaultCombatState}
-                    characterStates={characterStates}
-                    characterRuntimeStates={characterRuntimeStates}
-                    weapons={weapons}
-                    combatState={combatState}
-                    handleClose={handleClose}
-                    isClosing={isClosing}
-                    setTeam={setTeam}
-                    handleReset={handleReset}
-                    setHamburgerOpen={setHamburgerOpen}
-                />
-            )}
+
             <ChangelogModal
                 open={showChangelog}
                 onClose={() => setShowChangelog(false)}
@@ -1305,6 +1308,18 @@ export default function Calculator() {
                     duration={popupMessage.duration}
                     prompt={popupMessage.prompt}
                     borderColor={currentSliderColor}
+                />
+            )}
+
+            {showConfirm && (
+                <ConfirmationModal
+                    open={showConfirm}
+                    title={confirmMessage.title}
+                    message={confirmMessage.message}
+                    confirmLabel={confirmMessage.confirmLabel}
+                    onConfirm={confirmMessage.onConfirm}
+                    onCancel={confirmMessage.onCancel}
+                    onClose={() => setShowConfirm(false)}
                 />
             )}
         </>

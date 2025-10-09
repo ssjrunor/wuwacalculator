@@ -33,3 +33,4 @@ import './dark-alt.css';
 import './CharacterOverviewPane.css';
 import './characterDetail.css';
 import './NotificationToast.css';
+import './ImportOverviewMini.css';

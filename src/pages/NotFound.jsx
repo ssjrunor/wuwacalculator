@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import { Sun, Moon, History, Sparkle } from "lucide-react";
 import useDarkMode from "../hooks/useDarkMode";
-import ResetButton from "../components/ResetSettingsButton.jsx";
 
 export default function NotFound() {
     const navigate = useNavigate();
