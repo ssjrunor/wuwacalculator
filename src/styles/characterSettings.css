@@ -1,17 +1,12 @@
 .character-settings,
 .skills-settings {
+    position: relative;
     border-radius: 12px;
     padding: 16px;
     margin-top: 16px;
     background-color: #f9f9f9;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     color: #222;
-}
-
-.skills-settings:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    background-color: #f0f0f0;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .slider-label-with-input {
@@ -32,6 +27,23 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.19);
     }
 
-    .dark .skills-settings:hover {
-        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.08);
-    }
+
+
+.skills-settings .echo-info {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    display: inline-flex;
+    z-index: 10;
+    transition: transform ease 0.3s;
+}
+
+.skills-settings .echo-info:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.dark .skills-settings .echo-info,
+.dark-alt .skills-settings .echo-info {
+    color: white;
+}

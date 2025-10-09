@@ -9,6 +9,7 @@ import {usePersistentState} from "../hooks/usePersistentState.js";
 import {calculateRotationTotals} from "./Rotations.jsx";
 import NotificationToast from "./NotificationToast.jsx";
 import {isEqual} from "lodash";
+import GuidesModal from "./GuideModal.jsx";
 
 const tabDisplayOrder = [
     'normalAttack',
@@ -457,6 +458,14 @@ export default function RotationsPane({
         input.click();
     }
 
+    const [showGuide, setShowGuide] = useState(false);
+    const [guideCategory, setGuideCategory] = useState(null);
+
+    const openGuide = React.useCallback((category) => {
+        setGuideCategory(category);
+        setShowGuide(true);
+    }, []);
+
     return (
         <div className="rotation-pane">
             <div className="rotation-view-toggle">
@@ -471,6 +480,10 @@ export default function RotationsPane({
                     onClick={() => setViewMode('team')}
                 >
                     Team
+                </button>
+                <button onClick={() => openGuide('Rotations')} className="btn-primary echoes"
+                        style={{ marginLeft: 'auto'}}>
+                    See Guide
                 </button>
             </div>
 
@@ -991,6 +1004,12 @@ export default function RotationsPane({
                     duration={4000}
                 />
             )}
+
+            <GuidesModal
+                open={showGuide}
+                category={guideCategory}
+                onClose={() => setShowGuide(false)}
+            />
         </div>
     );
 }

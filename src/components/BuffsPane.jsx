@@ -9,6 +9,7 @@ import { X } from 'lucide-react';
 import {preloadImages} from "../pages/calculator.jsx";
 import {runInContext as echoBuffs, runInContext as weaponBuffs} from "lodash";
 import {calculateRotationTotals} from "./Rotations.jsx";
+import GuidesModal from "./GuideModal.jsx";
 
 export default function BuffsPane({
                                       characters,
@@ -116,9 +117,34 @@ export default function BuffsPane({
         Object.keys(teamRotation ?? {}).length > 0
     );
 
+    const [showGuide, setShowGuide] = useState(false);
+    const [guideCategory, setGuideCategory] = useState(null);
+
+    const openGuide = React.useCallback((category) => {
+        setGuideCategory(category);
+        setShowGuide(true);
+    }, []);
+
     return (
         <div className="team-pane">
-            <h3 className="panel-title menu-header">Team Setup</h3>
+            <div
+                className="rotation-buttons-left"
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}
+            >
+                <h3 className="panel-title menu-header">Team Setup</h3>
+                <button
+                    onClick={() => openGuide('Team Buffs')}
+                    className="btn-primary echoes"
+                    style={{ alignSelf: 'center' }}
+                >
+                    See Guide
+                </button>
+            </div>
             <div className="icon-body">
                 {team.map((charId, index) => {
                     const rarity = rarityMap[charId]
@@ -307,6 +333,12 @@ export default function BuffsPane({
                 menuOpen={characterMenuOpen}
                 setMenuOpen={setCharacterMenuOpen}
                 rarityMap={rarityMap}
+            />
+
+            <GuidesModal
+                open={showGuide}
+                category={guideCategory}
+                onClose={() => setShowGuide(false)}
             />
         </div>
     );

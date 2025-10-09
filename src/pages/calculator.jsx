@@ -19,7 +19,7 @@ import { getUnifiedStatPool } from '../utils/getUnifiedStatPool';
 import { usePersistentState } from '../hooks/usePersistentState';
 import useDarkMode from '../hooks/useDarkMode';
 import {getBuffsLogic, getCharacterOverride} from '../data/character-behaviour';
-import ChangelogModal from '../components/ChangelogModal';
+import ChangelogModal from '../components/GuideModal.jsx';
 import { Settings, HelpCircle, History, Moon, Sun, Info, Sparkle, UserRound } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { fetchWeapons } from '../json-data-scripts/fetchWeapons';

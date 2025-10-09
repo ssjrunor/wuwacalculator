@@ -28,9 +28,9 @@ export default function SkillsModal({ skillsModalOpen, setSkillsModalOpen, activ
     return (
         <div className={`skills-modal-overlay ${isClosing ? 'closing' : ''}`} onClick={handleClose}>
             <div className="skills-modal-content" onClick={(e) => e.stopPropagation()}>
-                <div className="skills-modal-tabs">
+                <div className="rotation-view-toggle">
                     {skillTabs.map(tab => (
-                        <button key={tab} className={`skills-tab ${activeSkillTab === tab ? 'active' : ''}`} onClick={() => setActiveSkillTab(tab)}>
+                        <button key={tab} className={`view-toggle-button ${activeSkillTab === tab ? 'active' : ''}`} onClick={() => setActiveSkillTab(tab)}>
                             {tab.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                         </button>
                     ))}
@@ -64,7 +64,7 @@ export default function SkillsModal({ skillsModalOpen, setSkillsModalOpen, activ
                     })()}
                 </div>
 
-                <button onClick={handleClose}>Close</button>
+                <button className="edit-substat-button btn-primary echoes" onClick={handleClose}>Close</button>
             </div>
         </div>
     );

@@ -217,13 +217,23 @@ select {
     border-radius: 10px;
     border: none;
     cursor: pointer;
+    transition: ease all 0.3s;
     background: rgba(200, 200, 200, 0.4);
     color: #333;
+}
+
+.view-toggle-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.29) !important;
 }
 
 .view-toggle-button.active {
     background: #444;
     color: white;
+}
+
+.view-toggle-button.active {
+    pointer-events: none !important;
 }
 
 .dark .view-toggle-button,

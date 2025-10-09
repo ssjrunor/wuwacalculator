@@ -18,6 +18,7 @@ import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
 import {downloadFixedSizePNG} from "../utils/ScreenshotUtil.js";
 import {Download, Camera} from 'lucide-react';
 import NotificationToast from "./NotificationToast.jsx";
+import GuidesModal from "./GuideModal.jsx";
 
 export default function OverviewDetailPane({
                                                character,
@@ -181,11 +182,23 @@ export default function OverviewDetailPane({
     let critValue = critRate * 2 + critDmg;
     const buildScore = getEquippedEchoesScoreDetails(character.link, { [character.link]: runtime });
     const maxBuildScore = maxScore * 5;
-    const percentScore = (buildScore.total / maxBuildScore) * 100
+    const percentScore = (buildScore.total / maxBuildScore) * 100;
+
+    const [showGuide, setShowGuide] = useState(false);
+    const [guideCategory, setGuideCategory] = useState(null);
+
+    const openGuide = React.useCallback((category) => {
+        setGuideCategory(category);
+        setShowGuide(true);
+    }, []);
 
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: '1rem', marginBottom: '1rem' }}>
+                <button onClick={() => openGuide('Overview')} className="btn-primary echoes"
+                        style={{ marginRight: 'auto'}}>
+                    See Guide
+                </button>
                 <button
                     className="download-btn rotation-button screenshot"
                     onClick={handleCopyScreenshot}
@@ -785,6 +798,12 @@ export default function OverviewDetailPane({
                     duration={3000}
                 />
             )}
+
+            <GuidesModal
+                open={showGuide}
+                category={guideCategory}
+                onClose={() => setShowGuide(false)}
+            />
 
         </>
     );

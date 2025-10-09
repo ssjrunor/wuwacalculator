@@ -13,21 +13,19 @@ import {
     getEchoBag,
     subscribeEchoBag,
     addEchoToBag,
-    removeEchoFromBag,
-    updateEchoInBag
 } from '../state/echoBagStore';
 import ExpandableSection from "./Expandable";
 import EchoParser from "./EchoParser.jsx";
 import {applyParsedEchoesToEquipped} from "../utils/buildEchoObjectsFromParsedResults.js";
 import {
     applyFixedSecondMainStat, computeRollForStat, formatDescription, formatStatKey, getEchoScores,
-    getEchoStatsFromEquippedEchoes, getMainstatScore, getRollValue,
-    getSetCounts, getSubstatScore, getTop5SubstatScoreDetails, getTop5SubstatScoreSum,
-    getValidMainStats, statDisplayOrder, statIconMap, statLabelMap
+    getEchoStatsFromEquippedEchoes,
+    getSetCounts, getTop5SubstatScoreDetails,
+    getValidMainStats, statDisplayOrder, statIconMap
 } from "../utils/echoHelper.js";
 import {preloadImages} from "../pages/calculator.jsx";
-import {getWeight} from "../constants/charStatWeights.js";
 import NotificationToast from "./NotificationToast.jsx";
+import GuidesModal from "./GuideModal.jsx";
 
 export default function EchoesPane({
                                        charId,
@@ -40,6 +38,14 @@ export default function EchoesPane({
         color: null,
     });
     const [showToast, setShowToast] = useState(false);
+
+    const [showGuide, setShowGuide] = useState(false);
+    const [guideCategory, setGuideCategory] = useState(null);
+
+    const openGuide = React.useCallback((category) => {
+        setGuideCategory(category);
+        setShowGuide(true);
+    }, []);
 
     const echoSlots = [0, 1, 2, 3, 4];
     const [menuOpen, setMenuOpen] = useState(false);
@@ -230,6 +236,7 @@ export default function EchoesPane({
                 }}
                 setShowToast={setShowToast}
                 setPopupMessage={setPopupMessage}
+                openGuide={openGuide}
             />
             <div className="echoes-header">
                 <button
@@ -777,6 +784,12 @@ export default function EchoesPane({
                     duration={3000}
                 />
             )}
+
+            <GuidesModal
+                open={showGuide}
+                category={guideCategory}
+                onClose={() => setShowGuide(false)}
+            />
         </div>
     );
 }

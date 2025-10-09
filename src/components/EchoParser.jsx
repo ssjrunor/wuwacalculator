@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Tesseract from 'tesseract.js';
 import { echoImageMap, setNameImageMap } from '../utils/autoEchoImageMap';
 import { applyParsedEchoesToEquipped } from "../utils/buildEchoObjectsFromParsedResults.js";
+import {useNavigate} from "react-router-dom";
 
 const echoImageCache = {};
 const setIconImageCache = {};
@@ -48,12 +49,13 @@ const imageToCanvasContext = (image, width, height) => {
     return ctx;
 };
 
-const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopupMessage, setShowToast }) => {
+const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopupMessage, setShowToast, openGuide }) => {
     const [imageSrc, setImageSrc] = useState(null);
     const [imageElement, setImageElement] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [errorImageSize, setErrorImageSize] = useState(false);
     const fileInputRef = useRef(null);
+    const navigate = useNavigate();
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -289,14 +291,14 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopu
             />
             <div
                 className='rotation-buttons-left'
-                style={{display: 'flex', justifyContent: 'space-between'}}
+                style={{display: 'flex', gap: '1rem'}}
             >
                 <button
                     onClick={() => {
                         setIsShaking(false);
                         setShowRulesModal(true);
                     }}
-                    className="btn-primary"
+                    className="btn-primary echoes"
                 >
                     Import Echo
                 </button>
@@ -310,9 +312,13 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopu
                             }
                         }));
                     }}
-                    className="rotation-button clear"
+                    className="rotation-button clear echoes"
                 >
                     Unequip All
+                </button>
+                <button onClick={() => openGuide(['Echoes', 'Build and Echo Scoring'])} className="btn-primary echoes"
+                style={{ marginLeft: 'auto'}}>
+                    See Guide
                 </button>
             </div>
 
@@ -381,6 +387,12 @@ const EchoParser = ({ onEchoesParsed, charId, setCharacterRuntimeStates, setPopu
                                     </p>
                                 </div>
                             </div>
+                            <p
+                                className={`dropzone-click-text go-to-guides`}
+                                onClick={() => navigate('/guides?category=Echo%20Importing')}
+                            >
+                                See full guides
+                            </p>
                         </div>
                     </div>
                 </div>

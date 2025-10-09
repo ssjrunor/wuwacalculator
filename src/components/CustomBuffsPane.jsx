@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import GuidesModal from "./GuideModal.jsx";
 
 export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
     const percentageFields = new Set([
@@ -122,9 +123,31 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
         );
     };
 
+    const [showGuide, setShowGuide] = useState(false);
+    const [guideCategory, setGuideCategory] = useState(null);
+
+    const openGuide = React.useCallback((category) => {
+        setGuideCategory(category);
+        setShowGuide(true);
+    }, []);
+
     return (
         <>
-            <div className="character-settings">
+            <div className="character-settings" style={{ position: 'relative' }}>
+                <button
+                    onClick={() => openGuide('Custom Buffs')}
+                    className="btn-primary echoes"
+                    style={{
+                        alignSelf: 'center',
+                        position: 'absolute',
+                        top: '1rem',
+                        right: '1rem',
+                        display: 'inline-flex',
+                        zIndex: 10
+                }}
+                >
+                    See Guide
+                </button>
                 <h3>Main Stats</h3>
                 <div className="buff-grid">
                     {[
@@ -207,6 +230,12 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
             }}>
                 Clear All
             </button>
+
+            <GuidesModal
+                open={showGuide}
+                category={guideCategory}
+                onClose={() => setShowGuide(false)}
+            />
         </>
     );
 }

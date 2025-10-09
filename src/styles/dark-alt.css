@@ -32,11 +32,6 @@
     color: #ddd !important;
 }
 
-.dark-alt .icon-menu-vertical {
-    border: 0.01rem solid rgba(255, 255, 255, 0.1);
-    background: rgba(9, 9, 9, 0.85);
-}
-
 .dark-alt .dropdown-item,
 .dark-alt .character-row-item {
     background-color: rgba(19, 20, 23, 0.38);
@@ -73,11 +68,6 @@
     background: black;
     border: 0.01rem solid rgba(255, 255, 255, 0.1);
     color: #ddd;
-}
-
-.dark-alt .skills-settings:hover {
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.04) !important;
 }
 
 .dark-alt .modern-checkbox {
@@ -284,9 +274,11 @@
     color: #747bff;
 }
 
+.dark-alt .icon-menu-vertical,
+.dark-alt .skills-modal-content,
 .dark-alt .skills-modal-content,
 .dark-alt .notification-toast {
-    background: rgba(0, 0, 0, 0.47);
+    background: rgba(4, 4, 4, 0.77);
     border: 0.01rem solid rgba(255, 255, 255, 0.1);
     color: #f9fafb;
 }
@@ -395,23 +387,9 @@
     color: #f9fafb;
 }
 
-.dark-alt .skills-tab {
-    background-color: #2a2a2a;
-    color: #ddd;
-}
-
-.dark-alt .skills-tab:hover {
-    background-color: #333;
-}
-
 .dark-alt .skills-modal-content-area {
     background-color: rgba(4, 5, 7, 0.18);
     color: #ddd;
-}
-
-.dark-alt .skills-modal-content button {
-    background-color: #a19c9c;
-    color: #222;
 }
 
 .dark-alt .multipliers-table td {

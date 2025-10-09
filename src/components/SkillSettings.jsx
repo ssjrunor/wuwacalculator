@@ -1,9 +1,13 @@
 import React from 'react';
 import skillTabs from '../constants/skillTabs';
+import {Info} from "lucide-react";
 
 export default function SkillSettings({ sliderValues, setSliderValues, currentSliderColor, setSkillsModalOpen }) {
     return (
-        <div className="skills-settings clickable" onClick={() => setSkillsModalOpen(true)}>
+        <div className="skills-settings clickable">
+            <div className="echo-info" onClick={() => setSkillsModalOpen(true)}>
+                <Info size={20} />
+            </div>
             <div onClick={(e) => e.stopPropagation()}>
                 {skillTabs.map(tab => (
                     <div className="slider-group" key={tab}>

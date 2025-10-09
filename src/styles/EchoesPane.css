@@ -521,3 +521,9 @@
     display: inline-flex;
     z-index: 2;
 }
+
+.btn-primary.echoes,
+.clear.echoes {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+}

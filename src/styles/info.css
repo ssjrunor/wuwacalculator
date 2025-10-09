@@ -48,7 +48,8 @@
     max-height: unset;
 }
 
-.main-echo-description.guides {
+.main-echo-description.guides,
+.changelog-entries.guides p {
     padding: 0.5rem;
     white-space: unset;
     pointer-events: none;
@@ -56,7 +57,9 @@
 }
 
 .dark .main-echo-description.guides,
-.dark-alt .main-echo-description.guides {
+.dark-alt .main-echo-description.guides,
+.dark-alt .changelog-entries.guides p,
+.dark .changelog-entries.guides p {
     color: #cfcfcf;
 }
 
