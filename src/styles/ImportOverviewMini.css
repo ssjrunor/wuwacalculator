@@ -200,7 +200,7 @@
     line-height: 1;
 }
 
-.echo-set-icon {
+.import-echo-slot .echo-set-icon {
     width: 18px;
     height: 18px;
     opacity: 0.9;
