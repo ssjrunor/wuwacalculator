@@ -7,20 +7,33 @@ import {attributeColors} from "../../utils/attributeHelpers.js";
 export default function GalbrenaUI( {setCharacterRuntimeStates, charId, activeStates, toggleState} ) {
     return (
         <div className="status-toggle-box">
+            <label className="modern-checkbox" style={{ fontSize: '16px', fontWeight: 'bold', marginTop: '1rem' }} onClick={(e) => e.stopPropagation()}>
+                <input
+                    type="checkbox"
+                    checked={activeStates.demonHypostasis || false}
+                    onChange={() => toggleState('demonHypostasis')}
+                />
+                Demon Hypostasis?
+            </label>
             <div
                 className="status-toggle-box-inner"
             >
-                <h4 className={'highlight'} style={{ fontSize: '16px', fontWeight: 'bold' }}>Demon Hypostasis</h4>
+                <h4 className={'highlight'} style={{ fontSize: '16px', fontWeight: 'bold' }}>Hellfire Absolution</h4>
                 <div>
                     <p>Gain <span className="highlight">85%</span> DMG Multiplier increase for  <span className="highlight">Basic Attack - Seraphic Execution</span>, <span className="highlight">Heavy Attack - Flamewing Verdict</span>, <span className="highlight">Mid-air Attack - Hellsent Barrage</span>, and <span className="highlight">Dodge Counter - Purgatory Scourge</span> while in <span className="highlight">Demon Hypostasis</span> for 14s.</p>
                 </div>
                 <label className="modern-checkbox" onClick={(e) => e.stopPropagation()}>
                     <input
                         type="checkbox"
-                        checked={activeStates.demonHypostasis || false}
-                        onChange={() => toggleState('demonHypostasis')}
+                        checked={activeStates.hellfireAbsolution || false}
+                        onChange={() => toggleState('hellfireAbsolution')}
                     />
                     Enable
+                    {!activeStates.demonHypostasis && (
+                        <span style={{ marginLeft: '8px', fontSize: '12px', color: 'gray' }}>
+                            (Only effective while Demon Hypostasis is active)
+                        </span>
+                    )}
                 </label>
             </div>
             <div

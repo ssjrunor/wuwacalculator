@@ -520,5 +520,20 @@ export const changelog = [
             }
         ],
         shortDesc: `Added <strong>confirmation modals</strong>~! No more accidental oopsies (〜^∇^)〜`
+    },
+    {
+        date: '10/10/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `
+                Updated <strong>Galbrena’s Afterflame</strong> and <strong>Quiyuan’s Inherent Skill: Quietude Within</strong> to correctly function as <em>Damage Taken</em> effects instead of <em>additive Damage Bonus</em>.  
+                The English text originally described these as damage bonuses, but the Chinese text specified them as damage taken modifiers.  
+                With <strong>Galbrena’s</strong> official release confirming the CN behavior, both effects have been adjusted to match the in-game mechanics — which also implies that <strong>Quiyuan’s Inherent Skill: Quietude Within</strong> should follow the same rule.
+                Apparently, <em>Kuro’s localization team</em> decided that “translation accuracy” was just another optional buff. (￣▽￣*)ゞ  
+                `
+            }
+        ],
+        shortDesc: `Updated <strong>Galbrena</strong> & <strong>Quiyuan</strong>. Their effects now apply as <em>Damage Taken</em>`
     }
 ];

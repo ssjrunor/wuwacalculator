@@ -16,7 +16,8 @@ export function calculateDamage({
                                     skillResIgnore = 0,
                                     skillCritDmg = 0,
                                     skillCritRate = 0,
-                                    fixedDmg = null
+                                    fixedDmg = null,
+                                    skillDmgTaken = 0
 }) {
     if (fixedDmg) {
         const normal = Math.max(1, Math.floor(fixedDmg));
@@ -64,7 +65,7 @@ export function calculateDamage({
     const enemyDef = Math.max(0, rawEnemyDef);
     const defMult = (800 + 8 * charLevel) / (800 + 8 * charLevel + enemyDef);
 
-    const dmgReductionTotal = 1 + (mergedBuffs.dmgReduction ?? 0)/100;
+    const dmgReductionTotal = 1 + ((mergedBuffs.dmgReduction ?? 0) + skillDmgTaken)/100;
     const elementReductionTotal = 1 + (mergedBuffs.elementDmgReduction ?? 0)/100;
 
     let skillTypeBonus = skillDmgBonus;

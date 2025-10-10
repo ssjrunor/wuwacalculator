@@ -52,7 +52,7 @@ export default function Calculator() {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-10-09 17:30';
+    const LATEST_CHANGELOG_VERSION = '2025-10-10 12:53';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 

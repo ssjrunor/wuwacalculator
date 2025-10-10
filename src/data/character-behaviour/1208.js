@@ -42,13 +42,17 @@ export function applyGalbrenaLogic({
         skillMeta.skillType = 'basic';
     }
 
-    if (characterState?.activeStates?.demonHypostasis && (tab === 'forteCircuit' && !name.includes('resonance skill'))) {
+    if (
+        characterState?.activeStates?.demonHypostasis &&
+        characterState?.activeStates?.hellfireAbsolution &&
+        (tab === 'forteCircuit' && !name.includes('resonance skill'))
+    ) {
         skillMeta.multiplier *= 1.85;
     }
 
     if ( characterState?.activeStates?.demonHypostasis && tab === 'forteCircuit' ) {
         const bonus = Math.min((characterState?.activeStates?.afterflame ?? 0) * 1.5, 60);
-        skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + bonus;
+        skillMeta.skillDmgTaken = (skillMeta.skillDmgTaken ?? 0) + bonus;
     }
 
     if (characterState?.activeStates?.burningDrive && !mergedBuffs.__burningDrive) {

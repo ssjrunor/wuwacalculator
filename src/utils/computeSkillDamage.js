@@ -233,7 +233,8 @@ export function computeSkillDamage({
         skillResIgnore: skillMeta.skillResIgnore ?? 0,
         skillCritDmg: skillMeta.skillCritDmg ?? 0,
         skillCritRate: skillMeta.skillCritRate ?? 0,
-        fixedDmg: skillMeta.fixedDmg ?? null
+        fixedDmg: skillMeta.fixedDmg ?? null,
+        skillDmgTaken: skillMeta.skillDmgTaken ?? 0,
     });
 
     let subHits = [];
@@ -276,7 +277,8 @@ export function computeSkillDamage({
                     skillResIgnore: skillMeta.skillResIgnore ?? 0,
                     skillCritDmg: skillMeta.skillCritDmg ?? 0,
                     skillCritRate: skillMeta.skillCritRate ?? 0,
-                    fixedDmg: skillMeta.fixedDmg ?? null
+                    fixedDmg: skillMeta.fixedDmg ?? null,
+                    skillDmgTaken: skillMeta.skillDmgTaken ?? 0,
                 });
 
                 subHits.push({
@@ -311,7 +313,8 @@ export function computeSkillDamage({
                     skillResIgnore: skillMeta.skillResIgnore ?? 0,
                     skillCritDmg: skillMeta.skillCritDmg ?? 0,
                     skillCritRate: skillMeta.skillCritRate ?? 0,
-                    fixedDmg: skillMeta.fixedDmg ?? null
+                    fixedDmg: skillMeta.fixedDmg ?? null,
+                    skillDmgTaken: skillMeta.skillDmgTaken ?? 0,
                 });
 
                 subHits.push({

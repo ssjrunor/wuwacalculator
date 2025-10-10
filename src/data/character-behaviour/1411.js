@@ -37,7 +37,7 @@ export function applyQYLogic({
     ].some(n => name.includes(n.toLowerCase()));
 
     if (isToggleActiveLocal('inherent1') && inherent1) {
-        skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 50;
+        skillMeta.skillDmgTaken = (skillMeta.skillDmgTaken ?? 0) + 50;
     }
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__qyInherent2) {
