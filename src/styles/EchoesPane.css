@@ -527,3 +527,24 @@
     font-size: 0.9rem;
     padding: 8px 16px;
 }
+
+.echo-parser-preview.skills-modal-content {
+    max-width: 1100px !important;
+}
+
+.echo-preview-view .echo-grid {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+}
+
+.echo-preview-view .main-echo-description.guides {
+    border-radius: 1rem;
+}
+
+.dark .echo-preview-view h4,
+.dark-alt .echo-preview-view h4 {
+    opacity: 0.8;
+}
+
+.echo-parser-preview.echo-tile {
+    pointer-events: none;
+}

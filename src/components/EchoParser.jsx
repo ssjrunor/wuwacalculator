@@ -3,6 +3,11 @@ import Tesseract from 'tesseract.js';
 import { echoImageMap, setNameImageMap } from '../utils/autoEchoImageMap';
 import { applyParsedEchoesToEquipped } from "../utils/buildEchoObjectsFromParsedResults.js";
 import {useNavigate} from "react-router-dom";
+import {getEchoScores, getTop5SubstatScoreDetails} from "../utils/echoHelper.js";
+import {setIconMap} from "../constants/echoSetData.jsx";
+import {EchoGridPreview} from "./OverviewDetailPane.jsx";
+import {imageCache} from "../pages/calculator.jsx";
+import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
 
 const echoImageCache = {};
 const setIconImageCache = {};
@@ -61,10 +66,14 @@ const EchoParser = ({
                         setShowConfirm,
                         saveAllEchoesToBag,
                         setGuideClose
-}) => {
+                    }) => {
+    const [parsedEchoes, setParsedEchoes] = useState([]);
+    const [view, setView] = useState('instructions');
+    const getImageSrc = (icon) => imageCache[icon]?.src || icon;
     const [imageSrc, setImageSrc] = useState(null);
     const [imageElement, setImageElement] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isProcesing, setIsProcesing] = useState(false);
     const [errorImageSize, setErrorImageSize] = useState(false);
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
@@ -94,56 +103,108 @@ const EchoParser = ({
         return () => document.removeEventListener('paste', handlePaste);
     }, []);
 
-    const handleImageFile = (file) => {
-        (async () => {
-            await preloadReferenceImages(echoImageMap, { width: 192, height: 182 }, echoImageCache);
-            await preloadReferenceImages(setNameImageMap, { width: 48, height: 48 }, setIconImageCache);
-        })();
-        setErrorImageSize(false);
+    async function parseEchoImage(file) {
+        await preloadReferenceImages(echoImageMap, { width: 192, height: 182 }, echoImageCache);
+        await preloadReferenceImages(setNameImageMap, { width: 48, height: 48 }, setIconImageCache);
+
         const img = new Image();
+        const loadPromise = new Promise((resolve, reject) => {
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+        });
+        img.src = URL.createObjectURL(file);
 
-        img.onload = async () => {
-            if (img.naturalWidth !== 1920 || img.naturalHeight !== 1080) {
-                setErrorImageSize(true);
-                setPopupMessage({
-                    message: 'Nice Try! But... This isn\'t a valid image (￣￢￣ヾ)',
-                    icon: '✘',
-                    color: 'red'
-                });
-                setShowToast(true);
-                setIsShaking(true);
-                setImageSrc(null);
-                return;
+        const loadedImg = await loadPromise;
+
+        // Safety check
+        if (loadedImg.naturalWidth !== 1920 || loadedImg.naturalHeight !== 1080) {
+            throw new Error('invalid_image_size');
+        }
+
+        const worker = await Tesseract.createWorker('eng');
+        await worker.setParameters({
+            tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.%+ ',
+            tessedit_pageseg_mode: 1,
+        });
+
+        const parsedResults = await parseEchoes(loadedImg, worker);
+        await worker.terminate();
+
+        return parsedResults;
+    }
+
+    function applyParsedEchoes(parsedResults, charId, setCharacterRuntimeStates, setPopupMessage, setShowToast) {
+        const newEquippedEchoes = applyParsedEchoesToEquipped(parsedResults);
+
+        setCharacterRuntimeStates(prev => ({
+            ...prev,
+            [charId]: {
+                ...(prev[charId] || {}),
+                equippedEchoes: newEquippedEchoes
             }
+        }));
 
+        setPopupMessage({
+            message: 'Success~! (〜^∇^)〜',
+            icon: '✔',
+            color: { light: 'green', dark: 'limegreen' },
+        });
+        setShowToast(true);
+        setIsProcesing(false);
+        setView('instructions');
+    }
+
+    const handleImageFile = async (file) => {
+        setErrorImageSize(false);
+        setIsShaking(false);
+        setImageSrc(null);
+
+        try {
+            setIsProcesing(true);
             setIsLoading(true);
-            setImageElement(img);
-            setImageSrc(img.src);
 
-            const worker = await Tesseract.createWorker('eng');
-            await worker.setParameters({
-                tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.%+ ',
-                tessedit_pageseg_mode: 1
-            });
+            const parsedResults = await parseEchoImage(file);
 
-            const parsedResults = await parseEchoes(img, worker);
-            await worker.terminate();
+            setParsedEchoes(parsedResults);
 
-            applyParsedEchoesToEquipped(parsedResults, charId, setCharacterRuntimeStates);
+            /*setIsClosing(true);
 
-            if (onEchoesParsed) onEchoesParsed(parsedResults);
+            setTimeout(() => {
+                setView('preview');
+                setIsClosing(false);
+            }, 300);*/
+
+            handleClose();
+
+            setTimeout(() => {
+                setView('preview');
+                setShowRulesModal(true);
+                setIsClosing(false);
+            }, 300);
 
             setIsLoading(false);
-            setShowRulesModal(false);
-            setPopupMessage({
-                message: 'Success~! (〜^∇^)〜',
-                icon: '✔',
-                color: { light: 'green', dark: 'limegreen' },
-            });
-            setShowToast(true);
-        };
+        } catch (err) {
+            setIsLoading(false);
 
-        img.src = URL.createObjectURL(file);
+            if (err.message === 'invalid_image_size') {
+                setErrorImageSize(true);
+                setPopupMessage({
+                    message: "Nice Try! But... This isn't a valid image (￣￢￣ヾ)",
+                    icon: '✘',
+                    color: 'red',
+                });
+            } else {
+                console.error(err);
+                setPopupMessage({
+                    message: 'Parsing failed, please try again.',
+                    icon: '✘',
+                    color: 'red',
+                });
+            }
+
+            setShowToast(true);
+            setIsShaking(true);
+        }
     };
 
     const parseEchoes = async (img, worker) => {
@@ -322,7 +383,7 @@ const EchoParser = ({
                 {!empty && (
                     <button
                         className="btn-primary echoes"
-                        onClick={saveAllEchoesToBag}
+                        onClick={() => saveAllEchoesToBag(equippedEchoes)}
                     >
                         Save All
                     </button>
@@ -371,88 +432,202 @@ const EchoParser = ({
 
             {showRulesModal && (
                 <div
-                    className={`skills-modal-overlay parser ${isClosing ? 'closing' : ''}`}
-                    onClick={handleClose}
+                    className={`
+                        skills-modal-overlay parser
+                        ${isClosing ? 'closing' : ''}
+                    `}
+                    onClick={() => {
+                        handleClose();
+                        setIsProcesing(false);
+                    }}
                 >
                     <div
-                        className={`skills-modal-content parser changelog-modal guides ${isClosing ? 'closing' : ''} ${isShaking ? 'shake' : ''}`}
+                        className={`
+                            skills-modal-content 
+                            parser 
+                            changelog-modal 
+                            guides 
+                            ${isClosing ? 'closing' : ''} 
+                            ${isShaking ? 'shake' : ''}
+                            ${ view === 'preview' ? 'echo-parser-preview' : ''}
+                        `}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="modal-main-content">
-                            <h2 className="modal-title">Import Echo</h2>
-
-                            <ul className="modal-list">
-                                <img
-                                    src="/assets/sample-import-image.png"
-                                    alt="Sample Echo Import Format"
-                                    className="modal-sample-image"
-                                    style={{ boxShadow: '0 2px 8px 0 black' }}
-                                />
-                                <li>
-                                    - Image should be generated with the <strong>wuwa bot</strong> on the official Wuthering Waves Discord server <code style={{opacity: "0.7"}}>/create</code> (or anywhere else you can use the bot ¯\_(ツ)_/¯).
-                                    Should be similar to the image above.
-                                </li>
-                                <li>
-                                    - Do <strong>NOT</strong> resize, compress, or crop the image.
-                                </li>
-                                <li>
-                                    - Should be <strong>1920</strong> x <strong>1080</strong> (make sure to confirm).
-                                </li>
-                                <li>
-                                    - Might not be 100% correct all the time so you may have to edit them post-import.
-                                </li>
-                                <li>
-                                    - Only works well with en texts.
-                                </li>
-                                <li>
-                                    {isLoading ? (
-                                        <div className="loader-overlay">
-                                            <div className="spinner" />
-                                        </div>
-                                    ) : (
-                                        <strong style={{color:"crimson", display: "flex", justifySelf: "center"}}>Only imports echoes</strong>
-                                    )}
-                                </li>
-                            </ul>
-
-                            <div className="modal-dropzone">
-                                <div
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onDrop={(e) => {
-                                        e.preventDefault();
-                                        const file = e.dataTransfer.files[0];
-                                        if (file) handleImageFile(file);
-                                    }}
-                                    className="modal-dropzone-text"
-                                >
-                                    <p
-                                        className={`dropzone-click-text`}
-                                        onClick={() => {
-                                            fileInputRef.current?.click();
-                                        }}
-                                    >
-                                        Choose Image
-                                    </p>
-                                </div>
-                            </div>
-                            <p
-                                className={`dropzone-click-text go-to-guides`}
-                                onClick={() => {
-                                    setGuideClose(() => () => {
-                                        setShowRulesModal(true);
-                                    });
+                        {view === 'instructions' ? (
+                            <ImportInstructionsView
+                                isLoading={isLoading}
+                                fileInputRef={fileInputRef}
+                                handleImageFile={handleImageFile}
+                                setGuideClose={setGuideClose}
+                                handleClose={handleClose}
+                                openGuide={openGuide}
+                                setShowRulesModal={setShowRulesModal}
+                                isProcesing={isProcesing}
+                            />
+                        ) : (
+                            <ParsedEchoesPreview
+                                parsedEchoes={parsedEchoes}
+                                onCancel={() => {
+                                    setIsProcesing(false);
                                     handleClose();
-                                    setTimeout(() => openGuide(['Echoes', 'Build and Echo Scoring', 'Echo Importing']), 300);
+
+                                    setTimeout(() => {
+                                        setView('instructions');
+                                        setShowRulesModal(true);
+                                        setIsClosing(false);
+                                    }, 300);
                                 }}
-                            >
-                                See guides
-                            </p>
-                        </div>
+                                onImport={(results) => {
+                                    applyParsedEchoes(results, charId, setCharacterRuntimeStates, setPopupMessage, setShowToast);
+                                    handleClose();
+                                }}
+                                charId={charId}
+                                getImageSrc={getImageSrc}
+                                applyParsedEchoesToEquipped={applyParsedEchoesToEquipped}
+                                runtime={characterRuntimeStates[charId]}
+                                saveAllEchoesToBag={saveAllEchoesToBag}
+                            />
+                        )}
                     </div>
                 </div>
             )}
         </div>
     );
 };
+
+function ParsedEchoesPreview ({ parsedEchoes, onCancel, onImport, charId, getImageSrc, applyParsedEchoesToEquipped, runtime, saveAllEchoesToBag }) {
+    const maxScore = getTop5SubstatScoreDetails(charId).total;
+    const echoes = applyParsedEchoesToEquipped(parsedEchoes);
+
+    const buildScore = getEquippedEchoesScoreDetails(
+        charId,
+        { [charId]: { ...runtime, equippedEchoes: echoes } }
+    );
+    const maxBuildScore = maxScore * 5;
+    const percentScore = (buildScore.total / maxBuildScore) * 100;
+
+    return (
+        <div className="modal-main-content echo-preview-view">
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <h2>Import Preview</h2>
+                <h4
+                    style={{ marginLeft: 'auto', marginBottom: 'unset', padding: '0.5rem 0.9rem' }}
+                    className="echo-buff"
+                >
+                    Build Score: {percentScore > 0 ? percentScore.toFixed(1) : '??'}%
+                </h4>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <h3>You’re about to import the following echoes:</h3>
+                <button
+                    className="btn-primary echoes"
+                    style={{ marginLeft: 'auto', marginBottom: 'unset' }}
+                    onClick={() => saveAllEchoesToBag(echoes)}
+                >
+                    Save All
+                </button>
+            </div>
+
+            <div
+                className="echo-grid main-echo-description guides"
+                style={{ marginBottom: '1rem' }}
+            >
+                {[...Array(5)].map((_, index) => {
+                    const echo = echoes[index] ?? null;
+                    const score = (getEchoScores(charId, echo).totalScore / maxScore) * 100;
+
+                    return (
+                        <div
+                            key={index}
+                            className="echo-tile overview inherent-skills-box echo-parser-preview"
+                            style={{margin: 'unset'}}
+                            onClick={() => switchLeftPane('echoes')}
+                        >
+                            <EchoGridPreview
+                                echo={echo}
+                                getImageSrc={getImageSrc}
+                                score={score}
+                                setIconMap={setIconMap}
+                                className={'echo-parser-preview'}
+                            />
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className="modal-footer" style={{ display: 'flex', gap: '0.5rem' }}>
+                <button className="edit-substat-button btn-primary echoes" onClick={onCancel}>Cancel</button>
+                <button className="edit-substat-button btn-primary echoes" onClick={() => onImport(parsedEchoes)}>Equip</button>
+            </div>
+        </div>
+    )
+}
+
+const ImportInstructionsView = ({ isLoading, fileInputRef, handleImageFile, setGuideClose, handleClose, openGuide, setShowRulesModal, isProcesing }) => (
+    <div className="modal-main-content">
+        <h2 className="modal-title">Import Echo</h2>
+
+        <ul className="modal-list">
+            <img
+                src="/assets/sample-import-image.png"
+                alt="Sample Echo Import Format"
+                className="modal-sample-image"
+                style={{ boxShadow: '0 2px 8px 0 black' }}
+            />
+            <li>
+                - Image should be generated with the <strong>wuwa bot</strong> on the official Wuthering Waves Discord server{' '}
+                <code style={{ opacity: '0.7' }}>/create</code> (or anywhere else you can use the bot ¯\_(ツ)_/¯).
+                Should be similar to the image above.
+            </li>
+            <li>- Do <strong>NOT</strong> resize, compress, or crop the image.</li>
+            <li>- Should be <strong>1920</strong> x <strong>1080</strong> (make sure to confirm).</li>
+            <li>- Might not be 100% correct all the time so you may have to edit them post-import.</li>
+            <li>- Only works well with English texts.</li>
+            <li>
+                {(isLoading || isProcesing) ? (
+                    <div className="loader-overlay">
+                        <div className="spinner" />
+                    </div>
+                ) : (
+                    <strong style={{ color: 'crimson', display: 'flex', justifySelf: 'center' }}>
+                        Only imports echoes
+                    </strong>
+                )}
+            </li>
+        </ul>
+
+        <div
+            className="modal-dropzone"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+                e.preventDefault();
+                const file = e.dataTransfer.files[0];
+                if (file) handleImageFile(file);
+            }}
+        >
+            <div className="modal-dropzone-text">
+                <p
+                    className="dropzone-click-text"
+                    onClick={() => fileInputRef.current?.click()}
+                >
+                    Choose Image
+                </p>
+            </div>
+        </div>
+
+        <p
+            className="dropzone-click-text go-to-guides"
+            onClick={() => {
+                setGuideClose(() => () => {
+                    setShowRulesModal(true);
+                });
+                handleClose();
+                setTimeout(() => openGuide(['Echoes', 'Build and Echo Scoring', 'Echo Importing']), 300);
+            }}
+        >
+            See guides
+        </p>
+    </div>
+);
 
 export default EchoParser;

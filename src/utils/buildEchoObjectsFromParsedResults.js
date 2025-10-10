@@ -163,10 +163,10 @@ const correctionMap = {
 
 const fixOCRNumber = (str) => correctionMap[str] ?? str;
 
-export function applyParsedEchoesToEquipped(parsedList, charId, setCharacterRuntimeStates) {
+export function applyParsedEchoesToEquipped(parsedList) {
     const mapped = getEchoIdSetIdAndMainStats(parsedList);
 
-    const newEquippedEchoes = mapped.map((result) => {
+    return mapped.map((result) => {
         const baseEcho = echoes.find(e => String(e.id) === String(result.echoId));
         if (!baseEcho) return null;
 
@@ -187,12 +187,4 @@ export function applyParsedEchoesToEquipped(parsedList, charId, setCharacterRunt
             uid: crypto.randomUUID?.() ?? Date.now().toString(),
         };
     });
-
-    setCharacterRuntimeStates(prev => ({
-        ...prev,
-        [charId]: {
-            ...(prev[charId] || {}),
-            equippedEchoes: newEquippedEchoes
-        }
-    }));
 }

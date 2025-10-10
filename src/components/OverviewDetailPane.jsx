@@ -669,117 +669,12 @@ export default function OverviewDetailPane({
                                         style={{ margin: 'unset' }}
                                         onClick={() => switchLeftPane('echoes')}
                                     >
-                                        {echo ? (
-                                            <>
-                                                <div className="gear-header">
-                                                    <div className="echo-set-cost-header">
-                                                        {echo?.selectedSet && (
-                                                            <img
-                                                                src={setIconMap[echo.selectedSet]}
-                                                                alt={`Set ${echo.selectedSet}`}
-                                                                className="echo-set-icon overview"
-                                                            />
-                                                        )}
-                                                        <div className="echo-slot-cost-badge bag overview">{echo.cost}</div>
-                                                    </div>
-                                                    <div className="damage-tooltip-wrapper cv-container-tooltip" data-tooltip={`Echo Score`}>
-                                                        {score > 0 && (
-                                                            <div className="cv-container overview-weapon-details echo-buff overview">
-                                                                {score.toFixed(1)}%
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-
-                                                <img
-                                                    src={getImageSrc(echo.icon || '/assets/echoes/default.webp')}
-                                                    alt={echo.name || 'Echo'}
-                                                    className="gear-icon"
-                                                    onError={(e) => {
-                                                        e.currentTarget.onerror = null;
-                                                        e.currentTarget.src = '/assets/echoes/default.webp';
-                                                    }}
-                                                />
-                                                <div className="gear-title highlight">{echo.name || 'Echo'}</div>
-
-                                                <div className="echo-stats-preview" style={{ cursor: 'unset' }}>
-                                                    <div className="echo-bag-info-main">
-                                                        {Object.entries(echo.mainStats ?? {}).map(([key, val]) => {
-                                                            const label = formatStatKey(key);
-                                                            const iconUrl = statIconMap[label];
-
-                                                            return (
-                                                                <div key={key} className="stat-row">
-                                                                    <span className="echo-stat-label">
-                                                                        {iconUrl && (
-                                                                            <div
-                                                                                className="stat-icon"
-                                                                                style={{
-                                                                                    width: 12,
-                                                                                    height: 12,
-                                                                                    backgroundColor: '#999',
-                                                                                    WebkitMaskImage: `url(${iconUrl})`,
-                                                                                    maskImage: `url(${iconUrl})`,
-                                                                                    WebkitMaskRepeat: 'no-repeat',
-                                                                                    maskRepeat: 'no-repeat',
-                                                                                    WebkitMaskSize: 'contain',
-                                                                                    maskSize: 'contain',
-                                                                                    display: 'inline-block',
-                                                                                    marginRight: '0.125rem',
-                                                                                    verticalAlign: 'middle',
-                                                                                    paddingRight: '0.125rem',
-                                                                                }}
-                                                                            />
-                                                                        )}
-                                                                        {label}
-                                                                    </span>
-                                                                    <span className="echo-stat-value">
-                                                                        {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
-                                                                    </span>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                    {Object.entries(echo.subStats ?? {}).map(([key, val]) => {
-                                                        const label = formatStatKey(key);
-                                                        const iconUrl = statIconMap[label];
-
-                                                        return (
-                                                            <div key={key} className="stat-row">
-                                                                <span className="echo-stat-label">
-                                                                    {iconUrl && (
-                                                                        <div
-                                                                            className="stat-icon"
-                                                                            style={{
-                                                                                width: 12,
-                                                                                height: 12,
-                                                                                backgroundColor: '#999',
-                                                                                WebkitMaskImage: `url(${iconUrl})`,
-                                                                                maskImage: `url(${iconUrl})`,
-                                                                                WebkitMaskRepeat: 'no-repeat',
-                                                                                maskRepeat: 'no-repeat',
-                                                                                WebkitMaskSize: 'contain',
-                                                                                maskSize: 'contain',
-                                                                                display: 'inline-block',
-                                                                                marginRight: '0.125rem',
-                                                                                verticalAlign: 'middle',
-                                                                                paddingRight: '0.125rem',
-                                                                            }}
-                                                                        />
-                                                                    )}
-                                                                    {label}
-                                                                </span>
-                                                                <span className="echo-stat-value">
-                                                                    {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
-                                                                </span>
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <div className="empty-echo-tile">Empty</div>
-                                        )}
+                                        <EchoGridPreview
+                                            echo={echo}
+                                            getImageSrc={getImageSrc}
+                                            score={score}
+                                            setIconMap={setIconMap}
+                                        />
                                     </div>
                                 );
                             })}
@@ -868,4 +763,128 @@ function formatWeaponEffect(weapon) {
         const value = Array.isArray(paramGroup) ? paramGroup[rank] : undefined;
         return value !== undefined ? value : match;
     });
+}
+
+export function EchoGridPreview({
+                                    echo,
+                                    getImageSrc,
+                                    score = null,
+                                    setIconMap,
+                                    className = ''
+                                }) {
+    return (
+        <>
+            {echo ? (
+                <>
+                    <div className={`gear-header ${className}`}>
+                        <div className="echo-set-cost-header">
+                            {echo?.selectedSet && (
+                                <img
+                                    src={setIconMap[echo.selectedSet]}
+                                    alt={`Set ${echo.selectedSet}`}
+                                    className="echo-set-icon overview"
+                                />
+                            )}
+                            <div className={`echo-slot-cost-badge bag overview ${className}`}>{echo.cost}</div>
+                        </div>
+                        <div className={`damage-tooltip-wrapper cv-container-tooltip ${className}`} data-tooltip={`Echo Score`}>
+                            {score > 0 && (
+                                <div className={`cv-container overview-weapon-details echo-buff overview ${className}`}>
+                                    {score.toFixed(1)}%
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <img
+                        src={getImageSrc(echo.icon || '/assets/echoes/default.webp')}
+                        alt={echo.name || 'Echo'}
+                        className="gear-icon"
+                        onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/assets/echoes/default.webp';
+                        }}
+                    />
+                    <div className={`gear-title highlight ${className}`}>{echo.name || 'Echo'}</div>
+
+                    <div className={`echo-stats-preview ${className}`} style={{ cursor: 'unset' }}>
+                        <div className={`echo-bag-info-main ${className}`}>
+                            {Object.entries(echo.mainStats ?? {}).map(([key, val]) => {
+                                const label = formatStatKey(key);
+                                const iconUrl = statIconMap[label];
+
+                                return (
+                                    <div key={key} className={`stat-row ${className}`}>
+                                    <span className={`echo-stat-label ${className}`}>
+                                        {iconUrl && (
+                                            <div
+                                                className={`stat-icon ${className}`}
+                                                style={{
+                                                    width: 12,
+                                                    height: 12,
+                                                    backgroundColor: '#999',
+                                                    WebkitMaskImage: `url(${iconUrl})`,
+                                                    maskImage: `url(${iconUrl})`,
+                                                    WebkitMaskRepeat: 'no-repeat',
+                                                    maskRepeat: 'no-repeat',
+                                                    WebkitMaskSize: 'contain',
+                                                    maskSize: 'contain',
+                                                    display: 'inline-block',
+                                                    marginRight: '0.125rem',
+                                                    verticalAlign: 'middle',
+                                                    paddingRight: '0.125rem',
+                                                }}
+                                            />
+                                        )}
+                                        {label}
+                                    </span>
+                                        <span className={`echo-stat-value ${className}`}>
+                                            {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
+                                        </span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        {Object.entries(echo.subStats ?? {}).map(([key, val]) => {
+                            const label = formatStatKey(key);
+                            const iconUrl = statIconMap[label];
+
+                            return (
+                                <div key={key} className={`stat-row ${className}`}>
+                                    <span className={`echo-stat-label ${className}`}>
+                                        {iconUrl && (
+                                            <div
+                                                className={`stat-icon ${className}`}
+                                                style={{
+                                                    width: 12,
+                                                    height: 12,
+                                                    backgroundColor: '#999',
+                                                    WebkitMaskImage: `url(${iconUrl})`,
+                                                    maskImage: `url(${iconUrl})`,
+                                                    WebkitMaskRepeat: 'no-repeat',
+                                                    maskRepeat: 'no-repeat',
+                                                    WebkitMaskSize: 'contain',
+                                                    maskSize: 'contain',
+                                                    display: 'inline-block',
+                                                    marginRight: '0.125rem',
+                                                    verticalAlign: 'middle',
+                                                    paddingRight: '0.125rem',
+                                                }}
+                                            />
+                                        )}
+                                        {label}
+                                    </span>
+                                    <span className={`echo-stat-value ${className}`}>
+                                        {key.endsWith('Flat') ? val : `${val?.toFixed(1)}%`}
+                                    </span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </>
+            ) : (
+                <div className={`empty-echo-tile ${className}`}>Empty</div>
+            )}
+        </>
+    );
 }

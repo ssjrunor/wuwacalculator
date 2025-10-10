@@ -239,8 +239,7 @@ export default function EchoesPane({
         return () => observer.disconnect();
     }, []);
 
-    function saveAllEchoesToBag() {
-        const equippedEchoes = characterRuntimeStates?.[charId]?.equippedEchoes ?? [];
+    function saveAllEchoesToBag(equippedEchoes) {
 
         if (!Array.isArray(equippedEchoes) || equippedEchoes.length === 0) {
             setPopupMessage({

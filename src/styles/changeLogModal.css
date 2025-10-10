@@ -85,7 +85,8 @@
     gap: 1rem;
 }
 
-.changelog-entries.main-echo-description.guides {
+.changelog-entries.main-echo-description.guides,
+.echo-preview-view .main-echo-description.guides {
     margin: unset;
     pointer-events: unset;
     cursor: unset !important;
