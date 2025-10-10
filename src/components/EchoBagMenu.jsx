@@ -7,7 +7,8 @@ import {
     getEchoBag,
     subscribeEchoBag,
     removeEchoFromBag,
-    updateEchoInBag
+    updateEchoInBag,
+    clearEchoBag
 } from '../state/echoBagStore';
 import {formatStatKey, getValidMainStats, statIconMap} from "../utils/echoHelper.js";
 import {imageCache} from "../pages/calculator.jsx";
@@ -30,7 +31,11 @@ export default function EchoBagMenu({
                                         selectedCost,
                                         setSelectedCost,
                                         searchTerm,
-                                        setSearchTerm
+                                        setSearchTerm,
+                                        setConfirmMessage,
+                                        setShowToast,
+                                        setShowConfirm,
+                                        setPopupMessage
 }) {
     const [echoBag, setEchoBag] = useState(getEchoBag());
     const [version, setVersion] = useState(0);
@@ -109,6 +114,45 @@ export default function EchoBagMenu({
                 className={`edit-substats-modal echo-bag-modal ${isAnimatingOut ? 'hiding' : 'show'}`}
                 onClick={(e) => e.stopPropagation()}
             >
+                <button
+                    style={{
+                        alignSelf: 'center',
+                        position: 'absolute',
+                        top: '0.75rem',
+                        right: '0.75rem',
+                        display: 'inline-flex',
+                        zIndex: '10'
+                    }}
+                    className="rotation-button clear echoes"
+                    onClick={() => {
+                        if (echoBag.length === 0) {
+                            setPopupMessage({
+                                message: `Oh... you got nothing in here already... (゜。゜)`,
+                                icon: '❤',
+                                color: { light: 'green', dark: 'limegreen' },
+                            });
+                            setShowToast(true);
+                        } else {
+                            setConfirmMessage({
+                                confirmLabel: 'Clear Echo Bag',
+                                cancelLabel: 'Nevermind',
+                                onConfirm: () => {
+                                    clearEchoBag();
+                                    setEchoBag([]);
+                                    setPopupMessage({
+                                        message: 'Cleared~! (〜^∇^)〜',
+                                        icon: '✔',
+                                        color: { light: 'green', dark: 'limegreen' },
+                                    });
+                                    setShowToast(true);
+                                }
+                            });
+                            setShowConfirm(true);
+                        }
+                    }}
+                >
+                    Clear All
+                </button>
                     <div className="menu-header-with-buttons echo">
                         <div className="menu-header echo">Saved Echoes</div>
                         <div className="button-group-container echo">
@@ -133,6 +177,7 @@ export default function EchoBagMenu({
                                 </button>
                             ))}
                         </div>
+
                     </div>
                 <div className="modal-body echo-grid">
                     {filteredEchoes.length === 0 ? (

@@ -63,3 +63,8 @@ export function subscribeEchoBag(callback) {
     callback([...echoBag]);
     return () => listeners.delete(callback);
 }
+
+export function clearEchoBag() {
+    echoBag = [];
+    notify();
+}

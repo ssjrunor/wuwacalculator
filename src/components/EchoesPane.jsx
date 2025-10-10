@@ -800,6 +800,10 @@ export default function EchoesPane({
             )}
             {bagOpen && (
                 <EchoBagMenu
+                    setConfirmMessage={setConfirmMessage}
+                    setShowToast={setShowToast}
+                    setShowConfirm={setShowConfirm}
+                    setPopupMessage={setPopupMessage}
                     editingEcho={editingEcho}
                     setEditingEcho={setEditingEcho}
                     selectedSet={selectedSet}
