@@ -57,7 +57,11 @@ export const guides = [
                     <li>Switch between ascending and descending order.</li>
                     <li>Filter to view only rotations for a specific character.</li>
                 </ul>
-                <p>Each saved entry shows Normal, Crit, and Average damage values, along with the date it was created. You can also export <span style="font-weight: bold">rotation files</span> or load the saved character's <span style="font-weight: bold"> full character state</span> from here directly.</p>
+                <p>Each saved entry shows Normal, Crit, and Average damage values, along with the date it was created. You can also export <span style="font-weight: bold">rotation files</span> or load the saved character's <span style="font-weight: bold">full character state</span> from here directly.</p>
+                
+                <p>To make filtering easier, a <strong>Smart Filter</strong> option is available beside the <strong>Saved Rotations</strong> and <strong>Saved Team Rotations</strong> titles. When enabled, the system automatically detects your <strong>active character</strong> and filters the lists to show only the rotations relevant to them. Turning it off restores full manual control, allowing you to browse all saved rotations freely.</p>
+                
+                <p><strong>Smart Filter</strong> is remembered between sessions, so your preference persists even after reloading the page.</p>
 
                 <h4>9. Total Damage Summaries</h4>
                 <p>At the bottom of the Damage section, a <strong>Rotation Summary</strong> shows the total Normal, Crit, and Average values for your sequence. It also breaks down damage contribution by type (e.g., Basic, Skill, Liberation). If any healing or shielding abilities were used, these appear in separate totals in <span style="color: limegreen; font-weight: bold;">green</span> and <span style="color: #838383; font-weight: bold;">gray</span> respectively.</p>

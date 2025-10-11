@@ -105,7 +105,9 @@ export default function RotationsPane({
                                           setSavedRotations,
                                           charId,
                                           setSavedTeamRotations,
-                                          savedTeamRotations
+                                          savedTeamRotations,
+                                          smartFilter,
+                                          setSmartFilter
                                       }) {
     const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
@@ -333,6 +335,11 @@ export default function RotationsPane({
         getCharacterFilterOptions(savedTeamRotations, characters), [savedTeamRotations, characters]);
 
     useEffect(() => {
+        if (!smartFilter) {
+            setPersonalFilterCharId('');
+            setTeamFilterCharId('');
+            return;
+        }
         const isInPersonal = filterOptions.some(opt => String(opt.id) === String(charId));
         if (isInPersonal) {
             setPersonalFilterCharId(charId);
@@ -340,13 +347,13 @@ export default function RotationsPane({
             setPersonalFilterCharId('');
         }
 
-        const isInTeam = teamFilterOptions.some(opt => String(opt.value) === String(charId));
+        const isInTeam = teamFilterOptions.some(opt => String(opt.id) === String(charId));
         if (isInTeam) {
             setTeamFilterCharId(charId);
         } else {
             setTeamFilterCharId('');
         }
-    }, [charId, filterOptions, teamFilterOptions]);
+    }, [charId, filterOptions, teamFilterOptions, smartFilter]);
 
     function exportRotationEntries(rotationName, characterState) {
         const runtime = characterState ?? characterRuntimeStates[charId];
@@ -412,7 +419,7 @@ export default function RotationsPane({
                         setPopupMessage({
                             message: 'This isn\'t a rotation file... what were you trying to do...? (╹ -╹)?',
                             icon: '✘',
-                            color: '#ff3f3f'
+                            color: 'red'
                         });
                         setShowToast(true);
                         return;
@@ -605,8 +612,6 @@ export default function RotationsPane({
                                         icon: '✔',
                                         color: { light: 'green', dark: 'limegreen' },
                                     });
-
-                                    console.log(popupMessage);
                                     setShowToast(true);
                                 }
                             }}
@@ -728,7 +733,20 @@ export default function RotationsPane({
 
             {viewMode === 'saved' && (
                 <>
-                    <h2 className="panel-title">Saved Rotations</h2>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <h2 className="panel-title">Saved Rotations</h2>
+                        <label
+                            className='modern-checkbox'
+                            style={{ fontSize: '1rem', gap: '0.3rem', fontWeight: 'bold', marginLeft: 'auto' }}
+                        >
+                            Smart Filter
+                            <input
+                                type="checkbox"
+                                checked={smartFilter}
+                                onChange={(e) => setSmartFilter(e.target.checked)}
+                            />
+                        </label>
+                    </div>
                     <div className="sort-controls">
                         <label style={{ marginRight: '8px', fontWeight: 'bold' }}>Sort by:</label>
                         <select value={sortKey} onChange={(e) => setSortKey(e.target.value)}>
@@ -767,6 +785,8 @@ export default function RotationsPane({
                                 } else {
                                     setConfirmMessage({
                                         confirmLabel: 'Clear Saved Rotations',
+                                        message: 'This will clear ALL saved rotations, not just the filtered out ones you\'re seeing. ' +
+                                            'This action cannot be undone...',
                                         onConfirm: () => {
                                             setSavedRotations([]);
                                             setPopupMessage({
@@ -908,7 +928,20 @@ export default function RotationsPane({
 
             {viewMode === 'team' && (
                 <>
-                    <h2 className="panel-title">Saved Team Rotations</h2>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <h2 className="panel-title">Saved Team Rotations</h2>
+                        <label
+                            className='modern-checkbox'
+                            style={{ fontSize: '1rem', gap: '0.3rem', fontWeight: 'bold', marginLeft: 'auto' }}
+                        >
+                            Smart Filter
+                            <input
+                                type="checkbox"
+                                checked={smartFilter}
+                                onChange={(e) => setSmartFilter(e.target.checked)}
+                            />
+                        </label>
+                    </div>
                     <div className="sort-controls">
                         <label style={{ marginRight: '8px', fontWeight: 'bold' }}>Sort by:</label>
                         <select value={sortKey} onChange={(e) => setSortKey(e.target.value)}>
@@ -934,6 +967,8 @@ export default function RotationsPane({
                                         onClick={() => {
                                             setConfirmMessage({
                                                 confirmLabel: 'Clear Team Rotations',
+                                                message: 'This will clear ALL saved team rotations, not just the filtered out ones you\'re seeing. ' +
+                                                    'This action cannot be undone...',
                                                 onConfirm: () => {
                                                     setSavedTeamRotations([]);
                                                     setPopupMessage({

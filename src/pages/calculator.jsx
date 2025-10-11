@@ -105,6 +105,8 @@ export default function Calculator() {
     const [savedRotations, setSavedRotations] = usePersistentState('globalSavedRotations', []);
     const teamRotation = getResolvedTeamRotations(characterRuntimeStates[charId], characterRuntimeStates, savedRotations);
     const [savedTeamRotations, setSavedTeamRotations] = usePersistentState('globalSavedTeamRotations', []);
+    const [smartFilter, setSmartFilter] = usePersistentState('smartFilter', true);
+
 
     useEffect(() => {
         Promise.all([fetchCharacters(), fetchWeapons()]).then(([charData, weaponData]) => {
@@ -1243,6 +1245,8 @@ export default function Calculator() {
                                             charId={charId}
                                             setSavedTeamRotations={setSavedTeamRotations}
                                             savedTeamRotations={savedTeamRotations}
+                                            smartFilter={smartFilter}
+                                            setSmartFilter={setSmartFilter}
                                         />
                                     )}
                                     {leftPaneView === 'echoes' && (
