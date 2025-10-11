@@ -461,3 +461,196 @@ select:focus {
     align-items: center;
     margin-bottom: 12px;
 }
+
+
+.sort-controls select,
+.sort-controls .custom-select__control {
+    align-self: stretch;
+}
+
+.custom-select__control,
+.custom-select__menu {
+    padding: 0 5px;
+    font-weight: bold;
+    border-radius: 10px !important;
+    border: none !important;
+    background-color: rgba(200, 200, 200, 0.4) !important;
+    color: #333 !important;
+    box-shadow: none !important;
+}
+
+.custom-select__control--is-focused {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.custom-select__control {
+    min-height: 2rem !important;
+}
+
+.custom-select__menu {
+    border: 1px solid rgba(151, 151, 151, 0.2) !important;
+    background-color: rgba(207, 207, 207, 0.04) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: unset !important;
+    overflow-x: hidden !important;
+    font-size: 12px !important;
+    width: 8rem !important;
+    max-width: 8rem !important;
+}
+
+.custom-select__menu-list {
+    padding: 4px 6px !important;
+    overflow-x: hidden !important;
+    display: flex;
+    flex-direction: column;
+    gap: 2px !important;
+    width: 100% !important;
+}
+
+.custom-select__input-container {
+    margin: unset !important;
+    padding: unset !important;
+}
+
+.custom-select__indicator {
+    transition: all ease 0.3s;
+    color: #333 !important;
+    padding: 0 5px 0 5px !important;
+}
+
+.custom-select__control:hover {
+    cursor: pointer;
+}
+
+.custom-select__value-container {
+    font-size: 0.85rem;
+    overflow-x: auto !important;
+    padding: 0 4px 0 2px !important;
+    gap: 0.5rem;
+}
+
+.custom-select__input {
+    margin-left: 2px !important;
+    margin-right: 4px !important;
+}
+
+.custom-select__multi-value {
+    margin: 4px 0 !important;
+    background: rgba(0, 0, 0, 0.07) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11) !important;
+}
+
+.custom-select__single-value__label,
+.custom-select__multi-value__label {
+    padding: 1px !important;
+    padding-left: 6px !important;
+}
+
+.custom-select__clear-indicator.custom-select__indicator:hover {
+    color: red !important;
+}
+
+.custom-select__multi-value__remove {
+    transition: all ease 0.3s;
+}
+
+.custom-select__multi-value__remove:hover {
+    background: none !important;
+    transform: scale(1.05) !important;
+}
+
+.custom-select__multi-value__remove:hover svg {
+    transform: scale(1.05) !important;
+}
+
+.custom-select__indicator:hover {
+    color: #8c8c8c !important;
+}
+
+.custom-select__option {
+    padding: 2px 4px 2px 8px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all ease 0.3s;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.custom-select__option--is-focused {
+    transform: scale(1.04);
+    background-color: rgba(0, 0, 0, 0.09) !important;
+    color: unset !important;
+}
+
+.custom-select__option--is-selected {
+    background-color: rgba(0, 0, 0, 0.24) !important;
+    color: unset !important;
+}
+
+.dark .custom-select__control,
+.dark .custom-select__menu {
+    background-color: rgba(100, 100, 100, 0.3) !important;
+    color: #ddd !important;
+}
+
+.dark .custom-select__indicator,
+.dark-alt .custom-select__indicator {
+    color: #ddd !important;
+}
+
+.dark .custom-select__indicator:hover,
+.dark-alt .custom-select__indicator:hover {
+    color: #8c8c8c !important;
+}
+
+.dark .custom-select__clear-indicator.custom-select__indicator:hover,
+.dark-alt .custom-select__clear-indicator.custom-select__indicator:hover {
+    color: #ff4343 !important;
+}
+
+.dark .custom-select__multi-value,
+.dark-alt .custom-select__multi-value {
+    background: rgba(255, 255, 255, 0.13) !important;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.11) !important;
+}
+
+.dark .custom-select__single-value__label,
+.dark-alt .custom-select__single-value__label,
+.dark .custom-select__multi-value__label,
+.dark-alt .custom-select__multi-value__label {
+    color: #ddd !important;
+}
+
+.dark .custom-select__option--is-focused,
+.dark-alt .custom-select__option--is-focused,
+.dark-alt .custom-select__option--is-selected,
+.dark .custom-select__option--is-selected {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark .custom-select__indicator-separator,
+.dark-alt .custom-select__indicator-separator {
+    opacity: 0.4;
+}
+
+.dark .custom-select__input,
+.dark-alt .custom-select__input {
+    color: #ddd !important;
+}
+
+.dark-alt .custom-select__control,
+.dark-alt .custom-select__menu {
+    background: rgba(100, 100, 100, 0.3) !important;
+    color: #ddd !important;
+}
+
+.dark-alt .custom-select__multi-value {
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.64) !important;
+}
+
+.custom-select__single-value {
+    color: unset !important;
+}

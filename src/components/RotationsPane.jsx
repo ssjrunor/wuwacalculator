@@ -11,6 +11,7 @@ import NotificationToast from "./NotificationToast.jsx";
 import {isEqual} from "lodash";
 import GuidesModal from "./GuideModal.jsx";
 import ConfirmationModal from "./ConfirmationModal.jsx";
+import Select from 'react-select';
 
 const tabDisplayOrder = [
     'normalAttack',
@@ -83,6 +84,17 @@ const skillTypeLabelMap = {
     healing: 'Healing',
     shielding: 'Shielding',
 };
+
+const sortKeyOptions = [
+    { value: 'date', label: 'Date Added' },
+    { value: 'name', label: 'Name' },
+    { value: 'dmg', label: 'Total DMG' },
+];
+
+const sortOrderOptions = [
+    { value: 'desc', label: 'Descending' },
+    { value: 'asc', label: 'Ascending' },
+];
 
 export default function RotationsPane({
                                           currentSliderColor,
@@ -157,8 +169,8 @@ export default function RotationsPane({
     const [sortOrder, setSortOrder] = usePersistentState('sortOrder', 'desc');
     const [editingId, setEditingId] = useState(null);
     const [editedName, setEditedName] = useState('');
-    const [personalFilterCharId, setPersonalFilterCharId] = useState('');
-    const [teamFilterCharId, setTeamFilterCharId] = useState('');
+    const [personalFilterCharId, setPersonalFilterCharId] = useState([]);
+    const [teamFilterCharId, setTeamFilterCharId] = useState([]);
     useEffect(() => {
         let lastSeen = 0;
         const interval = setInterval(() => {
@@ -336,23 +348,38 @@ export default function RotationsPane({
 
     useEffect(() => {
         if (!smartFilter) {
-            setPersonalFilterCharId('');
-            setTeamFilterCharId('');
+            setPersonalFilterCharId(prev =>
+                prev.filter(id => String(id) !== String(charId))
+            );
+            setTeamFilterCharId(prev =>
+                prev.filter(id => String(id) !== String(charId))
+            );
             return;
         }
         const isInPersonal = filterOptions.some(opt => String(opt.id) === String(charId));
-        if (isInPersonal) {
-            setPersonalFilterCharId(charId);
-        } else {
-            setPersonalFilterCharId('');
-        }
+
+        setPersonalFilterCharId(prev => {
+            const updated = new Set(prev.map(String));
+
+            if (isInPersonal) {
+                updated.add(String(charId));
+            } else {
+                updated.delete(String(charId));
+            }
+            return Array.from(updated);
+        });
 
         const isInTeam = teamFilterOptions.some(opt => String(opt.id) === String(charId));
-        if (isInTeam) {
-            setTeamFilterCharId(charId);
-        } else {
-            setTeamFilterCharId('');
-        }
+        setTeamFilterCharId(prev => {
+            const updated = new Set(prev.map(String));
+
+            if (isInTeam) {
+                updated.add(String(charId));
+            } else {
+                updated.delete(String(charId));
+            }
+            return Array.from(updated);
+        });
     }, [charId, filterOptions, teamFilterOptions, smartFilter]);
 
     function exportRotationEntries(rotationName, characterState) {
@@ -482,6 +509,11 @@ export default function RotationsPane({
         setGuideCategory(category);
         setShowGuide(true);
     }, []);
+
+    const options = filterOptions.map(opt => ({
+        value: opt.id,
+        label: opt.name
+    }));
 
     return (
         <div className="rotation-pane">
@@ -749,21 +781,29 @@ export default function RotationsPane({
                     </div>
                     <div className="sort-controls">
                         <label style={{ marginRight: '8px', fontWeight: 'bold' }}>Sort by:</label>
-                        <select value={sortKey} onChange={(e) => setSortKey(e.target.value)}>
-                            <option value="date">Date Added</option>
-                            <option value="name">Name</option>
-                            <option value="dmg">Total DMG</option>
-                        </select>
-                        <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-                            <option value="desc">Descending</option>
-                            <option value="asc">Ascending</option>
-                        </select>
-                        <select value={personalFilterCharId} onChange={(e) => setPersonalFilterCharId(e.target.value)}>
-                            <option value="">Filter</option>
-                            {filterOptions.map(opt => (
-                                <option key={opt.id} value={opt.id}>{opt.name}</option>
-                            ))}
-                        </select>
+                        <Select
+                            value={sortKeyOptions.find(opt => opt.value === sortKey)}
+                            onChange={(opt) => setSortKey(opt.value)}
+                            options={sortKeyOptions}
+                            classNamePrefix="single-select custom-select"
+                            placeholder="Sort by"
+                        />
+                        <Select
+                            value={sortOrderOptions.find(opt => opt.value === sortOrder)}
+                            onChange={(opt) => setSortOrder(opt.value)}
+                            options={sortOrderOptions}
+                            classNamePrefix="single-select custom-select"
+                            placeholder="Order"
+                        />
+                        <Select
+                            isMulti
+                            value={options.filter(o => personalFilterCharId.includes(o.value))}
+                            onChange={(selected) => setPersonalFilterCharId(selected.map(s => s.value))}
+                            options={options}
+                            placeholder="Filter"
+                            className="select"
+                            classNamePrefix="custom-select"
+                        />
                         <button
                             className="rotation-button clear"
                             onClick={() => {
@@ -809,7 +849,13 @@ export default function RotationsPane({
                             <p style={{ color: '#5c5c5c' }}>hmm...</p>
                         ) : (
                             [...savedRotations]
-                                .filter(entry => !personalFilterCharId || String(entry.characterId ?? entry.charId) === personalFilterCharId)
+                                .filter(entry => {
+                                    const charId = String(entry.characterId ?? entry.charId);
+                                    return (
+                                        personalFilterCharId.length === 0 ||
+                                        personalFilterCharId.includes(charId)
+                                    );
+                                })
                                 .sort((a, b) => {
                                     let valA, valB;
                                     switch (sortKey) {
@@ -944,21 +990,29 @@ export default function RotationsPane({
                     </div>
                     <div className="sort-controls">
                         <label style={{ marginRight: '8px', fontWeight: 'bold' }}>Sort by:</label>
-                        <select value={sortKey} onChange={(e) => setSortKey(e.target.value)}>
-                            <option value="date">Date Added</option>
-                            <option value="name">Name</option>
-                            <option value="dmg">Total DMG</option>
-                        </select>
-                        <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-                            <option value="desc">Descending</option>
-                            <option value="asc">Ascending</option>
-                        </select>
-                        <select value={teamFilterCharId} onChange={(e) => setTeamFilterCharId(e.target.value)}>
-                            <option value="">Filter</option>
-                            {teamFilterOptions.map(opt => (
-                                <option key={opt.id} value={opt.id}>{opt.name}</option>
-                            ))}
-                        </select>
+                        <Select
+                            value={sortKeyOptions.find(opt => opt.value === sortKey)}
+                            onChange={(opt) => setSortKey(opt.value)}
+                            options={sortKeyOptions}
+                            classNamePrefix="single-select custom-select"
+                            placeholder="Sort by"
+                        />
+                        <Select
+                            value={sortOrderOptions.find(opt => opt.value === sortOrder)}
+                            onChange={(opt) => setSortOrder(opt.value)}
+                            options={sortOrderOptions}
+                            classNamePrefix="single-select custom-select"
+                            placeholder="Order"
+                        />
+                        <Select
+                            isMulti
+                            value={options.filter(o => personalFilterCharId.includes(o.value))}
+                            onChange={(selected) => setPersonalFilterCharId(selected.map(s => s.value))}
+                            options={options}
+                            placeholder="Filter"
+                            className="select"
+                            classNamePrefix="custom-select"
+                        />
                     </div>
                     <div className="rotation-controls">
                         <div className="rotation-buttons-left">
@@ -1023,29 +1077,35 @@ export default function RotationsPane({
                     <div className="saved-rotation-list team">
                         {(() => {
                             const summaries = [...savedTeamRotations]
-                                .filter(entry => !teamFilterCharId || String(entry.charId) === teamFilterCharId)
+                                .filter(entry => {
+                                    const charId = String(entry.charId);
+                                    return (
+                                        teamFilterCharId.length === 0 ||
+                                        teamFilterCharId.includes(charId)
+                                    );
+                                })
                                 .sort((a, b) => {
-                                let valA, valB;
+                                    let valA, valB;
 
-                                switch (sortKey) {
-                                    case 'name':
-                                        valA = a.name?.toLowerCase() ?? '';
-                                        valB = b.name?.toLowerCase() ?? '';
-                                        break;
-                                    case 'dmg':
-                                        valA = a.total?.avg ?? 0;
-                                        valB = b.total?.avg ?? 0;
-                                        break;
-                                    case 'date':
-                                    default:
-                                        valA = a.id;
-                                        valB = b.id;
-                                }
+                                    switch (sortKey) {
+                                        case 'name':
+                                            valA = a.name?.toLowerCase() ?? '';
+                                            valB = b.name?.toLowerCase() ?? '';
+                                            break;
+                                        case 'dmg':
+                                            valA = a.total?.avg ?? 0;
+                                            valB = b.total?.avg ?? 0;
+                                            break;
+                                        case 'date':
+                                        default:
+                                            valA = a.id;
+                                            valB = b.id;
+                                    }
 
-                                if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
-                                if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
-                                return 0;
-                            });
+                                    if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
+                                    if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+                                    return 0;
+                                });
 
                             if (summaries.length === 0) {
                                 return <p style={{ color: '#5c5c5c' }}>hmm...</p>;

@@ -119,3 +119,7 @@
 .team-slot {
     position: relative;
 }
+
+.entry-type-detail .entry-detail-dropdown {
+    width: 7.5rem;
+}
