@@ -14,21 +14,32 @@
     height: 20px;
     border: 2px solid #888;
     border-radius: 6px;
-    transition: all 0.25s ease;
+    transition: all 0.4s ease;
     background-color: #fff;
     position: relative;
-}
-
-
-.modern-checkbox input[type="checkbox"]:checked {
-    background-color: #4f46e5;
-    border-color: #4f46e5;
 }
 
 .modern-checkbox input[type="checkbox"]::after {
     content: '';
     position: absolute;
-    display: none;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    transform: rotate(45deg) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
+}
+
+/* When checked — play the draw animation */
+.modern-checkbox input[type="checkbox"]:checked::after {
+}
+
+/* When unchecked — play the erase animation */
+.modern-checkbox input[type="checkbox"]:not(:checked)::after {
+    animation: eraseCheck 0.3s ease forwards;
 }
 
 .modern-checkbox input[type="checkbox"]:checked::after {
@@ -39,18 +50,56 @@
     height: 12px;
     border: solid white;
     border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    animation: checkmarkFade 0.2s ease;
+    transform: rotate(45deg) scale(0);
+    animation: drawCheck 0.3s ease forwards;
+    opacity: 1;
 }
 
-@keyframes checkmarkFade {
-    from {
-        opacity: 0;
+.modern-checkbox input[type="checkbox"]:checked {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+    animation: pulseCheck 0.3s ease;
+}
+
+@keyframes pulseCheck {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+@keyframes drawCheck {
+    0% {
+        opacity: 0.5;
         transform: scale(0.5) rotate(45deg);
+        border-width: 0 0 0 0;
     }
-    to {
+    50% {
+        opacity: 1;
+        transform: scale(1.7) rotate(45deg);
+        border-width: 0 2px 0 0;
+    }
+    100% {
         opacity: 1;
         transform: scale(1) rotate(45deg);
+        border-width: 0 2px 2px 0;
+    }
+}
+
+@keyframes eraseCheck {
+    0% {
+        opacity: 1;
+        transform: scale(1) rotate(45deg);
+        border-width: 0 2px 2px 0;
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.7) rotate(45deg);
+        border-width: 0 2px 0 0;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5) rotate(45deg);
+        border-width: 0 0 0 0;
     }
 }
 

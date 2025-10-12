@@ -30,6 +30,7 @@
     border-radius: 0.75rem;
     padding: 0.75rem;
     box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.29);
 }
 
 .dark .import-overview-mini,
@@ -42,7 +43,7 @@
     pointer-events: none;
     height: 140px;
     border-radius: 50%;
-    border: 2px solid rgba(73, 73, 73, 0.3);
+    border: 1px solid rgba(73, 73, 73, 0.3);
     flex-shrink: 0;
 }
 
@@ -70,8 +71,7 @@
 
 .teammate-icon {
     opacity: 0.9;
-    border: 2px solid rgba(73, 73, 73, 0.3);
-    box-shadow: 0 2px 5px rgba(112, 112, 112, 0.38);
+    border: 1px solid rgba(73, 73, 73, 0.3);
 }
 
 .teammate-icon,
@@ -125,100 +125,6 @@
 .weapon-level {
     font-size: 0.8rem;
     opacity: 0.7;
-}
-
-.import-echo-grid {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: 0.75rem;
-    width: 100%;
-}
-
-.import-echo-slot {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    background: rgba(138, 138, 138, 0.05);
-    border-radius: 0.75rem;
-    padding: 0.5rem;
-    min-height: 130px;
-    position: relative;
-}
-
-.echo-icon-wrapper {
-    position: relative;
-}
-
-.import-echo-slot .cost-set-wrapper{
-    display: flex;
-    padding: unset;
-    justify-content: space-between;
-    border-radius: 1rem;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.06);
-    width: 60%;
-    margin-top: auto;
-}
-
-.import-echo-slot .echo-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 1px solid rgba(73, 73, 73, 0.3);
-    box-shadow: 0 2px 5px rgba(112, 112, 112, 0.38);
-}
-
-.import-echo-slot .echo-set-icon {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    margin: 2px;
-}
-
-.import-echo-slot .echo-slot-cost-badge {
-    width: 25px;
-    height: 25px;
-    margin: 3px;
-    font-weight: bold;
-    color: #fff;
-}
-
-.echo-info {
-    margin-top: 0.3rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-}
-
-.import-echo-slot .echo-name {
-    text-align: center;
-    margin: 0.7rem;
-    opacity: 0.9;
-    line-height: 1;
-}
-
-.import-echo-slot .echo-set-icon {
-    width: 18px;
-    height: 18px;
-    opacity: 0.9;
-}
-
-.empty-echo-slot {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: #aaa;
-    font-size: 0.8rem;
-    font-style: italic;
-}
-
-.dark .empty-echo-slot,
-.dark-alt .empty-echo-slot {
-    color: #999;
 }
 
 .import-skill-tracker {
@@ -351,4 +257,69 @@
     .weapon-name {
         font-size: 0.9rem;
     }
+}
+
+.import-echo-grid .echo-grid {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.import-echo-grid.echo-buff {
+    border: none;
+    border-radius: 0.75rem;
+    padding: unset !important;
+}
+
+.import-echo-grid .echo-tile {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.29);
+    pointer-events: none;
+    margin: unset;
+    background-color: rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem 0.5rem 0 0.5rem !important;
+}
+
+.import-echo-grid .gear-icon {
+    height: 3rem;
+    width: 3rem;
+    border: 1px solid rgba(73, 73, 73, 0.3);
+}
+
+.import-echo-grid .echo-stats-preview {
+    margin-top: 2px;
+    gap: 1px;
+}
+
+.import-echo-grid .echo-bag-info-main {
+    margin-bottom: 2px;
+    padding: unset;
+}
+
+.import-echo-grid .gear-title {
+    font-size: 0.8rem;
+}
+
+.stat-row.settings-import-preview {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+.settings-import-preview.echo-set-icon {
+    height: 1.7rem !important;
+    width: 1.7rem !important;
+}
+
+.stat-icon.settings-import-preview {
+    background-color: #5e5e5e !important;
+}
+
+.dark-alt .import-echo-grid .echo-tile {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.dark-alt .stat-icon.settings-import-preview,
+.dark .stat-icon.settings-import-preview {
+    background-color: #ddd !important;
+}
+
+.dark .import-echo-grid .echo-tile{
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }

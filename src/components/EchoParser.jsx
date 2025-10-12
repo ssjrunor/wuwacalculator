@@ -541,7 +541,6 @@ function ParsedEchoesPreview ({ parsedEchoes, onCancel, onImport, charId, getIma
                             key={index}
                             className="echo-tile overview inherent-skills-box echo-parser-preview"
                             style={{margin: 'unset'}}
-                            onClick={() => switchLeftPane('echoes')}
                         >
                             <EchoGridPreview
                                 echo={echo}

@@ -777,12 +777,12 @@ export function EchoGridPreview({
             {echo ? (
                 <>
                     <div className={`gear-header ${className}`}>
-                        <div className="echo-set-cost-header">
+                        <div className={`echo-set-cost-header ${className}`}>
                             {echo?.selectedSet && (
                                 <img
                                     src={setIconMap[echo.selectedSet]}
                                     alt={`Set ${echo.selectedSet}`}
-                                    className="echo-set-icon overview"
+                                    className={`echo-set-icon overview ${className}`}
                                 />
                             )}
                             <div className={`echo-slot-cost-badge bag overview ${className}`}>{echo.cost}</div>
@@ -799,7 +799,7 @@ export function EchoGridPreview({
                     <img
                         src={getImageSrc(echo.icon || '/assets/echoes/default.webp')}
                         alt={echo.name || 'Echo'}
-                        className="gear-icon"
+                        className={`gear-icon ${className}`}
                         onError={(e) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = '/assets/echoes/default.webp';

@@ -2,10 +2,16 @@ import React from 'react';
 import {setIconMap} from "../constants/echoSetData.jsx";
 import weaponsRaw from "../data/weapons.json";
 import {attributeColors, elementToAttribute} from "../utils/attributeHelpers.js";
+import weapons from '../data/weaponDetails.json';
+import {getEchoScores, getTop5SubstatScoreDetails} from "../utils/echoHelper.js";
+import {EchoGridPreview} from "./OverviewDetailPane.jsx";
+import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
+import {imageCache} from "../pages/calculator.jsx";
 
 export default function ImportOverviewMini({ importPreview }) {
     if (!importPreview) return null;
-    const { Name, CharacterLevel, CombatState, equippedEchoes = [], activeStates, SkillLevels, Attribute, Team } = importPreview;
+    const getImageSrc = (icon) => imageCache[icon]?.src || icon;
+    const { Id: charId, Name, CharacterLevel, CombatState, equippedEchoes = [], activeStates, SkillLevels, Attribute, Team } = importPreview;
     const weapon = CombatState || {};
     const teammates = (Team?.slice(1) || []).slice(-2);
 
@@ -15,16 +21,29 @@ export default function ImportOverviewMini({ importPreview }) {
     });
 
     const weaponId = weapon.weaponId;
+    const weaponDetail = (weapons ?? []).find(w => String(w.Id) === String(weaponId)) ?? null;
+
     const weaponIconPath = weaponId
         ? `/assets/weapon-icons/${weaponId}.webp`
         : '/assets/weapon-icons/default.webp';
-
 
     const echoSlots = [...equippedEchoes];
     while (echoSlots.length < 5) echoSlots.push(null);
 
     const attributeColor =
         attributeColors[elementToAttribute[Attribute]] || 'rgba(32,191,185,0.89)';
+
+    const maxScore = getTop5SubstatScoreDetails(charId).total;
+
+    const buildScore = getEquippedEchoesScoreDetails(
+        charId,
+        { [charId]: { ...importPreview, equippedEchoes: equippedEchoes } }
+    );
+    const maxBuildScore = maxScore * 5;
+    const percentScore = (buildScore.total / maxBuildScore) * 100;
+
+
+    console.log(charId);
 
     return (
         <div className="import-overview-mini">
@@ -39,7 +58,7 @@ export default function ImportOverviewMini({ importPreview }) {
                         />
                         <div className="import-character-info">
                             <span className="char-name highlight">{Name}</span>
-                            <span className="char-level">Lv. {CharacterLevel} | S{SkillLevels.sequence}</span>
+                            <span className="char-level">Lv. {CharacterLevel} S{SkillLevels.sequence}</span>
                             <div className="import-teammates-inline">
                                 {Array.from({ length: 2 }).map((_, i) => {
                                     const t = teammates[i];
@@ -96,10 +115,9 @@ export default function ImportOverviewMini({ importPreview }) {
                                 }}
                             />
                             <div className="import-weapon-info">
-                                <span className="weapon-name highlight">{weapon.weaponEffectName}</span>
+                                <span className="weapon-name highlight">{weaponDetail.Name ?? weapon.weaponEffectName}</span>
                                 <div style={{ display: 'flex', flexDirection: 'row', gap: '0.5rem', justifyContent: 'center' }} >
-                                    <span className="weapon-rank">R{weapon.weaponRank}</span>
-                                    <span className="weapon-level">Lv. {weapon.weaponLevel}</span>
+                                    <span className="weapon-level">Lv. {weapon.weaponLevel} R{weapon.weaponRank}</span>
                                 </div>
                             </div>
                         </>
@@ -110,38 +128,32 @@ export default function ImportOverviewMini({ importPreview }) {
             </div>
 
             {/* Echo grid */}
-            <div className="import-echo-grid">
-                {echoSlots.map((echo, i) => (
-                    <div key={i} className="import-echo-slot echo-buff">
-                        {echo ? (
-                            <>
-                                <img
-                                    src={echo.icon}
-                                    alt={echo.name}
-                                    className="gear-icon overview-weapon echo-icon import"
+            <div className="import-echo-grid echo-buff">
+                <div
+                    className="echo-grid guides"
+                >
+                    {[...Array(5)].map((_, index) => {
+                        const echo = equippedEchoes[index] ?? null;
+                        const score = (getEchoScores(charId, echo).totalScore / maxScore) * 100;
+
+                        return (
+                            <div
+                                key={index}
+                                className="echo-tile overview inherent-skills-box"
+                            >
+                                <EchoGridPreview
+                                    echo={echo}
+                                    getImageSrc={getImageSrc}
+                                    score={score}
+                                    setIconMap={setIconMap}
+                                    className={'settings-import-preview'}
                                 />
-                                <div className="echo-info">
-                                    <span className="echo-name">{echo.name}</span>
-                                </div>
-                                <div className="cost-set-wrapper echo-buff">
-                                    {echo?.selectedSet && (
-                                        <img
-                                            src={setIconMap[echo.selectedSet]}
-                                            alt={`Set ${echo.selectedSet}`}
-                                            className="echo-set-icon overview"
-                                        />
-                                    )}
-                                    <span className="echo-slot-cost-badge bag overview">{echo.cost}</span>
-                                </div>
-                            </>
-                        ) : (
-                            <div className="empty-echo-slot">
-                                <span className="empty-text">Empty Slot</span>
                             </div>
-                        )}
-                    </div>
-                ))}
+                        );
+                    })}
+                </div>
             </div>
+
         </div>
     );
 }
