@@ -22,8 +22,6 @@ export default async function handler(req, res) {
             grant_type: 'authorization_code',
         };
 
-        console.log('exchange request data:', data);
-
         const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

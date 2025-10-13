@@ -30,19 +30,13 @@ export function useGoogleAuth() {
 
         onSuccess: async (codeResponse) => {
             try {
-                console.log('Auth code response:', codeResponse);
-                console.log('Code:', codeResponse?.code);
-
                 const payload = { code: codeResponse.code };
-                console.log('Sending payload to /api/exchange-code:', payload);
 
                 const res = await fetch('/api/exchange-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
                 });
-
-                console.log('Exchange response status:', res.status);
 
                 if (!res.ok) {
                     const text = await res.text();
@@ -51,8 +45,6 @@ export function useGoogleAuth() {
                 }
 
                 const tokens = await res.json();
-                console.log('Received tokens from backend:', tokens);
-
                 localStorage.setItem(
                     'googleTokens',
                     JSON.stringify({ ...tokens, issued_at: Date.now() })
@@ -96,7 +88,7 @@ export function useGoogleAuth() {
         };
 
         doRefresh();                            // once immediately
-        const interval = setInterval(doRefresh, 30 * 60 * 1000); // then every 30 min
+        const interval = setInterval(doRefresh, 30 * 60 * 1000);
         return () => clearInterval(interval);
     }, []);
 
