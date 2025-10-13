@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Calculator from './pages/calculator.jsx';
 import InfoPage from './pages/infoPage';
@@ -10,25 +10,11 @@ import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
 import {useSEO} from "./hooks/useSEO.js";
 import Changelog from "./pages/changelog.jsx";
 import GuidesPage from "./pages/guidesPage.jsx";
-import {usePersistentState} from "./hooks/usePersistentState.js";
-import {refreshAccessTokenIfNeeded} from "./utils/googleAuth.js";
-import {useGoogleAuth} from "./hooks/useGoogleAuth.js";
 
 const GA_ID = 'G-W502BDD62S';
 
 export default function App() {
-    const { user, accessToken } = useGoogleAuth();
-
     usePageTracking();
-    useSEO();
-
-    useEffect(() => {
-        const warmUpAuth = async () => {
-            const newToken = await refreshAccessTokenIfNeeded();
-            if (newToken) console.log('Token refreshed on startup');
-        };
-        warmUpAuth();
-    }, []);
 
     useEffect(() => {
         const consent = getCookieConsentValue('wwa_cookie_consent');
@@ -49,38 +35,7 @@ export default function App() {
         console.log('[GA] Consent rejected — tracking disabled');
     };
 
-    const [selectedFont] = usePersistentState('userBodyFontName', 'Onest');
-    const [fontLink] = usePersistentState('userBodyFontURL', '');
-
-    useEffect(() => {
-        if (selectedFont === 'System UI') {
-            document.documentElement.style.setProperty(
-                '--body-font',
-                `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
-            );
-            document.documentElement.style.setProperty(
-                '--preview-font',
-                `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
-            );
-            return;
-        }
-
-        if (fontLink && fontLink.includes('fonts.googleapis.com')) {
-            if (!document.querySelector(`link[href="${fontLink}"]`)) {
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = fontLink;
-                document.head.appendChild(link);
-            }
-        }
-
-        if (selectedFont) {
-            document.documentElement.style.setProperty('--body-font', `'${selectedFont}', sans-serif`);
-            document.documentElement.style.setProperty('--preview-font', `'${selectedFont}', sans-serif`);
-        } else {
-            document.documentElement.style.setProperty('--body-font', "'Onest', sans-serif");
-        }
-    }, [selectedFont, fontLink]);
+    useSEO();
 
     return (
         <>

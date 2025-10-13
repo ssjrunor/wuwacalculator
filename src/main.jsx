@@ -6,12 +6,11 @@ import './styles';
 // @ts-ignore
 import App from './App.jsx';
 
-const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
+const GOOGLE_CLIENT_ID = '309991415986-ln5kl1djdiqc7lnrvbp5nlcfnt4njpdi.apps.googleusercontent.com';
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <GoogleOAuthProvider clientId={clientId}>
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
