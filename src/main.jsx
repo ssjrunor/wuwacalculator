@@ -6,6 +6,7 @@ import './styles';
 // @ts-ignore
 import App from './App.jsx';
 
+console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
