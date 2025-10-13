@@ -8,6 +8,7 @@ import NotificationToast from "../components/NotificationToast.jsx";
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
 import ImportOverviewMini from "../components/ImportOverviewMini.jsx";
 import {usePersistentState} from "../hooks/usePersistentState.js";
+import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
 
 const FONT_LINKS = {
     Onest: 'https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap',
@@ -154,72 +155,21 @@ export default function Setting() {
         }
     }, [hamburgerOpen]);
 
-    const [user, setUser] = useState(null);
-    const [accessToken, setAccessToken] = useState(null);
+    const { user, login, accessToken, logout, validateToken, refresh } = useGoogleAuth();
 
-    async function validateToken(token) {
-        try {
-            const res = await fetch(
-                'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=' + token
-            );
-            return res.ok;
-        } catch (err) {
-            console.warn('Token validation failed:', err);
-            return false;
-        }
+    async function handleBackup() {
+        const token = await refresh();
+        if (!token) return alert('Please reconnect Google Drive.');
+        await uploadToDrive(token, getSyncData());
+        alert('Backup uploaded!');
     }
 
-    useEffect(() => {
-        async function checkStoredLogin() {
-            const storedToken = localStorage.getItem('googleAccessToken');
-            const storedUser = localStorage.getItem('googleUser');
+    async function handleRestore() {
+        const token = await refresh();
+        if (!token) return alert('Please reconnect Google Drive.');
+        await restoreFromDrive(token);
+    }
 
-            if (!storedToken) return;
-
-            const valid = await validateToken(storedToken);
-            if (valid) {
-                setAccessToken(storedToken);
-                if (storedUser) setUser(JSON.parse(storedUser));
-            } else {
-                console.log('🔁 Token expired, refreshing...');
-                login();
-            }
-        }
-
-        checkStoredLogin();
-    }, []);
-
-    const login = useGoogleLogin({
-        scope: 'https://www.googleapis.com/auth/drive.appdata',
-        flow: 'implicit',
-        onSuccess: async (tokenResponse) => {
-            const accessToken = tokenResponse.access_token;
-            setAccessToken(accessToken);
-            localStorage.setItem('googleAccessToken', accessToken);
-
-            try {
-                const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                });
-                const userInfo = await res.json();
-                setUser(userInfo);
-                localStorage.setItem('googleUser', JSON.stringify(userInfo));
-            } catch (err) {
-                console.error("Failed to fetch user info", err);
-            }
-        },
-        onError: () => alert('Google login failed'),
-    });
-
-    const handleLogout = () => {
-        googleLogout();
-        setUser(null);
-        setAccessToken(null);
-        localStorage.removeItem('googleAccessToken');
-        localStorage.removeItem('googleUser');
-    };
 
     async function listAllDriveFiles(accessToken) {
         const res = await fetch(
@@ -792,43 +742,29 @@ export default function Setting() {
                             <p style={{ marginBottom: '1rem' }}>
                                 Your data is automatically synced between your device and a dedicated AppData folder in Google Drive. This website can't access any other files in your Google Drive.
                             </p>
-                            {!accessToken ? (
+                            {!user ? (
                                 <button className="btn-primary" onClick={login}>
                                     Sign in
                                 </button>
                             ) : (
                                 <>
                                     <div style={{ display: 'flex', flexDirection: 'row', gap: '0.5rem' }}>
-                                        <button className="btn-primary" onClick={handleLogout}>
+                                        <button className="btn-primary" onClick={logout}>
                                             Sign Out
                                         </button>
-                                        <button
-                                            className="btn-primary"
-                                            onClick={async () => {
-                                                const data = getSyncData();
-                                                try {
-                                                    await uploadToDrive(accessToken, data);
-                                                    setPopupMessage({
-                                                        message: 'Backup to Google Drive successful~! (〜^∇^)〜',
-                                                        icon: '✔',
-                                                        color: { light: 'green', dark: 'limegreen' },
-                                                    });
-                                                    setShowToast(true);
-                                                } catch (err) {
-                                                    setPopupMessage({
-                                                        message: 'Drive sync failed... (ㆆ ᴗ ㆆ)',
-                                                        icon: '✘',
-                                                        color: 'red'
-                                                    });
-                                                    setShowToast(true);
-                                                }
-                                            }}
-                                        >
-                                            Backup
-                                        </button>
-                                        <button className="btn-primary" onClick={() => restoreFromDrive(accessToken)}>
-                                            Restore
-                                        </button>
+                                        {accessToken && (
+                                            <>
+                                                <button
+                                                    className="btn-primary"
+                                                    onClick={handleBackup}
+                                                >
+                                                    Backup
+                                                </button>
+                                                <button className="btn-primary" onClick={handleRestore}>
+                                                    Restore
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
                                 </>
                             )}

@@ -1,4 +1,8 @@
+import {refreshAccessTokenIfNeeded} from "./googleAuth.js";
+
 export async function uploadToDrive(accessToken, fileContent) {
+    accessToken = await refreshAccessTokenIfNeeded() || accessToken;
+
     const metadata = {
         name: `wuwacalculator-sync-${new Date().toISOString()}.json`,
         mimeType: 'application/json',
@@ -18,13 +22,21 @@ export async function uploadToDrive(accessToken, fileContent) {
         }
     );
 
-    const result = await uploadRes.json();
-    //console.log("Backup uploaded:", result);
+    if (uploadRes.status === 401) {
+        const newToken = await refreshAccessTokenIfNeeded();
+        if (newToken) {
+            return uploadToDrive(newToken, fileContent);
+        }
+        throw new Error('Unauthorized: token refresh failed.');
+    }
 
+    const result = await uploadRes.json();
     await pruneOldBackups(accessToken);
 }
 
 async function pruneOldBackups(accessToken) {
+    accessToken = await refreshAccessTokenIfNeeded() || accessToken;
+
     const res = await fetch(
         `https://www.googleapis.com/drive/v3/files?q=name='wuwacalculator-sync.json' and 'appDataFolder' in parents&spaces=appDataFolder&fields=files(id,createdTime)&orderBy=createdTime desc`,
         {
@@ -48,6 +60,8 @@ async function pruneOldBackups(accessToken) {
 }
 
 async function getLatestBackupFile(accessToken) {
+    accessToken = await refreshAccessTokenIfNeeded() || accessToken;
+
     const query = encodeURIComponent("name contains 'wuwacalculator-sync-' and 'appDataFolder' in parents");
     const res = await fetch(
         `https://www.googleapis.com/drive/v3/files?q=${query}&spaces=appDataFolder&fields=files(id,createdTime)&orderBy=createdTime desc`,
@@ -61,6 +75,8 @@ async function getLatestBackupFile(accessToken) {
 }
 
 async function downloadFileById(fileId, accessToken) {
+    accessToken = await refreshAccessTokenIfNeeded() || accessToken;
+
     const res = await fetch(
         `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
         {
@@ -78,6 +94,8 @@ async function downloadFileById(fileId, accessToken) {
 }
 
 export async function restoreFromDrive(accessToken) {
+    accessToken = await refreshAccessTokenIfNeeded() || accessToken;
+
     try {
         const latest = await getLatestBackupFile(accessToken);
         if (!latest) {

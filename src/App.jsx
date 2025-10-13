@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Calculator from './pages/calculator.jsx';
 import InfoPage from './pages/infoPage';
@@ -11,11 +11,24 @@ import {useSEO} from "./hooks/useSEO.js";
 import Changelog from "./pages/changelog.jsx";
 import GuidesPage from "./pages/guidesPage.jsx";
 import {usePersistentState} from "./hooks/usePersistentState.js";
+import {refreshAccessTokenIfNeeded} from "./utils/googleAuth.js";
+import {useGoogleAuth} from "./hooks/useGoogleAuth.js";
 
 const GA_ID = 'G-W502BDD62S';
 
 export default function App() {
+    const { user, accessToken } = useGoogleAuth();
+
     usePageTracking();
+    useSEO();
+
+    useEffect(() => {
+        const warmUpAuth = async () => {
+            const newToken = await refreshAccessTokenIfNeeded();
+            if (newToken) console.log('Token refreshed on startup');
+        };
+        warmUpAuth();
+    }, []);
 
     useEffect(() => {
         const consent = getCookieConsentValue('wwa_cookie_consent');
@@ -35,8 +48,6 @@ export default function App() {
         document.cookie = "wwa_cookie_consent=false;path=/;max-age=" + 60 * 60 * 24 * 365;
         console.log('[GA] Consent rejected — tracking disabled');
     };
-
-    useSEO();
 
     const [selectedFont] = usePersistentState('userBodyFontName', 'Onest');
     const [fontLink] = usePersistentState('userBodyFontURL', '');
