@@ -44,14 +44,6 @@ export default function Setting() {
     const [importSuccess, setImportSuccess] = useState('');
     const [showDropdown, setShowDropdown] = useState(false);
 
-    useEffect(() => {
-        const storedToken = localStorage.getItem('googleAccessToken');
-        const storedUser = localStorage.getItem('googleUser');
-
-        if (storedToken) setAccessToken(storedToken);
-        if (storedUser) setUser(JSON.parse(storedUser));
-    }, []);
-
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
