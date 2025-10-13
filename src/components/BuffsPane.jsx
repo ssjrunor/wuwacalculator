@@ -7,7 +7,6 @@ import {loadCharacterBuffUI} from "../data/character-ui/index.js";
 import { attributeColors } from '../utils/attributeHelpers';
 import { X } from 'lucide-react';
 import {preloadImages} from "../pages/calculator.jsx";
-import {runInContext as echoBuffs, runInContext as weaponBuffs} from "lodash";
 import {calculateRotationTotals} from "./Rotations.jsx";
 import GuidesModal from "./GuideModal.jsx";
 

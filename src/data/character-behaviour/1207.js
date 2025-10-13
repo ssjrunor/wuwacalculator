@@ -21,10 +21,15 @@ export function applyLupaLogic({
 
     const name = skillMeta.name?.toLowerCase();
 
-    const stacks = characterState?.activeStates?.packHunt ?? 0;
-    const packHunt = Math.min(stacks * 6, 18);
+    if (local('wildfireBanner') && !mergedBuffs.__wildfireBanner) {
+        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 12;
+        mergedBuffs.__wildfireBanner = true;
+    }
 
-    if (!mergedBuffs.__lupaPackHuntApplied) {
+    const stacks = characterState?.activeStates?.packHunt ?? 0;
+    const packHunt = Math.min(stacks * 6, 12);
+
+    if (!mergedBuffs.__lupaPackHuntApplied && local('packHunt1')) {
         mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + packHunt;
         mergedBuffs.__lupaPackHuntApplied = true;
     }
@@ -46,7 +51,7 @@ export function applyLupaLogic({
 
     if (name.includes('mid-air attack - firestrike dmg')) {
         skillMeta.skillType = 'heavy';
-    } else if (['dance with the wolf dmg', 'dance with the wolf - climax dmg'].some(n => name.includes(n))) {
+    } else if (['nowhere to run', 'dance with the wolf dmg', 'dance with the wolf: climax dmg'].some(n => name.includes(n))) {
         skillMeta.skillType = 'ultimate';
     } else if (name.includes('set the arena ablaze dmg')) {
         skillMeta.skillType = 'skill';

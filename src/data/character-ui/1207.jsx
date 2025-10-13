@@ -26,6 +26,29 @@ export default function LupaUI({ characterRuntimeStates, setCharacterRuntimeStat
     return (
         <div className="status-toggles">
             <div className="status-toggle-box">
+                <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Wildfire Banner</h4>
+                <p>
+                    <span className='highlight'>Lupa</span>'s ATK is increased by <span className='highlight'>12%</span> for 8s when performing the following actions:
+                </p>
+                <ul>
+                    <li>Casting Resonance Skill <span className='highlight'>Feral Fang</span>.</li>
+                    <li>Casting <span className='highlight'>Heavy Attack - Wolf's Gnawing</span>, <span className='highlight'>Heavy Attack - Wolf's Claw</span>, or <span className='highlight'>Mid-air Attack - Firestrike</span>.</li>
+                    <li>Casting Resonance Liberation <span className='highlight'>Fire-Kissed Glory</span>.</li>
+                    <li>Casting <span className='highlight'>Dance With the Wolf</span> and <span className='highlight'>Dance With the Wolf: Climax</span>.</li>
+                </ul>
+                <label className="modern-checkbox">
+                    <input
+                        type="checkbox"
+                        checked={activeStates.wildfireBanner || false}
+                        onChange={() => {
+                            toggleState('wildfireBanner');
+                        }}
+                    />
+                    Enable
+                </label>
+            </div>
+
+            <div className="status-toggle-box">
                 <h4 className={'highlight'} style={{ fontSize: '18px'}}>Pack Hunt</h4>
                 <div>
                     <p>
@@ -64,16 +87,22 @@ export default function LupaUI({ characterRuntimeStates, setCharacterRuntimeStat
                         )}
                     </label>
                     <p>
-                        When the active Resonator casts <span className='highlight'>Intro Skill</span>,
-                        <span className='highlight'>Pack Hunt</span> is enhanced, granting an additional <span className='highlight'>6%</span> ATK increase to all Resonators in the team, up to a maximum of <span className='highlight'>18%</span>.
+                        When the active Resonator casts <span className='highlight'>Intro Skill</span>
+                        , <span className='highlight'>Pack Hunt</span> is enhanced, granting an additional <span className='highlight'>6%</span> ATK increase to all Resonators in the team, up to a maximum of <span className='highlight'>18%</span>.
                     </p>
                     <DropdownSelect
+                        disabled={!activeStates.packHunt1 || false}
                         label=""
-                        options={[0, 1, 2, 3]}
+                        options={[0, 1, 2]}
                         value={packHuntValue}
                         onChange={handleChange}
                         width="80px"
                     />
+                    {!activeStates.packHunt1 && (
+                        <span style={{ marginLeft: '8px', fontSize: '12px', color: 'gray' }}>
+                                (Requires Inner Pack Hunt to be active)
+                            </span>
+                    )}
                 </div>
             </div>
         </div>

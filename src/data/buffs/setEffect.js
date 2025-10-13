@@ -1,5 +1,69 @@
-export function applySetEffect({ mergedBuffs, characterState, activeCharacter, combatState }) {
+export const setStateMap = {
+    windward5: 'windward',
+    molten5: 'molten',
+    sierra5: 'sierra',
+    celestial5: 'celestial',
+    rejuvenating5: 'rejuvenating',
+    radiance5p1: 'radiance',
+    radiance5p2: 'radiance',
+    welkin5: 'welkin',
+    clawprint5: 'clawprint',
+    empyrean5: 'empyrean',
+    frosty5p1: 'frosty',
+    frosty5p2: 'frosty',
+    frost5pc: 'frost',
+    lingering5p1: 'lingering',
+    eclipse5pc: 'eclipse',
+    void5pc: 'voidThunder',
+    dreamOfTheLost3pc: 'dreamOfTheLost',
+    crownOfValor3pc: 'crownOfValor',
+    lawOfHarmony3p: 'lawOfHarmony',
+    flamewingsShadow2pcP1: 'flamewingsShadow',
+    flamewingsShadow2pcP2: 'flamewingsShadow'
+};
+
+export function applySetEffect({ mergedBuffs, characterState, activeCharacter, combatState, setCounts = 5 }) {
     const effect = characterState?.activeStates ?? {};
+
+    const activeSets = {
+        frost: setCounts?.[1] >= 5,
+        molten: setCounts?.[2] >= 5,
+        voidThunder: setCounts?.[3] >= 5,
+        sierra: setCounts?.[4] >= 5,
+        celestial: setCounts?.[5] >= 5,
+        eclipse: setCounts?.[6] >= 5,
+        rejuvenating: setCounts?.[7] >= 5,
+        lingering: setCounts?.[9] >= 5,
+        frosty: setCounts?.[10] >= 5,
+        radiance: setCounts?.[11] >= 5,
+        empyrean: setCounts?.[13] >= 5,
+        welkin: setCounts?.[16] >= 5,
+        windward: setCounts?.[17] >= 5,
+        clawprint: setCounts?.[18] >= 5,
+        dreamOfTheLost: setCounts?.[19] >= 3,
+        crownOfValor: setCounts?.[20] >= 3,
+        lawOfHarmony: setCounts?.[21] >= 3,
+        flamewingsShadow: setCounts?.[22] >= 3
+    };
+
+    for (const [stateKey, value] of Object.entries(effect)) {
+        const parentSet = setStateMap[stateKey];
+
+        if (stateKey.startsWith('__inactive__')) {
+            const originalKey = stateKey.replace('__inactive__', '');
+            const parent = setStateMap[originalKey];
+            if (parent && activeSets[parent]) {
+                effect[originalKey] = value;
+                delete effect[stateKey];
+            }
+            continue;
+        }
+
+        if (parentSet && !activeSets[parentSet]) {
+            effect[`__inactive__${stateKey}`] = value;
+            delete effect[stateKey];
+        }
+    }
 
     const elementMap = {
         1: 'glacio',

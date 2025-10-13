@@ -55,7 +55,7 @@ const echoBuffs = [
         name: 'Law of Harmony',
         type: 'stack',
         icon: '/assets/echo-icons/lawOfHarmony.webp',
-        effect: <>Casting Echo Skill grants <span className="highlight">8% Echo Skill DMG Bonus</span> to all Resonators in the team for <span className="highlight">30s</span>, stacking up to 4 times.</>
+        effect: <>Casting Echo Skill grants <span className="highlight">4% Echo Skill DMG Bonus</span> to all Resonators in the team for <span className="highlight">30s</span>, stacking up to 4 times.</>
     },
     {
         key: 'bellBorne',

@@ -29,7 +29,7 @@ import RotationsPane from "../components/RotationsPane.jsx";
 import EchoesPane from '../components/EchoesPane';
 import {echoes} from "../json-data-scripts/getEchoes.js";
 import {applyEchoSetBuffLogic, applyMainEchoBuffLogic, applySetEffect} from "../data/buffs/setEffect.js";
-import {getEchoStatsFromEquippedEchoes, statIconMap} from "../utils/echoHelper.js";
+import {getEchoStatsFromEquippedEchoes, getSetCounts, statIconMap} from "../utils/echoHelper.js";
 import { useLayoutEffect } from 'react';
 import CharacterOverviewPane from "../components/CharacterOverview.jsx";
 import {isEqual} from "lodash";
@@ -535,13 +535,16 @@ export default function Calculator() {
         equippedEchoes
     })
 
+    const setCounts = getSetCounts(characterRuntimeStates[charId].equippedEchoes);
+
     mergedBuffs = applySetEffect({
         characterState: {
             activeStates: characterRuntimeStates?.[charId]?.activeStates ?? {}
         },
         activeCharacter,
         mergedBuffs,
-        combatState
+        combatState,
+        setCounts
     })
 
     mergedBuffs = applyMainEchoBuffLogic({
