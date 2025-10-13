@@ -99,3 +99,24 @@
 .settings-import .btn-primary {
     width: 100%;
 }
+
+.settings-label input:hover,
+.settings-label input:focus {
+    opacity: 1;
+}
+
+.settings-label input {
+    transition: opacity ease 0.3s;
+    opacity: 0.7;
+    color: #2a2a2a;
+}
+
+.dark-alt .settings-label input,
+.dark .settings-label input {
+    color: #ffffff;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

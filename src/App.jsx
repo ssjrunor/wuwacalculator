@@ -10,6 +10,7 @@ import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
 import {useSEO} from "./hooks/useSEO.js";
 import Changelog from "./pages/changelog.jsx";
 import GuidesPage from "./pages/guidesPage.jsx";
+import {usePersistentState} from "./hooks/usePersistentState.js";
 
 const GA_ID = 'G-W502BDD62S';
 
@@ -36,6 +37,39 @@ export default function App() {
     };
 
     useSEO();
+
+    const [selectedFont] = usePersistentState('userBodyFontName', 'Onest');
+    const [fontLink] = usePersistentState('userBodyFontURL', '');
+
+    useEffect(() => {
+        if (selectedFont === 'System UI') {
+            document.documentElement.style.setProperty(
+                '--body-font',
+                `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
+            );
+            document.documentElement.style.setProperty(
+                '--preview-font',
+                `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
+            );
+            return;
+        }
+
+        if (fontLink && fontLink.includes('fonts.googleapis.com')) {
+            if (!document.querySelector(`link[href="${fontLink}"]`)) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = fontLink;
+                document.head.appendChild(link);
+            }
+        }
+
+        if (selectedFont) {
+            document.documentElement.style.setProperty('--body-font', `'${selectedFont}', sans-serif`);
+            document.documentElement.style.setProperty('--preview-font', `'${selectedFont}', sans-serif`);
+        } else {
+            document.documentElement.style.setProperty('--body-font', "'Onest', sans-serif");
+        }
+    }, [selectedFont, fontLink]);
 
     return (
         <>

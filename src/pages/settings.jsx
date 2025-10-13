@@ -7,6 +7,15 @@ import {getSyncData, restoreFromDrive, uploadToDrive} from "../utils/driveSync.j
 import NotificationToast from "../components/NotificationToast.jsx";
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
 import ImportOverviewMini from "../components/ImportOverviewMini.jsx";
+import {usePersistentState} from "../hooks/usePersistentState.js";
+
+const FONT_LINKS = {
+    Onest: 'https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap',
+    Fredoka: 'https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap',
+    Quicksand: 'https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap',
+    'Comic Neue': 'https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap',
+    Caveat: 'https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap',
+};
 
 export default function Setting() {
     const [showToast, setShowToast] = useState(false);
@@ -148,6 +157,38 @@ export default function Setting() {
     const [user, setUser] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
 
+    async function validateToken(token) {
+        try {
+            const res = await fetch(
+                'https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=' + token
+            );
+            return res.ok;
+        } catch (err) {
+            console.warn('Token validation failed:', err);
+            return false;
+        }
+    }
+
+    useEffect(() => {
+        async function checkStoredLogin() {
+            const storedToken = localStorage.getItem('googleAccessToken');
+            const storedUser = localStorage.getItem('googleUser');
+
+            if (!storedToken) return;
+
+            const valid = await validateToken(storedToken);
+            if (valid) {
+                setAccessToken(storedToken);
+                if (storedUser) setUser(JSON.parse(storedUser));
+            } else {
+                console.log('🔁 Token expired, refreshing...');
+                login();
+            }
+        }
+
+        checkStoredLogin();
+    }, []);
+
     const login = useGoogleLogin({
         scope: 'https://www.googleapis.com/auth/drive.appdata',
         flow: 'implicit',
@@ -240,6 +281,145 @@ export default function Setting() {
         outroSkill: 'Outro Skill',
         sequence: 'Sequence',
     };
+
+    const [selectedFont, setSelectedFont] = usePersistentState('userBodyFontName', 'System UI');
+    const [fontLink, setFontLink] = usePersistentState('userBodyFontURL', `${FONT_LINKS[selectedFont]}`);
+    const [fontChanged, setFontChanged] = useState(false);
+    const [loadingFont, setLoadingFont] = useState(false);
+    const [validLink, setValidLink] = useState(true);
+
+    function getCurrentFontName() {
+        const raw = getComputedStyle(document.documentElement)
+            .getPropertyValue('--body-font')
+            .trim();
+        const primary = raw.split(',')[0].replace(/['"]/g, '').trim();
+
+        const isSystemFont = raw.includes('-apple-system') ||
+            raw.includes('Segoe UI') ||
+            raw.includes('BlinkMacSystemFont') ||
+            raw.includes('Roboto');
+
+        if (isSystemFont) return 'System UI';
+
+        return primary || 'Unknown';
+    }
+
+    const currentFont = getCurrentFontName();
+
+    useEffect(() => {
+        if (!selectedFont) return;
+        const loadPreviewFont = async () => {
+            try {
+                setLoadingFont(true);
+
+                if (selectedFont === 'System UI') {
+                    setValidLink(true);
+                    document.documentElement.style.setProperty(
+                        '--preview-font',
+                        `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
+                    );
+                    return;
+                }
+
+                if (fontLink && fontLink.includes('fonts.googleapis.com')) {
+                    const isValid = /^https:\/\/fonts\.googleapis\.com\/css2\?family=/.test(fontLink);
+                    setValidLink(isValid);
+
+                    if (!isValid) {
+                        document.documentElement.style.setProperty('--preview-font', `'${selectedFont}', sans-serif`);
+                        return;
+                    }
+
+                    if (!document.querySelector(`link[href="${fontLink}"]`)) {
+                        const linkEl = document.createElement('link');
+                        linkEl.rel = 'stylesheet';
+                        linkEl.href = fontLink;
+                        document.head.appendChild(linkEl);
+                        await new Promise((res) => setTimeout(res, 200));
+                    }
+
+                    const match = fontLink.match(/family=([^:&]+)/);
+                    const extracted = match
+                        ? decodeURIComponent(match[1]).replace(/\+/g, ' ')
+                        : selectedFont;
+
+                    setFontChanged(
+                        extracted.toLowerCase().trim() !== currentFont.toLowerCase().trim()
+                    );
+
+                    setSelectedFont(extracted);
+                    document.documentElement.style.setProperty('--preview-font', `'${selectedFont}', sans-serif`);
+                } else {
+                    setValidLink(false);
+                    document.documentElement.style.setProperty('--preview-font', `'${selectedFont}', sans-serif`);
+                }
+            } catch (err) {
+                console.warn('Preview font failed to load:', err);
+                setValidLink(false);
+            } finally {
+                setLoadingFont(false);
+            }
+        };
+
+        loadPreviewFont();
+    }, [selectedFont, fontLink]);
+
+    function updateFont() {
+        if (selectedFont === 'System UI') {
+            document.documentElement.style.setProperty(
+                '--body-font',
+                `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
+            );
+            document.documentElement.style.setProperty(
+                '--preview-font',
+                `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
+            );
+
+            setValidLink(true);
+            setFontChanged(false);
+
+            setPopupMessage({
+                message: `Switched to ${selectedFont} successfully~! (〜^∇^)〜`,
+                icon: '✔',
+                color: { light: 'green', dark: 'limegreen' },
+            });
+            setShowToast(true);
+            return;
+        }
+
+        if (fontLink && fontLink.includes('fonts.googleapis.com')) {
+            const match = fontLink.match(/family=([^:&]+)/);
+            const extracted = match
+                ? decodeURIComponent(match[1]).replace(/\+/g, ' ')
+                : selectedFont;
+
+            if (!document.querySelector(`link[href="${fontLink}"]`)) {
+                const linkEl = document.createElement('link');
+                linkEl.rel = 'stylesheet';
+                linkEl.href = fontLink;
+                document.head.appendChild(linkEl);
+            }
+
+            document.documentElement.style.setProperty('--body-font', `'${extracted}', sans-serif`);
+            setSelectedFont(extracted);
+            setValidLink(true);
+        }
+
+        else {
+            document.documentElement.style.setProperty('--body-font', `'${selectedFont}', sans-serif`);
+            setValidLink(false);
+        }
+
+        setFontChanged(false);
+        setPopupMessage({
+            message: `Switched to ${selectedFont} successfully~! (〜^∇^)〜`,
+            icon: '✔',
+            color: { light: 'green', dark: 'limegreen' },
+        });
+        setShowToast(true);
+    }
+
+    const canPreview = validLink || !fontLink;
 
     return (
         <div className="layout">
@@ -415,6 +595,176 @@ export default function Setting() {
                                 Delete
                             </button>
                         </div>
+
+                        <div className="echo-buff">
+                            <h2>Body Font</h2>
+                            <p style={{ marginBottom: '1rem' }}>
+                                Choose a Google Font for body text. You can paste a Google Fonts link to apply a custom typeface. ONLY EN fonts!!
+                            </p>
+
+                            <div className="settings-label" style={{ marginBottom: '0.75rem' }}>
+                                <h4 className="main-stat-label" style={{ marginBottom: 'unset' }}>
+                                    Default Body Font:
+                                </h4>
+
+                                <select
+                                    id="font-select"
+                                    className="main-stat-select"
+                                    value={selectedFont}
+                                    style={{ marginTop: '0.5rem' }}
+                                    onChange={(e) => {
+                                        const fontName = e.target.value;
+                                        setSelectedFont(fontName);
+                                        if (fontName === 'System UI') {
+                                            setFontLink('');
+                                        } else {
+                                            const link = FONT_LINKS[fontName];
+                                            if (link) setFontLink(link);
+                                        }
+                                        setFontChanged(true);
+                                    }}
+                                >
+                                    {![
+                                        'System UI',
+                                        'Onest',
+                                        'Fredoka',
+                                        'Quicksand',
+                                        'Comic Neue',
+                                        'Caveat'
+                                    ].includes(selectedFont) && (
+                                        <option value={selectedFont}>{selectedFont}</option>
+                                    )}
+                                    <option value="System UI">System UI</option>
+                                    <option value="Onest">Onest</option>
+                                    <option value="Fredoka">Fredoka</option>
+                                    <option value="Quicksand">Quicksand</option>
+                                    <option value="Comic Neue">Comic Neue</option>
+                                    <option value="Caveat">Caveat</option>
+                                </select>
+                            </div>
+
+                            {/* Paste your own font link */}
+                            <div className="settings-label">
+                                <h4 style={{ marginBottom: 'unset' }}>Custom Font Link:</h4>
+                                <input
+                                    id="font-link"
+                                    type="url"
+                                    placeholder="https://fonts.googleapis.com/css2?family=Caveat"
+                                    value={fontLink}
+                                    className="entry-name-edit"
+                                    style={{ width: '100%', marginTop: '0.5rem' }}
+                                    onChange={(e) => {
+                                        setFontLink(e.target.value);
+                                        setFontChanged(true);
+                                    }}
+                                />
+                            </div>
+
+                            {selectedFont && (
+                                <>
+                                    <h4 style={{ marginBottom: 'unset' }}>Preview:</h4>
+
+                                    <div
+                                        style={{
+                                            position: 'relative',
+                                            marginTop: '0.5rem',
+                                            padding: '0.6rem 0.9rem',
+                                            borderRadius: '6px',
+                                            border: '1px solid rgba(128,128,128,0.3)',
+                                            backdropFilter: 'blur(4px)',
+                                            background: 'rgba(255,255,255,0.05)',
+                                            minHeight: '2.5rem',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
+                                        {loadingFont ? (
+                                            <div className="font-loader" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <div
+                                                    style={{
+                                                        width: '1rem',
+                                                        height: '1rem',
+                                                        border: '2px solid rgba(255,255,255,0.3)',
+                                                        borderTop: '2px solid var(--slider-color, #00bcd4)',
+                                                        borderRadius: '50%',
+                                                        animation: 'spin 0.9s linear infinite',
+                                                    }}
+                                                />
+                                                <span style={{ opacity: 0.8, fontSize: '0.9rem' }}>Loading font...</span>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                {canPreview ? (
+                                                    <h4
+                                                        style={{
+                                                            fontFamily: 'var(--preview-font)',
+                                                            fontSize: '1.15rem',
+                                                            margin: 0,
+                                                            textShadow: '0 0 4px rgba(0,0,0,0.25)',
+                                                            transition: 'all 0.2s ease',
+                                                        }}
+                                                    >
+                                                        ₊✩‧₊˚౨ৎ˚₊✩‧₊ YOU (yes you) are amazinggg~! ₊✩‧₊˚౨ৎ˚₊✩‧₊
+                                                    </h4>
+                                                ) : (
+                                                    <h4
+                                                        style={{
+                                                            fontFamily: 'var(--body-font)',
+                                                            fontSize: '1.15rem',
+                                                            margin: 0,
+                                                            color: 'red',
+                                                            textShadow: '0 0 4px rgba(0,0,0,0.25)',
+                                                            transition: 'all 0.2s ease',
+                                                        }}
+                                                    >
+                                                        not a font link dude/dudette~!
+                                                    </h4>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+
+                            <div className="settings-label" style={{ marginTop: '0.75rem' }}>
+                                <a
+                                    href="https://fonts.google.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '0.4rem',
+                                        fontSize: '0.95rem',
+                                        fontWeight: 500,
+                                        color: 'var(--slider-color, #00bcd4)',
+                                        textDecoration: 'none',
+                                        transition: 'color 0.2s ease',
+                                    }}
+                                    onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255,0,50,0.81)')}
+                                    onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--slider-color, #00bcd4)')}
+                                >
+                                    Browse Google Fonts →
+                                </a>
+                                <p style={{ fontSize: '0.85rem', opacity: 0.7, marginTop: '0.25rem' }}>
+                                    Copy the font’s link (the one that starts with
+                                    <code style={{ margin: '0 4px', fontSize: '0.85rem' }}>https://fonts.googleapis.com/</code>)
+                                    and paste it above.
+                                </p>
+                            </div>
+
+                            {fontChanged && validLink && (
+                                <button
+                                    className="btn-primary echoes"
+                                    style={{ marginLeft: 'auto', marginTop: '1rem' }}
+                                    onClick={updateFont}
+                                >
+                                    Confirm Changes
+                                </button>
+                            )}
+                        </div>
+
                         <div className="echo-buff">
                             <h2>Dark Mode Theme</h2>
                             <p style={{ marginBottom: '1rem' }}>
@@ -425,6 +775,7 @@ export default function Setting() {
                                 <select
                                     id="dark-variant"
                                     className="main-stat-select"
+                                    style={{ marginTop: '0.5rem' }}
                                     value={darkVariant}
                                     onChange={(e) => {
                                         const newVariant = e.target.value;
