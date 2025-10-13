@@ -280,6 +280,7 @@
     padding: 0.5rem 0.5rem 0 0.5rem !important;
 }
 
+.bag .gear-icon,
 .preset-preview .gear-icon,
 .import-echo-grid .gear-icon {
     height: 3rem;

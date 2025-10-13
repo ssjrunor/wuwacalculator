@@ -36,10 +36,11 @@
 }
 
 .echo-bag-modal .modal-footer {
+    padding-top: 0.5rem;
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     margin-top: auto;
 }
 
@@ -48,23 +49,29 @@
     display: grid;
     overflow-y: auto;
     max-height: 37.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(198px, 1fr));
     gap: 1rem;
     mask-image: linear-gradient(to bottom, black 97%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 97%, transparent 100%);
 }
 
-.echo-bag-modal .echo-tile {
+.bag.echo-tile {
     background-color: rgba(224, 224, 224, 0.46);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 0.75rem;
     padding: 0.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     border: 1px solid rgba(0, 0, 0, 0.07);
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.29);
     transition: box-shadow ease 0.3s, transform ease 0.3s, background 0.2s ease;
+}
+
+.bag.echo-tile:hover {
+    transform: translateY(-2px);
+    cursor: pointer;
 }
 
 .echo-set-cost-header {
@@ -76,25 +83,10 @@
     gap: 4px;
 }
 
-.echo-set-icon-bag {
+.bag .echo-set-icon {
     width: 1.8rem !important;
     height: 1.8rem !important;
     object-fit: contain;
-}
-
-.echo-slot-cost-badge.bag {
-    width: 1.8rem;
-    margin: unset;
-    height: 1.8rem;
-    padding: 0;
-    border-radius: 70%;
-    cursor: default;
-    color: white;
-    font-size: 0.8rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .echo-cost-badge {
@@ -110,9 +102,6 @@
 }
 
 .echo-bag-modal .echo-tile img {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
     object-fit: cover;
     margin: 0 auto;
 }
@@ -227,11 +216,17 @@
 }
 
 .edit-substat-button.slot {
-    width: 20px;
+    padding: 4px 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.edit-substat-button.slot:hover {
+    transform: scale(1.05);
 }
 
 .bag-view-wrapper,

@@ -303,6 +303,7 @@ export default function EchoBagMenu({
                         setSelectedCost={setSelectedCost}
                         selectedSet={selectedSet}
                         setSelectedSet={setSelectedSet}
+                        getImageSrc={getImageSrc}
                     />
                 ) : (
                     <PresetsView

@@ -178,6 +178,7 @@
 }
 
 .echo-slot-cost-badge.overview {
+    padding: 1px;
     font-size: 0.75rem;
     border-radius: 50%;
     height: 1.5rem;
