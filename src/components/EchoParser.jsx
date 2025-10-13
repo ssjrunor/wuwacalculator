@@ -8,6 +8,7 @@ import {setIconMap} from "../constants/echoSetData.jsx";
 import {EchoGridPreview} from "./OverviewDetailPane.jsx";
 import {imageCache} from "../pages/calculator.jsx";
 import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
+import {addEchoPreset} from "../state/echoPresetStore.js";
 
 const echoImageCache = {};
 const setIconImageCache = {};
@@ -353,8 +354,9 @@ const EchoParser = ({
         }, 300);
     };
 
-    const equippedEchoes = characterRuntimeStates[charId].equippedEchoes;
-    const name = characterRuntimeStates[charId].Name;
+    const runtime = characterRuntimeStates[charId];
+    const equippedEchoes = runtime.equippedEchoes;
+    const name = runtime.Name;
     const empty = !equippedEchoes || equippedEchoes.length === 0 ||
         (Array.isArray(equippedEchoes) && equippedEchoes.every(e => e === null));
 
@@ -388,6 +390,36 @@ const EchoParser = ({
                         Save All
                     </button>
                 )}
+                <button
+                    onClick={() => {
+                        const preset = addEchoPreset(runtime);
+
+                        if (!preset) {
+                            setPopupMessage({
+                                message: `OH! seems like you already have this one saved~! (゜。゜)`,
+                                icon: '❤',
+                                color: { light: 'green', dark: 'limegreen' },
+                            });
+                        } else if (preset.empty) {
+                            setPopupMessage({
+                                message: `Hmm... you gotta have an echoes first lol~! (￣ω￣;)`,
+                                icon: '❤',
+                                color: { light: 'green', dark: 'limegreen' },
+                            });
+                        } else {
+                            setPopupMessage({
+                                message: 'Added Successfully~! (〜^∇^)〜',
+                                icon: '✔',
+                                color: { light: 'green', dark: 'limegreen' },
+                            });
+                        }
+
+                        setShowToast(true);
+                    }}
+                    className="btn-primary echoes"
+                >
+                    Save Preset
+                </button>
                 <button
                     onClick={() => {
                         if (empty) {
@@ -424,7 +456,7 @@ const EchoParser = ({
                 >
                     Unequip All
                 </button>
-                <button onClick={() => openGuide(['Echoes', 'Build and Echo Scoring', 'Echo Importing'])} className="btn-primary echoes"
+                <button onClick={() => openGuide(['Echoes', 'Build and Echo Scoring', 'Echo Importing', 'Echo Presets'])} className="btn-primary echoes"
                 style={{ marginLeft: 'auto'}}>
                     See Guide
                 </button>
@@ -529,7 +561,7 @@ function ParsedEchoesPreview ({ parsedEchoes, onCancel, onImport, charId, getIma
             </div>
 
             <div
-                className="echo-grid main-echo-description guides"
+                className="echo-grid main-echo-description guides preset-preview"
                 style={{ marginBottom: '1rem' }}
             >
                 {[...Array(5)].map((_, index) => {

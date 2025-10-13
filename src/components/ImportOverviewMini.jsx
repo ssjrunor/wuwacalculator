@@ -42,9 +42,6 @@ export default function ImportOverviewMini({ importPreview }) {
     const maxBuildScore = maxScore * 5;
     const percentScore = (buildScore.total / maxBuildScore) * 100;
 
-
-    console.log(charId);
-
     return (
         <div className="import-overview-mini">
             <div className="import-overview-header">

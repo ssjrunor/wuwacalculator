@@ -23,16 +23,21 @@ import {
     getSetCounts, getTop5SubstatScoreDetails,
     getValidMainStats, statDisplayOrder, statIconMap
 } from "../utils/echoHelper.js";
-import {preloadImages} from "../pages/calculator.jsx";
+import {imageCache, preloadImages} from "../pages/calculator.jsx";
 import NotificationToast from "./NotificationToast.jsx";
 import GuidesModal from "./GuideModal.jsx";
 import ConfirmationModal from "./ConfirmationModal.jsx";
+import {deepCompareEchoArrays, getEchoPresetById} from "../state/echoPresetStore.js";
 
 export default function EchoesPane({
                                        charId,
                                         setCharacterRuntimeStates,
                                         characterRuntimeStates,
+                                       characters
                                    }) {
+    const getImageSrc = (icon) => imageCache[icon]?.src || icon;
+
+    const runtime = characterRuntimeStates[charId];
     const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
         icon: null,
@@ -65,13 +70,13 @@ export default function EchoesPane({
     const [activeSlot, setActiveSlot] = useState(null);
     const [substatModalSlot, setSubstatModalSlot] = useState(null);
     const menuRef = useRef(null);
-    const echoData = characterRuntimeStates?.[charId]?.equippedEchoes ?? [null, null, null, null, null];
+    const echoData = runtime?.equippedEchoes ?? [null, null, null, null, null];
     const [showEffect, setShowEffect] = useState(false);
     const [bagOpen, setBagOpen] = useState(false);
     const [editingEcho, setEditingEcho] = useState(null);
 
     const handleRemoveEcho = (slotIndex) => {
-        const currentEchoes = characterRuntimeStates?.[charId]?.equippedEchoes ?? [null, null, null, null, null];
+        const currentEchoes = runtime?.equippedEchoes ?? [null, null, null, null, null];
         const updated = [...currentEchoes];
         updated[slotIndex] = null;
 
@@ -195,9 +200,11 @@ export default function EchoesPane({
     };
 
     useEffect(() => {
-        const echoIconPaths = echoes.map(e => e.icon).filter(Boolean);
+        const echoIconPaths = echoes.map(e => e?.icon).filter(Boolean);
         const setIconPaths = Object.values(setIconMap).filter(Boolean);
-        preloadImages([...echoIconPaths, ...setIconPaths]);
+        const allPaths = [...new Set([...echoIconPaths, ...setIconPaths])];
+
+        preloadImages(allPaths);
     }, []);
 
     const setCounts = getSetCounts(echoData);
@@ -245,7 +252,7 @@ export default function EchoesPane({
             setPopupMessage({
                 message: 'You have no echoes equipped~! (゜。゜)',
                 icon: '❤',
-                color: { light: 'orange', dark: 'gold' },
+                color: { light: 'greed', dark: 'limegreen' },
             });
             setShowToast(true);
             return;
@@ -255,9 +262,9 @@ export default function EchoesPane({
 
         if (validEchoes.length === 0) {
             setPopupMessage({
-                message: 'Those slots are emptier than your bag before~! (¬‿¬)',
+                message: 'Those slots are emptier than your bag before~! ◑ . ◑',
                 icon: '❤',
-                color: { light: 'orange', dark: 'gold' },
+                color: { light: 'greed', dark: 'limegreen' },
             });
             setShowToast(true);
             return;
@@ -295,8 +302,105 @@ export default function EchoesPane({
         setShowToast(true);
     }
 
+    const [viewMode, setViewMode] = useState('echoes');
+
+    function onEquipPreset(presetOrId) {
+        if (!charId || !setCharacterRuntimeStates) return;
+        const preset =
+            typeof presetOrId === 'string' || typeof presetOrId === 'number'
+                ? getEchoPresetById(presetOrId)
+                : presetOrId;
+
+        if (!preset || !Array.isArray(preset.echoes)) return;
+        if (deepCompareEchoArrays(characterRuntimeStates[charId].equippedEchoes, preset.echoes)) {
+            setPopupMessage({
+                message: `OH... seems like you've got this on already... (゜。゜)`,
+                icon: '✔',
+                color: { light: 'green', dark: 'limegreen' },
+            });
+            setShowToast(true);
+            return;
+        }
+        setCharacterRuntimeStates(prev => {
+            const prevChar = prev[charId] ?? {};
+            return {
+                ...prev,
+                [charId]: {
+                    ...prevChar,
+                    equippedEchoes: preset.echoes.map(e => (e ? { ...e } : null)),
+                },
+            };
+        });
+        setPopupMessage({
+            message: 'Equipped~! (〜^∇^)〜',
+            icon: '✔',
+            color: { light: 'green', dark: 'limegreen' },
+        });
+        setShowToast(true);
+    }
+
     return (
         <div className="echoes-pane" ref={echoesPaneRef}>
+            {bagOpen && (
+                <EchoBagMenu
+                    runtime={runtime}
+                    characterRuntimeStates={characterRuntimeStates}
+                    getImageSrc={getImageSrc}
+                    characters={characters}
+                    onEquipPreset={onEquipPreset}
+                    viewMode={viewMode}
+                    setViewMode={setViewMode}
+                    setConfirmMessage={setConfirmMessage}
+                    setShowToast={setShowToast}
+                    setShowConfirm={setShowConfirm}
+                    setPopupMessage={setPopupMessage}
+                    editingEcho={editingEcho}
+                    setEditingEcho={setEditingEcho}
+                    selectedSet={selectedSet}
+                    setSelectedSet={setSelectedSet}
+                    selectedCost={selectedCost}
+                    setSelectedCost={setSelectedCost}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    charId={charId}
+                    onClose={() => {
+                        setEditingEcho(null);
+                        setBagOpen(false);
+                    }}
+                    onEquip={(echo, slotIndex) => {
+                        const currentEchoes = characterRuntimeStates[charId]?.equippedEchoes ?? [];
+                        const currentTotalCost = currentEchoes.reduce((sum, e, i) => {
+                            return i === slotIndex ? sum : sum + (e?.cost ?? 0);
+                        }, 0);
+
+                        const newTotalCost = currentTotalCost + (echo.cost ?? 0);
+
+                        if (newTotalCost > 12) {
+                            setPopupMessage({
+                                message: 'Nice Try! But... Cost (' + newTotalCost + ') > 12 (￣￢￣ヾ)',
+                                icon: '✘',
+                                color: 'red'
+                            });
+                            setShowToast(true);
+                            return;
+                        }
+
+                        const prevEchoes = characterRuntimeStates[charId]?.equippedEchoes ?? [null, null, null, null, null];
+                        const updatedEchoes = [...prevEchoes];
+                        updatedEchoes[slotIndex] = echo;
+
+                        setCharacterRuntimeStates(prev => ({
+                            ...prev,
+                            [charId]: {
+                                ...(prev[charId] ?? {}),
+                                equippedEchoes: updatedEchoes
+                            }
+                        }));
+
+                        //setBagOpen(false);
+                    }}
+                />
+            )}
             <EchoParser
                 charId={charId}
                 characterRuntimeStates={characterRuntimeStates}
@@ -796,58 +900,6 @@ export default function EchoesPane({
                     onSave={(updatedEcho) => handleSubstatSave(updatedEcho)}
                     getValidMainStats={getValidMainStats}
                     applyFixedSecondMainStat={applyFixedSecondMainStat}
-                />
-            )}
-            {bagOpen && (
-                <EchoBagMenu
-                    setConfirmMessage={setConfirmMessage}
-                    setShowToast={setShowToast}
-                    setShowConfirm={setShowConfirm}
-                    setPopupMessage={setPopupMessage}
-                    editingEcho={editingEcho}
-                    setEditingEcho={setEditingEcho}
-                    selectedSet={selectedSet}
-                    setSelectedSet={setSelectedSet}
-                    selectedCost={selectedCost}
-                    setSelectedCost={setSelectedCost}
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    onClose={() => {
-                        setEditingEcho(null);
-                        setBagOpen(false);
-                    }}
-                    onEquip={(echo, slotIndex) => {
-                        const currentEchoes = characterRuntimeStates[charId]?.equippedEchoes ?? [];
-                        const currentTotalCost = currentEchoes.reduce((sum, e, i) => {
-                            return i === slotIndex ? sum : sum + (e?.cost ?? 0);
-                        }, 0);
-
-                        const newTotalCost = currentTotalCost + (echo.cost ?? 0);
-
-                        if (newTotalCost > 12) {
-                            setPopupMessage({
-                                message: 'Nice Try! But... Cost (' + newTotalCost + ') > 12 (￣￢￣ヾ)',
-                                icon: '✘',
-                                color: 'red'
-                            });
-                            setShowToast(true);
-                            return;
-                        }
-
-                        const prevEchoes = characterRuntimeStates[charId]?.equippedEchoes ?? [null, null, null, null, null];
-                        const updatedEchoes = [...prevEchoes];
-                        updatedEchoes[slotIndex] = echo;
-
-                        setCharacterRuntimeStates(prev => ({
-                            ...prev,
-                            [charId]: {
-                                ...(prev[charId] ?? {}),
-                                equippedEchoes: updatedEchoes
-                            }
-                        }));
-
-                        //setBagOpen(false);
-                    }}
                 />
             )}
 

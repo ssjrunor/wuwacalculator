@@ -24,18 +24,34 @@ export function useGoogleAuth() {
 
     const login = useGoogleLogin({
         flow: 'auth-code',
+        redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
         scope:
-            'https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+
         onSuccess: async (codeResponse) => {
             try {
+                console.log('Auth code response:', codeResponse);
+                console.log('Code:', codeResponse?.code);
+
+                const payload = { code: codeResponse.code };
+                console.log('Sending payload to /api/exchange-code:', payload);
+
                 const res = await fetch('/api/exchange-code', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ code: codeResponse.code }),
+                    body: JSON.stringify(payload),
                 });
 
-                if (!res.ok) throw new Error(await res.text());
+                console.log('Exchange response status:', res.status);
+
+                if (!res.ok) {
+                    const text = await res.text();
+                    console.error('Exchange failed, response text:', text);
+                    throw new Error(text);
+                }
+
                 const tokens = await res.json();
+                console.log('Received tokens from backend:', tokens);
 
                 localStorage.setItem(
                     'googleTokens',
@@ -48,6 +64,7 @@ export function useGoogleAuth() {
                 console.error('Exchange code failed:', err);
             }
         },
+
         onError: (err) => {
             console.error('Google login failed:', err);
             alert('Google login failed');
@@ -61,7 +78,6 @@ export function useGoogleAuth() {
         localStorage.removeItem('googleTokens');
     }, []);
 
-    // inside useGoogleAuth.js
     async function validateToken(token) {
         try {
             const res = await fetch(

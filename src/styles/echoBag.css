@@ -1,6 +1,7 @@
 .edit-substats-modal.echo-bag-modal {
     padding: 0;
     width: 68rem;
+    min-height: 34rem;
 }
 
 @media (max-width: 640px) {
@@ -54,14 +55,16 @@
 }
 
 .echo-bag-modal .echo-tile {
-    background: rgba(255, 255, 255, 0.1);
+    background-color: rgba(224, 224, 224, 0.46);
     border-radius: 0.75rem;
     padding: 0.5rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    transition: background 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+    transition: box-shadow ease 0.3s, transform ease 0.3s, background 0.2s ease;
 }
 
 .echo-set-cost-header {
@@ -229,4 +232,66 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.bag-view-wrapper,
+.presets-view-wrapper {
+    transition: opacity 0.25s ease;
+}
+
+.bag-view-wrapper[style*="display: none"],
+.presets-view-wrapper[style*="display: none"] {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.preset-preview.changelog-modal {
+    max-width: 965px !important;
+}
+
+.view-toggle-button.echo-bag {
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.echo-bag-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+}
+
+.echo-bag-header .rotation-view-toggle {
+    margin-bottom: unset;
+    margin-right: auto;
+}
+
+.echo-bag-header .clear {
+    margin-left: auto;
+}
+
+.echo-bag-header .menu-header {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+@media (max-width: 800px) {
+    .echo-bag-header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .echo-bag-header .menu-header {
+        position: static;
+        transform: none;
+        margin: 0.5rem 0;
+    }
+
+    .echo-bag-header .rotation-view-toggle,
+    .echo-bag-header .clear {
+        margin: 0.25rem 0;     
+    }
 }

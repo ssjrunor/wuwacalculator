@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 console.log('env check:', {
     id: process.env.GOOGLE_CLIENT_ID,
-    secret: process.env.GOOGLE_CLIENT_SECRET ? '✅ exists' : '❌ missing',
+    secret: process.env.GOOGLE_CLIENT_SECRET ? 'exists' : 'missing',
     redirect: process.env.GOOGLE_REDIRECT_URI
 });
 
@@ -10,13 +10,19 @@ export default async function handler(req, res) {
     try {
         const { code } = req.body;
 
+        const isProd = process.env.NODE_ENV === 'production';
+
         const data = {
             code,
             client_id: process.env.GOOGLE_CLIENT_ID,
             client_secret: process.env.GOOGLE_CLIENT_SECRET,
-            redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+            redirect_uri: isProd
+                ? 'https://thewuwacalculator.com'
+                : 'http://localhost:5173',
             grant_type: 'authorization_code',
         };
+
+        console.log('exchange request data:', data);
 
         const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
             method: 'POST',

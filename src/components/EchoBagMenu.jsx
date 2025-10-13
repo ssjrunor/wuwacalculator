@@ -1,20 +1,27 @@
-import React, {useEffect, useState} from 'react';
-import { X } from 'lucide-react';
+import React, {useEffect, useMemo, useState} from 'react';
 import EditSubstatsModal from './EchoEditModal';
 import {setIconMap} from "../constants/echoSetData";
 import { isEqual } from 'lodash';
 import {
     getEchoBag,
     subscribeEchoBag,
-    removeEchoFromBag,
     updateEchoInBag,
     clearEchoBag
 } from '../state/echoBagStore';
-import {formatStatKey, getValidMainStats, statIconMap} from "../utils/echoHelper.js";
+import {getValidMainStats} from "../utils/echoHelper.js";
 import {imageCache} from "../pages/calculator.jsx";
-import {ExpandableEchoSection} from "./Expandable.jsx";
+import {
+    buildPresetFilterOptions,
+    clearEchoStore,
+    getEchoPresets,
+    subscribeEchoPresets,
+} from "../state/echoPresetStore.js";
+import Select from 'react-select';
+import {usePersistentState} from "../hooks/usePersistentState.js";
+import {EchoPresetPreview, PresetsView} from "./EchoPresets.jsx";
+import {BagView} from "./EchoBag.jsx";
 
-function isEchoModified(oldEcho, updatedEcho) {
+export function isEchoModified(oldEcho, updatedEcho) {
     return (
         oldEcho.selectedSet !== updatedEcho.selectedSet ||
         oldEcho.cost !== updatedEcho.cost ||
@@ -22,6 +29,11 @@ function isEchoModified(oldEcho, updatedEcho) {
         !isEqual(oldEcho.subStats, updatedEcho.subStats)
     );
 }
+
+const filterOptions = [
+    { value: 'char', label: 'Character' },
+    { value: 'equipped', label: 'Currently Equipped' },
+];
 
 export default function EchoBagMenu({
                                         onClose,
@@ -35,8 +47,17 @@ export default function EchoBagMenu({
                                         setConfirmMessage,
                                         setShowToast,
                                         setShowConfirm,
-                                        setPopupMessage
-}) {
+                                        setPopupMessage,
+                                        viewMode,
+                                        setViewMode,
+                                        onEquipPreset,
+                                        setEditingPreset,
+                                        characters,
+                                        getImageSrc,
+                                        runtime,
+                                        characterRuntimeStates,
+                                        charId
+                                    }) {
     const [echoBag, setEchoBag] = useState(getEchoBag());
     const [version, setVersion] = useState(0);
     const [editingEcho, setEditingEcho] = useState(null);
@@ -67,6 +88,13 @@ export default function EchoBagMenu({
         const unsubscribe = subscribeEchoBag(setEchoBag);
         return unsubscribe;
     }, []);
+
+    const [echoPresets, setEchoPresets] = useState(getEchoPresets());
+    useEffect(() => {
+        const unsubscribe = subscribeEchoPresets(setEchoPresets);
+        return unsubscribe;
+    }, []);
+
     useEffect(() => {
         setIsVisible(true);
         requestAnimationFrame(() => {
@@ -103,6 +131,44 @@ export default function EchoBagMenu({
         preloadImages();
     }, [isVisible, echoBag, didOpenOnce]);
 
+    const [filterOption, setFilterOption] = usePersistentState('filterOption', 'char');
+    const { charOptions, equippedOptions } = useMemo(
+        () => buildPresetFilterOptions(characters),
+        [characters, echoPresets]
+    );
+    const [selectedFilters, setSelectedFilters] = React.useState([]);
+
+    const currentFilterOptions =
+        filterOption === 'char'
+            ? charOptions
+            : filterOption === 'equipped'
+                ? equippedOptions
+                : [];
+
+    const filteredPresets = useMemo(() => {
+        if (!filterOption || selectedFilters.length === 0) return echoPresets;
+
+        if (filterOption === 'char') {
+            return echoPresets.filter(p =>
+                selectedFilters.includes(String(p.charId))
+            );
+        }
+
+        if (filterOption === 'equipped') {
+            return echoPresets.filter(p =>
+                p.equipped?.some(id => selectedFilters.includes(String(id)))
+            );
+        }
+
+        return echoPresets;
+    }, [filterOption, selectedFilters, echoPresets]);
+
+    const [viewingPreset, setViewingPreset] = useState(null);
+    const [showPresetModal, setShowPresetModal] = useState(false);
+
+    const [editingPresetId, setEditingPresetId] = useState(null);
+    const [editedPresetName, setEditedPresetName] = useState('');
+
     if (!isVisible || (!preloaded && !didOpenOnce)) return null;
 
     return (
@@ -114,47 +180,95 @@ export default function EchoBagMenu({
                 className={`edit-substats-modal echo-bag-modal ${isAnimatingOut ? 'hiding' : 'show'}`}
                 onClick={(e) => e.stopPropagation()}
             >
-                <button
-                    style={{
-                        alignSelf: 'center',
-                        position: 'absolute',
-                        top: '0.75rem',
-                        right: '0.75rem',
-                        display: 'inline-flex',
-                        zIndex: '10'
-                    }}
-                    className="rotation-button clear echoes"
-                    onClick={() => {
-                        if (echoBag.length === 0) {
-                            setPopupMessage({
-                                message: `Oh... you got nothing in here already... (゜。゜)`,
-                                icon: '❤',
-                                color: { light: 'green', dark: 'limegreen' },
-                            });
-                            setShowToast(true);
-                        } else {
-                            setConfirmMessage({
-                                confirmLabel: 'Clear Echo Bag',
-                                cancelLabel: 'Nevermind',
-                                onConfirm: () => {
-                                    clearEchoBag();
-                                    setEchoBag([]);
+                <div className="menu-header-with-buttons echo">
+                    <div className="echo-bag-header">
+                        <div
+                            className="rotation-view-toggle"
+                        >
+                            <button
+                                className={`view-toggle-button echo-bag ${viewMode === 'echoes' ? 'active' : ''}`}
+                                onClick={() => setViewMode('echoes')}>
+                                Echoes
+                            </button>
+                            <button
+                                className={`view-toggle-button echo-bag ${viewMode === 'presets' ? 'active' : ''}`}
+                                onClick={() => setViewMode('presets')}
+                            >
+                                Presets
+                            </button>
+                        </div>
+                        <div className="menu-header echo">{viewMode === 'echoes' ? 'Saved Echoes' : 'Saved Presets'}</div>
+                        <button
+                            className="rotation-button clear echoes"
+                            onClick={() => {
+                                const isBagView = viewMode === 'echoes';
+                                const empty = isBagView ? echoBag.length === 0 : echoPresets.length === 0;
+
+                                if (empty) {
                                     setPopupMessage({
-                                        message: 'Cleared~! (〜^∇^)〜',
-                                        icon: '✔',
-                                        color: { light: 'green', dark: 'limegreen' },
+                                        message: `Nothing to clear here... (´･ω･\`)`,
+                                        icon: '💭',
+                                        color: { light: 'orange', dark: 'gold' },
                                     });
                                     setShowToast(true);
+                                    return;
                                 }
-                            });
-                            setShowConfirm(true);
-                        }
-                    }}
-                >
-                    Clear All
-                </button>
-                    <div className="menu-header-with-buttons echo">
-                        <div className="menu-header echo">Saved Echoes</div>
+
+                                setConfirmMessage({
+                                    confirmLabel: `Clear ${isBagView ? 'Echo Bag' : 'Echo Presets'}`,
+                                    cancelLabel: 'Nevermind',
+                                    onConfirm: () => {
+                                        if (isBagView) {
+                                            clearEchoBag();
+                                            setPopupMessage({
+                                                message: 'Echo Bag cleared~ (〜^∇^)〜',
+                                                icon: '✔',
+                                                color: { light: 'green', dark: 'limegreen' },
+                                            });
+                                        } else {
+                                            clearEchoStore();
+                                            setPopupMessage({
+                                                message: 'Presets cleared~! ✨',
+                                                icon: '✔',
+                                                color: { light: 'green', dark: 'limegreen' },
+                                            });
+                                        }
+                                        setShowToast(true);
+                                    },
+                                });
+                                setShowConfirm(true);
+                            }}
+                        >
+                            Clear All
+                        </button>
+                    </div>
+                    {viewMode === 'presets' ? (
+                        <div className="button-group-container echo" style={{ gap: '0.5rem' }}>
+                            <div style={{ fontWeight: 'bold', color: '#555' }}>Filter by:</div>
+                            <Select
+                                value={filterOptions.find(opt => opt.value === filterOption)}
+                                onChange={(opt) => setFilterOption(opt.value)}
+                                options={filterOptions}
+                                classNamePrefix="single-select custom-select"
+                                placeholder="Set Filter"
+                            />
+                            {filterOption && (
+                                <Select
+                                    isMulti
+                                    value={currentFilterOptions.filter(o =>
+                                        selectedFilters.includes(o.value)
+                                    )}
+                                    onChange={selected =>
+                                        setSelectedFilters(selected.map(s => s.value))
+                                    }
+                                    options={currentFilterOptions}
+                                    placeholder={'Select Character(s)'}
+                                    className="select preset-filter"
+                                    classNamePrefix="custom-select"
+                                />
+                            )}
+                        </div>
+                    ) : (
                         <div className="button-group-container echo">
                             {Object.entries(setIconMap).map(([setId, iconPath]) => (
                                 <img
@@ -177,229 +291,89 @@ export default function EchoBagMenu({
                                 </button>
                             ))}
                         </div>
-
-                    </div>
-                <div className="modal-body echo-grid">
-                    {filteredEchoes.length === 0 ? (
-                        <div className="empty-message">...</div>
-                    ) : (
-                        filteredEchoes.map(echo => (
-                            <EchoTile
-                                key={echo.uid}
-                                echo={echo}
-                                imageCache={imageCache}
-                                echoBag={echoBag}
-                                removeEchoFromBag={removeEchoFromBag}
-                                setEditingEcho={setEditingEcho}
-                                onEquip={onEquip}
-                                setIconMap={setIconMap}
-                            />
-                        ))
                     )}
                 </div>
-                </div>
+                {viewMode === 'echoes' ? (
+                    <BagView
+                        onEquip={onEquip}
+                        setEditingEcho={setEditingEcho}
+                        echoBag={echoBag}
+                        filteredEchoes={filteredEchoes}
+                        selectedCost={selectedCost}
+                        setSelectedCost={setSelectedCost}
+                        selectedSet={selectedSet}
+                        setSelectedSet={setSelectedSet}
+                    />
+                ) : (
+                    <PresetsView
+                        onEquipPreset={onEquipPreset}
+                        setEditingPreset={setEditingPreset}
+                        filteredPresets={filteredPresets}
+                        echoPresets={echoPresets}
+                        characters={characters}
+                        filterOption={filterOption}
+                        setFilterOption={setFilterOption}
+                        selectedFilters={selectedFilters}
+                        currentFilterOptions={currentFilterOptions}
+                        setSelectedFilters={setSelectedFilters}
+                        setViewingPreset={setViewingPreset}
+                        setShowPresetModal={setShowPresetModal}
+                        setEditedPresetName={setEditedPresetName}
+                        setEditingPresetId={setEditingPresetId}
+                        editingPresetId={editingPresetId}
+                        editedPresetName={editedPresetName}
 
-                {editingEcho && (
-                    <EditSubstatsModal
-                        isOpen={true}
-                        echo={editingEcho}
-                        substats={editingEcho.subStats ?? {}}
-                        mainStats={editingEcho.mainStats ?? {}}
-                        getValidMainStats={getValidMainStats}
-                        selectedSet={editingEcho.selectedSet ?? editingEcho.sets?.[0] ?? null}
-                        onClose={() => setEditingEcho(null)}
-                        onSave={(updatedEcho) => {
-                            const originalEcho = echoBag.find(e => e.uid === editingEcho.uid);
-                            if (!originalEcho) return;
-
-                            const hasChanged = isEchoModified(originalEcho, updatedEcho);
-                            const newUid = hasChanged
-                                ? (typeof crypto !== 'undefined' && crypto.randomUUID
-                                        ? crypto.randomUUID()
-                                        : `${Date.now()}-${Math.random()}`
-                                )
-                                : originalEcho.uid;
-
-                            updateEchoInBag({
-                                ...updatedEcho,
-                                uid: newUid,
-                                oldUid: originalEcho.uid,
-                            });
-                            setVersion(v => v + 1);
-
-                            setEditingEcho(null);
-                        }}
                     />
                 )}
-        </div>
-    );
-}
-
-
-function useIsMobileWidth(maxWidth = 379) {
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= maxWidth);
-
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth <= maxWidth);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [maxWidth]);
-
-    return isMobile;
-}
-
-function EchoTile({ echo, imageCache, echoBag, removeEchoFromBag, setEditingEcho, onEquip, setIconMap }) {
-    const isMobile = useIsMobileWidth();
-
-    const tileContent = (
-        <div key={echo.uid} className="echo-tile">
-            <div className="remove-button-container">
-                <button
-                    className="remove-substat-button"
-                    onClick={() => removeEchoFromBag(echo.uid)}
-                >
-                    <X size={20} />
-                </button>
             </div>
 
-            {!isMobile && (
-                <>
-                    <div className="echo-set-cost-header">
-                        {echo.selectedSet && (
-                            <img
-                                src={setIconMap[echo.selectedSet]}
-                                alt={`Set ${echo.selectedSet}`}
-                                className="echo-set-icon-bag"
-                            />
-                        )}
-                        <div className="echo-slot-cost-badge bag">{echo.cost}</div>
-                    </div>
+            {editingEcho && (
+                <EditSubstatsModal
+                    isOpen={true}
+                    echo={editingEcho}
+                    substats={editingEcho.subStats ?? {}}
+                    mainStats={editingEcho.mainStats ?? {}}
+                    getValidMainStats={getValidMainStats}
+                    selectedSet={editingEcho.selectedSet ?? editingEcho.sets?.[0] ?? null}
+                    onClose={() => setEditingEcho(null)}
+                    onSave={(updatedEcho) => {
+                        const originalEcho = echoBag.find(e => e.uid === editingEcho.uid);
+                        if (!originalEcho) return;
 
-                    <img
-                        src={imageCache[echo.icon]?.src || echo.icon}
-                        alt={echo.name}
-                        loading="eager"
-                        onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = '/assets/echoes/default.webp';
-                            e.currentTarget.classList.add('fallback-icon');
-                        }}
-                    />
-                    <div className="echo-name">{echo.name}</div>
-                </>
+                        const hasChanged = isEchoModified(originalEcho, updatedEcho);
+                        const newUid = hasChanged
+                            ? (typeof crypto !== 'undefined' && crypto.randomUUID
+                                    ? crypto.randomUUID()
+                                    : `${Date.now()}-${Math.random()}`
+                            )
+                            : originalEcho.uid;
+
+                        updateEchoInBag({
+                            ...updatedEcho,
+                            uid: newUid,
+                            oldUid: originalEcho.uid,
+                        });
+                        setVersion(v => v + 1);
+
+                        setEditingEcho(null);
+                    }}
+                />
             )}
-
-            <div
-                className="echo-stats-preview"
-                onClick={() => {
-                    const freshEcho = echoBag.find(e => e.uid === echo.uid);
-                    setEditingEcho(freshEcho);
-                }}
-                style={{
-                    paddingTop: isMobile ? '20px' : undefined,
-                }}
-            >
-                <div className="echo-bag-info-main">
-                    {Object.entries(echo.mainStats ?? {}).map(([key, val]) => {
-                        const label = formatStatKey(key);
-                        const iconUrl = statIconMap[label];
-
-                        return (
-                            <div key={key} className="stat-row">
-                                <span className="echo-stat-label">
-                                    {iconUrl && (
-                                        <div
-                                            className="stat-icon"
-                                            style={{
-                                                width: 15,
-                                                height: 15,
-                                                backgroundColor: '#999',
-                                                WebkitMaskImage: `url(${iconUrl})`,
-                                                maskImage: `url(${iconUrl})`,
-                                                WebkitMaskRepeat: 'no-repeat',
-                                                maskRepeat: 'no-repeat',
-                                                WebkitMaskSize: 'contain',
-                                                maskSize: 'contain',
-                                                display: 'inline-block',
-                                                marginRight: '0.2rem',
-                                                verticalAlign: 'middle',
-                                                paddingRight: '0.2rem',
-                                            }}
-                                        />
-                                    )}
-                                    {label}
-                                </span>
-                                <span className="echo-stat-value">
-                                    {key.endsWith('Flat') ? val : `${val.toFixed(1)}%`}
-                                </span>
-                            </div>
-                        );
-                    })}
-                </div>
-                {Object.entries(echo.subStats ?? {}).map(([key, val]) => {
-                    const label = formatStatKey(key);
-                    const iconUrl = statIconMap[label];
-
-                    return (
-                        <div key={key} className="stat-row">
-                            <span className="echo-stat-label">
-                                {iconUrl && (
-                                    <div
-                                        className="stat-icon"
-                                        style={{
-                                            width: 15,
-                                            height: 15,
-                                            backgroundColor: '#999',
-                                            WebkitMaskImage: `url(${iconUrl})`,
-                                            maskImage: `url(${iconUrl})`,
-                                            WebkitMaskRepeat: 'no-repeat',
-                                            maskRepeat: 'no-repeat',
-                                            WebkitMaskSize: 'contain',
-                                            maskSize: 'contain',
-                                            display: 'inline-block',
-                                            marginRight: '0.2rem',
-                                            verticalAlign: 'middle',
-                                            paddingRight: '0.2rem',
-                                        }}
-                                    />
-                                )}
-                                {label}
-                            </span>
-                            <span className="echo-stat-value">
-                                {key.endsWith('Flat') ? val : `${val.toFixed(1)}%`}
-                            </span>
-                        </div>
-                    );
-                })}
-            </div>
-
-            <div className="modal-footer">
-                {[1, 2, 3, 4, 5].map(slotIndex => (
-                    <button
-                        key={slotIndex}
-                        className="edit-substat-button slot"
-                        onClick={() => {
-                            const freshEcho = echoBag.find(e => e.uid === echo.uid);
-                            if (freshEcho) {
-                                onEquip(freshEcho, slotIndex - 1);
-                            }
-                        }}
-                    >
-                        {slotIndex}
-                    </button>
-                ))}
-            </div>
+            {viewingPreset && (
+                <EchoPresetPreview
+                    open={showPresetModal}
+                    preset={viewingPreset}
+                    charId={charId}
+                    getImageSrc={getImageSrc}
+                    characterRuntimeStates={characterRuntimeStates}
+                    onClose={() => setShowPresetModal(false)}
+                    onEquipPreset={onEquipPreset}
+                    setEditedPresetName={setEditedPresetName}
+                    setEditingPresetId={setEditingPresetId}
+                    editingPresetId={editingPresetId}
+                    editedPresetName={editedPresetName}
+                />
+            )}
         </div>
     );
-
-    return isMobile ? (
-        <ExpandableEchoSection
-            echo={echo}
-            imageCache={imageCache}
-            setIconMap={setIconMap}
-            defaultOpen={false}
-        >
-            {tileContent}
-        </ExpandableEchoSection>
-    ) : tileContent;
 }

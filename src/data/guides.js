@@ -139,6 +139,57 @@ export const guides = [
         ]
     },
     {
+        category: 'Echo Presets',
+        guides: [
+            {
+                title: 'Managing Echo Presets',
+                type: 'article',
+                shortDesc: 'Learn how to create, edit, and apply Echo Presets for faster loadouts and optimized builds.',
+                content: `
+            <p>The <strong>Echo Presets</strong> system lets you save, organize, and reuse complete Echo loadouts across characters. Presets store your exact Echo configurations including main stats, substats, and sets so you can instantly reapply them without rebuilding from scratch.</p>
+
+            <h4>1. Overview</h4>
+            <p>Echo Presets act as customizable templates. Each preset remembers a full set of five Echoe slots and their selected sets, stats, and configurations. You can save your current build or load a preset into another character for testing or optimization.</p>
+
+            <ul>
+                <li><strong>Create Preset</strong> – Save your currently equipped Echoes using the <em>Save Preset</em> button.</li>
+            </ul>
+
+            <h4>2. Presets View</h4>
+            <p>All saved presets appear in the <strong>Presets</strong> panel in your <strong>Echo Bag</strong>, where you can filter and organize them:</p>
+            <ul>
+                <li>Use the <strong>Filter by Character</strong> dropdown to quickly view presets associated with a specific character.</li>
+                <li>Presets show the <strong>character name</strong> it was saved with, <strong>creation date</strong> and characters with the preset equipped for better organization.</li>
+            </ul>
+            
+            <h4>3. Presets Inspection</h4>
+            <p>Click on a preset to inspect it. On this modal you'll see a detailed view of the echoes in this preset.</p>
+            <ul>
+                <li><strong>Edit Preset Name</strong> – Click <strong>Edit Preset Name</strong> to edit the name of the preset (Presets are saved with the character's name it was saved with by default.</li>
+                <li><strong>Equip Preset</strong> – Click <strong>Equip</strong> to apply the preset to the current active character.</li>
+                <li><strong>Delete Preset</strong> – Click <strong>Delete</strong> to remove presets permanently.</li>
+            </ul>
+
+
+            <h4>4. Saving from Runtime</h4>
+            <p>When you save while viewing a character’s current Echoes, the preset automatically records all equipped Echo data—including their <strong>main stats</strong>, <strong>substats</strong>, and <strong>selected set</strong>.</p>
+            <ul>
+                <li>If a preset already contains an identical combination, it won’t create a duplicate.</li>
+                <li>Each preset tracks which characters currently have it equipped, syncing automatically as you switch builds.</li>
+            </ul>
+
+            <h4>5. Syncing and Equipping</h4>
+            <p>Echo presets stay linked with your equipped Echoes through a sync system:</p>
+            <ul>
+                <li>Whenever you change Echoes, the system checks if they match any saved preset.</li>
+                <li>If they do, the preset will automatically appear as <em>equipped</em> under that character’s profile.</li>
+                <li>Removing or modifying an Echo breaks the link, but the preset remains available for reapplication.</li>
+            </ul>
+            `
+            }
+        ]
+    },
+    {
         category: 'Team Buffs',
         guides: [
             {
@@ -420,8 +471,18 @@ export const guides = [
                     <li><strong>Manual Toggle:</strong> You can override it with the switch in Settings. The toggle mimics system behavior and updates instantly if your OS theme changes.</li>
                     <li><strong>Visual Consistency:</strong> All panes (Echoes, Rotations, Buffs) share the same theme context, so transitions are smooth and unified.</li>
                 </ul>
+                
+                <h4>4. Font Customization</h4>
+                <p>The calculator now supports full <strong>Font Customization</strong>, allowing you to personalize how text appears across the interface for readability or aesthetics.</p>
+                <ul>
+                    <li><strong>Font Selector:</strong> Found in the <em>Settings</em> page, it lets you choose from available typefaces that fit different visual moods — from clean modern fonts to elegant serif styles.</li>
+                    <li><strong>Live Preview:</strong> Changes take effect instantly across the entire app so you can see how they look before leaving the menu.</li>
+                    <li><strong>Persistence:</strong> Your selected font is saved in local storage and re-applied automatically on reload.</li>
+                    <li><strong>Compatibility:</strong> Fonts are fully theme-aware — ensuring consistent contrast and legibility in both light and dark modes.</li>
+                </ul>
+                <p>This feature is especially helpful for users who want stronger accessibility or simply a personalized aesthetic to match their workflow.</p>
 
-                <h4>4. Exporting & Syncing</h4>
+                <h4>5. Exporting & Syncing</h4>
                 <p>The app supports exporting and syncing data, especially for advanced users who use multiple devices or want backups:</p>
                 <ul>
                     <li><strong>Google Drive Sync:</strong> When enabled, your app state and configurations (Echoes, Rotations, etc.) sync securely to your Google Drive in the hidden “AppData” folder.</li>
@@ -429,7 +490,7 @@ export const guides = [
                     <li><strong>Export / Import:</strong> You can export rotations or entire setups as <code>.json</code> files and import them later, or share with other users.</li>
                 </ul>
 
-                <h4>5. Interactive Activities</h4>
+                <h4>6. Interactive Activities</h4>
                 <p>Most parts of the app respond interactively — meaning they update immediately without reloading:</p>
                 <ul>
                     <li><strong>Dragging & Dropping:</strong> You can reorder rotation entries, Echoes, or blocks using intuitive drag-and-drop behavior. All changes recalculate live.</li>
@@ -438,7 +499,7 @@ export const guides = [
                     <li><strong>Dynamic Tooltips:</strong> Hovering over stats or icons reveals detailed tooltips showing what each number represents, including calculated roll values or set bonuses.</li>
                 </ul>
 
-                <h4>6. Data Integrity & Overwrites</h4>
+                <h4>7. Data Integrity & Overwrites</h4>
                 <p>To prevent confusion, the app uses explicit overwrite logic when importing or loading:</p>
                 <ul>
                     <li><strong>Rotation Imports:</strong> If a rotation file belongs to another character, you’ll get a warning and the app will block the overwrite to protect your current state.</li>
@@ -446,7 +507,7 @@ export const guides = [
                     <li><strong>Reset Confirmation:</strong> The Reset Settings button can’t be triggered accidentally — it always asks for confirmation before clearing your stored data.</li>
                 </ul>
 
-                <h4>8. Safety & Recovery</h4>
+                <h4>9. Safety & Recovery</h4>
                 <p>If anything goes wrong — from a failed import to a parsing error — the app isolates that event instead of crashing the whole session. Toasts will explain what happened, and your last stable state remains untouched. For critical resets, a confirmation or reload ensures you never lose progress unintentionally.</p>
             `
             }

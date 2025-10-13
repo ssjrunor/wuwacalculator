@@ -12,7 +12,6 @@ export default function GuidesModal({ open, category, onClose, shouldScroll = fa
         Array.isArray(category) ? category[0] : category
     );
 
-    // Find selected guide data
     const selected = guides.find(g => g.category === activeCategory);
 
     const handleClose = () => {

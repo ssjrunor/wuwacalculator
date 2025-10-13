@@ -150,7 +150,7 @@ export default function PrivacyPolicy() {
                     <div className="info-section"
                          style={{marginBottom: '2rem'}}
                     >
-                        <p><strong>Effective Date:</strong> 10 July 2025</p>
+                        <p><strong>Effective Date:</strong> 13 October 2025</p>
 
                         <p>The Wuthering Waves Calculator is a fan-made tool designed to help users simulate and plan character builds. We value your privacy and aim to collect the minimum amount of personal information necessary to provide our services.</p>
 
@@ -163,8 +163,8 @@ export default function PrivacyPolicy() {
                         <p>We do <strong>not</strong> collect or store:</p>
                         <ul>
                             <li>Names, emails, or personal identifiers</li>
-                            <li>IP addresses</li>
-                            <li>Cookies or tracking data</li>
+                            <li>Any personal or account data from Google beyond the limited tokens required for Drive backup</li>
+                            <li>Non-anonymized tracking data</li>
                         </ul>
 
                         <h2>2. How Your Data is Used</h2>
@@ -183,7 +183,7 @@ export default function PrivacyPolicy() {
                             We use <strong>Google OAuth</strong> for sign-in and AppData access. We request only the minimal required scope and do not access your main Drive files.
                         </p>
                         <p>
-                            We use Google Analytics to understand general site usage, such as page visits and traffic sources. Google Analytics may set cookies or collect anonymized IP addresses. No personally identifiable information is shared.
+                            We use Google Analytics to measure overall site traffic (page visits, referrers, and similar statistics). Analytics operates in anonymized mode: IP addresses are masked, and no personally identifiable information is stored or shared. We do not use individual-level tracking or behavioral profiling.
                         </p>
 
                         <h2>5. Your Rights</h2>
@@ -196,7 +196,7 @@ export default function PrivacyPolicy() {
 
                         <p>For any concerns, contact me via <a href="mailto:rewhro@icloud.com?subject=Regarding%20the%20Calculator">email</a></p>
 
-                        <p style={{ marginTop: '2rem' }}><em>Last updated: 10 July 2025</em></p>
+                        <p style={{ marginTop: '2rem' }}><em>Last updated: 13 October 2025</em></p>
                     </div>
                 </div>
             </div>

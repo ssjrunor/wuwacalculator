@@ -259,6 +259,7 @@
     }
 }
 
+.preset-preview .echo-grid,
 .import-echo-grid .echo-grid {
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
 }
@@ -269,6 +270,7 @@
     padding: unset !important;
 }
 
+.preset-preview .echo-tile,
 .import-echo-grid .echo-tile {
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.29);
     pointer-events: none;
@@ -278,26 +280,31 @@
     padding: 0.5rem 0.5rem 0 0.5rem !important;
 }
 
+.preset-preview .gear-icon,
 .import-echo-grid .gear-icon {
     height: 3rem;
     width: 3rem;
     border: 1px solid rgba(73, 73, 73, 0.3);
 }
 
+.preset-preview .echo-stats-preview,
 .import-echo-grid .echo-stats-preview {
     margin-top: 2px;
     gap: 1px;
 }
 
+.preset-preview .echo-bag-info-main,
 .import-echo-grid .echo-bag-info-main {
     margin-bottom: 2px;
     padding: unset;
 }
 
+.preset-preview .gear-title,
 .import-echo-grid .gear-title {
     font-size: 0.8rem;
 }
 
+.stat-row.echo-parser-preview,
 .stat-row.settings-import-preview {
     background-color: rgba(0, 0, 0, 0.06);
 }
@@ -307,19 +314,24 @@
     width: 1.7rem !important;
 }
 
+.stat-icon.echo-parser-preview,
 .stat-icon.settings-import-preview {
     background-color: #5e5e5e !important;
 }
 
+.dark-alt .preset-preview .echo-tile,
 .dark-alt .import-echo-grid .echo-tile {
     background-color: rgba(255, 255, 255, 0);
 }
 
+.dark-alt .stat-icon.echo-parser-preview,
+.dark .stat-icon.echo-parser-preview,
 .dark-alt .stat-icon.settings-import-preview,
 .dark .stat-icon.settings-import-preview {
     background-color: #ddd !important;
 }
 
+.dark .preset-preview .echo-tile,
 .dark .import-echo-grid .echo-tile{
     border: 1px solid rgba(255, 255, 255, 0.1);
 }

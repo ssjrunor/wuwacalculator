@@ -535,5 +535,54 @@ export const changelog = [
             }
         ],
         shortDesc: `Updated <strong>Galbrena</strong> & <strong>Qiuyuan</strong>. Their effects now apply as <em>Damage Taken</em>`
+    },
+    {
+        date: '13/10/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `
+                Introduced the new <strong>Echo Presets</strong> system~!  
+                Save, manage, and reapply full Echo loadouts across your characters with just one click.
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `
+                Each preset remembers your exact Echo setup — including main stats, substats, and set bonuses.  
+                You can now create build templates, compare setups, or instantly reapply your favorite configurations between characters.  
+                Presets also sync automatically with your current equipped Echoes, showing when a saved build matches your runtime loadout.
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `
+                A new <em>Echo Presets</em> category has also been added to the <strong>Guides Page</strong>, explaining how to use and manage them efficiently.  
+            `
+            }
+        ],
+        shortDesc: `New <strong>Echo Presets</strong> system~! (〜^∇^)〜`
+    },
+    {
+        date: '13/10/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `
+                Added full <strong>Font Customization</strong>~!  
+                You can now personalize the calculator’s text style to match your vibe — clean, minimal, or classy.
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `
+                A new <em>Font Selector</em> is available in the <strong>Settings</strong> panel.  
+                Pick your favorite font and watch the entire interface update instantly — no reloads, no delay.  
+                Your chosen font is saved locally and will persist across sessions, even after closing the browser.  
+                All supported fonts are fully theme-aware for perfect readability in both light and dark modes.
+            `
+            }
+        ],
+        shortDesc: `Added <strong>Font Customization</strong>~! (〜^∇^)〜`
     }
 ];

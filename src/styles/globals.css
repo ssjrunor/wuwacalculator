@@ -144,3 +144,77 @@ input[type="file"] {
     opacity: 0.5;
     pointer-events: none;
 }
+
+.cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-weight: bold;
+    backdrop-filter: blur(1px);
+    background: rgba(43, 55, 59, 0.56);
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(100%);
+}
+
+.cookie-notice.slide-in {
+    animation: slideUp 0.4s ease-out forwards;
+}
+
+.cookie-notice.slide-out {
+    animation: slideDown 0.4s ease-in forwards;
+}
+
+.cookie-notice a {
+    transition: ease all 0.3s;
+    color: #fff;
+    text-decoration: underline;
+}
+
+.cookie-close-btn {
+    transition: ease all 0.3s;
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.cookie-close-btn:hover {
+    transform: scale(1.2);
+    color: #ff2c57;
+}
+
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 0.95;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(0);
+        opacity: 0.95;
+    }
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}

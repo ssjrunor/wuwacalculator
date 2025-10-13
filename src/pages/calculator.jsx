@@ -37,6 +37,9 @@ import {getMainRotationTotals, getTeamRotationTotal} from "../components/Rotatio
 import NotificationToast from "../components/NotificationToast.jsx";
 import {changelog} from "./changelog.jsx";
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
+import {syncAllPresetsForRuntime} from "../state/echoPresetStore.js";
+import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
+import HeartSmileIcon, {getCuteMessage} from "../components/cuteMessages.jsx";
 
 export default function Calculator() {
     const [characters, setCharacters] = useState([]);
@@ -49,10 +52,12 @@ export default function Calculator() {
         prompt: {}
     });
 
+    const { user, accessToken } = useGoogleAuth();
+
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-10-10 12:53';
+    const LATEST_CHANGELOG_VERSION = '2025-10-13 13:40';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
@@ -845,27 +850,6 @@ export default function Calculator() {
         localStorage.setItem('characterRuntimeStates', JSON.stringify(cleaned));
     }, []);
 
-    useEffect(() => {
-        const currentGuideVersion = '1.0.0-guides';
-        const hasSeenGuideToast = localStorage.getItem('guideToastShown');
-
-        if (hasSeenGuideToast !== currentGuideVersion) {
-            setPopupMessage({
-                message: 'Guides been added, CHECK THEM OUT~! (〜^∇^)〜',
-                icon: '❤',
-                color: { light: 'green', dark: 'limegreen' },
-                duration: 60000,
-                prompt: {
-                    message: 'See guides~!',
-                    action: () => navigate('/guides')
-                }
-            });
-            setShowToast(true);
-
-            localStorage.setItem('guideToastShown', currentGuideVersion);
-        }
-    }, []);
-
     const allRotations = getMainRotationTotals(charId, characterRuntimeStates, savedRotations, savedTeamRotations);
     const teamRotationDmg = getTeamRotationTotal(charId, characterRuntimeStates);
 
@@ -878,6 +862,10 @@ export default function Calculator() {
         onConfirm: () => {},
         onCancel: () => {}
     });
+
+    useEffect(() => {
+        syncAllPresetsForRuntime(characterRuntimeStates[charId]);
+    }, [charId, characterRuntimeStates[charId]?.equippedEchoes]);
 
     return (
         <>
@@ -1088,6 +1076,27 @@ export default function Calculator() {
                             </button>
                         </div>
                         <div className="sidebar-footer">
+                            <button className="sidebar-button reset"
+                                    onClick={() => {
+                                        setTimeout(() => {
+                                            const message = getCuteMessage(user);
+                                            setPopupMessage({
+                                                message,
+                                                icon: '❤',
+                                                color: { light: 'green', dark: 'limegreen' },
+                                                duration: 5000
+                                            });
+                                            setShowToast(true);
+                                        }, 300);
+                                    }}
+                            >
+                                <div className="icon-slot">
+                                    <HeartSmileIcon size={24} />
+                                </div>
+                                <div className="label-slot">
+                                    <span className="label-text">Say Hi~!</span>
+                                </div>
+                            </button>
                             <a
                                 href="https://discord.gg/wNaauhE4uH"
                                 target="_blank"
@@ -1257,6 +1266,7 @@ export default function Calculator() {
                                             setCharacterState={setCharacterState}
                                             characterRuntimeStates={characterRuntimeStates}
                                             setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                            characters={characters}
                                         />
                                     )}
                                 </div>
@@ -1357,7 +1367,6 @@ const toolbarIconNames = [
     'teams',
 ];
 
-
 const darkIcons = toolbarIconNames.map(name => `/assets/icons/dark/${name}.png`);
 const lightIcons = toolbarIconNames.map(name => `/assets/icons/light/${name}.png`);
 
@@ -1384,19 +1393,23 @@ const weaponIconPaths = Object.keys(weaponMap).map(weapon =>
 
 export const imageCache = {};
 const preloadedImages = new Set();
+const loadingImages = new Set();
+
 export const preloadImages = (srcList = []) => {
     srcList.forEach(src => {
-        if (preloadedImages.has(src)) return;
-
+        if (preloadedImages.has(src) || loadingImages.has(src)) return;
+        loadingImages.add(src);
         const img = new Image();
         img.onload = () => {
-            imageCache[src] = img;
+            imageCache[src] = src;
+            preloadedImages.add(src);
+            loadingImages.delete(src);
         };
         img.onerror = () => {
             console.warn(`Failed to preload image: ${src}`);
+            loadingImages.delete(src);
         };
         img.src = src;
-        preloadedImages.add(src);
     });
 };
 

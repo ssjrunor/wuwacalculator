@@ -1,0 +1,255 @@
+.preset-tile.dropdown-item {
+    flex-direction: row;
+    justify-content: center;
+    border-radius: 16px;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+    opacity: 0.9;
+    transition: box-shadow ease 0.3s, transform ease 0.3s, opacity ease 0.3s;
+}
+
+.preset-tile.dropdown-item:hover {
+    opacity: 1;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
+}
+
+.preset-tile .remove-teammate-button {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background-color: rgba(220, 20, 60, 0.41) !important;
+}
+
+.preset-echo-grid .remove-teammate-button:hover {
+    transform: scale(1.1);
+    background-color: crimson !important;
+}
+
+.preset-tile .echo-slot-icon {
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.preset-tile .empty-slot {
+    width: 50px;
+    height: 50px;
+    border: 1px dashed rgba(0, 0, 0, 0.16);
+}
+
+.preset-echo-grid {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: row;
+    position: relative;
+}
+
+.preset-echo-slot {
+    position: relative;
+}
+
+.preset-tile .echo-set-icon-bag {
+    position: absolute;
+    bottom: 4px;
+    left: -2px;
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.4);
+    padding: 2px;
+}
+
+.preset.header-icon:first-child {
+    margin-left: 0;
+}
+
+.preset.header-icon.five {
+    border-color: rgba(255, 183, 0, 0.76);
+    background: rgba(255, 183, 0, 0.18);
+}
+
+.preset.header-icon.four {
+    border-color: rgba(132, 72, 168, 0.78);
+    background-color: rgba(121, 46, 166, 0.29);
+}
+
+.dark .preset-tile.dropdown-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.dark .preset-tile.dropdown-item:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29);
+}
+
+.dark .preset-tile .echo-slot-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 3px 7px 0 rgba(0, 0, 0, 0.32);
+}
+
+.dark-alt .preset-tile.dropdown-item {
+    backdrop-filter: blur(15px);
+    background-color: rgba(14, 14, 14, 0.86);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.dark-alt .preset-tile.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29);
+}
+
+.dark-alt .preset-tile .echo-slot-icon {
+    background-color: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.62);
+}
+.echo-grid.presets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+
+.preset-tile .echo-slot-icon {
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.preset-tile .empty-slot {
+    width: 50px;
+    height: 50px;
+    border: 1px dashed rgba(0, 0, 0, 0.16);
+}
+
+.preset-echo-grid {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: row;
+    position: relative;
+}
+
+.preset-echo-slot {
+    position: relative;
+}
+
+.preset-tile .echo-set-icon-bag {
+    position: absolute;
+    bottom: 4px;
+    left: -2px;
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.4);
+    padding: 2px;
+}
+
+.preset-equipped {
+    display: flex;
+    flex-direction: row-reverse;
+    position: absolute;
+    bottom: -8px;
+    right: 10px;
+}
+
+.preset.header-icon {
+    backdrop-filter: blur(10px);
+    height: 24px;
+    width: 24px;
+    border: 1px solid;
+    border-radius: 50%;
+    object-fit: cover;
+    background: rgba(0,0,0,0.3);
+    margin-right: -4px;
+    position: relative;
+    z-index: 0;
+    box-shadow:
+            0 2px 4px rgba(0,0,0,0.4),
+            0 6px 12px rgba(0,0,0,0.25);
+
+    transition: transform 0.2s ease, z-index 0.2s ease;
+}
+
+.preset.header-icon:first-child {
+    margin-left: 0;
+}
+
+.preset.header-icon.five {
+    border-color: rgba(255, 183, 0, 0.76);
+    background: rgba(255, 183, 0, 0.18);
+}
+
+.preset.header-icon.four {
+    border-color: rgba(132, 72, 168, 0.78);
+    background-color: rgba(121, 46, 166, 0.29);
+}
+
+.dark .preset-tile.dropdown-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.dark .preset-tile.dropdown-item:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29);
+}
+
+.dark .preset-tile .echo-slot-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29), 0 3px 7px 0 rgba(0, 0, 0, 0.32);
+}
+
+.dark-alt .preset-tile.dropdown-item {
+    backdrop-filter: blur(15px);
+    background-color: rgba(14, 14, 14, 0.86);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.dark-alt .preset-tile.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29);
+}
+
+.dark-alt .preset-tile .echo-slot-icon {
+    background-color: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.62);
+}
+
+.preset-name {
+    font-weight: bold;
+    margin: unset;
+}
+
+.preset-preview.guides {
+    position: relative;
+}
+
+.preset-preview .overview-weapon-details.preset-date {
+    font-style: italic;
+    position: absolute;
+    bottom: 0.60rem;
+    left: 1.25rem;
+    font-size: 0.8rem;
+}
+
+.dark .preset-preview .overview-weapon-details.preset-date,
+.dark-alt .preset-preview .overview-weapon-details.preset-date {
+    opacity: 0.2;
+}
+
+.preset-name-edit {
+    font-size: 1.5em !important;
+    background-color: black;
+}
+
+.preset-view-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.build-score.preset-date {
+    position: unset !important;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Calculator from './pages/calculator.jsx';
 import InfoPage from './pages/infoPage';
@@ -6,36 +6,76 @@ import NotFound from './pages/NotFound';
 import Setting from "./pages/settings.jsx";
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
-import CookieConsent, { getCookieConsentValue } from 'react-cookie-consent';
 import {useSEO} from "./hooks/useSEO.js";
 import Changelog from "./pages/changelog.jsx";
 import GuidesPage from "./pages/guidesPage.jsx";
+import {usePersistentState} from "./hooks/usePersistentState.js";
+import {refreshAccessTokenIfNeeded} from "./utils/googleAuth.js";
+import {useGoogleAuth} from "./hooks/useGoogleAuth.js";
 
 const GA_ID = 'G-W502BDD62S';
 
 export default function App() {
+    const { user, accessToken } = useGoogleAuth();
+    const [showCookieNotice, setShowCookieNotice] = useState(false);
+
     usePageTracking();
+    useSEO();
 
     useEffect(() => {
-        const consent = getCookieConsentValue('wwa_cookie_consent');
-        if (consent === 'true' && typeof window.gtag === 'function') {
+        const warmUpAuth = async () => {
+            const newToken = await refreshAccessTokenIfNeeded();
+        };
+        warmUpAuth();
+    }, []);
+
+    useEffect(() => {
+        if (typeof window.gtag === 'function') {
             window.gtag('config', GA_ID, { anonymize_ip: true });
         }
     }, []);
 
-    const handleAccept = () => {
-        if (typeof window.gtag === 'function') {
-            console.log('[GA] Consent accepted — enabling tracking');
-            window.gtag('config', GA_ID, { anonymize_ip: true });
+    useEffect(() => {
+        document.cookie = "wwa_cookie_consent=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+    }, []);
+
+    useEffect(() => {
+        const dismissed = localStorage.getItem('cookieNoticeDismissed');
+        if (!dismissed) setShowCookieNotice(true);
+    }, []);
+
+    const [selectedFont] = usePersistentState('userBodyFontName', 'Onest');
+    const [fontLink] = usePersistentState('userBodyFontURL', '');
+
+    useEffect(() => {
+        if (selectedFont === 'System UI') {
+            document.documentElement.style.setProperty(
+                '--body-font',
+                `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
+            );
+            document.documentElement.style.setProperty(
+                '--preview-font',
+                `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif`
+            );
+            return;
         }
-    };
 
-    const handleReject = () => {
-        document.cookie = "wwa_cookie_consent=false;path=/;max-age=" + 60 * 60 * 24 * 365;
-        console.log('[GA] Consent rejected — tracking disabled');
-    };
+        if (fontLink && fontLink.includes('fonts.googleapis.com')) {
+            if (!document.querySelector(`link[href="${fontLink}"]`)) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = fontLink;
+                document.head.appendChild(link);
+            }
+        }
 
-    useSEO();
+        if (selectedFont) {
+            document.documentElement.style.setProperty('--body-font', `'${selectedFont}', sans-serif`);
+            document.documentElement.style.setProperty('--preview-font', `'${selectedFont}', sans-serif`);
+        } else {
+            document.documentElement.style.setProperty('--body-font', "'Onest', sans-serif");
+        }
+    }, [selectedFont, fontLink]);
 
     return (
         <>
@@ -50,24 +90,48 @@ export default function App() {
                 <Route path="*" element={<NotFound />} />
             </Routes>
 
-            <CookieConsent
-                cookieName="wwa_cookie_consent"
-                location="bottom"
-                buttonText="Accept"
-                declineButtonText="Reject"
-                enableDeclineButton
-                onAccept={handleAccept}
-                onDecline={handleReject}
-                style={{ background: "#2B373B", opacity: 0.9 }}
-                buttonStyle={{ color: "#fff", backgroundColor: "#20bfb9", fontSize: "13px" }}
-                declineButtonStyle={{ color: "#fff", backgroundColor: "#777", fontSize: "13px", marginLeft: "1rem" }}
-            >
-                This site uses cookies to analyze traffic via Google Analytics. No personal information is shared.{" "}
-                <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: "#fff", textDecoration: "underline" }}>
-                    Learn more
-                </a>.
-            </CookieConsent>
+            {showCookieNotice && (
+                <CookieNotice onClose={() => setShowCookieNotice(false)} />
+            )}
         </>
+    );
+}
+
+export function CookieNotice({ onClose }) {
+    const [closing, setClosing] = useState(false);
+
+    const handleClose = () => {
+        try {
+            localStorage.setItem('cookieNoticeDismissed', 'true');
+        } catch (e) {
+            console.warn('Failed to save cookie notice dismissal:', e);
+        }
+        setClosing(true);
+        setTimeout(() => onClose?.(), 400);
+    };
+
+    return (
+        <div className={`cookie-notice ${closing ? 'slide-out' : 'slide-in'}`} role="region" aria-label="Cookie notice">
+          <span>
+            This site uses cookies to analyze traffic via Google Analytics.
+            No personal information is shared.{' '}
+              <a
+                  href="/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+              >
+              Learn more
+            </a>.
+          </span>
+
+            <button
+                className="cookie-close-btn"
+                onClick={handleClose}
+                aria-label="Close cookie notice"
+            >
+                Close
+            </button>
+        </div>
     );
 }
 
@@ -75,8 +139,7 @@ function usePageTracking() {
     const location = useLocation();
 
     useEffect(() => {
-        const consent = getCookieConsentValue('wwa_cookie_consent');
-        if (consent === 'true' && typeof window.gtag === 'function') {
+        if (typeof window.gtag === 'function') {
             window.gtag('event', 'page_view', {
                 page_path: location.pathname + location.search,
                 page_location: window.location.href,
