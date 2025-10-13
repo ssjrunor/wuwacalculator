@@ -31,7 +31,6 @@
       ]
     }
   ],
-  "compress": true,
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
   ]
