@@ -9,7 +9,7 @@ import App from './App.jsx';
 console.log(import.meta.env);
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <GoogleOAuthProvider clientId={import.meta.env.GOOGLE_CLIENT_ID}>
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
