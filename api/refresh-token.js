@@ -18,6 +18,7 @@ export default async function handler(req, res) {
         const tokens = await tokenRes.json();
         res.status(200).json(tokens);
     } catch (err) {
+        console.error('Token refresh failed:', err);
         res.status(500).json({ error: 'Token refresh failed' });
     }
 }
