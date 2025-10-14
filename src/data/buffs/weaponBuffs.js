@@ -32,13 +32,6 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
             const values = [0, 10, 14, 18, 22, 26];
             mergedBuffs.elementDmgAmplify.aero = (mergedBuffs.elementDmgAmplify.aero ?? 0) + values[rank];
         },
-        woodlandAria: () => {
-            const rank = state['woodlandAria_rank'] ?? 0;
-            const values = [0, 10, 11.5, 13, 14.5, 16];
-            if (element === 'aero') {
-                mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + values[rank];
-            }
-        },
         wildfireMark: () => {
             const rank = state['wildfireMark_rank'] ?? 0;
             const values = [0, 24, 30, 36, 42, 48];
@@ -58,6 +51,28 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
     });
 
     return mergedBuffs;
+}
+
+export function applyWeaponSkillMetaBuffLogic({ mergedBuffs, characterState, activeCharacter, skillMeta, combatState }) {
+    const state = characterState?.activeStates ?? {};
+    const element = skillMeta.element;
+
+    const buffs = {
+        woodlandAria: () => {
+            const rank = state['woodlandAria_rank'] ?? 0;
+            const values = [0, 10, 11.5, 13, 14.5, 16];
+            skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
+                (element === 'aero' && combatState.aeroErosion ? values[rank] : 0);
+        },
+    };
+
+    Object.keys(buffs).forEach(key => {
+        if ((state[`${key}_rank`] ?? 0) > 0) {
+            buffs[key]();
+        }
+    });
+
+    return { skillMeta }
 }
 
 export function getActiveStateWeapons(activeStates) {

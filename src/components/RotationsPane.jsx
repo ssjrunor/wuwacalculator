@@ -5,7 +5,7 @@ import {arrayMove, SortableContext, verticalListSortingStrategy} from '@dnd-kit/
 import {restrictToFirstScrollableAncestor} from '@dnd-kit/modifiers';
 import RotationItem from "./RotationItem.jsx";
 import {getSkillDamageCache} from '../utils/skillDamageCache';
-import {usePersistentState} from "../hooks/usePersistentState.js";
+import {getPersistentValue, setPersistentValue, usePersistentState} from "../hooks/usePersistentState.js";
 import {calculateRotationTotals} from "./Rotations.jsx";
 import NotificationToast from "./NotificationToast.jsx";
 import {isEqual} from "lodash";
@@ -285,12 +285,13 @@ export default function RotationsPane({
             }))
         );
 
-        const prevRuntime = JSON.parse(localStorage.getItem("characterRuntimeStates") || "{}");
-        localStorage.setItem("characterRuntimeStates", JSON.stringify({
+        const prevRuntime = getPersistentValue('characterRuntimeStates', {});
+        const newRuntime = {
             ...prevRuntime,
             [id]: saved.fullCharacterState
-        }));
-        localStorage.setItem("activeCharacterId", JSON.stringify(id));
+        };
+        setPersistentValue('characterRuntimeStates', newRuntime);
+        setPersistentValue('activeCharacterId', id);
         setPopupMessage({
             message: 'Loaded Successfully~! (〜^∇^)〜',
             icon: '✔',

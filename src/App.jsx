@@ -9,7 +9,7 @@ import TermsOfService from './pages/TermsOfService';
 import {useSEO} from "./hooks/useSEO.js";
 import Changelog from "./pages/changelog.jsx";
 import GuidesPage from "./pages/guidesPage.jsx";
-import {usePersistentState} from "./hooks/usePersistentState.js";
+import {getPersistentValue, setPersistentValue, usePersistentState} from "./hooks/usePersistentState.js";
 import {refreshAccessTokenIfNeeded} from "./utils/googleAuth.js";
 import {useGoogleAuth} from "./hooks/useGoogleAuth.js";
 
@@ -40,7 +40,7 @@ export default function App() {
     }, []);
 
     useEffect(() => {
-        const dismissed = localStorage.getItem('cookieNoticeDismissed');
+        const dismissed = getPersistentValue('cookieNoticeDismissed');
         if (!dismissed) setShowCookieNotice(true);
     }, []);
 
@@ -102,7 +102,7 @@ export function CookieNotice({ onClose }) {
 
     const handleClose = () => {
         try {
-            localStorage.setItem('cookieNoticeDismissed', 'true');
+            setPersistentValue('cookieNoticeDismissed', 'true');
         } catch (e) {
             console.warn('Failed to save cookie notice dismissal:', e);
         }

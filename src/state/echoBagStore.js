@@ -1,17 +1,20 @@
 import { isEqual } from 'lodash';
+import {getPersistentValue, setPersistentValue} from "../hooks/usePersistentState.js";
 
 let echoBag = [];
 const listeners = new Set();
 
 try {
-    const stored = localStorage.getItem('echoBag');
-    if (stored) echoBag = JSON.parse(stored);
-} catch {}
+    const stored = getPersistentValue('echoBag');
+    if (stored) echoBag = stored;
+} catch (e) {
+    console.warn('Failed to load echoes in bag', e);
+}
 
 function notify() {
     listeners.forEach(cb => cb([...echoBag]));
     try {
-        localStorage.setItem('echoBag', JSON.stringify(echoBag));
+        setPersistentValue('echoBag', JSON.stringify(echoBag));
     } catch (e) {
         console.warn('Failed to sync echoBag to localStorage', e);
     }

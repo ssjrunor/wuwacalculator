@@ -1,8 +1,8 @@
-import {applyPheobeLogic, pheobeBuffsLogic, pheobeMultipliers} from './1506.js';
+import {applyPheobeLogic, pheobeBuffsLogic, pheobeMultipliers, pheobeSkillMetaBuffsLogic} from './1506.js';
 import {applySanhuaLogic, sanhuaBuffsLogic} from './1102.js';
 import {applyBaizhiLogic, baizhiBuffsLogic, baizhiMultipliers} from './1103.js';
 import {applyLingyangLogic, lingBuffsLogic, lingYangMultipliers} from "./1104.js";
-import {applyLupaLogic, lupaBuffsLogic} from "./1207.js";
+import {applyLupaLogic, lupaBuffsLogic, lupaSkillMetaBuffsLogic} from "./1207.js";
 import {applyZhezhiLogic, zhezhiBuffsLogic, zhezhiMultipliers} from "./1105.js";
 import {applyYouhuLogic, youhuBuffsLogic, youhuMultipliers} from "./1106.js";
 import {applyCarlottaLogic, carlottaBuffsLogic, carlottaMultipliers} from "./1107.js";
@@ -23,14 +23,14 @@ import {applyJiyanLogic, jiyanBuffsLogic, jiyanMultipliers} from "./1404.js";
 import {applyJianxinLogic, jianxinBuffsLogic, jianxinMultipliers} from "./1405.js";
 import {applyAeroRoverMLogic, aeroRoverMMultipliers} from "./1406.js";
 import {ciacconaBuffsLogic, applyCiacconaLogic, ciacconaMultipliers} from "./1407.js";
-import {applySpectroMLogic, spectroMBuffsLogic, spectroMMultipliers} from "./1501.js";
+import {applySpectroMLogic, spectroMMultipliers, spectroMSkillMetaBuffsLogic} from "./1501.js";
 import {applyVerinaLogic, verinaMultipliers, verinauffsLogic} from "./1503.js";
 import {applyLumiLogic, lumiBuffsLogic} from "./1504.js";
 import {applySkLogic, SKBuffsLogic, skMultipliers} from "./1505.js";
 import {applyTaoqiLogic, taoqiBuffsLogic, taoqiMultipliers} from "./1601.js";
 import {applyDanjinLogic, danjinBuffsLogic, danjinMultipliers} from "./1602.js";
 import {applyCamellyaLogic, camBuffsLogic, cammellyaMultipliers} from "./1603.js";
-import {applyHavocWLogic, havocWBuffsLogic, havocWMultipliers} from "./1604.js";
+import {applyHavocWLogic, havocWMultipliers, havocWSkillMetaBuffsLogic} from "./1604.js";
 import {applyRocciaLogic, rocciaBuffsLogic, rocciaMultipliers} from "./1606.js";
 import {applyCantLogic, cantBuffsLogic, cantMultipliers} from "./1607.js";
 import {applyAaltoLogic, aaltoMultipliers, aaltoBuffsLogic} from "./1403.js";
@@ -44,7 +44,8 @@ const overrides = {
     '1506': {
         logic: applyPheobeLogic,
         multipliers: pheobeMultipliers,
-        buffsLogic: pheobeBuffsLogic
+        buffsLogic: pheobeBuffsLogic,
+        skillMetaBuffsLogic: pheobeSkillMetaBuffsLogic,
     },
     '1102': {
         logic: applySanhuaLogic,
@@ -62,7 +63,8 @@ const overrides = {
     },
     "1207": {
         logic: applyLupaLogic,
-        buffsLogic: lupaBuffsLogic
+        buffsLogic: lupaBuffsLogic,
+        skillMetaBuffsLogic: lupaSkillMetaBuffsLogic
     },
     "1105": {
         logic: applyZhezhiLogic,
@@ -172,12 +174,12 @@ const overrides = {
     "1501": {
         logic: applySpectroMLogic,
         multipliers: spectroMMultipliers,
-        buffsLogic: spectroMBuffsLogic
+        skillMetaBuffsLogic: spectroMSkillMetaBuffsLogic
     },
     "1502": {
         logic: applySpectroMLogic,
         multipliers: spectroMMultipliers,
-        buffsLogic: spectroMBuffsLogic
+        skillMetaBuffsLogic: spectroMSkillMetaBuffsLogic
     },
     "1503": {
         logic: applyVerinaLogic,
@@ -211,12 +213,12 @@ const overrides = {
     "1604": {
         logic: applyHavocWLogic,
         multipliers: havocWMultipliers,
-        buffsLogic: havocWBuffsLogic
+        skillMetaBuffsLogic: havocWSkillMetaBuffsLogic
     },
     "1605": {
         logic: applyHavocWLogic,
         multipliers: havocWMultipliers,
-        buffsLogic: havocWBuffsLogic
+        skillMetaBuffsLogic: havocWSkillMetaBuffsLogic
     },
     "1606": {
         logic: applyRocciaLogic,

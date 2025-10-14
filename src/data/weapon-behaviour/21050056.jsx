@@ -74,25 +74,13 @@ export function applyWeaponLogic({
     const resShred = parseFloat(currentParamValues[8]);
     const stacks = characterState?.activeStates?.stacks ?? 0;
 
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
+    const element = skillMeta.element ?? null;
 
     mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+    mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + (stacks > 0 ? basic : 0)
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
+        (stacks > 1 && element === 'havoc' ? resShred : 0);
 
-    if (stacks > 0) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + basic;
-    }
-
-    if (stacks > 1 && element === 'havoc') {
-        mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + resShred;
-    }
 
     return { mergedBuffs, combatState, skillMeta };
 }

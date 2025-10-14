@@ -3,8 +3,6 @@ import { guides } from '../data/guides.js';
 import { useNavigate } from 'react-router-dom';
 
 export default function GuidesModal({ open, category, onClose, shouldScroll = false }) {
-    if (!open) return null;
-
     const navigate = useNavigate();
     const guideRef = useRef(null);
     const [isClosing, setIsClosing] = useState(false);
@@ -12,7 +10,23 @@ export default function GuidesModal({ open, category, onClose, shouldScroll = fa
         Array.isArray(category) ? category[0] : category
     );
 
+    useEffect(() => {
+        if (Array.isArray(category)) {
+            setActiveCategory(category[0]);
+        } else {
+            setActiveCategory(category);
+        }
+    }, [category]);
+
     const selected = guides.find(g => g.category === activeCategory);
+
+    useEffect(() => {
+        if (open && shouldScroll && guideRef.current) {
+            guideRef.current.scrollTop = guideRef.current.scrollHeight;
+        }
+    }, [open, shouldScroll]);
+
+    if (!open) return null;
 
     const handleClose = () => {
         setIsClosing(true);
@@ -21,12 +35,6 @@ export default function GuidesModal({ open, category, onClose, shouldScroll = fa
             setIsClosing(false);
         }, 300);
     };
-
-    useEffect(() => {
-        if (open && shouldScroll && guideRef.current) {
-            guideRef.current.scrollTop = guideRef.current.scrollHeight;
-        }
-    }, [open, shouldScroll]);
 
     return (
         <div

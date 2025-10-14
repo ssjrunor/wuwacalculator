@@ -22,7 +22,7 @@ export default function GuidesPage() {
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 700);
+            setIsMobile(window.innerWidth < 1070);
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);

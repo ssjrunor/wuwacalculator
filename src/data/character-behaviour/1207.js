@@ -41,8 +41,8 @@ export function applyLupaLogic({
     }
 
     const team = state?.teamBase;
-    const isTeamValid = (team?.length === 3 &&
-        team?.every(char => Number(char.Attribute) === 2)) ?? false;
+    let isTeamValid = ((team?.length === 3 &&
+        team?.every(char => Number(char.Attribute) === 2)) || isActiveSequence(3)) ?? false;
 
     if (local('packHunt2') && isTeamValid && !mergedBuffs.__packHunt2) {
         mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
@@ -51,19 +51,18 @@ export function applyLupaLogic({
 
     if (name.includes('mid-air attack - firestrike dmg')) {
         skillMeta.skillType = 'heavy';
-    } else if (['nowhere to run', 'dance with the wolf dmg', 'dance with the wolf: climax dmg'].some(n => name.includes(n))) {
+    } else if (['nowhere to run!', 'dance with the wolf dmg', 'dance with the wolf: climax dmg'].some(n => name.includes(n))) {
         skillMeta.skillType = 'ultimate';
     } else if (name.includes('set the arena ablaze dmg')) {
         skillMeta.skillType = 'skill';
     }
 
     const inherent2Stacks = characterState?.activeStates?.inherent2 ?? 0;
-    const baseStacks = Math.min(inherent2Stacks * 3, 9);
+    const baseStacks = Math.min(inherent2Stacks * 3, 9) + (isActiveSequence(3) ? 16 : 0);
     const inherent2 = baseStacks + (isTeamValid && baseStacks >= 3 ? 6 : 0);
 
-    if (!mergedBuffs.__lupaInherent2Applied) {
-        mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + inherent2;
-        mergedBuffs.__lupaInherent2Applied = true;
+    if (skillMeta.element === 'fusion') {
+        skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + inherent2;
     }
 
     if (isToggleActive(1) && isActiveSequence(1)) {
@@ -85,7 +84,7 @@ export function applyLupaLogic({
         mergedBuffs.__lupSeq2 = false;
     }
 
-    if (isActiveSequence(3) && name.includes('nowhere to run dmg')) {
+    if (isActiveSequence(3) && name.includes('nowhere to run! dmg')) {
         skillMeta.multiplier *= 2;
     }
 
@@ -104,7 +103,7 @@ export function applyLupaLogic({
 
     if (isActiveSequence(6)) {
         const isTargetSkill =
-            ['nowhere to run dmg', 'dance with the wolf - climax dmg'].some(n => name.includes(n)) ||
+            ['nowhere to run! dmg', 'dance with the wolf: climax dmg'].some(n => name.includes(n)) ||
             (skillMeta.tab === 'resonanceLiberation' && name.includes('skill damage'));
 
         if (isTargetSkill && !skillMeta.__lupSeq6) {
@@ -121,12 +120,11 @@ export function applyLupaLogic({
 export function lupaBuffsLogic({
                                      mergedBuffs, characterState, activeCharacter
                                  }) {
+    const state = characterState?.activeStates ?? {};
     const local = (value) => {
         return state?.[value];
     };
 
-    const state = characterState?.activeStates ?? {};
-    const stacks = (state.glory ?? 0) * 3;
     const stacks2 = (state.huntingField ?? 0) * 20;
 
     const stacksPack = state.packHunt ?? 0;
@@ -144,8 +142,8 @@ export function lupaBuffsLogic({
     }
 
     const team = state?.teamBase;
-    const isTeamValid = (team?.length === 3 &&
-        team?.every(char => Number(char.Attribute) === 2)) ?? false;
+    const isTeamValid = ((team?.length === 3 &&
+        team?.every(char => Number(char.Attribute) === 2)) || state.wolflame) ?? false;
 
     if (local('packHunt2') && isTeamValid && !mergedBuffs.__packHunt2) {
         mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
@@ -162,12 +160,7 @@ export function lupaBuffsLogic({
     };
     const element = elementMap?.[activeCharacter?.attribute];
 
-    if (element === 'fusion') {
-        mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + stacks;
-        if (state.glory >= 3 && isTeamValid) {
-            mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + 6;
-        }
-    }
+
 
     if (state.warrior) {
         mergedBuffs.damageTypeAmplify.basic = (mergedBuffs.damageTypeAmplify.basic ?? 0) + 25;
@@ -177,4 +170,26 @@ export function lupaBuffsLogic({
     mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + stacks2;
 
     return { mergedBuffs };
+}
+
+export function lupaSkillMetaBuffsLogic({
+                                            mergedBuffs,
+                                            characterState,
+                                            activeCharacter,
+                                            combatState,
+                                            skillMeta
+                                        }) {
+
+    const state = characterState?.activeStates ?? {};
+
+    const element = skillMeta?.element ?? null;
+    const team = state?.teamBase;
+    const isTeamValid = ((team?.length === 3 &&
+        team?.every(char => Number(char.Attribute) === 2)) || state.wolflame) ?? false;
+
+    const stacks = (state.glory ?? 0) * 3 + (state.wolflame ? 15 : 0);
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0)
+        + (element === 'fusion' ? stacks + ((state.glory >= 3 && isTeamValid) ? 6 : 0) : 0);
+
+    return { skillMeta };
 }

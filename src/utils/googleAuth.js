@@ -1,7 +1,9 @@
+import {getPersistentValue, setPersistentValue} from "../hooks/usePersistentState.js";
+
 export async function refreshAccessTokenIfNeeded() {
-    const tokens = JSON.parse(localStorage.getItem('googleTokens') || '{}');
+    const tokens = getPersistentValue('googleTokens', {});
     if (!tokens.access_token || !tokens.refresh_token) {
-        console.warn('No tokens available');
+        //console.warn('No tokens available');
         return null;
     }
 
@@ -31,7 +33,7 @@ export async function refreshAccessTokenIfNeeded() {
         issued_at: Date.now(),
     };
 
-    localStorage.setItem('googleTokens', JSON.stringify(updated));
+    setPersistentValue('googleTokens', JSON.stringify(updated));
 
     return updated.access_token;
 }

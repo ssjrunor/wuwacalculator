@@ -32,10 +32,11 @@ export function applyChangliLogic({
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__changliInherent2) {
         mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 20;
-        if (tab === 'forteCircuit' || tab === 'resonanceLiberation') {
-            skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + 15;
-        }
         mergedBuffs.__changliInherent2 = true;
+    }
+
+    if (isToggleActiveLocal('inherent2') && (tab === 'forteCircuit' || tab === 'resonanceLiberation')) {
+        skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + 15;
     }
 
     if (isActiveSequence(1) && isToggleActive(1) && !mergedBuffs.__changliS1) {

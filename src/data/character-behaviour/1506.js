@@ -77,7 +77,7 @@ export function applyPheobeLogic({
         }
 
         if (!mergedBuffs.__attentive && characterState?.activeStates?.attentive) {
-            mergedBuffs.enemyResShred += 10;
+            skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + (skillMeta.element === 'spectro' ? 10 : 0);
             mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) +  100;
             mergedBuffs.__attentive = true;
         }
@@ -97,14 +97,8 @@ export function applyPheobeLogic({
         mergedBuffs.__pheobeSpectro1 = true;
     }
 
-    if (isToggleActive(4) && isActiveSequence(4)) {
-        if (!mergedBuffs.__pheobeResShred) {
-            mergedBuffs.enemyResShred += 10;
-            mergedBuffs.__pheobeResShred = true;
-        }
-    } else {
-        mergedBuffs.__pheobeResShred = false;
-    }
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
+        (isToggleActive(4) && isActiveSequence(4) && skillMeta.element === 'spectro' ? 10 : 0);
 
     if (isToggleActive(5) && isActiveSequence(5)) {
         if (!mergedBuffs.__pheobeSpectro2) {
@@ -141,20 +135,7 @@ export function pheobeBuffsLogic({
                                  }) {
     const state = characterState?.activeStates ?? {};
 
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
-
     if (state.attentive) {
-        if (element === 'spectro') {
-            mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + 10;
-        }
         mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + 100;
     }
 
@@ -163,4 +144,20 @@ export function pheobeBuffsLogic({
     }
 
     return { mergedBuffs };
+}
+
+export function pheobeSkillMetaBuffsLogic({
+                                            mergedBuffs,
+                                            characterState,
+                                            activeCharacter,
+                                            combatState,
+                                            skillMeta
+                                        }) {
+
+    const state = characterState?.activeStates ?? {};
+    const element = skillMeta?.element ?? null;
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + (element === 'spectro' && state.attentive ? 10 : 0);
+
+
+    return { skillMeta };
 }

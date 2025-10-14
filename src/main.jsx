@@ -5,6 +5,10 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import './styles';
 // @ts-ignore
 import App from './App.jsx';
+import {migrateAndCleanPersistentKeys} from "./hooks/usePersistentState.js";
+
+
+migrateAndCleanPersistentKeys();
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>

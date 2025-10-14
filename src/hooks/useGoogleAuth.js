@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useGoogleLogin, googleLogout } from '@react-oauth/google';
 import { refreshAccessTokenIfNeeded } from '../utils/googleAuth';
+import {getPersistentValue, setPersistentValue} from "./usePersistentState.js";
 
 export function useGoogleAuth() {
     const [user, setUser] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
 
     useEffect(() => {
-        const stored = JSON.parse(localStorage.getItem('googleTokens') || '{}');
+        const stored = getPersistentValue('googleTokens', {});
         if (stored?.access_token) {
             setAccessToken(stored.access_token);
             setUser(stored.user || null);
@@ -45,10 +46,8 @@ export function useGoogleAuth() {
                 }
 
                 const tokens = await res.json();
-                localStorage.setItem(
-                    'googleTokens',
-                    JSON.stringify({ ...tokens, issued_at: Date.now() })
-                );
+                setPersistentValue('googleTokens',
+                    JSON.stringify({ ...tokens, issued_at: Date.now() }));
 
                 setAccessToken(tokens.access_token);
                 setUser(tokens.user);

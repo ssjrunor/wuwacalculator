@@ -1,3 +1,5 @@
+import {pheobeSkillMetaBuffsLogic} from "./1506.js";
+
 export function applySpectroMLogic({
                                mergedBuffs,
                                combatState,
@@ -57,10 +59,9 @@ export function applySpectroMLogic({
         mergedBuffs.__spectroMS4 = true;
     }
 
-    if (isToggleActive(6) && isActiveSequence(6) && !mergedBuffs.__spectroMS6) {
-        mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + 10;
-        mergedBuffs.__spectroMS6 = true;
-    }
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
+        (isToggleActive(6) && isActiveSequence(6) && skillMeta.element === 'spectro' ? 10 : 0);
+
 
     return {mergedBuffs, combatState, skillMeta};
 }
@@ -75,23 +76,13 @@ export const spectroMMultipliers = {
     ]
 };
 
-export function spectroMBuffsLogic({
-                                   mergedBuffs, characterState, activeCharacter
+export function spectroMSkillMetaBuffsLogic({
+                                                characterState, skillMeta
                                }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
+    const element = skillMeta.element ?? null;
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
+        (state.wanderlust && element === 'spectro' ? 10 : 0);
 
-    if (state.wanderlust && element === 'spectro') {
-        mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + 10;
-    }
-
-    return { mergedBuffs };
+    return { skillMeta };
 }

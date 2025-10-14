@@ -2,22 +2,45 @@
 <html lang="en">
 <head>
   <script>
-    try {
-      const theme = localStorage.getItem('user-theme');
-      const darkVariant = localStorage.getItem('user-dark-variant') || 'dark';
-      const root = document.documentElement;
-      root.classList.remove('light', 'dark', 'dark-alt');
-      if (theme === 'light') {
-        root.classList.add('light');
-      } else if (theme === 'dark') {
-        root.classList.add(darkVariant);
-      } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        root.classList.add(prefersDark ? darkVariant : 'light');
+    (function() {
+      function safeParse(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          if (!raw) return fallback;
+          try {
+            return JSON.parse(raw);
+          } catch {
+            return raw;
+          }
+        } catch {
+          return fallback;
+        }
       }
-    } catch (e) {
-      // fail silently
-    }
+
+      try {
+        const controls = safeParse('__controls__', {});
+        const theme =
+                controls['user-theme'] ??
+                safeParse('user-theme', 'system');
+        const darkVariant =
+                controls['user-dark-variant'] ??
+                safeParse('user-dark-variant', 'dark');
+
+        const root = document.documentElement;
+        root.classList.remove('light', 'dark', 'dark-alt');
+
+        if (theme === 'light') {
+          root.classList.add('light');
+        } else if (theme === 'dark') {
+          root.classList.add(darkVariant);
+        } else {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          root.classList.add(prefersDark ? darkVariant : 'light');
+        }
+      } catch (e) {
+        console.warn('Theme preload failed:', e);
+      }
+    })();
   </script>
 
   <meta name="google-site-verification" content="_IMi-i9G4a6EBCGewhiwN7cTRVzpumqvasaYucF4-pY" />

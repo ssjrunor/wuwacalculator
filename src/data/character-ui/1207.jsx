@@ -8,8 +8,10 @@ export default function LupaUI({ characterRuntimeStates, setCharacterRuntimeStat
     const packHuntValue = characterRuntimeStates?.[charId]?.activeStates?.packHunt ?? 0;
     const state = characterRuntimeStates?.[charId]?.activeStates;
     const team = state?.teamBase;
-    const isTeamValid = (team?.length === 3 &&
-        team?.every(char => Number(char.Attribute) === 2)) ?? false;
+    const sequence = characterRuntimeStates[charId].SkillLevels.sequence ?? 0;
+
+    const isTeamValid = ((team?.length === 3 &&
+        team?.every(char => Number(char.Attribute) === 2)) || sequence >= 3) ?? false;
     const handleChange = (newValue) => {
         setCharacterRuntimeStates(prev => ({
             ...prev,
@@ -82,7 +84,7 @@ export default function LupaUI({ characterRuntimeStates, setCharacterRuntimeStat
                         Enable
                         {!isTeamValid && (
                             <span style={{ marginLeft: '8px', fontSize: '12px', color: 'gray' }}>
-                                (Needs 3 <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators in the team)
+                                (Needs 3 <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators in the team or <span>Lupa</span>'s Sequence Node 3)
                             </span>
                         )}
                     </label>
@@ -269,8 +271,8 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
 
     const state = characterRuntimeStates?.[charId]?.activeStates;
     const team = state?.teamBase;
-    const isTeamValid = (team?.length === 3 &&
-        team?.every(char => Number(char.Attribute) === 2)) ?? false;
+    const isTeamValid = ((team?.length === 3 &&
+        team?.every(char => Number(char.Attribute) === 2)) || activeStates.wolflame) ?? false;
 
     return (
         <div className="echo-buffs">
@@ -310,13 +312,13 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                         Enable
                         {!isTeamValid && (
                             <span style={{ marginLeft: '8px', fontSize: '12px', color: 'gray' }}>
-                                (Needs 3 <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators in the team)
+                                (Needs 3 <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators in the team or <span>Lupa</span>'s Sequence Node 3)
                             </span>
                         )}
                     </label>
                     <p>
-                        When the active Resonator casts <span className='highlight'>Intro Skill</span>,
-                        <span className='highlight'>Pack Hunt</span> is enhanced, granting an additional <span className='highlight'>6%</span> ATK increase to all Resonators in the team, up to a maximum of <span className='highlight'>18%</span>.
+                        When the active Resonator casts <span className='highlight'>Intro Skill</span>
+                        , <span className='highlight'>Pack Hunt</span> is enhanced, granting an additional <span className='highlight'>6%</span> ATK increase to all Resonators in the team, up to a maximum of <span className='highlight'>18%</span>.
                     </p>
                     <DropdownSelect
                         label="Stacks"
@@ -333,12 +335,14 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                 </div>
                 <div className="echo-buff-effect">
                     Casting Resonance Liberation <span className="highlight">Fire-Kissed Glory</span> grants <span className="highlight">Glory</span>. Within <span className="highlight">35s</span>:
-                    <p>
-                        Attacks of all Resonators in the team ignore <span className="highlight">3%</span> of the target's <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion RES</span>. For each <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonator in the team other than <span className="highlight">Lupa</span>, this effect increases by <span className="highlight">3%</span>, up to the maximum of <span className="highlight">9%</span>.
-                    </p>
-                    <p>
-                        When there are <span className="highlight">3</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators in the team, Resonators' attacks further ignore <span className="highlight">6%</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion RES</span>
-                    </p>
+                    <ul>
+                        <li>
+                            Attacks of all Resonators in the team ignore <span className="highlight">3%</span> of the target's <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion RES</span>. For each <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonator in the team other than <span className="highlight">Lupa</span>, this effect increases by <span className="highlight">3%</span>, up to the maximum of <span className="highlight">9%</span>.
+                        </li>
+                        <li>
+                            When there are <span className="highlight">3</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators in the team, Resonators' attacks further ignore <span className="highlight">6%</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion RES</span>
+                        </li>
+                    </ul>
                 </div>
                 <DropdownSelect
                     label="Stacks"
@@ -380,6 +384,28 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                     onChange={(value) => updateState('huntingField', value)}
                     width="80px"
                 />
+            </div>
+
+            <div className="echo-buff">
+                <div className="echo-buff-header">
+                    <div className="echo-buff-name">S3: Wolflame Howls in Her Wake</div>
+                </div>
+                <div className="echo-buff-effect">
+                    <p>The <span className="highlight">Pack Hunt</span> effect of Resonance Liberation now no longer requires 3 <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators.</p>
+                    <p>The <span className="highlight">Glory</span> effect of Resonance Liberation is now modified as:
+                        <ul>
+                            <li>Casting Resonance Liberation <span className="highlight">Fire-Kissed Glory</span> additionally grants <span className="highlight">Glory</span>: Resonators in the team ignore <span className="highlight">15%</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion RES</span> of targets for 35s.</li>
+                        </ul>
+                    </p>
+                </div>
+                <label className="modern-checkbox">
+                    <input
+                        type="checkbox"
+                        checked={activeStates.wolflame || false}
+                        onChange={() => toggleState('wolflame')}
+                    />
+                    Enable
+                </label>
             </div>
         </div>
     );

@@ -1,4 +1,5 @@
 import {isEqual} from "lodash";
+import {getPersistentValue, setPersistentValue} from "../hooks/usePersistentState.js";
 
 let echoPresetStore = [];
 const storeMap = new Map();
@@ -6,8 +7,8 @@ const storeMap = new Map();
 const listeners = new Set();
 
 try {
-    const stored = localStorage.getItem('echoPresets');
-    if (stored) echoPresetStore = JSON.parse(stored);
+    const stored = getPersistentValue('echoPresets');
+    if (stored) echoPresetStore = stored;
     echoPresetStore.forEach(p => storeMap.set(p.id, p));
 } catch (e) {
     console.warn('Failed to load echo presets', e);
@@ -17,7 +18,7 @@ let needsSave = false;
 function scheduleSave() {
     needsSave = true;
     try {
-        localStorage.setItem('echoPresets', JSON.stringify(echoPresetStore));
+        setPersistentValue('echoPresets', JSON.stringify(echoPresetStore));
         needsSave = false;
     } catch (e) {
         console.warn('Failed to save echo presets', e);
@@ -25,9 +26,9 @@ function scheduleSave() {
 }
 
 function notify() {
-    listeners.forEach(cb => cb([...echoPresetStore])); // clone before passing
+    listeners.forEach(cb => cb([...echoPresetStore]));
     try {
-        localStorage.setItem('echoPresets', JSON.stringify(echoPresetStore));
+        setPersistentValue('echoPresets', JSON.stringify(echoPresetStore));
     } catch (e) {
         console.warn('Failed to save echo presets', e);
     }

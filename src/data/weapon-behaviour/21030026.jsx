@@ -69,14 +69,10 @@ export function applyWeaponLogic({
     const element = elementMap?.[activeCharacter?.attribute];
 
     mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
-
-    if (characterState?.activeStates?.firstP) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + aero;
-    }
-
-    if (characterState?.activeStates?.secondP && element === 'aero' && combatState.aeroErosion > 0) {
-        mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + resShred;
-    }
+    mergedBuffs.aero = (mergedBuffs.aero ?? 0) +
+        (characterState?.activeStates?.firstP ? aero : 0);
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
+        (characterState?.activeStates?.secondP && element === 'aero' && combatState.aeroErosion > 0 ? resShred : 0);
 
     return { mergedBuffs, combatState, skillMeta };
 }

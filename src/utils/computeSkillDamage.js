@@ -5,9 +5,9 @@ import {calculateDamage} from "./damageCalculator.js";
 import { elementToAttribute } from './attributeHelpers';
 import {echoScalingRatios} from "../data/echoes/echoMultipliers.js";
 import {mainEchoBuffs} from "../data/buffs/setEffect.js";
-import {applyWeaponLogic} from "../data/weapon-behaviour/21040036.jsx";
 import {getSetCounts} from "./echoHelper.js";
 import {getEchoSetSkillMeta} from "../data/set-ui/index.js";
+import {applyWeaponSkillMetaBuffLogic} from "../data/buffs/weaponBuffs.js";
 
 export function computeSkillDamage({
                                        entry,
@@ -79,9 +79,9 @@ export function computeSkillDamage({
         tags: [
             ...(levelData?.healing ? ['healing'] : []),
             ...(levelData?.shielding ? ['shielding'] : [])
-        ]
+        ],
+        element: echoElement ?? element
     };
-
 
     let localMergedBuffs = structuredClone(mergedBuffs);
 
@@ -125,8 +125,20 @@ export function computeSkillDamage({
 
         if (result?.skillMeta) {
             skillMeta = result.skillMeta ?? skillMeta;
+            localMergedBuffs = result.mergedBuffs ?? localMergedBuffs;
         }
     });
+
+    const weaponSkillMetaBuffLogic = applyWeaponSkillMetaBuffLogic({
+        mergedBuffs,
+        characterState: {
+            activeStates: characterRuntimeStates?.[charId]?.activeStates ?? {}
+        },
+        activeCharacter,
+        skillMeta,
+        combatState
+    });
+    skillMeta = weaponSkillMetaBuffLogic.skillMeta;
 
     const echoData = characterRuntimeStates?.[charId]?.equippedEchoes ?? [null, null, null, null, null];
     const setCounts = getSetCounts(echoData);

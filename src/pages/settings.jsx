@@ -7,7 +7,7 @@ import {getSyncData, restoreFromDrive, uploadToDrive} from "../utils/driveSync.j
 import NotificationToast from "../components/NotificationToast.jsx";
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
 import ImportOverviewMini from "../components/ImportOverviewMini.jsx";
-import {usePersistentState} from "../hooks/usePersistentState.js";
+import {getPersistentValue, setPersistentValue, usePersistentState} from "../hooks/usePersistentState.js";
 import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
 
 const FONT_LINKS = {
@@ -57,8 +57,8 @@ export default function Setting() {
     }, [importSuccess]);
 
     const downloadCharacterState = () => {
-        const runtime = JSON.parse(localStorage.getItem("characterRuntimeStates") || "{}");
-        const id = JSON.parse(localStorage.getItem("activeCharacterId") || "null");
+        const runtime = getPersistentValue('characterRuntimeStates', {});
+        const id = getPersistentValue('activeCharacterId', null);
 
         if (!runtime[id]) {
             setPopupMessage({
@@ -123,7 +123,7 @@ export default function Setting() {
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 700);
+            setIsMobile(window.innerWidth < 1070);
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -235,18 +235,18 @@ export default function Setting() {
 
     const handleReset = () => {
         localStorage.clear();
-        localStorage.setItem('enemyLevel', JSON.stringify(100));
-        localStorage.setItem('enemyRes', JSON.stringify(20));
-        localStorage.setItem('characterRuntimeStates', JSON.stringify({}));
-        localStorage.setItem('sliderValues', JSON.stringify({
+        setPersistentValue('enemyLevel', 100);
+        setPersistentValue('enemyRes', 20);
+        setPersistentValue('characterRuntimeStates', {});
+        setPersistentValue('activeCharacterId', 1506);
+        setPersistentValue('sliderValues', {
             normalAttack: 1,
             resonanceSkill: 1,
             forteCircuit: 1,
             resonanceLiberation: 1,
             introSkill: 1,
             sequence: 0
-        }));
-        localStorage.setItem('activeCharacterId', JSON.stringify(1506));
+        });
         window.location.href = '/';
     };
 
@@ -826,45 +826,28 @@ export default function Setting() {
                                         importPreview?.Id ??
                                         importPreview?.id ??
                                         importPreview?.link;
-                                    const prev = JSON.parse(
-                                        localStorage.getItem('characterRuntimeStates') ||
-                                        '{}'
-                                    );
+
+                                    const prev = getPersistentValue('characterRuntimeStates', {});
 
                                     const newRuntimeStates = {
                                         ...prev,
                                         [charId]: importPreview,
                                     };
 
-                                    localStorage.setItem(
-                                        'characterRuntimeStates',
-                                        JSON.stringify(newRuntimeStates)
-                                    );
-                                    localStorage.setItem(
-                                        'activeCharacterId',
-                                        JSON.stringify(charId)
-                                    );
-
-                                    localStorage.setItem(
-                                        'team',
-                                        JSON.stringify([
-                                            charId,
-                                            importPreview.Team?.[1] ?? null,
-                                            importPreview.Team?.[2] ?? null,
-                                        ])
-                                    );
-
-                                    const rotationEntriesRaw = JSON.parse(
-                                        localStorage.getItem('rotationEntriesStore') || '{}'
-                                    );
+                                    setPersistentValue('characterRuntimeStates', newRuntimeStates);
+                                    setPersistentValue('activeCharacterId', charId);
+                                    setPersistentValue('team', [
+                                        charId,
+                                        importPreview.Team?.[1] ?? null,
+                                        importPreview.Team?.[2] ?? null,
+                                    ]);
+                                    const rotationEntriesRaw = getPersistentValue('rotationEntriesStore', {});
                                     const newRotationEntries = {
                                         ...rotationEntriesRaw,
                                         [charId]: importPreview.rotationEntries ?? [],
                                     };
-                                    localStorage.setItem(
-                                        'rotationEntriesStore',
-                                        JSON.stringify(newRotationEntries)
-                                    );
+                                    setPersistentValue('rotationEntriesStore', newRotationEntries);
+
                                     setShowImportModal(false);
                                     window.location.href = '/';
                                 }}

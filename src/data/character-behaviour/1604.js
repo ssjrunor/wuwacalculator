@@ -45,10 +45,8 @@ export function applyHavocWLogic({
         mergedBuffs.__havocWS1 = true;
     }
 
-    if (isActiveSequence(4) && !mergedBuffs.__havocWS4 && isToggleActive(4)) {
-        mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + 10;
-        mergedBuffs.__havocWS4 = true;
-    }
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
+        (isActiveSequence(4) && skillMeta.element === 'havoc' && isToggleActive(4) ? 10 : 0);
 
     if (isActiveSequence(5) && tab === 'forteCircuit' && name.includes('5')) {
         skillMeta.multiplier *= 1.5;
@@ -71,23 +69,20 @@ export const havocWMultipliers = {
     ]
 };
 
-export function havocWBuffsLogic({
-                                       mergedBuffs, characterState, activeCharacter
-                                   }) {
+export function havocWSkillMetaBuffsLogic({
+                                              mergedBuffs,
+                                              characterState,
+                                              activeCharacter,
+                                              combatState,
+                                              skillMeta
+                                          }) {
+
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
+    const element = skillMeta?.element ?? null;
 
-    if (state.annihilated && element === 'havoc') {
-        mergedBuffs.enemyResShred = (mergedBuffs.enemyResShred ?? 0) + 10;
-    }
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
+        (state.annihilated && element === 'havoc' ? 10 : 0);
 
-    return { mergedBuffs };
+
+    return { skillMeta };
 }

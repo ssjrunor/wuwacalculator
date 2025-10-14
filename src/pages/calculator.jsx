@@ -15,7 +15,7 @@ import ToolbarIconButton, {ToolbarSidebarButton} from '../components/ToolbarIcon
 import { attributeColors, attributeIcons, elementToAttribute } from '../utils/attributeHelpers';
 import { getFinalStats } from '../utils/getStatsForLevel';
 import { getUnifiedStatPool } from '../utils/getUnifiedStatPool';
-import { usePersistentState } from '../hooks/usePersistentState';
+import {getPersistentValue, setPersistentValue, usePersistentState} from '../hooks/usePersistentState';
 import useDarkMode from '../hooks/useDarkMode';
 import {getBuffsLogic, getCharacterOverride} from '../data/character-behaviour';
 import ChangelogModal from '../components/GuideModal.jsx';
@@ -219,7 +219,7 @@ export default function Calculator() {
 
 
     useEffect(() => {
-        const seenVersion = localStorage.getItem('seenChangelogVersion');
+        const seenVersion = getPersistentValue('seenChangelogVersion');
         if (seenVersion !== LATEST_CHANGELOG_VERSION) {
             setPopupMessage({
                 message: latestMessage,
@@ -236,7 +236,7 @@ export default function Calculator() {
             setShowChangelog(true);
             setShouldScrollChangelog(true);
 */
-            localStorage.setItem('seenChangelogVersion', LATEST_CHANGELOG_VERSION);
+            setPersistentValue('seenChangelogVersion', LATEST_CHANGELOG_VERSION)
         }
     }, []);
 
@@ -425,7 +425,7 @@ export default function Calculator() {
 
     useEffect(() => {
         if (team[0] && team[0] !== activeCharacterId) {
-            localStorage.setItem('activeCharacterId', JSON.stringify(team[0]));
+            setPersistentValue('activeCharacterId', JSON.stringify(team[0]));
             setActiveCharacterId(team[0]);
         }
 
@@ -535,7 +535,7 @@ export default function Calculator() {
         equippedEchoes
     })
 
-    const setCounts = getSetCounts(characterRuntimeStates[charId].equippedEchoes);
+    const setCounts = getSetCounts(characterRuntimeStates[charId]?.equippedEchoes ?? []);
 
     mergedBuffs = applySetEffect({
         characterState: {
@@ -772,9 +772,9 @@ export default function Calculator() {
         const activeId = activeCharacterId;
         if (!activeId) return;
 
-        const runtime = JSON.parse(localStorage.getItem('characterRuntimeStates') || '{}');
+        const runtime = getPersistentValue('characterRuntimeStates', {});
         delete runtime[activeId];
-        localStorage.setItem('characterRuntimeStates', JSON.stringify(runtime));
+        setPersistentValue('characterRuntimeStates', JSON.stringify(runtime));
 
         setCharacterRuntimeStates(prev => {
             const updated = { ...prev };
@@ -839,18 +839,6 @@ export default function Calculator() {
         }
 
         setCharacterRuntimeStates(cleanedStates);
-    }, []);
-
-    useEffect(() => {
-        const raw = JSON.parse(localStorage.getItem('characterRuntimeStates') || '{}');
-        const cleaned = {};
-
-        for (const [charId, state] of Object.entries(raw)) {
-            const { allSkillsResults, ...rest } = state;
-            cleaned[charId] = rest;
-        }
-
-        localStorage.setItem('characterRuntimeStates', JSON.stringify(cleaned));
     }, []);
 
     const allRotations = getMainRotationTotals(charId, characterRuntimeStates, savedRotations, savedTeamRotations);
@@ -1299,6 +1287,7 @@ export default function Calculator() {
                                         setCharacterRuntimeStates={setCharacterRuntimeStates}
                                         characterStates={characterStates}
                                         teamRotationDmg={teamRotationDmg}
+                                        charId={charId}
                                     />
                                 </div>
                             </div>

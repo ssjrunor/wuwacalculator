@@ -1,4 +1,5 @@
 import {refreshAccessTokenIfNeeded} from "./googleAuth.js";
+import {getPersistentValue, setPersistentValue} from "../hooks/usePersistentState.js";
 
 export async function uploadToDrive(accessToken, fileContent) {
     accessToken = await refreshAccessTokenIfNeeded() || accessToken;
@@ -105,7 +106,7 @@ export async function restoreFromDrive(accessToken) {
 
         const data = await downloadFileById(latest.id, accessToken);
         for (const [key, value] of Object.entries(data)) {
-            localStorage.setItem(key, value);
+            setPersistentValue(key, value);
         }
 
         //alert("Restore complete! Reloading...");
@@ -134,7 +135,7 @@ const syncKeys = [
 export function getSyncData() {
     const data = {};
     for (const key of syncKeys) {
-        const value = localStorage.getItem(key);
+        const value = getPersistentValue(key);
         if (value !== null) data[key] = value;
     }
     return JSON.stringify(data);

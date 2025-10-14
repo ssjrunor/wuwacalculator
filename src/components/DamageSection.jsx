@@ -23,16 +23,34 @@ export default function DamageSection({
                                           characterStates,
                                           teamRotationDmg,
                                           setCharacterRuntimeStates,
+                                          charId
                                       }) {
+    const allSkillResults =[];
+    useEffect(() => {
+        if (!activeCharacter) return;
+        setSkillDamageCache(allSkillResults);
+        if (typeof window !== 'undefined') {
+            window.lastSkillCacheUpdate = Date.now();
+        }
+        const existing = characterRuntimeStates?.[charId]?.allSkillResults ?? [];
+        const isEqual = JSON.stringify(existing) === JSON.stringify(allSkillResults);
+        if (!isEqual) {
+            setCharacterRuntimeStates(prev => ({
+                ...prev,
+                [charId]: {
+                    ...(prev[charId] ?? {}),
+                    allSkillResults
+                }
+            }));
+        }
+    }, [allSkillResults, charId, characterRuntimeStates]);
+
     if (!activeCharacter) return null;
 
     const skillTabs = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill', 'outroSkill'];
-    const charId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
     const negativeEffect = combatState?.spectroFrazzle > 0 || combatState?.aeroErosion > 0;
     const {frazzleTotal, frazzle} = calculateSpectroFrazzleDamage(combatState, mergedBuffs, characterLevel);
     const {erosionTotal, erosion} = calculateAeroErosionDamage(combatState, mergedBuffs, characterLevel);
-
-    const allSkillResults =[];
 
     if (frazzle > 0) {
         allSkillResults.push({
@@ -338,24 +356,6 @@ export default function DamageSection({
             </div>
         );
     });
-
-    useEffect(() => {
-        setSkillDamageCache(allSkillResults);
-        if (typeof window !== 'undefined') {
-            window.lastSkillCacheUpdate = Date.now();
-        }
-        const existing = characterRuntimeStates?.[charId]?.allSkillResults ?? [];
-        const isEqual = JSON.stringify(existing) === JSON.stringify(allSkillResults);
-        if (!isEqual) {
-            setCharacterRuntimeStates(prev => ({
-                ...prev,
-                [charId]: {
-                    ...(prev[charId] ?? {}),
-                    allSkillResults
-                }
-            }));
-        }
-    }, [allSkillResults, charId, characterRuntimeStates]);
 
     return (
         <div className="damage-box">

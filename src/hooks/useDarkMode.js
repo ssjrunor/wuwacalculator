@@ -1,16 +1,17 @@
 import {useEffect, useLayoutEffect, useState} from "react";
+import {getPersistentValue, setPersistentValue} from "./usePersistentState.js";
 const THEME_KEY = 'user-theme';
 const DARK_VARIANT_KEY = 'user-dark-variant';
 const USER_HAS_SELECTED = 'user-has-selected-theme';
 export default function useDarkMode() {
     const getInitialTheme = () => {
-        const stored = localStorage.getItem(THEME_KEY);
+        const stored = getPersistentValue(THEME_KEY);
         if (stored === 'light' || stored === 'dark') return stored;
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     };
 
     const getInitialDarkVariant = () => {
-        const stored = localStorage.getItem(DARK_VARIANT_KEY);
+        const stored = getPersistentValue(DARK_VARIANT_KEY);
         return stored === 'dark-alt' ? 'dark-alt' : 'dark';
     };
 
@@ -18,13 +19,13 @@ export default function useDarkMode() {
     const [darkVariantState, setDarkVariantState] = useState(getInitialDarkVariant);
 
     const setTheme = (value) => {
-        localStorage.setItem(USER_HAS_SELECTED, 'true');
-        localStorage.setItem(THEME_KEY, value);
+        setPersistentValue(USER_HAS_SELECTED, 'true');
+        setPersistentValue(THEME_KEY, value);
         setThemeState(value);
     };
 
     const setDarkVariant = (value) => {
-        localStorage.setItem(DARK_VARIANT_KEY, value);
+        setPersistentValue(DARK_VARIANT_KEY, value);
         setDarkVariantState(value);
     };
 
