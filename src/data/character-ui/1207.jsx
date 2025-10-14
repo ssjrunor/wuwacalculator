@@ -84,7 +84,7 @@ export default function LupaUI({ characterRuntimeStates, setCharacterRuntimeStat
                         Enable
                         {!isTeamValid && (
                             <span style={{ marginLeft: '8px', fontSize: '12px', color: 'gray' }}>
-                                (Needs 3 <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators in the team or <span>Lupa</span>'s Sequence Node 3)
+                                (Needs 3 <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators in the team or <span className='highlight'>Lupa</span>'s Sequence Node 3)
                             </span>
                         )}
                     </label>
@@ -102,8 +102,8 @@ export default function LupaUI({ characterRuntimeStates, setCharacterRuntimeStat
                     />
                     {!activeStates.packHunt1 && (
                         <span style={{ marginLeft: '8px', fontSize: '12px', color: 'gray' }}>
-                                (Requires Inner Pack Hunt to be active)
-                            </span>
+                                (Requires Pack Hunt to be active)
+                        </span>
                     )}
                 </div>
             </div>
@@ -117,11 +117,25 @@ export function CustomInherentSkills({
                                          currentSliderColor,
                                          characterRuntimeStates,
                                          setCharacterRuntimeStates,
-    keywords
+                                        keywords
                                      }) {
     const charId = character?.Id ?? character?.id ?? character?.link;
     const charLevel = characterRuntimeStates?.[charId]?.CharacterLevel ?? 1;
     const activeStates = characterRuntimeStates?.[charId]?.activeStates ?? {};
+    const sequence = characterRuntimeStates[charId].SkillLevels.sequence ?? 0;
+
+    const toggleState = (key) => {
+        setCharacterRuntimeStates(prev => ({
+            ...prev,
+            [charId]: {
+                ...(prev[charId] ?? {}),
+                activeStates: {
+                    ...(prev[charId]?.activeStates ?? {}),
+                    [key]: !(prev[charId]?.activeStates?.[key] ?? false)
+                }
+            }
+        }));
+    };
 
     const updateState = (key, value) => {
         setCharacterRuntimeStates(prev => ({
@@ -171,17 +185,34 @@ export function CustomInherentSkills({
                                 className="slider-label-with-input"
                                 style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}
                             >
-                                <DropdownSelect
-                                    label=""
-                                    options={[0, 1, 2, 3]}
-                                    value={activeStates.inherent2 ?? 0}
-                                    onChange={(newValue) => updateState('inherent2', newValue)}
-                                    width="80px"
-                                    disabled={locked}
-                                />
+                                {sequence < 3 ? (
+                                    <DropdownSelect
+                                        label=""
+                                        options={[0, 1, 2, 3]}
+                                        value={activeStates.inherent2 ?? 0}
+                                        onChange={(newValue) => updateState('inherent2', newValue)}
+                                        width="80px"
+                                        disabled={locked}
+                                    />
+                                ) : (
+                                    <label className="modern-checkbox">
+                                        <input
+                                            type="checkbox"
+                                            checked={activeStates.inherent2 || false}
+                                            onChange={() => !locked && toggleState('inherent2')}
+                                            disabled={locked}
+                                        />
+                                        Enable
+                                    </label>
+                                )}
                                 {locked && (
                                     <span style={{ fontSize: '12px', color: 'gray' }}>
                                         (Unlocks at Lv. {unlockLevel})
+                                    </span>
+                                )}
+                                {sequence >= 3 && (
+                                    <span style={{ fontSize: '12px', color: 'gray' }}>
+                                        (S3: "<span className='highlight'>Wolflame Howls in Her Wake</span>" in effect)
                                     </span>
                                 )}
                             </div>
@@ -344,13 +375,29 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                         </li>
                     </ul>
                 </div>
-                <DropdownSelect
-                    label="Stacks"
-                    options={[0, 1, 2, 3]}
-                    value={activeStates.glory ?? 0}
-                    onChange={(value) => updateState('glory', value)}
-                    width="80px"
-                />
+                {!activeStates.wolflame ? (
+                    <>
+                        <DropdownSelect
+                            label="Stacks"
+                            options={[0, 1, 2, 3]}
+                            value={activeStates.glory ?? 0}
+                            onChange={(value) => updateState('glory', value)}
+                            width="80px"
+                        />
+                    </>
+                ) : (
+                    <label className="modern-checkbox">
+                        <input
+                            type="checkbox"
+                            checked={activeStates.glory || false}
+                            onChange={() => toggleState('glory')}
+                        />
+                        Enable
+                        <span style={{ fontSize: '12px', color: 'gray' }}>
+                            (S3: "<span className='highlight'>Wolflame Howls in Her Wake</span>" in effect)
+                        </span>
+                    </label>
+                )}
             </div>
 
             <div className="echo-buff">
@@ -392,11 +439,11 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                 </div>
                 <div className="echo-buff-effect">
                     <p>The <span className="highlight">Pack Hunt</span> effect of Resonance Liberation now no longer requires 3 <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion</span> Resonators.</p>
-                    <p>The <span className="highlight">Glory</span> effect of Resonance Liberation is now modified as:
+                    <div>The <span className="highlight">Glory</span> effect of Resonance Liberation is now modified as:
                         <ul>
                             <li>Casting Resonance Liberation <span className="highlight">Fire-Kissed Glory</span> additionally grants <span className="highlight">Glory</span>: Resonators in the team ignore <span className="highlight">15%</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion RES</span> of targets for 35s.</li>
                         </ul>
-                    </p>
+                    </div>
                 </div>
                 <label className="modern-checkbox">
                     <input

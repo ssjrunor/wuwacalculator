@@ -41,8 +41,8 @@ export function applyLupaLogic({
     }
 
     const team = state?.teamBase;
-    let isTeamValid = ((team?.length === 3 &&
-        team?.every(char => Number(char.Attribute) === 2)) || isActiveSequence(3)) ?? false;
+    let isTeamValid = team?.length === 3 &&
+        team?.every(char => Number(char.Attribute) === 2);
 
     if (local('packHunt2') && isTeamValid && !mergedBuffs.__packHunt2) {
         mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
@@ -58,8 +58,10 @@ export function applyLupaLogic({
     }
 
     const inherent2Stacks = characterState?.activeStates?.inherent2 ?? 0;
-    const baseStacks = Math.min(inherent2Stacks * 3, 9) + (isActiveSequence(3) ? 16 : 0);
-    const inherent2 = baseStacks + (isTeamValid && baseStacks >= 3 ? 6 : 0);
+    const inherent2 =
+        typeof inherent2Stacks === 'boolean' || isActiveSequence(3)
+            ? (inherent2Stacks ? 15 : 0)
+            : (Math.min(inherent2Stacks * 3, 9) + (isTeamValid ? 6 : 0));
 
     if (skillMeta.element === 'fusion') {
         skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + inherent2;
@@ -88,7 +90,7 @@ export function applyLupaLogic({
         skillMeta.multiplier *= 2;
     }
 
-    if (isActiveSequence(4) && name.includes('dance with the wolf - climax dmg')) {
+    if (isActiveSequence(4) && name.includes('dance with the wolf: climax dmg')) {
         skillMeta.multiplier *= 2.25;
     }
 
@@ -107,12 +109,15 @@ export function applyLupaLogic({
             (skillMeta.tab === 'resonanceLiberation' && name.includes('skill damage'));
 
         if (isTargetSkill && !skillMeta.__lupSeq6) {
-            skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + 40;
+            skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + 30;
             skillMeta.__lupSeq6 = true;
         }
     } else {
         skillMeta.__lupSeq6 = false;
     }
+
+    if (skillMeta.element === 'fusion') console.log(skillMeta.skillResIgnore);
+
 
     return { mergedBuffs, combatState, skillMeta };
 }
@@ -141,26 +146,10 @@ export function lupaBuffsLogic({
         mergedBuffs.__packHunt1 = true;
     }
 
-    const team = state?.teamBase;
-    const isTeamValid = ((team?.length === 3 &&
-        team?.every(char => Number(char.Attribute) === 2)) || state.wolflame) ?? false;
-
     if (local('packHunt2') && isTeamValid && !mergedBuffs.__packHunt2) {
         mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
         mergedBuffs.__packHunt2 = true;
     }
-
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
-
-
 
     if (state.warrior) {
         mergedBuffs.damageTypeAmplify.basic = (mergedBuffs.damageTypeAmplify.basic ?? 0) + 25;
@@ -173,23 +162,23 @@ export function lupaBuffsLogic({
 }
 
 export function lupaSkillMetaBuffsLogic({
-                                            mergedBuffs,
                                             characterState,
-                                            activeCharacter,
-                                            combatState,
                                             skillMeta
                                         }) {
 
     const state = characterState?.activeStates ?? {};
-
     const element = skillMeta?.element ?? null;
+
     const team = state?.teamBase;
     const isTeamValid = ((team?.length === 3 &&
         team?.every(char => Number(char.Attribute) === 2)) || state.wolflame) ?? false;
 
-    const stacks = (state.glory ?? 0) * 3 + (state.wolflame ? 15 : 0);
+    const stacks = typeof state.glory === 'boolean'
+        ? (state.glory ? 15 : 0)
+        : (state.glory ?? 0) * 3 + (isTeamValid ? 6 : 0);
+
     skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0)
-        + (element === 'fusion' ? stacks + ((state.glory >= 3 && isTeamValid) ? 6 : 0) : 0);
+        + (element === 'fusion' && state.glory > 0 ? stacks : 0);
 
     return { skillMeta };
 }
