@@ -176,7 +176,7 @@ export function lupaSkillMetaBuffsLogic({
 
     const stacks = typeof state.glory === 'boolean'
         ? (state.glory ? 15 : 0)
-        : (state.glory ?? 0) * 3 + (isTeamValid ? 6 : 0);
+        : state.glory > 0 ? (state.glory ?? 0) * 3 + (isTeamValid ? 6 : 0) : 0;
 
     skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0)
         + (element === 'fusion' && state.glory > 0 ? stacks : 0);
