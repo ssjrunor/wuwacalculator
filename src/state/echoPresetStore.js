@@ -8,7 +8,13 @@ const listeners = new Set();
 
 try {
     const stored = getPersistentValue('echoPresets');
-    if (stored) echoPresetStore = stored;
+    if (stored) {
+        try {
+            echoPresetStore = typeof stored === 'string' ? JSON.parse(stored) : stored;
+        } catch (err) {
+            console.warn('Failed to parse stored echo presets:', err);
+        }
+    }
     echoPresetStore.forEach(p => storeMap.set(p.id, p));
 } catch (e) {
     console.warn('Failed to load echo presets', e);
