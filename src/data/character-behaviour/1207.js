@@ -41,8 +41,8 @@ export function applyLupaLogic({
     }
 
     const team = state?.teamBase;
-    let isTeamValid = team?.length === 3 &&
-        team?.every(char => Number(char.Attribute) === 2);
+    const isTeamValid = ((team?.length === 3 &&
+        team?.every(char => Number(char.Attribute) === 2)) || isActiveSequence(3)) ?? false;
 
     if (local('packHunt2') && isTeamValid && !mergedBuffs.__packHunt2) {
         mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
@@ -130,7 +130,6 @@ export function lupaBuffsLogic({
     const team = state?.teamBase;
     const isTeamValid = ((team?.length === 3 &&
         team?.every(char => Number(char.Attribute) === 2)) || state.wolflame) ?? false;
-
 
     const stacks2 = (state.huntingField ?? 0) * 20;
 
