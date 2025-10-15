@@ -116,9 +116,6 @@ export function applyLupaLogic({
         skillMeta.__lupSeq6 = false;
     }
 
-    if (skillMeta.element === 'fusion') console.log(skillMeta.skillResIgnore);
-
-
     return { mergedBuffs, combatState, skillMeta };
 }
 
@@ -129,6 +126,11 @@ export function lupaBuffsLogic({
     const local = (value) => {
         return state?.[value];
     };
+
+    const team = state?.teamBase;
+    const isTeamValid = ((team?.length === 3 &&
+        team?.every(char => Number(char.Attribute) === 2)) || state.wolflame) ?? false;
+
 
     const stacks2 = (state.huntingField ?? 0) * 20;
 
