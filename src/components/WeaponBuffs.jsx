@@ -80,6 +80,17 @@ export const weaponBuffs = [
                 Casting Intro Skill grants <span className="highlight">{param[0] ?? '—'}% Echo Skill DMG Bonus</span> to all Resonators in the team for 30s.
             </>
         )
+    },
+    {
+        key: 'kumokiri',
+        name: 'Kumokiri',
+        icon: '/assets/weapon-icons/21010056.webp',
+        param: [[24, 30, 36, 42, 48]],
+        effect: (param = []) => (
+            <>
+                When Resonators in the team inflict <span className="highlight">Negative Status</span> or deal <span className="highlight">Negative Status DMG</span>, grants <span className="highlight">{param[0] ?? '—'}%</span> DMG Bonus of all Attributes for 15s.
+            </>
+        )
     }
 ];
 

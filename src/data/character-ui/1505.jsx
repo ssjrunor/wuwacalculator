@@ -279,7 +279,6 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                         checked={activeStates.innerS || false}
                         onChange={() => {
                             toggleState('innerS');
-                            if (activeStates.supernal) toggleState('supernal');
                         }}
                     />
                     Enable
@@ -302,15 +301,15 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                 >
                     <input
                         type="checkbox"
-                        checked={activeStates.supernal || false}
+                        checked={(activeStates.supernal && activeStates.innerS) || false}
                         onChange={() => toggleState('supernal')}
                         disabled={!activeStates.innerS}
                     />
                     Enable
                     {!activeStates.innerS && (
                         <span style={{ marginLeft: '8px', fontSize: '12px', color: 'gray' }}>
-                (Requires Inner Stellarealm)
-            </span>
+                            (Requires Inner Stellarealm)
+                        </span>
                     )}
                 </label>
             </div>

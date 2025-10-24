@@ -135,6 +135,58 @@ export default function EnemyPane({
                         }}
                     />
                 </div>
+
+                <div className="slider-group">
+                    <div className="slider-label-with-input">
+                        <label htmlFor="havoc-bane">Havoc Bane</label>
+                        <input
+                            id="havoc-bane"
+                            type="number"
+                            min="0"
+                            max="6"
+                            className="character-level-input"
+                            value={combatState.havocBane ?? 0}
+                            onChange={(e) => handleDebuffChange('havocBane', e.target.value)}
+                        />
+                    </div>
+                    <input
+                        type="range"
+                        min="0"
+                        max="6"
+                        value={combatState.havocBane ?? 0}
+                        onChange={(e) => handleDebuffChange('havocBane', e.target.value)}
+                        style={{
+                            '--slider-color': 'rgb(172,9,96)',
+                            '--slider-fill': `${((combatState.havocBane ?? 0) / 6) * 100}%`
+                        }}
+                    />
+                </div>
+
+                <div className="slider-group">
+                    <div className="slider-label-with-input">
+                        <label htmlFor="electro-flare">Electro Flare</label>
+                        <input
+                            id="electro-flare"
+                            type="number"
+                            min="0"
+                            max="13"
+                            className="character-level-input"
+                            value={combatState.electroFlare ?? 0}
+                            onChange={(e) => handleDebuffChange('electroFlare', e.target.value)}
+                        />
+                    </div>
+                    <input
+                        type="range"
+                        min="0"
+                        max="13"
+                        value={combatState.electroFlare ?? 0}
+                        onChange={(e) => handleDebuffChange('electroFlare', e.target.value)}
+                        style={{
+                            '--slider-color': 'rgb(167,13,209)',
+                            '--slider-fill': `${((combatState.electroFlare ?? 0) / 13) * 100}%`
+                        }}
+                    />
+                </div>
             </div>
         </div>
     );

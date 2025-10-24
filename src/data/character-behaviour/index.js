@@ -39,6 +39,8 @@ import {applyAugustaLogic, augustaBuffsLogic, augustaMultipliers} from "./1306.j
 import {applyIunoLogic, iunoBuffsLogic, iunoMultipliers} from "./1410.js";
 import {applyQYLogic, QYBuffsLogic, qyMultipliers} from "./1411.js";
 import {applyGalbrenaLogic, GalbrenaBuffsLogic, galbrenaMultipliers} from "./1208.js";
+import {applyBulingLogic, bulingBuffsLogic, bulingMultipliers} from "./1307.js";
+import {applyChisaLogic, chisaBuffsLogic, chisaMultipliers} from "./1508.js";
 
 const overrides = {
     '1506': {
@@ -256,6 +258,16 @@ const overrides = {
         multipliers: galbrenaMultipliers,
         buffsLogic: GalbrenaBuffsLogic,
     },
+    "1307": {
+        logic: applyBulingLogic,
+        multipliers: bulingMultipliers,
+        buffsLogic: bulingBuffsLogic
+    },
+    "1508": {
+        logic: applyChisaLogic,
+        multipliers: chisaMultipliers,
+        buffsLogic: chisaBuffsLogic
+    }
 };
 
 export function getCharacterOverride(charId) {

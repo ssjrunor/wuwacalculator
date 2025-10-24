@@ -1,15 +1,7 @@
+import {elementToAttribute} from "../../utils/attributeHelpers.js";
+
 export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharacter }) {
     const state = characterState?.activeStates ?? {};
-
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     const buffs = {
         staticMist: () => {
@@ -41,6 +33,13 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
             const rank = state['emeraldSentence_rank'] ?? 0;
             const values = [0, 20, 25, 30, 35, 40];
             mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + values[rank];
+        },
+        kumokiri: () => {
+            const rank = state['kumokiri_rank'] ?? 0;
+            const values = [0, 24, 30, 36, 42, 48];
+            for (const elem of Object.values(elementToAttribute)) {
+                mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + values[rank];
+            }
         }
     };
 
@@ -86,6 +85,7 @@ export function getActiveStateWeapons(activeStates) {
         woodlandAria: 21030026,
         wildfireMark: 21010036,
         emeraldSentence: 21020066,
+        kumokiri: 21010056
     };
 
     return Object.entries(weaponIdMap)

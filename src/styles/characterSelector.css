@@ -284,3 +284,15 @@
 .btn-primary.min:active {
     transform: scale(0.95);
 }
+
+.status-toggle-box-inner h1,
+.status-toggle-box-inner h2,
+.status-toggle-box-inner h3,
+.status-toggle-box-inner h4,
+.status-toggle-box-inner p {
+    margin-bottom: 4px !important;
+}
+
+.status-toggle-box-inner p {
+    margin: 8px 0;
+}

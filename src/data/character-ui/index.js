@@ -39,6 +39,8 @@ import AugustaUI, {AugustaSequenceToggles} from "./1306.jsx";
 import IunoUI, {IunoSequenceToggles} from "./1410.jsx";
 import QiuyuanUI, {QiuyuanSequenceToggles, CustomInherentSkills as QiuyuanInherents} from "./1411.jsx";
 import GalbrenaUI, {GalbrenaSequenceToggles, CustomInherentSkills as GalbrenaInherents} from "./1208.jsx";
+import BulingUI, {bulingSequenceToggles, CustomInherentSkills as BulingInherents} from "./1307.jsx";
+import ChisaUI, {chisaSequenceToggles, CustomInherentSkills as ChisaInherentSkills} from "./1508.jsx";
 
 
 export function getCharacterUIComponent(characterId) {
@@ -66,6 +68,8 @@ export function getCharacterUIComponent(characterId) {
         case '1410': return IunoUI;
         case '1411': return QiuyuanUI;
         case '1208': return GalbrenaUI;
+        case '1307': return BulingUI;
+        case '1508': return ChisaUI;
         default: return null;
     }
 }
@@ -104,6 +108,8 @@ export function getCustomInherentSkillsComponent(characterId) {
         case '1608': return PhrolovaInherents;
         case '1411': return QiuyuanInherents;
         case '1208': return GalbrenaInherents;
+        case '1307': return BulingInherents;
+        case '1508': return ChisaInherentSkills;
         default: return null;
     }
 }
@@ -154,6 +160,8 @@ export function getSequenceToggleComponent(characterId) {
         case '1410': return IunoSequenceToggles;
         case '1411': return QiuyuanSequenceToggles;
         case '1208': return GalbrenaSequenceToggles;
+        case '1307': return bulingSequenceToggles;
+        case '1508': return chisaSequenceToggles;
         default: return null;
     }
 }
@@ -201,6 +209,8 @@ const characterBuffUIMap = {
     '1410': () => import('./1410.jsx').then(mod => mod.buffUI),
     '1411': () => import('./1411.jsx').then(mod => mod.buffUI),
     '1208': () => import('./1208.jsx').then(mod => mod.buffUI),
+    '1307': () => import('./1307.jsx').then(mod => mod.buffUI),
+    '1508': () => import('./1508.jsx').then(mod => mod.buffUI),
 
 };
 

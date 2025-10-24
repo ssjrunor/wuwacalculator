@@ -1,5 +1,13 @@
 [
   {
+    "id": "21010010",
+    "name": "Training Broadblade",
+    "description": "This broadblade is designed specifically for training and teaching, offering only the basic features.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010027_UI.T_IconWeapon21010027_UI.webp",
+    "rank": 1,
+    "type": 1
+  },
+  {
     "id": "21010011",
     "name": "Training Broadblade",
     "description": "This broadblade is designed specifically for training and teaching, offering only the basic features.",
@@ -37,6 +45,14 @@
     "description": "The ancient mountain stands tall, its peak reaching towards the sky. A river flows for thousands of years, forming the blade of a powerful weapon. As it is unsheathed, a powerful dragon's roar echoes through the heavens and earth, causing the sea to churn. This awe-inspiring weapon strikes fear in all who witness its might.",
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010016_UI.T_IconWeapon21010016_UI.webp",
     "rank": 5,
+    "type": 1
+  },
+  {
+    "id": "21010020",
+    "name": "Training Broadblade",
+    "description": "This broadblade is designed specifically for training and teaching, offering only the basic features.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010027_UI.T_IconWeapon21010027_UI.webp",
+    "rank": 1,
     "type": 1
   },
   {
@@ -112,6 +128,14 @@
     "type": 1
   },
   {
+    "id": "21010056",
+    "name": "Kumokiri",
+    "description": "A crimson thread emerges in the void, as if binding the structures of all things onto a single thread.\n\nAt her fingertips, the endless season is drawn taut, snipped, and rewoven, until the scattered path at last converges once more upon this timeline.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010056_UI.T_IconWeapon21010056_UI.webp",
+    "rank": 5,
+    "type": 1
+  },
+  {
     "id": "21010063",
     "name": "Beguiling Melody",
     "description": "Forged from the scale of Jué, this weapon resembles a musical instrument more than a tool of destruction.",
@@ -158,6 +182,14 @@
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010104_UI.T_IconWeapon21010104_UI.webp",
     "rank": 4,
     "type": 1
+  },
+  {
+    "id": "21020010",
+    "name": "Training Sword",
+    "description": "This sword is designed specifically for training and teaching, offering only the basic features.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020018_UI.T_IconWeapon21020018_UI.webp",
+    "rank": 1,
+    "type": 2
   },
   {
     "id": "21020011",
@@ -208,6 +240,14 @@
     "type": 2
   },
   {
+    "id": "21020020",
+    "name": "Training Sword",
+    "description": "This sword is designed specifically for training and teaching, offering only the basic features.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020018_UI.T_IconWeapon21020018_UI.webp",
+    "rank": 1,
+    "type": 2
+  },
+  {
     "id": "21020023",
     "name": "Originite: Type II",
     "description": "To create new Tacetite weapons, the Huaxu Academy designed this test Sword for technical verification. Its main feature is healing through attacks, improving the physical abilities of Resonators while exhibiting impressive weapon performance.",
@@ -229,14 +269,6 @@
     "description": "A camellia bud silently unfurls. As promised, she holds this infinite world in bloom in her palms, where fine crimson vines twine around her fingertips.\nThe dull ache, like sand scratching against the heart, is proof of your fateful encounter.",
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020017_UI.T_IconWeapon21020017_UI.webp",
     "rank": 5,
-    "type": 2
-  },
-  {
-    "id": "21020030",
-    "name": "Bloodpact's Pledge",
-    "description": "This weapon is a testament to the unbreakable blood pact: One shall never betray, never surrender, and fight until the last drop of blood is shed.",
-    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020026_UI.T_IconWeapon21020026_UI.webp",
-    "rank": 1,
     "type": 2
   },
   {
@@ -290,7 +322,7 @@
   {
     "id": "21020056",
     "name": "Defier's Thorn",
-    "description": "Bamboo, hollow yet full; People, whole yet seldom true.\nBamboo speaks without deceit, acts without conceit, seeks no vanity. Few ever measure up thus.",
+    "description": "The surging tides force the crown of thorns upon the knight, out of which the knight forges this sword.\nUnburdened by the crown, the knight waded through the roaring waves unwaveringly.",
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020056_UI.T_IconWeapon21020056_UI.webp",
     "rank": 5,
     "type": 2
@@ -342,6 +374,14 @@
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020104_UI.T_IconWeapon21020104_UI.webp",
     "rank": 4,
     "type": 2
+  },
+  {
+    "id": "21030010",
+    "name": "Training Pistols",
+    "description": "These pistols are designed specifically for training and teaching, offering only the basic features.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030016_UI.T_IconWeapon21030016_UI.webp",
+    "rank": 1,
+    "type": 3
   },
   {
     "id": "21030011",
@@ -408,14 +448,6 @@
     "type": 3
   },
   {
-    "id": "21030030",
-    "name": "Woodland Aria",
-    "description": "All things exist within the lines of poetry. Every sound has its meters and rhymes.\nThe forest's melodies ascend in spirals toward the moon's silvered grace, harmonized by the nightingales' chorus. When the final note falls and vanishes into the silent earth, a flawless chord echoes endlessly in the depths of this boundless realm.",
-    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030026_UI.T_IconWeapon21030026_UI.webp",
-    "rank": 1,
-    "type": 3
-  },
-  {
     "id": "21030034",
     "name": "Pistols#26",
     "description": "The Huaxu Academy has developed practical, high-performance pistols based on previous source energy weapons, showcasing their meticulous research and aiming for excellence.",
@@ -426,7 +458,7 @@
   {
     "id": "21030036",
     "name": "Lux & Umbra",
-    "description": "From darkness she seizes power, layering sins upon herself. To hunt. To kill. To deliver a relentless and fatal blow to all evil.\nFrom the light she falls, with her vows etched in her mind. For the deceased. For the living. For her pistol's true targets.",
+    "description": "From darkness she seizes power, layering sins upon herself. To hunt. To kill. To deliver a relentless and fatal blow to all evil.\nFrom the light she falls, with her vows etched in her mind. For the deceased. For the living. For her pistols' true targets.",
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030036_UI.T_IconWeapon21030036_UI.webp",
     "rank": 5,
     "type": 3
@@ -494,6 +526,14 @@
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030104_UI.T_IconWeapon21030104_UI.webp",
     "rank": 4,
     "type": 3
+  },
+  {
+    "id": "21040010",
+    "name": "Training Gauntlets",
+    "description": "These gauntlets are designed specifically for training and teaching, offering only the basic features.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21040017_UI.T_IconWeapon21040017_UI.webp",
+    "rank": 1,
+    "type": 4
   },
   {
     "id": "21040011",
@@ -646,6 +686,14 @@
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21040104_UI.T_IconWeapon21040104_UI.webp",
     "rank": 4,
     "type": 4
+  },
+  {
+    "id": "21050010",
+    "name": "Training Rectifier",
+    "description": "This rectifier is designed specifically for training and teaching, offering only the basic features.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21050028_UI.T_IconWeapon21050028_UI.webp",
+    "rank": 1,
+    "type": 5
   },
   {
     "id": "21050011",

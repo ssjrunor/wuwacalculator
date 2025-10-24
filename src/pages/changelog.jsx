@@ -584,5 +584,19 @@ export const changelog = [
             }
         ],
         shortDesc: `Added <strong>Font Customization</strong>~! (〜^∇^)〜`
-    }
+    },
+    {
+        date: '23/10/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `Added <strong>Buling</strong> and <strong>Chisa</strong>.`
+            },
+            {
+                type: 'paragraph',
+                content: `Added <strong>2.8</strong> beta content.`
+            }
+        ],
+        shortDesc: `Added <strong>2.8</strong> beta content~! (〜^∇^)〜`
+    },
 ];

@@ -247,7 +247,6 @@ const charStatWeights = {
         energyRegen: 1,
         critRate: 1,
         critDmg: 1,
-        resonanceSkill: 0.25,
         heavyAtk: 1,
         electro: 1
     },
@@ -318,10 +317,10 @@ const charStatWeights = {
     },
     '1608': {
         atkPercent: 1,
-        atkFlat: 0.5,
+        atkFlat: 0.75,
         critRate: 1,
         critDmg: 1,
-        resonanceSkill: 1,
+        resonanceSkill: 0.75,
         havoc: 1
     },
     '1606': {

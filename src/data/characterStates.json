@@ -589,6 +589,37 @@
     "SplashArt": "/assets/splash/1306.webp"
   },
   "19": {
+    "Name": "",
+    "Id": 1307,
+    "Rarity": 4,
+    "Attribute": 3,
+    "WeaponType": 5,
+    "Stats": {
+      "hp": 850,
+      "atk": 18,
+      "def": 103,
+      "critRate": 5,
+      "critDmg": 150,
+      "energyRegen": 100,
+      "basicAttackBonus": 0,
+      "heavyAttackBonus": 0,
+      "resonanceSkillBonus": 0,
+      "resonanceLiberationBonus": 0,
+      "glacioDmgBonus": 0,
+      "fusionDmgBonus": 0,
+      "electroDmgBonus": 0,
+      "aeroDmgBonus": 0,
+      "spectroDmgBonus": 0,
+      "havocDmgBonus": 0,
+      "healingBonus": 0
+    },
+    "CurrentLevelMultipliers": {},
+    "CurrentSequenceLevel": 0,
+    "CurrentWeapon": null,
+    "CharacterLevel": 1,
+    "SplashArt": "/assets/splash/1307.webp"
+  },
+  "20": {
     "Name": "Yangyang",
     "Id": 1402,
     "Rarity": 4,
@@ -619,7 +650,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1402.webp"
   },
-  "20": {
+  "21": {
     "Name": "Aalto",
     "Id": 1403,
     "Rarity": 4,
@@ -650,7 +681,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1403.webp"
   },
-  "21": {
+  "22": {
     "Name": "Jiyan",
     "Id": 1404,
     "Rarity": 5,
@@ -681,7 +712,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1404.webp"
   },
-  "22": {
+  "23": {
     "Name": "Jianxin",
     "Id": 1405,
     "Rarity": 5,
@@ -712,7 +743,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1405.webp"
   },
-  "23": {
+  "24": {
     "Name": "Rover: Aero",
     "Id": 1406,
     "Rarity": 5,
@@ -743,7 +774,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1406.webp"
   },
-  "24": {
+  "25": {
     "Name": "Ciaccona",
     "Id": 1407,
     "Rarity": 5,
@@ -774,7 +805,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1407.webp"
   },
-  "25": {
+  "26": {
     "Name": "Rover: Aero",
     "Id": 1408,
     "Rarity": 5,
@@ -805,7 +836,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1408.webp"
   },
-  "26": {
+  "27": {
     "Name": "Cartethyia",
     "Id": 1409,
     "Rarity": 5,
@@ -836,7 +867,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1409.webp"
   },
-  "27": {
+  "28": {
     "Name": "Iuno",
     "Id": 1410,
     "Rarity": 5,
@@ -867,7 +898,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1410.webp"
   },
-  "28": {
+  "29": {
     "Name": "Qiuyuan",
     "Id": 1411,
     "Rarity": 5,
@@ -898,7 +929,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1411.webp"
   },
-  "29": {
+  "30": {
     "Name": "Rover: Spectro",
     "Id": 1501,
     "Rarity": 5,
@@ -929,7 +960,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1501.webp"
   },
-  "30": {
+  "31": {
     "Name": "Rover: Spectro",
     "Id": 1502,
     "Rarity": 5,
@@ -960,7 +991,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1502.webp"
   },
-  "31": {
+  "32": {
     "Name": "Verina",
     "Id": 1503,
     "Rarity": 5,
@@ -991,7 +1022,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1503.webp"
   },
-  "32": {
+  "33": {
     "Name": "Lumi",
     "Id": 1504,
     "Rarity": 4,
@@ -1022,7 +1053,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1504.webp"
   },
-  "33": {
+  "34": {
     "Name": "Shorekeeper",
     "Id": 1505,
     "Rarity": 5,
@@ -1053,7 +1084,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1505.webp"
   },
-  "34": {
+  "35": {
     "Name": "Phoebe",
     "Id": 1506,
     "Rarity": 5,
@@ -1084,7 +1115,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1506.webp"
   },
-  "35": {
+  "36": {
     "Name": "Zani",
     "Id": 1507,
     "Rarity": 5,
@@ -1115,7 +1146,38 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1507.webp"
   },
-  "36": {
+  "37": {
+    "Name": "Chisa",
+    "Id": 1508,
+    "Rarity": 5,
+    "Attribute": 6,
+    "WeaponType": 1,
+    "Stats": {
+      "hp": 862,
+      "atk": 35,
+      "def": 93,
+      "critRate": 5,
+      "critDmg": 150,
+      "energyRegen": 100,
+      "basicAttackBonus": 0,
+      "heavyAttackBonus": 0,
+      "resonanceSkillBonus": 0,
+      "resonanceLiberationBonus": 0,
+      "glacioDmgBonus": 0,
+      "fusionDmgBonus": 0,
+      "electroDmgBonus": 0,
+      "aeroDmgBonus": 0,
+      "spectroDmgBonus": 0,
+      "havocDmgBonus": 0,
+      "healingBonus": 0
+    },
+    "CurrentLevelMultipliers": {},
+    "CurrentSequenceLevel": 0,
+    "CurrentWeapon": null,
+    "CharacterLevel": 1,
+    "SplashArt": "/assets/splash/1508.webp"
+  },
+  "38": {
     "Name": "Taoqi",
     "Id": 1601,
     "Rarity": 4,
@@ -1146,7 +1208,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1601.webp"
   },
-  "37": {
+  "39": {
     "Name": "Danjin",
     "Id": 1602,
     "Rarity": 4,
@@ -1177,7 +1239,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1602.webp"
   },
-  "38": {
+  "40": {
     "Name": "Camellya",
     "Id": 1603,
     "Rarity": 5,
@@ -1208,7 +1270,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1603.webp"
   },
-  "39": {
+  "41": {
     "Name": "Rover: Havoc",
     "Id": 1604,
     "Rarity": 5,
@@ -1239,7 +1301,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1604.webp"
   },
-  "40": {
+  "42": {
     "Name": "Rover: Havoc",
     "Id": 1605,
     "Rarity": 5,
@@ -1270,7 +1332,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1605.webp"
   },
-  "41": {
+  "43": {
     "Name": "Roccia",
     "Id": 1606,
     "Rarity": 5,
@@ -1301,7 +1363,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1606.webp"
   },
-  "42": {
+  "44": {
     "Name": "Cantarella",
     "Id": 1607,
     "Rarity": 5,
@@ -1332,7 +1394,7 @@
     "CharacterLevel": 1,
     "SplashArt": "/assets/splash/1607.webp"
   },
-  "43": {
+  "45": {
     "Name": "Phrolova",
     "Id": 1608,
     "Rarity": 5,

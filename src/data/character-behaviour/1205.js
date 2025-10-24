@@ -26,12 +26,12 @@ export function applyChangliLogic({
     const inherent1 = Math.min(inherent1Stacks * 5, 20);
 
     if (!mergedBuffs.__changliInherent1) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + inherent1;
+        mergedBuffs.skillDmgBonus = (mergedBuffs.skillDmgBonus ?? 0) + inherent1;
         mergedBuffs.__changliInherent1 = true;
     }
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__changliInherent2) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 20;
+        mergedBuffs.skillDmgBonus = (mergedBuffs.skillDmgBonus ?? 0) + 20;
         mergedBuffs.__changliInherent2 = true;
     }
 

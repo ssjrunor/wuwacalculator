@@ -137,7 +137,7 @@ export function SKBuffsLogic({
         mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + critRate;
     }
 
-    if (state.supernal && critRate > 0) {
+    if (state.supernal && state.innerS && critRate > 0) {
         mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + critDmg;
     }
 

@@ -68,7 +68,6 @@ export function applyLingyangLogic({
         skillMeta.skillType === 'basic'
     ) {
         skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 100;
-        console.log(`[Lingyang S6] Applied +100 skillDmgBonus → ${skillMeta.name}`, skillMeta.skillDmgBonus);
     }
 
     return { mergedBuffs, combatState, skillMeta };

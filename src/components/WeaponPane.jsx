@@ -167,10 +167,11 @@ export default function WeaponPane({ activeCharacter, combatState, setCombatStat
                 </div>
 
                 <div className="character-info-header">
-                    <h2>{selectedWeapon && (
-                            <div className="weapon-name" style={{ paddingLeft: '20px',  fontWeight: 'bold', marginTop: '0.5rem' }}>
+                    <h2>
+                        {selectedWeapon && (
+                            <span style={{ paddingLeft: '20px',  fontWeight: 'bold', marginTop: '0.5rem' }}>
                                 {selectedWeapon.Name}
-                            </div>
+                            </span>
                         )}
                     </h2>
                 </div>

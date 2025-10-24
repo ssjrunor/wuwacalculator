@@ -28,16 +28,11 @@ export function applyAugustaLogic({
 
     if (tab === 'forteCircuit') {
         skillMeta.skillType = 'skill';
-        if ( name.includes('undying sunlight: plunge')) {
-            skillMeta.skillType = 'heavy';
-        }
-    } else if (tab === 'resonanceLiberation') {
-        skillMeta.skillType = 'heavy';
-    }
+        if ( name.includes('undying sunlight: plunge')) skillMeta.skillType = 'heavy';
 
-    if (name.includes('glory\'s favor')) {
-        skillMeta.visible = characterLevel >= 50;
-    }
+    } else if (tab === 'resonanceLiberation') skillMeta.skillType = 'heavy';
+
+    if (name.includes('glory\'s favor')) skillMeta.visible = characterLevel >= 50;
 
     const crown = characterState?.activeStates?.crownofWills;
 
@@ -82,9 +77,7 @@ export function applyAugustaLogic({
 
         const isAffected = affectedSkills.some(skill => name?.includes(skill));
 
-        if (isAffected) {
-            skillMeta.multiplier *= 1.25;
-        }
+        if (isAffected) skillMeta.multiplier *= 1.25;
     }
 
     if (isActiveSequence(4) && !mergedBuffs.__augustaS4 && isToggleActive(4)) {
@@ -92,9 +85,7 @@ export function applyAugustaLogic({
         mergedBuffs.__augustaS4 = true;
     }
 
-    if (isActiveSequence(5) && name.includes('glory\'s favor')) {
-        skillMeta.skillShieldBonus = (skillMeta.skillShieldBonus ?? 0) + 50;
-    }
+    if (isActiveSequence(5) && name.includes('glory\'s favor')) skillMeta.skillShieldBonus = (skillMeta.skillShieldBonus ?? 0) + 50;
 
     const excessCritRate2 = Math.max(0, critRate - 150 + (20 * crown));
     const bonusCritDmg2 = Math.min(50, excessCritRate2 * 2);
@@ -104,7 +95,7 @@ export function applyAugustaLogic({
     }
 
     if (name.includes('engraved in radiant light')) {
-        skillMeta.visible = isActiveSequence(6);
+        skillMeta.visible = isActiveSequence(6)
     }
 
     return {mergedBuffs, combatState, skillMeta};
@@ -116,29 +107,8 @@ export const augustaMultipliers = {
             name: "Inherent Skill: Glory's Favor Shield",
             scaling: { atk: 1 },
             shielding: true,
-            Param : [
-                [
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%",
-                    "350+2.5%"
-                ]
+            Param: [
+                Array(20).fill("350+2.5%")
             ]
         }
     ],
@@ -146,29 +116,8 @@ export const augustaMultipliers = {
         {
             name: "Engraved in Radiant Light: Thunder Rage DMG",
             scaling: { atk: 1 },
-            Param : [
-                [
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2",
-                    "100%*2"
-                ]
+            Param: [
+                Array(20).fill("100%*2")
             ]
         }
     ]
