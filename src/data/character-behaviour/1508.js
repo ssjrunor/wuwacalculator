@@ -57,6 +57,11 @@ export function applyChisaLogic({
         mergedBuffs.__threadOfBane = true
     }
 
+    if (characterState.activeStates.myriadConvergence && (name.includes('sawring - blitz') ||
+        name.includes('sawring - eradication') ||
+        name.includes('ring of chainsaw')))
+        skillMeta.multiplier *= 2.2;
+
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__chisaInherent2) {
         mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + 20;
         mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 20;

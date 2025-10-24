@@ -31,6 +31,22 @@ export default function ChisaUI({ setCharacterRuntimeStates, charId, activeState
                     }
                 </div>
                 <div className="status-toggle-box-inner">
+                    <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Woven Myriad - Convergence</h4>
+                    <div>
+                        <p> The DMG Multipliers of <span className='highlight'>Sawring - Blitz</span> and <span className='highlight'>Sawring - Eradication</span> are increased by <span className='highlight'>120%</span>
+                            . Ring of Chainsaw consumed by <span className='highlight'>Sawring- Blitz</span> additionally increases the DMG Multiplier of <span className='highlight'>Sawring - Eradication</span> by <span className='highlight'>120%</span>.
+                        </p>
+                    </div>
+                    <label className="modern-checkbox">
+                        <input
+                            type="checkbox"
+                            checked={activeStates.myriadConvergence || false}
+                            onChange={() => toggleState('myriadConvergence')}
+                        />
+                        Enable
+                    </label>
+                </div>
+                <div className="status-toggle-box-inner">
                     <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Ring of Chainsaw</h4>
                     <div>
                         <p>Every 1 points of <span className='highlight'>Ring of Chainsaw</span> consumed by <span className='highlight'>Sawring - Blitz</span> increases the DMG Multiplier of the next <span className='highlight'>Sawring - Eradication</span>, up to 100 points.</p>
