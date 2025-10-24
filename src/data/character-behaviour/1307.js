@@ -90,6 +90,13 @@ export const bulingMultipliers = {
             healing: true
         }
     ],
+    introSkill: [
+        {
+            name: "Skill Healing",
+            scaling: { atk: 1 },
+            healing: true
+        }
+    ],
     forteCircuit: [
         {
             name: "S4: Wanderer of Solaris, Blessed by Fortune Healing",
