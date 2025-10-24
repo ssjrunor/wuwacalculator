@@ -26,6 +26,7 @@
 }
 
 .echo-grid {
+    transition: width 0.3s ease, height 0.3s ease;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
     gap: 1rem;

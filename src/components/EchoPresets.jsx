@@ -41,8 +41,7 @@ export function PresetsView({
     );
 }
 
-function PresetTile({ preset, characters, setViewingPreset, setShowPresetModal,
-                        setEditedPresetName, editedPresetName, editingPresetId, setEditingPresetId }) {
+function PresetTile({ preset, characters, setViewingPreset, setShowPresetModal }) {
     return (
         <div
             style={{
@@ -239,7 +238,7 @@ export function EchoPresetPreview({ open, onClose, preset, charId, getImageSrc, 
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                    <h3 style={{margin: 'unset'}}>Echoes in this preset:</h3>
+                    <h3 >Echoes in this preset:</h3>
                     <div
                         style={{ marginLeft: 'auto', marginBottom: 'unset', display: 'flex', flexDirection: 'row', gap: '0.75rem' }}
                     >

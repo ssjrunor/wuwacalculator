@@ -16,6 +16,7 @@ import three19 from "./19.jsx";
 import three20 from "./20.jsx";
 import three21 from "./21.jsx";
 import three22, {three22SkillMeta} from "./22.jsx";
+import three23 from "./23.jsx";
 
 export function getEchoSetUIOverrides(setId) {
     switch (setId) {
@@ -90,6 +91,10 @@ export function getEchoSetUIOverrides(setId) {
         case 22:
             return {
                 threePiece: three22
+            };
+        case 23:
+            return {
+                threePiece: three23
             };
         default:
             return {};

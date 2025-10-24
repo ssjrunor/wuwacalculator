@@ -23,6 +23,10 @@ const elementPhrases = elementKeywords.flatMap(el => [
     `${el} frazzle dmg`,
     `${el} erosion`,
     `${el} frazzle`,
+    `${el} bane dmg`,
+    `${el} bane`,
+    `${el} flare dmg`,
+    `${el} flare`,
     el
 ]);
 
@@ -197,6 +201,11 @@ const echoSets = [
         id: 22,
         name: 'Flamewing\'s Shadow',
         threePiece: 'Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by 20% for 6s. Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by 20% for 6s. While both effects are active, gain 16% Fusion DMG Bonus.'
+    },
+    {
+        id: 23,
+        name: 'Thread of Severed Fate',
+        threePiece: 'Inflicting Havoc Bane increases the Resonator\'s ATK by 20% and grants 30% Resonance Liberation DMG Bonus for 5s.'
     }
 ];
 
@@ -222,22 +231,7 @@ export const setIconMap = {
     20: '/assets/echo-icons/crownOfValor.webp',
     21: '/assets/echo-icons/lawOfHarmony.webp',
     22: '/assets/echo-icons/flamewing\'sShadow.webp',
-};
-
-export const validSubstatRanges = {
-    atkPercent:              { min: 6.4,  max: 11.6, divisions: 7 },
-    atkFlat:                 { min: 30,   max: 60,   divisions: 3 },
-    hpPercent:               { min: 6.4,  max: 11.6, divisions: 7 },
-    hpFlat:                  { min: 320,  max: 580,  divisions: 7 },
-    defPercent:              { min: 8.1,  max: 14.7, divisions: 7 },
-    defFlat:                 { min: 40,   max: 70,   divisions: 3 },
-    critRate:                { min: 6.3,  max: 10.5, divisions: 7 },
-    critDmg:                 { min: 12.6, max: 21.0, divisions: 7 },
-    energyRegen:             { min: 6.8,  max: 12.4, divisions: 7 },
-    basicAtk:                { min: 6.4,  max: 11.6, divisions: 7 },
-    heavyAtk:                { min: 6.4,  max: 11.6, divisions: 7 },
-    resonanceSkill:          { min: 6.4,  max: 11.6, divisions: 7 },
-    resonanceLiberation:     { min: 6.4,  max: 11.6, divisions: 7 }
+    23: '/assets/echo-icons/threadOfSeveredFate.webp',
 };
 
 export default echoSets;

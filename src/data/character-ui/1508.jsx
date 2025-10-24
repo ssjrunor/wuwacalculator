@@ -212,6 +212,9 @@ export function chisaSequenceToggles({
                 {renderCheckbox('Marked by Unseen Snare?', '6-a', () =>
                     toggleSequence('6-a')
                 )}
+                {sequenceToggles['6-a'] && renderCheckbox('Target\'s HP below 50%?', '6-c', () =>
+                    toggleSequence('6-c')
+                )}
                 {sequenceToggles['6-a'] && renderCheckbox('Common Class targets?', '6-b', () =>
                     toggleSequence('6-b')
                 )}

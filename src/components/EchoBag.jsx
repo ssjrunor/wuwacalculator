@@ -6,7 +6,6 @@ import {formatStatKey, statIconMap} from "../utils/echoHelper.js";
 import {ExpandableEchoSection} from "./Expandable.jsx";
 import React, {useEffect, useState} from "react";
 import {EchoGridPreview} from "./OverviewDetailPane.jsx";
-import {deleteEchoPreset} from "../state/echoPresetStore.js";
 
 export function BagView({
                      onEquip,

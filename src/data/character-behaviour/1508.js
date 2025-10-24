@@ -90,13 +90,12 @@ export function applyChisaLogic({
 
     if(isActiveSequence(5) && tab === 'resonanceLiberation') skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 100;
 
-    if (isActiveSequence(6) && tab.includes('o')) {
+    if (isToggleActive('6-a') && isActiveSequence(6) && tab.includes('o')) {
         skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 24;
-        if (isToggleActive('6-a')) {
+        if (isToggleActive('6-b') && (tab === 'resonanceLiberation' || name.includes('sawring - eradication')))
+            skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 1000;
+        if (isToggleActive('6-c'))
             skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 24;
-            if (isToggleActive('6-b') && (tab === 'resonanceLiberation' || name.includes('sawring - eradication')))
-                skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 1000;
-        }
     }
 
     return {mergedBuffs, combatState, skillMeta};

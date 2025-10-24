@@ -17,7 +17,6 @@
     overflow-y: hidden;
     display: flex;
     max-width: 750px;
-    padding-bottom: 0.25rem;
 }
 
 .modal-list li {

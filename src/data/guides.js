@@ -23,7 +23,7 @@ export const guides = [
                 <p>Click any skill entry to toggle its <strong>locked</strong> state. When locked, the skill snapshot is frozen: its damage will no longer update when buffs, weapon stats, or character levels change. This is useful for snapshot mechanics or comparing damage before and after specific buffs. Locked items show a highlighted border for clarity.</p>
 
                 <h4>5. Clearing and Editing</h4>
-                <p>Use the <span style="color: red; font-weight: bold;">Clear</span> button to remove all entries and start fresh. Each individual entry also includes delete and edit buttons for precise management.</p>
+                <p>Use the <span style="color: red; font-weight: bold;">Clear</span> button to remove all entries and start fresh. Each entry also includes delete and edit buttons for precise management.</p>
                 
                 <h4>6. Team Rotations</h4>
                 <p>The <strong>Team Rotation</strong> system lets you combine multiple characters’ saved rotations into one synchronized total. This feature appears in the <strong>Team Buffs</strong> section once your active character has at least one teammate added to the team and those teammates have their own recorded or saved rotations.</p>
@@ -135,6 +135,58 @@ export const guides = [
                     <li><strong>Build Score:</strong> A normalized build quality metric based on Echo substat efficiency and scoring. (See more under the <strong>Scoring</strong> guide category.</li>
                 </ul>
                  `
+            }
+        ]
+    },
+    {
+        category: 'Echo Generator',
+        guides: [
+            {
+                title: 'Using the Echo Generator',
+                type: 'article',
+                shortDesc: 'Automatically generate randomized or optimized Echo builds for testing and theorycrafting.',
+                content: `
+                  <p>The <strong>Echo Generator</strong> lets you create randomized or goal-driven Echo configurations instantly. I'm not sure what you'd use it for, but it's there I guess.</p>
+            
+                  <h4>1. Overview</h4>
+                  <p>Instead of crafting each Echo by hand, the generator produces full 5-Echo loadouts automatically. You can control the generation bias, roll quality, energy regeneration goals, and other parameters to shape how results are produced.</p>
+            
+                  <h4>2. Key Settings</h4>
+                  <ul>
+                    <li><strong>Main Echo:</strong> By default, main echo is random until set.</li>
+                    <li><strong>Target Skill:</strong> The skill you want the echoes' stats tailored to. By default it's the first skill (Usually Stage 1 under <strong>Normal Attack</strong>)</li>
+                    <li><strong>Iterations:</strong> How many simulations the generator runs when searching for optimal results.</li>
+                    <li><strong>Bias:</strong> A 0–1 scale that determines how much the algorithm favors desirable stats.</li>
+                    <li><strong>Roll Quality:</strong> A weighted random factor controlling how close each generated substat is to its maximum value.</li>
+                    <li><strong>Target Energy Regen:</strong> Ensures the generated set meets a minimum desired Energy Regen percentage.</li>
+                    <li><strong>Set Filters:</strong> Restrict generation to specific Sonata sets or allow random combinations.</li>
+                  </ul>
+            
+                  <h4>3. How It Works</h4>
+                  <p>The generator uses controlled randomness with bias and roll quality multipliers to build complete Echo sets, calculating total stats and scoring them using the same <strong>Build Scoring</strong> system found under that guide category.</p>
+                  <ul>
+                    <li>Each Echo’s <em>main stat</em> is selected according to valid combinations per cost tier.</li>
+                    <li>After each iteration, total build score and energy balance are computed to pick the best configuration.</li>
+                  </ul>
+            
+                  <h4>4. Generating Builds</h4>
+                  <p>Click <strong>Regenerate</strong> to start (over).  
+                  Once done, the top-performing Echo set is displayed, including cost, set, and overall Build Score.</p>
+                  <p>You can then <strong>Equip</strong> the generated set directly on the current character.</p>
+            
+                  <h4>5. Interpreting Results</h4>
+                  <p>The generator displays the final set’s <strong>Build Score</strong> identical to what’s used in the Scoring system.  
+                  This makes it easy to compare the generated build to your current equipped set or presets.</p>
+                        
+                  <h4>6. Tips</h4>
+                  <ul>
+                    <li>Try running with different biases and roll qualities to explore realistic vs. perfect-roll scenarios.</li>
+                    <li>Use the generator to find breakpoints for Energy Regen or damage stats that match your target playstyle.</li>
+                    <li>Results vary depending on your current character’s stat weights — the same parameters may produce very different results across characters.</li>
+                  </ul>
+            
+                  <p>In the future, <strong>Target Skill</strong> will be updated to support <strong>Total Rotation</strong> dmg.</p>
+                `
             }
         ]
     },

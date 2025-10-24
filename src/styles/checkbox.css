@@ -17,10 +17,10 @@
     transition: all 0.4s ease;
     background-color: #fff;
     position: relative;
+    flex-shrink: 0;
 }
 
 .modern-checkbox input[type="checkbox"]::after {
-    content: '';
     position: absolute;
     left: 6px;
     top: 2px;
@@ -31,10 +31,12 @@
     opacity: 0;
     pointer-events: none;
     transition: none;
+    content: none;
 }
 
 /* When checked — play the draw animation */
 .modern-checkbox input[type="checkbox"]:checked::after {
+    content: '';
 }
 
 /* When unchecked — play the erase animation */

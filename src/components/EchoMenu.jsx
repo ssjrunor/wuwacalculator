@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {setIconMap} from "../constants/echoSetData.jsx";
 import { imageCache } from '../pages/calculator.jsx';
 
-export default function EchoMenu({ echoes, handleEchoSelect, menuRef, menuOpen, setMenuOpen }) {
+export default function EchoMenu({ echoes, handleEchoSelect, menuRef, menuOpen, setMenuOpen, onClickOut = null }) {
     const [selectedCost, setSelectedCost] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedSet, setSelectedSet] = useState(null);
@@ -58,7 +58,10 @@ export default function EchoMenu({ echoes, handleEchoSelect, menuRef, menuOpen, 
     return (
         <div
             className={`menu-overlay ${menuOpen ? 'show' : ''} ${isAnimatingOut ? 'hiding' : ''}`}
-            onClick={() => setMenuOpen(false)}
+            onClick={onClickOut ? onClickOut : (e) => {
+                setMenuOpen(false);
+                e.stopPropagation();
+            }}
         >
             <div
                 ref={menuRef}

@@ -28,12 +28,24 @@ import NotificationToast from "./NotificationToast.jsx";
 import GuidesModal from "./GuideModal.jsx";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import {deepCompareEchoArrays, getEchoPresetById} from "../state/echoPresetStore.js";
+import {
+    findBestFullEchoSetMonteCarlo,
+} from "../utils/echoGenerator.js";
+import {findBestEchoSetFromArray, getTopEchoesByStatWeight} from "../utils/optimizer.js";
+import {EchoGenerator} from "./EchoGenerator.jsx";
 
 export default function EchoesPane({
                                        charId,
                                         setCharacterRuntimeStates,
                                         characterRuntimeStates,
-                                       characters
+                                       characters,
+                                       activeCharacter,
+                                       skillTabs,
+                                       baseCharacterState,
+                                       mergedBuffs,
+                                       getAllSkillLevels,
+                                       allSkillLevels,
+                                       skillResults,
                                    }) {
     const getImageSrc = (icon) => imageCache[icon]?.src || icon;
 
@@ -64,6 +76,8 @@ export default function EchoesPane({
         setGuideCategory(category);
         setShowGuide(true);
     }, []);
+
+    const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
 
     const echoSlots = [0, 1, 2, 3, 4];
     const [menuOpen, setMenuOpen] = useState(false);
@@ -208,9 +222,17 @@ export default function EchoesPane({
     }, []);
 
     const setCounts = getSetCounts(echoData);
+    const setRequirements = new Map(
+        echoSets.map(set => {
+            const requiredCount = set.threePiece ? 3 : 2;
+            return [set.id, requiredCount];
+        })
+    );
+
     const hasSetEffects = Object.entries(setCounts).some(([setId, count]) => {
         const numericId = Number(setId);
-        return (numericId === 19 && count >= 3) || (numericId !== 19 && count >= 2);
+        const requiredCount = setRequirements.get(numericId) ?? 2; // fallback to 2 if unknown
+        return count >= requiredCount;
     });
     const echoStatTotals = getEchoStatsFromEquippedEchoes(echoData);
 
@@ -339,8 +361,107 @@ export default function EchoesPane({
         setShowToast(true);
     }
 
+    function onEquipGenerated(echoes) {
+        if (!echoes || !Array.isArray(echoes) || echoes.every(item => item === null)) return;
+        if (deepCompareEchoArrays(characterRuntimeStates[charId].equippedEchoes, echoes)) {
+            setPopupMessage({
+                message: `OH... seems like you've got this on already... (゜。゜)`,
+                icon: '✔',
+                color: { light: 'green', dark: 'limegreen' },
+            });
+            setShowToast(true);
+            return;
+        }
+        setCharacterRuntimeStates(prev => {
+            const prevChar = prev[charId] ?? {};
+            return {
+                ...prev,
+                [charId]: {
+                    ...prevChar,
+                    equippedEchoes: echoes.map(e => (e ? { ...e } : null)),
+                },
+            };
+        });
+        setPopupMessage({
+            message: 'Equipped~! (〜^∇^)〜',
+            icon: '✔',
+            color: { light: 'green', dark: 'limegreen' },
+        });
+        setShowToast(true);
+    }
+
+   /* const tab = skillTabs[2];
+    const level = allSkillLevels[tab][0];
+
+    const entry= {
+        label: level?.Name,
+        detail: level?.Type ?? tab,
+        tab
+    };
+
+    const skill = skillResults
+        ?.find(skill => skill.name === level?.label) ?? {};
+
+    //console.log(allLevels)
+
+    useEffect(() => {
+        (async () => {
+            console.time("BestEchoSearch");
+            const result = await findBestEchoSetFromArray(
+                { characterRuntimeStates, charId, activeCharacter, entry, levelData: level },
+                echoBag,
+                600_000,
+                0,
+                baseCharacterState,
+                mergedBuffs,
+                echoData,
+                skill.statWeight,
+                Date.now(),
+                true,
+                null, 6000090
+            );
+            console.timeEnd("BestEchoSearch");
+            console.log("Best Echo Set:", result);
+            setCharacterRuntimeStates(prev => {
+                const prevChar = prev[charId] ?? {};
+                return {
+                    ...prev,
+                    [charId]: {
+                        ...prevChar,
+                        equippedEchoes: result.best?.echoes?.map(e => (e ? { ...e } : null)) ?? [],
+                    },
+                };
+            });
+        })();
+    }, []);*/
+
+    /*console.log(
+        getTopEchoesByStatWeight(
+            echoBag,
+            skill.statWeight,
+        )
+    )*/
+
     return (
         <div className="echoes-pane" ref={echoesPaneRef}>
+            <EchoGenerator
+                open={isGeneratorOpen}
+                onClose={() => setIsGeneratorOpen(false)}
+                echoData={echoData}
+                charId={charId}
+                getImageSrc={getImageSrc}
+                characterRuntimeStates={characterRuntimeStates}
+                allSkillLevels={allSkillLevels}
+                skillResults={skillResults}
+                activeCharacter={activeCharacter}
+                baseCharacterState={baseCharacterState}
+                mergedBuffs={mergedBuffs}
+                onEquipGenerated={onEquipGenerated}
+                setCharacterRuntimeStates={setCharacterRuntimeStates}
+                setGuideClose={setGuideClose}
+                setIsGeneratorOpen={setIsGeneratorOpen}
+                openGuide={openGuide}
+            />
             {bagOpen && (
                 <EchoBagMenu
                     runtime={runtime}
@@ -415,6 +536,7 @@ export default function EchoesPane({
                 openGuide={openGuide}
                 saveAllEchoesToBag={saveAllEchoesToBag}
                 setGuideClose={setGuideClose}
+                setIsGeneratorOpen={setIsGeneratorOpen}
             />
             <div className="echoes-header">
                 <button
@@ -1000,4 +1122,130 @@ export function getEquippedEchoesScoreDetails(charId, characterRuntimeStates) {
     });
     const total = items.reduce((acc, it) => acc + it.totalScore, 0);
     return { total, items };
+}
+
+export function buildMultipleRandomEchoes(recipes = [], setId = null, mainEchoId = null) {
+    if (!Array.isArray(echoes) || echoes.length === 0) {
+        console.warn("⚠️ No echo templates available to build from.");
+        return [];
+    }
+
+    const results = [];
+    const usedIds = new Set();
+    let mainEchoBuilt = null;
+
+    const isMultiSet = Array.isArray(setId);
+    const remaining = new Map();
+    if (isMultiSet) {
+        let total = 0;
+        for (const s of setId) {
+            const c = Math.max(0, Number(s.count ?? 0));
+            if (c > 0) {
+                remaining.set(s.setId, c);
+                total += c;
+            }
+        }
+        if (total <= 0 || total > 5) {
+            console.warn("⚠️ Invalid multi-set configuration. Using random sets instead.");
+            remaining.clear();
+        }
+    }
+
+    function chooseBestSetForEcho(echo) {
+        const sets = echo.sets ?? [];
+        const candidates = sets.filter(sid => remaining.get(sid) > 0);
+
+        if (candidates.length === 0) {
+            return sets[0] ?? null;
+        }
+
+        candidates.sort((a, b) => (remaining.get(b) ?? 0) - (remaining.get(a) ?? 0));
+        return candidates[0];
+    }
+
+    function pickEcho(candidates, cost) {
+        if (candidates.length === 1) return structuredClone(candidates[0]);
+
+        const scored = candidates.map(e => {
+            const sets = e.sets ?? [];
+            const coverage = sets.reduce((acc, sid) => acc + (remaining.get(sid) > 0 ? 1 : 0), 0);
+            const quality = Number(e._score ?? 0.1);
+            return { e, score: coverage * 10 + quality }; // coverage dominates
+        });
+
+        // Weighted random by score (favor higher coverage)
+        const total = scored.reduce((a, b) => a + b.score, 0);
+        let roll = Math.random() * total;
+        for (const item of scored) {
+            roll -= item.score;
+            if (roll <= 0) return structuredClone(item.e);
+        }
+        return structuredClone(scored[scored.length - 1].e);
+    }
+
+    for (const recipe of recipes) {
+        const { cost, mainStats = {}, subStats = {} } = recipe;
+
+        let candidates = [];
+
+        if (mainEchoId != null) {
+            candidates = echoes.filter(
+                e => e.cost === cost && e.id === String(mainEchoId) && !usedIds.has(e.id)
+            );
+        }
+
+        if (candidates.length === 0 && remaining.size > 0) {
+            const needSetIds = new Set([...remaining.keys()].filter(sid => remaining.get(sid) > 0));
+            candidates = echoes.filter(
+                e => e.cost === cost
+                    && !usedIds.has(e.id)
+                    && (e.sets ?? []).some(sid => needSetIds.has(sid))
+            );
+        }
+
+        if (candidates.length === 0) {
+            candidates = echoes.filter(
+                e => e.cost === cost && !usedIds.has(e.id)
+            );
+        }
+
+        if (candidates.length === 0) {
+            console.warn(`⚠️ No unused echoes found for cost ${cost}.`);
+            continue;
+        }
+
+        const base = pickEcho(candidates, cost);
+
+        base.originalSets = base.sets ? [...base.sets] : [];
+        let chosenSet = chooseBestSetForEcho(base);
+
+        if (chosenSet != null && remaining.get(chosenSet) > 0) {
+            remaining.set(chosenSet, remaining.get(chosenSet) - 1);
+        }
+
+        base.selectedSet = chosenSet;
+
+        base.mainStats = structuredClone(mainStats);
+        base.subStats  = structuredClone(subStats);
+
+        base.uid = crypto.randomUUID?.() ?? Date.now().toString();
+        base.generated = true;
+
+        usedIds.add(base.id);
+        results.push(base);
+
+        if (mainEchoId && base.id === String(mainEchoId)) {
+            mainEchoBuilt = base;
+        }
+    }
+
+    if (mainEchoBuilt) {
+        const idx = results.findIndex(e => e.id === String(mainEchoId));
+        if (idx > 0) {
+            const [main] = results.splice(idx, 1);
+            results.unshift(main);
+        }
+    }
+
+    return results;
 }

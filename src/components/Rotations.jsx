@@ -8,10 +8,10 @@ function formatNumber(num) {
     return Math.round(num).toLocaleString();
 }
 
-export default function Rotations({ rotationEntries, characterRuntimeStates, charId }) {
+export default function Rotations({ rotationEntries, characterRuntimeStates, charId, skillResults }) {
     if (!Array.isArray(rotationEntries) || rotationEntries.length === 0) return null;
 
-    const skillCache = characterRuntimeStates[charId]?.allSkillResults ?? getSkillDamageCache();
+    const skillCache = skillResults ?? characterRuntimeStates[charId]?.allSkillResults ?? getSkillDamageCache();
     const safeEntries = Array.isArray(rotationEntries) ? rotationEntries : [];
     const { total, supportTotals, breakdownMap } = calculateRotationTotals(skillCache, safeEntries);
 
@@ -202,7 +202,7 @@ export function calculateRotationTotals(skillCache, rotationEntries) {
     return { total, supportTotals, breakdownMap };
 }
 
-export function getTeamRotationTotal(mainCharId, characterRuntimeStates) {
+export function getTeamRotationTotal(mainCharId, characterRuntimeStates, skillResults) {
     if (!mainCharId || !characterRuntimeStates?.[mainCharId]) return null;
 
     const runtime = characterRuntimeStates[mainCharId];
@@ -212,7 +212,7 @@ export function getTeamRotationTotal(mainCharId, characterRuntimeStates) {
     const teamTotal = { normal: 0, crit: 0, avg: 0 };
     const characterContributions = [];
 
-    const mainResult = calculateRotationTotals(runtime.allSkillResults, runtime.rotationEntries);
+    const mainResult = calculateRotationTotals(skillResults ?? runtime.allSkillResults, runtime.rotationEntries);
     if (mainResult?.total && !isZero(mainResult.total)) {
         characterContributions.push({ id: mainCharId, total: mainResult.total });
         accumulate(teamTotal, mainResult.total);
@@ -245,18 +245,18 @@ function isZero(total) {
     return [total.normal, total.crit, total.avg].every(val => Math.round(val) === 0);
 }
 
-export function getMainRotationTotals(mainCharId, characterRuntimeStates, savedRotations = [], savedTeamRotations = []) {
+export function getMainRotationTotals(mainCharId, characterRuntimeStates, savedRotations = [], savedTeamRotations = [], skillResults) {
     const personalRotations = [];
     const teamRotations = [];
 
     const runtime = characterRuntimeStates[mainCharId];
 
     const hasLiveData = runtime &&
-        Array.isArray(runtime.allSkillResults) &&
+        Array.isArray(skillResults ?? runtime.allSkillResults) &&
         Array.isArray(runtime.rotationEntries);
 
     if (hasLiveData) {
-        const liveTotal = calculateRotationTotals(runtime.allSkillResults, runtime.rotationEntries);
+        const liveTotal = calculateRotationTotals(skillResults ?? runtime.allSkillResults, runtime.rotationEntries);
         const { normal, crit, avg } = liveTotal.total;
         if (normal !== 0 || crit !== 0 || avg !== 0) {
             personalRotations.push({
@@ -294,7 +294,7 @@ export function getMainRotationTotals(mainCharId, characterRuntimeStates, savedR
     );
 
     if (hasValidTeamRotation) {
-        const liveTotal = getTeamRotationTotal(mainCharId, characterRuntimeStates);
+        const liveTotal = getTeamRotationTotal(mainCharId, characterRuntimeStates, skillResults);
         const { normal, crit, avg } = liveTotal.teamTotal;
         if (normal !== 0 || crit !== 0 || avg !== 0 || liveTotal) {
             teamRotations.push({
@@ -311,7 +311,7 @@ export function getMainRotationTotals(mainCharId, characterRuntimeStates, savedR
     );
 
     charTeamRotations.forEach((saved, index) => {
-        const contributors = getTeamRotationTotal(mainCharId, { [mainCharId]: saved.fullCharacterState }).characterContributions;
+        const contributors = getTeamRotationTotal(mainCharId, { [mainCharId]: saved.fullCharacterState }, skillResults).characterContributions;
         const { normal, crit, avg } = saved.total ?? {};
         if (normal !== 0 || crit !== 0 || avg !== 0) {
             teamRotations.push({

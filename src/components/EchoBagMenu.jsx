@@ -78,7 +78,7 @@ export default function EchoBagMenu({
     const filteredEchoes = [...echoBag]
         .filter(echo => {
             const matchesCost = selectedCost === null || echo.cost === selectedCost;
-            const matchesName = echo.name.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesName = echo?.name?.toLowerCase().includes(searchTerm.toLowerCase());
             const matchesSet = selectedSet === null || echo.selectedSet === selectedSet;
             return matchesCost && matchesName && matchesSet;
         })

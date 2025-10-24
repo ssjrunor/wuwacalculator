@@ -1,7 +1,6 @@
 .echoes-pane {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     padding: 1rem;
 }
 
@@ -544,4 +543,9 @@
 
 .echo-parser-preview.echo-tile {
     pointer-events: none;
+}
+
+.echo-parser .btn-primary.echoes,
+.echo-parser .btn-primary.echoes, .clear.echoes {
+    padding: 6px 12px;
 }

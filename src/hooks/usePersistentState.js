@@ -84,6 +84,12 @@ export function getPersistentValue(key, fallback = null) {
 }
 
 export function setPersistentValue(key, value) {
+    if (typeof value === 'string') {
+        try {
+            JSON.parse(value);
+            value = JSON.parse(value);
+        } catch {}
+    }
     try {
         const keyToNamespace = {};
         for (const [ns, keys] of Object.entries(namespaceMap)) {

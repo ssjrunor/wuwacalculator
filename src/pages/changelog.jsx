@@ -576,7 +576,6 @@ export const changelog = [
             {
                 type: 'paragraph',
                 content: `
-                A new <em>Font Selector</em> is available in the <strong>Settings</strong> panel.  
                 Pick your favorite font and watch the entire interface update instantly — no reloads, no delay.  
                 Your chosen font is saved locally and will persist across sessions, even after closing the browser.  
                 All supported fonts are fully theme-aware for perfect readability in both light and dark modes.
@@ -598,5 +597,18 @@ export const changelog = [
             }
         ],
         shortDesc: `Added <strong>2.8</strong> beta content~! (〜^∇^)〜`
+    },
+    {
+        date: '24/10/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `
+            Instantly create randomized or optimized Echo builds for testing, theorycrafting, and stat benchmarking.
+            The generator can simulate thousands of builds using adjustable parameters such as <em>bias</em>, <em>roll quality</em>, and <em>energy regen goals</em>.  
+        `
+            },
+        ],
+        shortDesc: `New <strong>Echo Generator</strong> system added~! (〜^∇^)〜`
     },
 ];

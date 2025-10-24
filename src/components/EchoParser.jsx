@@ -66,7 +66,8 @@ const EchoParser = ({
                         setConfirmMessage,
                         setShowConfirm,
                         saveAllEchoesToBag,
-                        setGuideClose
+                        setGuideClose,
+                        setIsGeneratorOpen
                     }) => {
     const [parsedEchoes, setParsedEchoes] = useState([]);
     const [view, setView] = useState('instructions');
@@ -360,6 +361,8 @@ const EchoParser = ({
     const empty = !equippedEchoes || equippedEchoes.length === 0 ||
         (Array.isArray(equippedEchoes) && equippedEchoes.every(e => e === null));
 
+    const guides = ['Echoes', 'Build and Echo Scoring', 'Echo Importing', 'Echo Presets', 'Echo Generator'];
+
     return (
         <div className="echo-parser">
             <input
@@ -390,6 +393,12 @@ const EchoParser = ({
                         Save All
                     </button>
                 )}
+                <button
+                    className="btn-primary echoes"
+                    onClick={() => setIsGeneratorOpen(true)}
+                >
+                    Random
+                </button>
                 <button
                     onClick={() => {
                         const preset = addEchoPreset(runtime);
@@ -456,9 +465,9 @@ const EchoParser = ({
                 >
                     Unequip All
                 </button>
-                <button onClick={() => openGuide(['Echoes', 'Build and Echo Scoring', 'Echo Importing', 'Echo Presets'])} className="btn-primary echoes"
+                <button onClick={() => openGuide(guides)} className="btn-primary echoes"
                 style={{ marginLeft: 'auto'}}>
-                    See Guide
+                    See Guides
                 </button>
             </div>
 
@@ -495,6 +504,7 @@ const EchoParser = ({
                                 openGuide={openGuide}
                                 setShowRulesModal={setShowRulesModal}
                                 isProcesing={isProcesing}
+                                guides={guides}
                             />
                         ) : (
                             <ParsedEchoesPreview
@@ -551,13 +561,28 @@ function ParsedEchoesPreview ({ parsedEchoes, onCancel, onImport, charId, getIma
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <h3>You’re about to import the following echoes:</h3>
-                <button
-                    className="btn-primary echoes"
-                    style={{ marginLeft: 'auto', marginBottom: 'unset' }}
-                    onClick={() => saveAllEchoesToBag(echoes)}
+                <div
+                    style={{ marginLeft: 'auto', marginBottom: 'unset', display: 'flex', flexDirection: 'row', gap: '0.75rem' }}
                 >
-                    Save All
-                </button>
+                    <button
+                        className="btn-primary echoes"
+                        onClick={() => onImport(parsedEchoes)}
+                    >
+                        Equip
+                    </button>
+                    <button
+                        className="btn-primary echoes"
+                        onClick={() => saveAllEchoesToBag(echoes)}
+                    >
+                        Save All
+                    </button>
+                    <button
+                        className="rotation-button clear echoes"
+                        onClick={onCancel}
+                    >
+                        Cancel
+                    </button>
+                </div>
             </div>
 
             <div
@@ -585,16 +610,11 @@ function ParsedEchoesPreview ({ parsedEchoes, onCancel, onImport, charId, getIma
                     );
                 })}
             </div>
-
-            <div className="modal-footer" style={{ display: 'flex', gap: '0.5rem' }}>
-                <button className="edit-substat-button btn-primary echoes" onClick={onCancel}>Cancel</button>
-                <button className="edit-substat-button btn-primary echoes" onClick={() => onImport(parsedEchoes)}>Equip</button>
-            </div>
         </div>
     )
 }
 
-const ImportInstructionsView = ({ isLoading, fileInputRef, handleImageFile, setGuideClose, handleClose, openGuide, setShowRulesModal, isProcesing }) => (
+const ImportInstructionsView = ({ isLoading, fileInputRef, handleImageFile, setGuideClose, handleClose, openGuide, setShowRulesModal, isProcesing, guides }) => (
     <div className="modal-main-content">
         <h2 className="modal-title">Import Echo</h2>
 
@@ -645,19 +665,6 @@ const ImportInstructionsView = ({ isLoading, fileInputRef, handleImageFile, setG
                 </p>
             </div>
         </div>
-
-        <p
-            className="dropzone-click-text go-to-guides"
-            onClick={() => {
-                setGuideClose(() => () => {
-                    setShowRulesModal(true);
-                });
-                handleClose();
-                setTimeout(() => openGuide(['Echoes', 'Build and Echo Scoring', 'Echo Importing']), 300);
-            }}
-        >
-            See guides
-        </p>
     </div>
 );
 

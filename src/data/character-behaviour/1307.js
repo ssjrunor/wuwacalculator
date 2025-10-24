@@ -27,6 +27,8 @@ export function applyBulingLogic({
     const tab = skillMeta.tab ?? '';
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
 
+    if (tab === 'forteCircuit') skillMeta.skillType = 'ultimate'
+
 
     if (characterState?.activeStates?.yinAndYang && !mergedBuffs.__yinAndYang) {
         mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;

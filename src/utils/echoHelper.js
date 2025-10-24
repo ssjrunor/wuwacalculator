@@ -1,4 +1,3 @@
-import {validSubstatRanges} from "../constants/echoSetData.jsx";
 import {getWeight, getWeightObj} from "../constants/charStatWeights.js";
 
 export const formatStatKey = (key) => {
@@ -328,3 +327,63 @@ export function getTop5SubstatScoreDetails(charId) {
     const total = top5.reduce((acc, it) => acc + it.computedScore, 0) + 44;
     return { total, top5, allItems: scored };
 }
+
+export function getSubstatStepOptions(key) {
+    const range = validSubstatRanges[key];
+    if (!range) return [];
+
+    const { min, max, divisions } = range;
+    const step = (max - min) / divisions;
+
+    const isFlatStat = key.endsWith('Flat');
+
+    let values = [];
+    for (let i = 0; i <= divisions; i++) {
+        let val = min + step * i;
+        if (isFlatStat) {
+            val = Math.ceil(val / 10) * 10;
+        } else {
+            val = parseFloat(val.toFixed(1));
+        }
+        if (!values.includes(val)) values.push(val);
+    }
+
+    if (key === 'hpFlat') {
+        values = [320, 360, 390, 430, 470, 510, 540, 580]
+    }
+
+    return values;
+}
+
+export function snapToNearestSubstatValue(key, value) {
+    const options = getSubstatStepOptions(key);
+    if (!options.length) return value;
+
+    let closest = options[0];
+    let minDiff = Math.abs(value - closest);
+
+    for (const opt of options) {
+        const diff = Math.abs(value - opt);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closest = opt;
+        }
+    }
+    return closest;
+}
+
+export const validSubstatRanges = {
+    atkPercent:              { min: 6.4,  max: 11.6, divisions: 7 },
+    atkFlat:                 { min: 30,   max: 60,   divisions: 3 },
+    hpPercent:               { min: 6.4,  max: 11.6, divisions: 7 },
+    hpFlat:                  { min: 320,  max: 580,  divisions: 7 },
+    defPercent:              { min: 8.1,  max: 14.7, divisions: 7 },
+    defFlat:                 { min: 40,   max: 70,   divisions: 3 },
+    critRate:                { min: 6.3,  max: 10.5, divisions: 7 },
+    critDmg:                 { min: 12.6, max: 21.0, divisions: 7 },
+    energyRegen:             { min: 6.8,  max: 12.4, divisions: 7 },
+    basicAtk:                { min: 6.4,  max: 11.6, divisions: 7 },
+    heavyAtk:                { min: 6.4,  max: 11.6, divisions: 7 },
+    resonanceSkill:          { min: 6.4,  max: 11.6, divisions: 7 },
+    resonanceLiberation:     { min: 6.4,  max: 11.6, divisions: 7 }
+};

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {setIconMap, validSubstatRanges} from '../constants/echoSetData.jsx';
+import {setIconMap} from '../constants/echoSetData.jsx';
+import {getSubstatStepOptions, snapToNearestSubstatValue, validSubstatRanges} from "../utils/echoHelper.js";
 
 const ALL_SUBSTAT_KEYS = [
     'atkPercent', 'atkFlat', 'hpPercent', 'hpFlat',
@@ -22,50 +23,6 @@ export function getSubstatStep(key) {
         return Math.round(rawStep * 10) / 10;
     }
     return rawStep;
-}
-
-export function getSubstatStepOptions(key) {
-    const range = validSubstatRanges[key];
-    if (!range) return [];
-
-    const { min, max, divisions } = range;
-    const step = (max - min) / divisions;
-
-    const isFlatStat = key.endsWith('Flat');
-
-    let values = [];
-    for (let i = 0; i <= divisions; i++) {
-        let val = min + step * i;
-        if (isFlatStat) {
-            val = Math.ceil(val / 10) * 10;
-        } else {
-            val = parseFloat(val.toFixed(1));
-        }
-        if (!values.includes(val)) values.push(val);
-    }
-
-    if (key === 'hpFlat') {
-        values = [320, 360, 390, 430, 470, 510, 540, 580]
-    }
-
-    return values;
-}
-
-function snapToNearestSubstatValue(key, value) {
-    const options = getSubstatStepOptions(key);
-    if (!options.length) return value;
-
-    let closest = options[0];
-    let minDiff = Math.abs(value - closest);
-
-    for (const opt of options) {
-        const diff = Math.abs(value - opt);
-        if (diff < minDiff) {
-            minDiff = diff;
-            closest = opt;
-        }
-    }
-    return closest;
 }
 
 const formatStatKey = (key) => {

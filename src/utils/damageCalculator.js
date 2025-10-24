@@ -31,11 +31,10 @@ export function calculateDamage({
     const def = finalStats.def ?? 0;
     const energyRegen = finalStats.energyRegen ?? 0;
 
-    const baseAbility = (atk * (scaling.atk ?? 0)) +
-        (hp * (scaling.hp ?? 0)) +
-        (def * (scaling.def ?? 0)) +
-        (energyRegen * (scaling.energyRegen ?? 0));
-
+    const baseAbility = (atk * (scaling?.atk ?? 0)) +
+        (hp * (scaling?.hp ?? 0)) +
+        (def * (scaling?.def ?? 0)) +
+        (energyRegen * (scaling?.energyRegen ?? 0));
 
     let baseDmg = 0;
     if (flat != null) {

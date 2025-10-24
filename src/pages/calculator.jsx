@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import Split from 'split.js';
-import { fetchCharacters } from '../json-data-scripts/wutheringFetch';
+import {fetchCharacters} from '../json-data-scripts/wutheringFetch';
 import characterStatesRaw from '../data/characterStates.json';
 import '../styles';
 import SkillsModal from '../components/SkillsModal';
@@ -12,25 +12,24 @@ import EnemyPane from '../components/EnemyPane';
 import BuffsPane, {getResolvedTeamRotations} from "../components/BuffsPane.jsx";
 import CustomBuffsPane from '../components/CustomBuffsPane';
 import ToolbarIconButton, {ToolbarSidebarButton} from '../components/ToolbarIconButton';
-import { attributeColors, attributeIcons, elementToAttribute } from '../utils/attributeHelpers';
-import { getFinalStats } from '../utils/getStatsForLevel';
-import { getUnifiedStatPool } from '../utils/getUnifiedStatPool';
+import {attributeColors, attributeIcons, elementToAttribute} from '../utils/attributeHelpers';
+import {getFinalStats} from '../utils/getStatsForLevel';
+import {getUnifiedStatPool} from '../utils/getUnifiedStatPool';
 import {getPersistentValue, setPersistentValue, usePersistentState} from '../hooks/usePersistentState';
 import useDarkMode from '../hooks/useDarkMode';
 import {getBuffsLogic, getCharacterOverride} from '../data/character-behaviour';
 import ChangelogModal from '../components/GuideModal.jsx';
-import {Settings, HelpCircle, History, Moon, Sun, Info, Sparkle, UserRound, RotateCcw} from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { fetchWeapons } from '../json-data-scripts/fetchWeapons';
-import { getWeaponOverride } from '../data/weapon-behaviour';
-import { applyEchoLogic } from '../data/buffs/applyEchoLogic';
+import {HelpCircle, History, Info, Moon, RotateCcw, Settings, Sparkle, Sun, UserRound, ScanHeart} from 'lucide-react';
+import {useNavigate} from 'react-router-dom';
+import {fetchWeapons} from '../json-data-scripts/fetchWeapons';
+import {getWeaponOverride} from '../data/weapon-behaviour';
+import {applyEchoLogic} from '../data/buffs/applyEchoLogic';
 import {applyWeaponBuffLogic} from "../data/buffs/weaponBuffs.js";
 import RotationsPane from "../components/RotationsPane.jsx";
 import EchoesPane from '../components/EchoesPane';
 import {echoes} from "../json-data-scripts/getEchoes.js";
 import {applyEchoSetBuffLogic, applyMainEchoBuffLogic, applySetEffect} from "../data/buffs/setEffect.js";
-import {getEchoStatsFromEquippedEchoes, getSetCounts, statIconMap} from "../utils/echoHelper.js";
-import { useLayoutEffect } from 'react';
+import {getEchoStatsFromEquippedEchoes, getSetCounts} from "../utils/echoHelper.js";
 import CharacterOverviewPane from "../components/CharacterOverview.jsx";
 import {isEqual} from "lodash";
 import {getMainRotationTotals, getTeamRotationTotal} from "../components/Rotations.jsx";
@@ -39,7 +38,9 @@ import {changelog} from "./changelog.jsx";
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
 import {syncAllPresetsForRuntime} from "../state/echoPresetStore.js";
 import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
-import HeartSmileIcon, {getCuteMessage} from "../components/cuteMessages.jsx";
+import {getCuteMessage} from "../components/cuteMessages.jsx";
+import {getSkillData} from "../utils/computeSkillDamage.js";
+import {getAllSkillLevelsWithEcho, getEffectiveSkillLevels, prepareDamageData} from "../utils/prepareDamageData.js";
 
 export default function Calculator() {
     const [characters, setCharacters] = useState([]);
@@ -57,7 +58,7 @@ export default function Calculator() {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-10-13 13:40';
+    const LATEST_CHANGELOG_VERSION = '2025-10-24 12:23';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
@@ -111,7 +112,6 @@ export default function Calculator() {
     const teamRotation = getResolvedTeamRotations(characterRuntimeStates[charId], characterRuntimeStates, savedRotations);
     const [savedTeamRotations, setSavedTeamRotations] = usePersistentState('globalSavedTeamRotations', []);
     const [smartFilter, setSmartFilter] = usePersistentState('smartFilter', true);
-
 
     useEffect(() => {
         Promise.all([fetchCharacters(), fetchWeapons()]).then(([charData, weaponData]) => {
@@ -327,7 +327,6 @@ export default function Calculator() {
     }, [rotationEntries, charId]);
 
     const handleCharacterSelect = (char) => {
-
         if (activeCharacter && charId) {
             const currentCharId = charId;
             setCharacterRuntimeStates(prev => ({
@@ -436,8 +435,7 @@ export default function Calculator() {
         if (activeCharacterId) {
             setTeam(prev => {
                 if (!prev || prev.length < 3) {
-                    const updated = [activeCharacterId, null, null];
-                    return updated;
+                    return [activeCharacterId, null, null];
                 }
 
                 if (prev[0] !== activeCharacterId) {
@@ -631,10 +629,15 @@ export default function Calculator() {
             if (same) return prev;
             return { ...prev, [charId]: updatedChar };
         });
-    }, [activeCharacter, characterLevel, sliderValues, traceNodeBuffs, customBuffs, combatState, finalStats]);
-
-
-
+    }, [
+        activeCharacter,
+        characterLevel,
+        sliderValues,
+        traceNodeBuffs,
+        customBuffs,
+        combatState,
+        finalStats,
+    ]);
 
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -841,9 +844,6 @@ export default function Calculator() {
         setCharacterRuntimeStates(cleanedStates);
     }, []);
 
-    const allRotations = getMainRotationTotals(charId, characterRuntimeStates, savedRotations, savedTeamRotations);
-    const teamRotationDmg = getTeamRotationTotal(charId, characterRuntimeStates);
-
     const [showConfirm, setShowConfirm] = useState(false);
     const [confirmMessage, setConfirmMessage] = useState({
         title: null,
@@ -857,6 +857,77 @@ export default function Calculator() {
     useEffect(() => {
         syncAllPresetsForRuntime(characterRuntimeStates[charId]);
     }, [charId, characterRuntimeStates[charId]?.equippedEchoes]);
+
+    function getAllSkillLevels(charId, activeCharacter, skillTabs) {
+        const result = {};
+
+        for (const tab of skillTabs) {
+            const skill = getSkillData(activeCharacter, tab);
+            result[tab] = getEffectiveSkillLevels(charId, activeCharacter, tab, skill);
+        }
+
+        return result;
+    }
+
+    const { charSkillResults, echoSkillResults, negativeEffects } = prepareDamageData({
+        activeCharacter,
+        charId,
+        finalStats,
+        characterLevel,
+        sliderValues,
+        characterRuntimeStates,
+        combatState,
+        mergedBuffs,
+        skillTabs,
+        getAllSkillLevels,
+    });
+
+    const skillResults = [...charSkillResults, ...echoSkillResults, ...negativeEffects];
+    const skillLevels = getAllSkillLevels(charId, activeCharacter, skillTabs);
+    const allSkillLevels = getAllSkillLevelsWithEcho({
+        charId,
+        activeCharacter,
+        characterRuntimeStates,
+        allSkillLevels: skillLevels,
+    });
+
+    const allRotations = getMainRotationTotals(charId, characterRuntimeStates, savedRotations, savedTeamRotations, skillResults);
+    const teamRotationDmg = getTeamRotationTotal(charId, characterRuntimeStates, skillResults);
+
+    useEffect(() => {
+        if (!skillTabs?.length || !charId) return;
+
+        const tab = skillTabs[0];
+        const currentLevels = allSkillLevels?.[tab];
+        if (!currentLevels) return;
+
+        const defaultRandGen = {
+            iterations: 10000,
+            bias: 0.5,
+            rollQuality: 0.3,
+            targetEnergyRegen: 0,
+            setId: [],
+            mainEcho: null,
+            level: currentLevels[0],
+            tab,
+        };
+
+        setCharacterRuntimeStates(prev => {
+            const prevChar = prev?.[charId] ?? {};
+            const existing = prevChar.randGenSettings;
+            if (existing) return prev;
+
+            return {
+                ...prev,
+                [charId]: {
+                    ...prevChar,
+                    randGenSettings: defaultRandGen,
+                },
+            };
+        });
+    }, [activeCharacter, skillTabs, allSkillLevels]);
+
+    //console.log(mergedBuffs);
 
     return (
         <>
@@ -1067,7 +1138,7 @@ export default function Calculator() {
                             </button>
                         </div>
                         <div className="sidebar-footer">
-                            <button className="sidebar-button reset"
+                            <button className="sidebar-button"
                                     onClick={() => {
                                         setTimeout(() => {
                                             const message = getCuteMessage(user);
@@ -1082,7 +1153,7 @@ export default function Calculator() {
                                     }}
                             >
                                 <div className="icon-slot">
-                                    <HeartSmileIcon size={24} />
+                                    <ScanHeart size={24} />
                                 </div>
                                 <div className="label-slot">
                                     <span className="label-text">Say Hi~!</span>
@@ -1247,6 +1318,7 @@ export default function Calculator() {
                                             savedTeamRotations={savedTeamRotations}
                                             smartFilter={smartFilter}
                                             setSmartFilter={setSmartFilter}
+                                            skillResults={skillResults}
                                         />
                                     )}
                                     {leftPaneView === 'echoes' && (
@@ -1258,6 +1330,13 @@ export default function Calculator() {
                                             characterRuntimeStates={characterRuntimeStates}
                                             setCharacterRuntimeStates={setCharacterRuntimeStates}
                                             characters={characters}
+                                            activeCharacter={activeCharacter}
+                                            getAllSkillLevels={getAllSkillLevels}
+                                            skillTabs={skillTabs}
+                                            baseCharacterState={baseCharacterState}
+                                            mergedBuffs={mergedBuffs}
+                                            allSkillLevels={allSkillLevels}
+                                            skillResults={skillResults}
                                         />
                                     )}
                                 </div>
@@ -1273,21 +1352,19 @@ export default function Calculator() {
                                         mergedBuffs={mergedBuffs}
                                     />
                                     <DamageSection
-                                        activeCharacter={activeCharacter}
-                                        finalStats={finalStats}
-                                        characterLevel={characterLevel}
-                                        sliderValues={sliderValues}
-                                        characterRuntimeStates={characterRuntimeStates}
-                                        combatState={combatState}
-                                        mergedBuffs={mergedBuffs}
-                                        rotationEntries={rotationEntries}
-                                        currentSliderColor={currentSliderColor}
-                                        showSubHits={showSubHits}
-                                        setShowSubHits={setShowSubHits}
-                                        setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                        characterStates={characterStates}
-                                        teamRotationDmg={teamRotationDmg}
                                         charId={charId}
+                                        activeCharacter={activeCharacter}
+                                        skillResults={skillResults}
+                                        echoSkillResults={echoSkillResults}
+                                        negativeEffects={negativeEffects}
+                                        rotationEntries={rotationEntries}
+                                        setShowSubHits={setShowSubHits}
+                                        showSubHits={showSubHits}
+                                        teamRotationDmg={teamRotationDmg}
+                                        characterRuntimeStates={characterRuntimeStates}
+                                        characterStates={characterStates}
+                                        setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                        isDark={isDark}
                                     />
                                 </div>
                             </div>
@@ -1479,3 +1556,5 @@ function getHighlightKeywords(character) {
 
     return result;
 }
+
+const skillTabs = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill', 'outroSkill', 'echoAttacks', 'negativeEffect'];

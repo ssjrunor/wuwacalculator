@@ -19,11 +19,12 @@ export function computeSkillDamage({
                                        mergedBuffs,
                                        sliderValues,
                                        characterLevel,
-    echoElement,
-                                       getSkillData = () => null
+                                       echoElement,
+                                       getSkillData = () => null,
+    custSkillMeta
                                    }) {
     const charId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
-    const element = elementToAttribute[activeCharacter?.attribute] ?? '';
+    const element = elementToAttribute[activeCharacter?.attribute] ?? echoElement ?? '';
 
     const characterState = {
         activeStates: characterRuntimeStates?.[charId]?.activeStates ?? {},
@@ -80,7 +81,7 @@ export function computeSkillDamage({
             ...(levelData?.healing ? ['healing'] : []),
             ...(levelData?.shielding ? ['shielding'] : [])
         ],
-        element: echoElement ?? element
+        element: element
     };
 
     let localMergedBuffs = structuredClone(mergedBuffs);
@@ -197,6 +198,8 @@ export function computeSkillDamage({
         );
     }
 
+    if (!scaling) scaling = { atk: 1, hp: 0, def: 0, energyRegen: 0 };
+
     const mainEcho = characterRuntimeStates?.[charId]?.equippedEchoes?.[0];
     const echoBuffEntry = mainEcho && mainEchoBuffs?.[mainEcho.id];
     const echoModifier = echoBuffEntry?.skillMetaModifier;
@@ -209,7 +212,8 @@ export function computeSkillDamage({
             charId
         }) ?? skillMeta;
     }
-    scaling = scaling ?? skillMeta?.scaling;
+    skillMeta.scaling = scaling ?? skillMeta?.scaling;
+    skillMeta = buildSkillStatWeight(skillMeta);
 
     const tag = skillMeta.tags?.[0];
     const isSupportSkill = tag === 'healing' || tag === 'shielding';
@@ -217,7 +221,7 @@ export function computeSkillDamage({
     if (isSupportSkill) {
         const avg = skillMeta.flatOverride ?? calculateSupportEffect({
             finalStats,
-            scaling,
+            scaling: skillMeta.scaling,
             multiplier: skillMeta.multiplier,
             type: tag,
             skillHealingBonus: skillMeta.skillHealingBonus ?? 0,
@@ -233,7 +237,7 @@ export function computeSkillDamage({
         combatState,
         multiplier: skillMeta.multiplier,
         amplify: skillMeta.amplify,
-        scaling,
+        scaling: skillMeta.scaling,
         element: skillMeta.element ?? echoElement ?? element,
         skillType: skillMeta.skillType,
         characterLevel,
@@ -327,7 +331,9 @@ export function computeSkillDamage({
                     skillCritRate: skillMeta.skillCritRate ?? 0,
                     fixedDmg: skillMeta.fixedDmg ?? null,
                     skillDmgTaken: skillMeta.skillDmgTaken ?? 0,
+                    name: levelData?.Name ?? ''
                 });
+
 
                 subHits.push({
                     label: part.count > 1 ? `${part.count} Hits` : '',
@@ -408,4 +414,80 @@ export function parseMultiplierParts(multiplierString) {
             count: repeat ? parseInt(repeat, 10) : 1
         };
     }).filter(Boolean);
+}
+
+export function buildSkillStatWeight(skillMeta) {
+    if (!skillMeta || typeof skillMeta !== "object") {
+        console.warn("⚠️ Invalid skillMeta provided to buildSkillStatWeight()");
+        return {};
+    }
+
+    const { scaling = {}, skillType, element } = skillMeta;
+    const statWeight = {};
+
+    // --- 1️⃣ Add scaling-based weights (atk/hp/def) ---
+    for (const [key, value] of Object.entries(scaling)) {
+        const normalized = key.toLowerCase();
+
+        if (["atk", "hp", "def"].includes(normalized) && value > 0) {
+            const percentKey = `${normalized}Percent`;
+            const flatKey = `${normalized}Flat`;
+
+            statWeight[percentKey] = value;
+            statWeight[flatKey] = value / 2;
+        }
+    }
+
+    // --- 2️⃣ Add element weight ---
+    if (typeof element === "string" && element.trim()) {
+        statWeight[element.toLowerCase()] = 1;
+    }
+
+    // --- 3️⃣ Map skillType(s) ---
+    const typeList = Array.isArray(skillType) ? skillType : [skillType];
+    const typeMap = {
+        ultimate: "resonanceLiberation",
+        skill: "resonanceSkill",
+        basic: "basicAtk",
+        heavy: "heavyAtk",
+    };
+
+    let isSpecialSkill = false;
+
+    for (const type of typeList) {
+        if (!type || typeof type !== "string") continue;
+        const normalized = type.trim();
+
+        if (normalized === "echoSkill" || normalized === "outro" || normalized === "intro") {
+            isSpecialSkill = true;
+            continue;
+        }
+
+        const mapped = typeMap[normalized];
+        if (mapped) {
+            statWeight[mapped] = 1;
+        }
+    }
+
+    // --- 4️⃣ Apply special special handling ---
+    if (isSpecialSkill) {
+        for (const key of Object.keys(statWeight)) {
+            if (key.endsWith("Flat")) {
+                const value = statWeight[key];
+                statWeight[key] += value / 2;
+            }
+        }
+    }
+
+    // --- 5️⃣ Clean up: remove any zero or NaN entries ---
+    for (const key of Object.keys(statWeight)) {
+        if (!statWeight[key] || statWeight[key] === 0 || isNaN(statWeight[key])) {
+            delete statWeight[key];
+        }
+    }
+
+    statWeight.critDmg = 1;
+    statWeight.critRate = 2;
+    skillMeta.statWeight = statWeight;
+    return skillMeta;
 }

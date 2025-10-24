@@ -4901,6 +4901,22 @@
             ]
           }
         }
+      },
+      "23": {
+        "Id": 23,
+        "Name": "Thread of Severed Fate",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriQianXiao.T_IconElementAttriQianXiao",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Inflicting Havoc Bane increases the Resonator's ATK by {0} and grants {1} Resonance Liberation DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "30%",
+              "5"
+            ]
+          }
+        }
       }
     },
     "Rarity": [
@@ -8837,6 +8853,22 @@
             ]
           }
         }
+      },
+      "23": {
+        "Id": 23,
+        "Name": "Thread of Severed Fate",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriQianXiao.T_IconElementAttriQianXiao",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Inflicting Havoc Bane increases the Resonator's ATK by {0} and grants {1} Resonance Liberation DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "30%",
+              "5"
+            ]
+          }
+        }
       }
     },
     "Rarity": [
@@ -10267,7 +10299,11 @@
       5
     ],
     "IntensityCode": 2,
-    "MonsterInfo": 340000170
+    "MonsterInfo": 340000170,
+    "Phantom": {
+      "Name": "Phantom: The False Sovereign",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_34017_UI.T_IconMonsterGoods_SG_34017_UI"
+    }
   },
   {
     "id": "6000160",
@@ -11024,6 +11060,22 @@
             ]
           }
         }
+      },
+      "23": {
+        "Id": 23,
+        "Name": "Thread of Severed Fate",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriQianXiao.T_IconElementAttriQianXiao",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Inflicting Havoc Bane increases the Resonator's ATK by {0} and grants {1} Resonance Liberation DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "30%",
+              "5"
+            ]
+          }
+        }
       }
     },
     "Rarity": [
@@ -11270,6 +11322,327 @@
     ],
     "IntensityCode": 0,
     "MonsterInfo": 310000730
+  },
+  {
+    "id": "6000171",
+    "Id": 6000171,
+    "Code": "G04-",
+    "Name": "Nightmare: Tick Tack",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31075_UI.T_IconMonsterHead_31075_UI",
+    "Skill": {
+      "Desc": "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal {0} Havoc DMG to the enemy, and the bite will deal {1} Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to {3} during {2}s.\r\n\r\nCD: {4}s",
+      "SimpleDesc": "Summon a Tick Tack that deals Havoc DMG and reduces enemy Vibration Strength.",
+      "Param": [
+        [
+          "42.80%",
+          "64.20%",
+          "5",
+          "5.00%",
+          "15"
+        ],
+        [
+          "49.22%",
+          "73.83%",
+          "5",
+          "5.00%",
+          "15"
+        ],
+        [
+          "55.64%",
+          "83.46%",
+          "5",
+          "5.00%",
+          "15"
+        ],
+        [
+          "62.06%",
+          "93.09%",
+          "5",
+          "5.00%",
+          "15"
+        ],
+        [
+          "68.48%",
+          "102.72%",
+          "5",
+          "5.00%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_Mstskil_095_UI.T_Mstskil_095_UI",
+      "Damage": {
+        "20000701": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4280,
+            4922,
+            5564,
+            6206,
+            6848
+          ],
+          "Energy": 107,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4280
+        },
+        "20000702": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            6420,
+            7383,
+            8346,
+            9309,
+            10272
+          ],
+          "Energy": 160,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 6420
+        }
+      }
+    },
+    "Group": {
+      "23": {
+        "Id": 23,
+        "Name": "Thread of Severed Fate",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriQianXiao.T_IconElementAttriQianXiao",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Inflicting Havoc Bane increases the Resonator's ATK by {0} and grants {1} Resonance Liberation DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "30%",
+              "5"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000750
+  },
+  {
+    "id": "6000172",
+    "Id": 6000172,
+    "Code": "H22-",
+    "Name": "Nightmare: Dwarf Cassowary",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31076_UI.T_IconMonsterHead_31076_UI",
+    "Skill": {
+      "Desc": "Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing {1} Physical DMG {0} time(s).\n\nCooldown: {2}s",
+      "SimpleDesc": "Summon a Dwarf Cassowary to attack, dealing Physical DMG.",
+      "Param": [
+        [
+          "3",
+          "24.00%",
+          "8",
+          "0.00%"
+        ],
+        [
+          "3",
+          "27.60%",
+          "8",
+          "0.00%"
+        ],
+        [
+          "3",
+          "31.20%",
+          "8",
+          "0.00%"
+        ],
+        [
+          "3",
+          "34.80%",
+          "8",
+          "0.00%"
+        ],
+        [
+          "3",
+          "38.40%",
+          "8",
+          "0.00%"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_331_UI.T_MstSkil_331_UI",
+      "Damage": {
+        "20005102": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        },
+        "20005103": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        },
+        "20005104": {
+          "Element": 0,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2400,
+            2760,
+            3120,
+            3480,
+            3840
+          ],
+          "Energy": 60,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2400
+        }
+      }
+    },
+    "Group": {
+      "23": {
+        "Id": 23,
+        "Name": "Thread of Severed Fate",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriQianXiao.T_IconElementAttriQianXiao",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Inflicting Havoc Bane increases the Resonator's ATK by {0} and grants {1} Resonance Liberation DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "30%",
+              "5"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000760
+  },
+  {
+    "id": "6000173",
+    "Id": 6000173,
+    "Code": "S06-",
+    "Name": "Nightmare: Roseshroom",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32048_UI.T_IconMonsterHead_32048_UI",
+    "Skill": {
+      "Desc": "Summon a Roseshroom that fires a laser, dealing {1} Havoc DMG up to {0} times.\n \nCD: {2}s",
+      "SimpleDesc": "Summon a Roseshroom to fire a laser, and deal Havoc DMG.",
+      "Param": [
+        [
+          "3",
+          "35.67%",
+          "15"
+        ],
+        [
+          "3",
+          "41.02%",
+          "15"
+        ],
+        [
+          "3",
+          "46.37%",
+          "15"
+        ],
+        [
+          "3",
+          "51.72%",
+          "15"
+        ],
+        [
+          "3",
+          "57.07%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_315_UI.T_MstSkil_315_UI",
+      "Damage": {
+        "20003201": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3566,
+            4101,
+            4636,
+            5171,
+            5706
+          ],
+          "Energy": 89,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3566
+        }
+      }
+    },
+    "Group": {
+      "23": {
+        "Id": 23,
+        "Name": "Thread of Severed Fate",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriQianXiao.T_IconElementAttriQianXiao",
+        "Color": "FFFFFF00",
+        "Set": {
+          "3": {
+            "Desc": "Inflicting Havoc Bane increases the Resonator's ATK by {0} and grants {1} Resonance Liberation DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "30%",
+              "5"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000480
   },
   {
     "id": "390070051",
@@ -13317,7 +13690,7 @@
     "id": "390070079",
     "Id": 390070079,
     "Code": "S05-",
-    "Name": "Young Roseshroom",
+    "Name": "Baby Roseshroom",
     "Type": "Mutant Flora",
     "Intensity": "Common Class",
     "Place": "Huanglong",

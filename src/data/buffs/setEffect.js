@@ -65,16 +65,6 @@ export function applySetEffect({ mergedBuffs, characterState, activeCharacter, c
         }
     }
 
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
-
     if (effect.windward5 && combatState.aeroErosion > 0) {
         mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 10;
         mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 30;
@@ -156,6 +146,11 @@ export function applySetEffect({ mergedBuffs, characterState, activeCharacter, c
 
     if (effect.flamewingsShadow2pcP1 && effect.flamewingsShadow2pcP2) mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 16;
 
+    if (effect.threadOfSeveredFate3pc) {
+        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 30;
+    }
+
     return mergedBuffs;
 }
 
@@ -215,7 +210,8 @@ export const setEffectBuffMap = {
         setMax:3,
         flamewingsShadow2pcP1:{fusion:16,max:{fusion:16}},
         flamewingsShadow2pcP2:{fusion:16,max:{fusion:16}}
-    }
+    },
+    23:{setMax:3,threadOfSeveredFate3pc:{atkPercent:20,havoc:30,max:{atkPercent:20,havoc:30}}},
 };
 
 export function removeSetEffectsFromBuffs(mergedBuffs, sets, runtime) {
@@ -637,15 +633,6 @@ export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterS
     const activeStates = characterState?.activeStates ?? {};
     const mainEcho = equippedEchoes?.[0];
     if (!mainEcho) return mergedBuffs;
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     const buffs = mainEchoBuffs?.[mainEcho.id];
     if (!buffs) return mergedBuffs;

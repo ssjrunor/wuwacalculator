@@ -7,8 +7,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const outputPath = path.resolve(__dirname, '../data/weapons.json');
-
 const weaponApiUrl = 'https://api.hakush.in/ww/data/weapon.json';
+
+const SKIP_EXISTING = true;
 
 async function fetchAndSaveWeapons() {
     try {
@@ -22,17 +23,52 @@ async function fetchAndSaveWeapons() {
             throw new Error('Unexpected weapon data format: expected object');
         }
 
-        const weapons = Object.entries(weaponRaw).map(([id, weapon]) => ({
-            id,
-            name: weapon.en,
-            description: weapon.desc,
-            icon: `https://api.hakush.in/ww${weapon.icon}.webp`,
-            rank: weapon.rank,
-            type: weapon.type
-        }));
+        // Load existing file if available
+        let existingWeapons = [];
+        try {
+            const existingData = await fs.readFile(outputPath, 'utf8');
+            existingWeapons = JSON.parse(existingData);
+        } catch {
+            // file might not exist, ignore
+        }
 
-        await fs.writeFile(outputPath, JSON.stringify(weapons, null, 2));
-        console.log(`Saved ${weapons.length} weapons to weapons.json`);
+        const existingIds = new Set(existingWeapons.map(w => String(w.id)));
+
+        const projectionPrefixes = ['Projection:', 'Projection -', 'Projection-'];
+
+        const newWeapons = [];
+
+        for (const [id, weapon] of Object.entries(weaponRaw)) {
+            const idStr = String(id);
+
+            if (SKIP_EXISTING && existingIds.has(idStr)) {
+                console.log(`Skipping ${idStr} (already exists)`);
+                continue;
+            }
+
+            const name = weapon.en;
+
+            if (projectionPrefixes.some(prefix => name?.startsWith(prefix))) {
+                console.log(`Skipping ${idStr} (${name})`);
+                continue;
+            }
+
+            newWeapons.push({
+                id: idStr,
+                name,
+                description: weapon.desc,
+                icon: `https://api.hakush.in/ww${weapon.icon}.webp`,
+                rank: weapon.rank,
+                type: weapon.type
+            });
+
+            console.log(`${idStr} added`);
+        }
+
+        const allWeapons = [...existingWeapons, ...newWeapons];
+
+        await fs.writeFile(outputPath, JSON.stringify(allWeapons, null, 2));
+        console.log(`Saved ${allWeapons.length} weapons to weapons.json`);
     } catch (err) {
         console.error('Error fetching weapon data:', err.message);
     }
