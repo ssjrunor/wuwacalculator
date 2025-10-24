@@ -151,14 +151,10 @@ export function applySetEffect({ mergedBuffs, characterState, activeCharacter, c
     mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + 4 * crownOfValorStack;
 
     const lawOfHarmonyStack = effect.lawOfHarmony3p ?? 0;
-    if (lawOfHarmonyStack > 0) {
-        mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + 30;
-    }
+    if (lawOfHarmonyStack > 0) mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + 30;
     mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + 4 * lawOfHarmonyStack;
 
-    if (effect.flamewingsShadow2pcP1 && effect.flamewingsShadow2pcP2) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 16;
-    }
+    if (effect.flamewingsShadow2pcP1 && effect.flamewingsShadow2pcP2) mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 16;
 
     return mergedBuffs;
 }
@@ -183,6 +179,146 @@ export const echoSetBuffs = {
     18: { twoPiece: { fusion: 10 } }                                                // Flaming Clawprint
 };
 
+export const setEffectBuffMap = {
+    1:{ // Freezing Frost
+        setMax:5,
+        frost5pc:{glacio:10,max:{glacio:30}},              // 10×3 stacks = 30
+        frosty5p1:{glacio:7.5,max:{glacio:22.5}}           // 7.5×3 stacks = 22.5
+    },
+    2:{setMax:5,molten5:{fusion:30,max:{fusion:30}}},             // flat
+    3:{setMax:5,void5pc:{electro:15,max:{electro:30}}},           // 15×2 stacks = 30
+    4:{setMax:5,sierra5:{aero:30,max:{aero:30}}},                 // flat
+    5:{setMax:5,celestial5:{spectro:30,max:{spectro:30}}},        // flat
+    6:{setMax:5,eclipse5pc:{havoc:7.5,max:{havoc:30}}},           // 7.5×4 stacks = 30
+    7:{setMax:5,rejuvenating5:{atkPercent:15,max:{atkPercent:15}}}, // flat
+    9:{setMax:5,lingering5p1:{atkPercent:5,max:{atkPercent:20}}}, // 5×4 stacks = 20
+    10:{ // Frosty Resolve
+        setMax:5,
+        frosty5p1:{glacio:7.5,max:{glacio:22.5}},          // 7.5×3 stacks
+        frosty5p2:{resonanceSkill:18,max:{resonanceSkill:36}} // 18×2 stacks
+    },
+    11:{ // Radiance
+        setMax:5,
+        radiance5p1:{critRate:20,max:{critRate:20}},       // flat
+        radiance5p2:{spectro:15,max:{spectro:15}}          // conditional flat
+    },
+    13:{setMax:5,empyrean5:{atkPercent:20,max:{atkPercent:20}}},  // flat
+    16:{setMax:5,welkin5:{aero:30,max:{aero:30}}},                // flat
+    17:{setMax:5,windward5:{critRate:10,aero:30,max:{critRate:10,aero:30}}}, // flat conditional
+    18:{setMax:5,clawprint5:{fusion:15,resonanceLiberation:20,max:{fusion:15,resonanceLiberation:20}}}, // flat
+
+    // --- 3-piece sets ---
+    19:{setMax:3,dreamOfTheLost3pc:{critRate:20,echoSkill:35,max:{critRate:20,echoSkill:35}}},
+    20:{setMax:3,crownOfValor3pc:{atkPercent:6,critDmg:4,max:{atkPercent:30,critDmg:20}}},
+    21:{setMax:3,lawOfHarmony3p:{heavyAtk:30,echoSkill:4,max:{heavyAtk:30,echoSkill:16}}},
+    22:{ // Flamewings Shadow
+        setMax:3,
+        flamewingsShadow2pcP1:{fusion:16,max:{fusion:16}},
+        flamewingsShadow2pcP2:{fusion:16,max:{fusion:16}}
+    }
+};
+
+export function removeSetEffectsFromBuffs(mergedBuffs, sets, runtime) {
+    if (!mergedBuffs) return {};
+    const newBuffs = { ...mergedBuffs };
+    const setArray = Array.isArray(sets) ? sets : [sets];
+
+    const subtractBuffs = (buffObj) => {
+        if (!buffObj) return;
+        for (const [key, value] of Object.entries(buffObj)) {
+            const result = (Number(newBuffs[key] ?? 0)) - Number(value ?? 0);
+            if (Math.abs(result) < 1e-6) delete newBuffs[key];
+            else newBuffs[key] = result;
+        }
+    };
+
+    // 1️⃣ Remove 2pc / 5pc bonuses
+    for (const entry of setArray) {
+        const id = entry?.setId ?? entry;
+        const count = entry?.count ?? 0;
+        const setData = echoSetBuffs[id];
+        if (!setData) continue;
+        if (count >= 2 && setData.twoPiece) subtractBuffs(setData.twoPiece);
+        if (count >= 5 && setData.fivePiece) subtractBuffs(setData.fivePiece);
+    }
+
+    // 2️⃣ Remove state-based buffs using their max values
+    const activeStates = runtime?.activeStates ?? {};
+    for (const entry of setArray) {
+        const id = entry?.setId ?? entry;
+        const setEffects = setEffectBuffMap[id];
+        if (!setEffects) continue;
+
+        for (const [stateKey, buffs] of Object.entries(setEffects)) {
+            if (!activeStates[stateKey]) continue;
+            const buffData = buffs.max ?? buffs; // prefer max if available
+            subtractBuffs(buffData);
+        }
+    }
+
+    return newBuffs;
+}
+
+export function applySetEffectsToBuffs(mergedBuffs, sets) {
+    if (!mergedBuffs) return {};
+    const newBuffs = { ...mergedBuffs };
+    const setArray = Array.isArray(sets) ? sets : [sets];
+
+    const addBuffs = (buffObj) => {
+        if (!buffObj) return;
+        for (const [key, value] of Object.entries(buffObj)) {
+            newBuffs[key] = (Number(newBuffs[key] ?? 0)) + Number(value ?? 0);
+        }
+    };
+
+    for (const entry of setArray) {
+        const id = entry?.setId ?? entry;
+        const count = entry?.count ?? 0;
+        const setEffects = setEffectBuffMap[id];
+        if (!setEffects) continue;
+
+        const maxPieces = setEffects.setMax ?? 5;
+        if (count < maxPieces) continue; // only apply full set effects
+
+        for (const [stateKey, buffs] of Object.entries(setEffects)) {
+            if (stateKey === "setMax") continue;
+
+            // apply only the "max" buffs version if available
+            const maxBuffs = buffs.max ?? buffs;
+            addBuffs(maxBuffs);
+        }
+    }
+
+    return newBuffs;
+}
+
+export function getSetPlanFromEchoes(equippedEchoes = []) {
+    if (!Array.isArray(equippedEchoes) || equippedEchoes.length === 0) return null;
+
+    // Count how many echoes belong to each set
+    const counts = {};
+    for (const echo of equippedEchoes) {
+        const sid = echo?.selectedSet ?? echo?.setId;
+        if (!sid) continue;
+        counts[sid] = (counts[sid] ?? 0) + 1;
+    }
+
+    const entries = Object.entries(counts).map(([setId, count]) => ({
+        setId: Number(setId),
+        count
+    }));
+
+    if (entries.length === 0) return null;
+
+    if (entries.length === 1 && equippedEchoes.length === 5) {
+        const setId = entries[0].setId;
+        const setMax = setEffectBuffMap?.[setId]?.setMax ?? 5;
+        if (setMax >= 5) return setId;
+    }
+
+    // Otherwise return the multi-set plan
+    return entries.sort((a, b) => a.setId - b.setId);
+}
 
 export function applyEchoSetBuffLogic({ mergedBuffs, equippedEchoes, activeCharacter }) {
     const elementMap = {
@@ -489,8 +625,8 @@ export const mainEchoBuffs = {
     '6000167': {
         always: { havoc: 12, resonanceLiberation: 12 },
         skillMetaModifier: (skillMeta, {combatState}) => {
-            if (skillMeta.name.includes('Reminiscence: Threnodian - Leviathan Skill 2') && combatState.havocBane > 0) {
-                skillMeta.dmgReduction = (skillMeta.dmgReduction ?? 0) + 100;
+            if (skillMeta.name.includes('Leviathan Skill 2') && combatState.havocBane > 0) {
+                skillMeta.skillDmgTaken = (skillMeta.skillDmgTaken ?? 0) + 100;
             }
             return skillMeta;
         }
