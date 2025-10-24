@@ -114,11 +114,10 @@ export function prepareDamageData({
         }
     }
 
-    // --- Character Skill Damage
     const allLevels = getAllSkillLevels(charId, activeCharacter, skillTabs);
 
     for (const tab of skillTabs) {
-        const skill = getSkillData(activeCharacter, tab);
+        //const skill = getSkillData(activeCharacter, tab);
         const levels = allLevels[tab] ?? [];
 
         levels.forEach((level) => {

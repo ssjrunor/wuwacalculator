@@ -1,13 +1,5 @@
 [
   {
-    "id": "21010010",
-    "name": "Training Broadblade",
-    "description": "This broadblade is designed specifically for training and teaching, offering only the basic features.",
-    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010027_UI.T_IconWeapon21010027_UI.webp",
-    "rank": 1,
-    "type": 1
-  },
-  {
     "id": "21010011",
     "name": "Training Broadblade",
     "description": "This broadblade is designed specifically for training and teaching, offering only the basic features.",
@@ -182,14 +174,6 @@
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010104_UI.T_IconWeapon21010104_UI.webp",
     "rank": 4,
     "type": 1
-  },
-  {
-    "id": "21020010",
-    "name": "Training Sword",
-    "description": "This sword is designed specifically for training and teaching, offering only the basic features.",
-    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020018_UI.T_IconWeapon21020018_UI.webp",
-    "rank": 1,
-    "type": 2
   },
   {
     "id": "21020011",
@@ -376,14 +360,6 @@
     "type": 2
   },
   {
-    "id": "21030010",
-    "name": "Training Pistols",
-    "description": "These pistols are designed specifically for training and teaching, offering only the basic features.",
-    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030016_UI.T_IconWeapon21030016_UI.webp",
-    "rank": 1,
-    "type": 3
-  },
-  {
     "id": "21030011",
     "name": "Training Pistols",
     "description": "These pistols are designed specifically for training and teaching, offering only the basic features.",
@@ -526,14 +502,6 @@
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030104_UI.T_IconWeapon21030104_UI.webp",
     "rank": 4,
     "type": 3
-  },
-  {
-    "id": "21040010",
-    "name": "Training Gauntlets",
-    "description": "These gauntlets are designed specifically for training and teaching, offering only the basic features.",
-    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21040017_UI.T_IconWeapon21040017_UI.webp",
-    "rank": 1,
-    "type": 4
   },
   {
     "id": "21040011",
@@ -686,14 +654,6 @@
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21040104_UI.T_IconWeapon21040104_UI.webp",
     "rank": 4,
     "type": 4
-  },
-  {
-    "id": "21050010",
-    "name": "Training Rectifier",
-    "description": "This rectifier is designed specifically for training and teaching, offering only the basic features.",
-    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21050028_UI.T_IconWeapon21050028_UI.webp",
-    "rank": 1,
-    "type": 5
   },
   {
     "id": "21050011",

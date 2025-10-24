@@ -19,6 +19,11 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
             const values = [0, 30, 37.5, 45, 52.5, 60];
             mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + values[rank];
         },
+        woodlandAria: () => {
+            const rank = state['woodlandAria_rank'] ?? 0;
+            const values = [0, 10, 11.5, 13, 14.5, 16];
+            mergedBuffs.aeroErosionResShred = (mergedBuffs?.aeroErosionResShred ?? 0) + values[rank];
+        },
         bloodpactsPledge: () => {
             const rank = state['bloodpactsPledge_rank'] ?? 0;
             const values = [0, 10, 14, 18, 22, 26];
@@ -52,7 +57,7 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
     return mergedBuffs;
 }
 
-export function applyWeaponSkillMetaBuffLogic({ mergedBuffs, characterState, activeCharacter, skillMeta, combatState }) {
+export function applyWeaponSkillMetaBuffLogic({ mergedBuffs, characterState, skillMeta, combatState }) {
     const state = characterState?.activeStates ?? {};
     const element = skillMeta.element;
 

@@ -123,7 +123,7 @@ export function calculateSpectroFrazzleDamage(combatState, mergedBuffs, characte
     const enemyLevel = combatState.enemyLevel ?? 1;
     const charLevel = characterLevel;
 
-    const resShred = mergedBuffs?.enemyResShred ?? 0;
+    const resShred = (mergedBuffs?.enemyResShred ?? 0) + (mergedBuffs?.spectroFrazzleResShred ?? 0);
     const enemyRes = (combatState.enemyRes ?? 0) - resShred;
 
     let resMult = 1;
@@ -165,7 +165,7 @@ export function calculateAeroErosionDamage(combatState, mergedBuffs, characterLe
     const enemyLevel = combatState.enemyLevel ?? 1;
     const charLevel = characterLevel;
 
-    const resShred = mergedBuffs?.enemyResShred ?? 0;
+    const resShred = (mergedBuffs?.enemyResShred ?? 0) + (mergedBuffs?.aeroErosionResShred ?? 0);
     const enemyRes = (combatState.enemyRes ?? 0) - resShred;
 
     let resMult = 1;

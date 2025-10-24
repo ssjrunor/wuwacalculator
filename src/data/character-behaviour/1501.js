@@ -61,7 +61,8 @@ export function applySpectroMLogic({
 
     skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
         (isToggleActive(6) && isActiveSequence(6) && skillMeta.element === 'spectro' ? 10 : 0);
-
+    mergedBuffs.spectroFrazzleResShred = (mergedBuffs?.spectroFrazzleResShred ?? 0) +
+        (isToggleActive(6) && isActiveSequence(6) ? 10 : 0);
 
     return {mergedBuffs, combatState, skillMeta};
 }
@@ -75,6 +76,18 @@ export const spectroMMultipliers = {
         }
     ]
 };
+
+export function spectroMBuffsLogic({
+                                     mergedBuffs, characterState
+                                 }) {
+    const state = characterState?.activeStates ?? {};
+
+    mergedBuffs.spectroFrazzleResShred = (mergedBuffs?.spectroFrazzleResShred ?? 0) +
+        (state.wanderlust ? 10 : 0);
+
+    return { mergedBuffs };
+}
+
 
 export function spectroMSkillMetaBuffsLogic({
                                                 characterState, skillMeta

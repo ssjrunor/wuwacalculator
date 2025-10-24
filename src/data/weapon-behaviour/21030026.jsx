@@ -45,34 +45,28 @@ export function WeaponUI({
     );
 }
 
-
 export function applyWeaponLogic({
                                      mergedBuffs,
                                      combatState,
                                      characterState,
                                      skillMeta = {},
                                      currentParamValues = [],
-                                     activeCharacter
                                  }) {
     const atk = parseFloat(currentParamValues[0]);
-    const resShred = parseFloat(currentParamValues[3]);
     const aero = parseFloat(currentParamValues[1]);
-
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
+    const resShred = parseFloat(currentParamValues[3]);
 
     mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
     mergedBuffs.aero = (mergedBuffs.aero ?? 0) +
         (characterState?.activeStates?.firstP ? aero : 0);
-    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
-        (characterState?.activeStates?.secondP && element === 'aero' && combatState.aeroErosion > 0 ? resShred : 0);
+    mergedBuffs.aeroErosionResShred = (mergedBuffs?.aeroErosionResShred ?? 0) +
+        (characterState?.activeStates?.secondP && combatState.aeroErosion > 0 ? resShred : 0);
 
     return { mergedBuffs, combatState, skillMeta };
+}
+
+export function updateSkillMeta({ characterState, skillMeta = {}, currentParamValues = [], combatState}) {
+    const resShred = parseFloat(currentParamValues[3]);
+    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
+        (characterState?.activeStates?.secondP && skillMeta.element === 'aero' && combatState.aeroErosion > 0 ? resShred : 0);
 }

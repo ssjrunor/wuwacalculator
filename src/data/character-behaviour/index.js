@@ -23,7 +23,7 @@ import {applyJiyanLogic, jiyanBuffsLogic, jiyanMultipliers} from "./1404.js";
 import {applyJianxinLogic, jianxinBuffsLogic, jianxinMultipliers} from "./1405.js";
 import {applyAeroRoverMLogic, aeroRoverMMultipliers} from "./1406.js";
 import {ciacconaBuffsLogic, applyCiacconaLogic, ciacconaMultipliers} from "./1407.js";
-import {applySpectroMLogic, spectroMMultipliers, spectroMSkillMetaBuffsLogic} from "./1501.js";
+import {applySpectroMLogic, spectroMBuffsLogic, spectroMMultipliers, spectroMSkillMetaBuffsLogic} from "./1501.js";
 import {applyVerinaLogic, verinaMultipliers, verinauffsLogic} from "./1503.js";
 import {applyLumiLogic, lumiBuffsLogic} from "./1504.js";
 import {applySkLogic, SKBuffsLogic, skMultipliers} from "./1505.js";
@@ -176,11 +176,13 @@ const overrides = {
     "1501": {
         logic: applySpectroMLogic,
         multipliers: spectroMMultipliers,
+        buffsLogic: spectroMBuffsLogic,
         skillMetaBuffsLogic: spectroMSkillMetaBuffsLogic
     },
     "1502": {
         logic: applySpectroMLogic,
         multipliers: spectroMMultipliers,
+        buffsLogic: spectroMBuffsLogic,
         skillMetaBuffsLogic: spectroMSkillMetaBuffsLogic
     },
     "1503": {

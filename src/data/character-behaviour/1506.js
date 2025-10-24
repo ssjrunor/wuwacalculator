@@ -77,6 +77,7 @@ export function applyPheobeLogic({
         }
 
         if (!mergedBuffs.__attentive && characterState?.activeStates?.attentive) {
+            mergedBuffs.spectroFrazzleResShred = (mergedBuffs?.spectroFrazzleResShred ?? 0) + 10;
             skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + (skillMeta.element === 'spectro' ? 10 : 0);
             mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) +  100;
             mergedBuffs.__attentive = true;
@@ -143,21 +144,19 @@ export function pheobeBuffsLogic({
         mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + 120;
     }
 
+    mergedBuffs.spectroFrazzleResShred = (mergedBuffs?.spectroFrazzleResShred ?? 0) +
+        (state.attentive ? 10 : 0);
+
     return { mergedBuffs };
 }
 
 export function pheobeSkillMetaBuffsLogic({
-                                            mergedBuffs,
                                             characterState,
-                                            activeCharacter,
-                                            combatState,
                                             skillMeta
                                         }) {
 
     const state = characterState?.activeStates ?? {};
     const element = skillMeta?.element ?? null;
     skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + (element === 'spectro' && state.attentive ? 10 : 0);
-
-
     return { skillMeta };
 }
