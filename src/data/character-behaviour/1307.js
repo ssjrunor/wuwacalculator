@@ -56,6 +56,8 @@ export function applyBulingLogic({
         mergedBuffs.__bulingS1 = true;
     }
 
+    if (name.includes('blessed by fortune healing')) skillMeta.visible = isActiveSequence(4);
+
     if (isActiveSequence(6) &&
         !mergedBuffs.__bulingS6 &&
         isToggleActive(6) && characterState?.activeStates?.heavenEarthMind) {
