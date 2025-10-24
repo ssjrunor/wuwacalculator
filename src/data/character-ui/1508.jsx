@@ -6,7 +6,7 @@ import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 
 export default function ChisaUI({ setCharacterRuntimeStates, charId, activeStates, toggleState, characterRuntimeStates }) {
     const combatState = characterRuntimeStates[charId]?.CombatState;
-    const havocBane = combatState.havocBane ?? 0;
+    const havocBane = combatState?.havocBane ?? 0;
 
     return (
         <div className="status-toggles">
