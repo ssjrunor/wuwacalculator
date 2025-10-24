@@ -103,6 +103,13 @@ export function applyChisaLogic({
 }
 
 export const chisaMultipliers = {
+    normalAttack: [
+        {
+            name: "Death Snip Healing",
+            scaling: { Atk: 1 },
+            healing: true
+        }
+    ],
     forteCircuit: [
         {
             name: "Sawring - Eradication Shield",
