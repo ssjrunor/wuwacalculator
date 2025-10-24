@@ -43,7 +43,7 @@ export function applyChisaLogic({
         skillMeta.visible = false;
     }
 
-    if (name.includes('sawring - eradication')) {
+    if (name.includes('sawring - eradication dmg')) {
         const stacks = characterState?.activeStates?.ringOfChainsaw ?? 0;
         const perStack = characterState.activeStates.__ringOfChainsaw ?? 0;
 
@@ -59,7 +59,7 @@ export function applyChisaLogic({
 
     if (characterState.activeStates.myriadConvergence && (name.includes('sawring - blitz') ||
         name.includes('sawring - eradication') ||
-        name.includes('ring of chainsaw')))
+        name.includes('ring of chainsaw')) && !name.includes('shield'))
         skillMeta.multiplier *= 2.2;
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__chisaInherent2) {
@@ -85,7 +85,7 @@ export function applyChisaLogic({
 
     if (isActiveSequence(3) && (name.includes('sawring - blitz') ||
         name.includes('sawring - eradication') ||
-        name.includes('ring of chainsaw')))
+        name.includes('ring of chainsaw')) && !name.includes('shield'))
         skillMeta.multiplier *= 2.2;
 
     if(isActiveSequence(5) && tab === 'resonanceLiberation') skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 100;
