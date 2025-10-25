@@ -33,7 +33,7 @@ export function applyChisaLogic({
     const name = skillMeta.name?.toLowerCase();
     const tab = skillMeta.tab ?? '';
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
-    const havocBane = combatState.havocBane ?? 0;
+    //const havocBane = combatState.havocBane ?? 0;
 
     if (tab === 'forteCircuit') skillMeta.skillType = 'ultimate';
     if (name.includes('death snip')) skillMeta.skillType = 'ultimate';
@@ -52,8 +52,8 @@ export function applyChisaLogic({
     }
 
     if (!mergedBuffs.__threadOfBane && characterState.activeStates.threadOfBane) {
-        const bonusDefIgnore = Math.min(havocBane * 3, 18);
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + bonusDefIgnore;
+        //const bonusDefIgnore = Math.min(havocBane * 3, 18);
+        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 30;
         mergedBuffs.__threadOfBane = true
     }
 
@@ -73,14 +73,14 @@ export function applyChisaLogic({
         mergedBuffs.__chisaS1 = true;
     }
 
-    if (isActiveSequence(2) && !mergedBuffs.__chisaS2 && characterState.activeStates.threadOfBane) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 24;
+    if (isActiveSequence(2)) {
+        skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + (skillMeta.element === 'havoc' ? 10 : 0);
+        if (!mergedBuffs.__chisaS2 && characterState.activeStates.threadOfBane) {
+            for (const elem of Object.values(elementToAttribute)) {
+                mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 50;
+            }
+            mergedBuffs.__chisaS2 = true;
         }
-        negativeStatus.forEach(s =>
-            mergedBuffs.damageTypeAmplify[s] = (mergedBuffs.damageTypeAmplify[s] ?? 0) + 24
-        );
-        mergedBuffs.__chisaS2 = true;
     }
 
     if (isActiveSequence(3) && (name.includes('sawring - blitz') ||
@@ -91,11 +91,17 @@ export function applyChisaLogic({
     if(isActiveSequence(5) && tab === 'resonanceLiberation') skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 100;
 
     if (isToggleActive('6-a') && isActiveSequence(6) && tab.includes('o')) {
-        skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 24;
-        if (isToggleActive('6-b') && (tab === 'resonanceLiberation' || name.includes('sawring - eradication')))
-            skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 1000;
-        if (isToggleActive('6-c'))
-            skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 24;
+        negativeStatus.forEach(s =>
+            mergedBuffs.damageTypeAmplify[s] = (mergedBuffs.damageTypeAmplify[s] ?? 0) + 30
+        );
+        if (!mergedBuffs.__chisaS6a) {
+            mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 30;
+            mergedBuffs.__chisaS6a = true;
+        }
+        if (isToggleActive('6-b') && !mergedBuffs.__chisaS6b) {
+            mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 30;
+            mergedBuffs.__chisaS6b = true;
+        }
     }
 
     return {mergedBuffs, combatState, skillMeta};
@@ -130,21 +136,23 @@ export function chisaBuffsLogic({
                                    mergedBuffs, characterState, combatState
                                }) {
     const state = characterState?.activeStates ?? {};
-    const havocBane = combatState.havocBane ?? 0;
+    //const havocBane = combatState.havocBane ?? 0;
 
     if (state.threadOfBane) {
-        const bonusDefIgnore = Math.min(havocBane * 3, 18);
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + bonusDefIgnore;
+        //const bonusDefIgnore = Math.min(havocBane * 3, 18);
+        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 30;
     }
 
     if (state.endlessBonds && state.threadOfBane) {
         for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 24;
+            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 50;
         }
-        negativeStatus.forEach(s =>
-            mergedBuffs.damageTypeAmplify[s] = (mergedBuffs.damageTypeAmplify[s] ?? 0) + 24
-        );
     }
+
+    negativeStatus.forEach(s =>
+        mergedBuffs.damageTypeAmplify[s] = (mergedBuffs.damageTypeAmplify[s] ?? 0) +
+            (state.risingDawn ? 30 : 0)
+    )
 
     return { mergedBuffs };
 }

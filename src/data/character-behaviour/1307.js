@@ -31,13 +31,12 @@ export function applyBulingLogic({
 
 
     if (characterState?.activeStates?.yinAndYang && !mergedBuffs.__yinAndYang) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
+        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 10;
         mergedBuffs.__yinAndYang = true;
     }
 
     if (characterState?.activeStates?.heavenEarthMind && !mergedBuffs.__heavenEarthMind) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 20;
+        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 30;
         mergedBuffs.__heavenEarthMind = true;
     }
 
@@ -63,11 +62,11 @@ export function applyBulingLogic({
     if (isActiveSequence(6) &&
         !mergedBuffs.__bulingS6 &&
         isToggleActive(6) && characterState?.activeStates?.heavenEarthMind) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 40;
+        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 55;
         mergedBuffs.__bulingS6 = true;
     }
 
-    if (name.includes('exorcist in command')) skillMeta.multiplier = 0.16;
+    if (name.includes('exorcist in command')) skillMeta.multiplier = 0.18;
 
     return {mergedBuffs, combatState, skillMeta};
 }
@@ -117,12 +116,8 @@ export function bulingBuffsLogic({
                                }) {
     const state = characterState?.activeStates ?? {};
 
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + (state.yinAndYang ? 15 : 0);
-
-    if (state.heavenEarthMind) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 20;
-    }
+    mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + (state.yinAndYang ? 10 : 0);
+    mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + (state.heavenEarthMind ? 30 : 0);
 
     if (state.exorcistInCommand) {
         for (const elem of Object.values(elementToAttribute)) {
@@ -131,7 +126,7 @@ export function bulingBuffsLogic({
     }
 
     mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) +
-    ((state.almightyCelestialLord && state.heavenEarthMind) ? 40 : 0);
+    ((state.almightyCelestialLord && state.heavenEarthMind) ? 55 : 0);
 
     return { mergedBuffs };
 }

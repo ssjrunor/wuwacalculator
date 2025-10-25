@@ -11,7 +11,8 @@ const detailUrl = id => `https://api.hakush.in/ww/data/en/character/${id}.json`;
 
 const OUTPUT_PATH = path.join(__dirname, '../data/characters-mapped.json');
 
-const SKIP_EXISTING = true;
+// --- toggle this ---
+const SKIP_EXISTING = false;
 
 async function buildFullCharacterList() {
     try {
@@ -20,14 +21,17 @@ async function buildFullCharacterList() {
         const ids = Object.keys(master);
 
         let existingCharacters = [];
-        try {
-            const existingData = await fs.readFile(OUTPUT_PATH, 'utf8');
-            existingCharacters = JSON.parse(existingData);
-        } catch {
+        if (SKIP_EXISTING) {
+            try {
+                const existingData = await fs.readFile(OUTPUT_PATH, 'utf8');
+                existingCharacters = JSON.parse(existingData);
+            } catch {
+                // file may not exist, ignore
+            }
         }
 
         const existingIds = new Set(existingCharacters.map(c => String(c?.Id ?? c?.id)));
-        const allCharacters = [...existingCharacters];
+        const allCharacters = SKIP_EXISTING ? [...existingCharacters] : [];
 
         for (const _id of ids) {
             const id = String(_id);

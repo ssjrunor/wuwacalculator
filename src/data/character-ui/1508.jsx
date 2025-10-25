@@ -5,8 +5,10 @@ import {attributeColors} from "../../utils/attributeHelpers.js";
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 
 export default function ChisaUI({ setCharacterRuntimeStates, charId, activeStates, toggleState, characterRuntimeStates }) {
+/*
     const combatState = characterRuntimeStates[charId]?.CombatState;
     const havocBane = combatState?.havocBane ?? 0;
+*/
 
     return (
         <div className="status-toggles">
@@ -14,7 +16,9 @@ export default function ChisaUI({ setCharacterRuntimeStates, charId, activeState
                 <div className="status-toggle-box-inner">
                     <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Thread of Bane</h4>
                     <div>
-                        <p>When dealing damage, Chisa ignores <span className='highlight'>3%</span> of the target's DEF for each stack of <span style={{ color: attributeColors['havoc'], fontWeight: 'bold' }}>Havoc Bane</span> on them, up to <span className='highlight'>18%</span> of their DEF.</p>
+                        <p>
+                            When dealing damage to targets affected by <span className='highlight'>Unseen Snare</span>, ignore <span className='highlight'>30%</span> of their DEF.
+                        </p>
                     </div>
                     <label className="modern-checkbox">
                         <input
@@ -24,11 +28,11 @@ export default function ChisaUI({ setCharacterRuntimeStates, charId, activeState
                         />
                         Enable
                     </label>
-                    {activeStates.threadOfBane &&
+                    {/*{activeStates.threadOfBane &&
                         <span style={{ fontSize: '12px', color: 'gray' }}>
                             ({havocBane > 6 ? '6+' : havocBane} {havocBane !== 1 ? 'stacks' : 'stack'} of <span style={{ color: attributeColors['havoc'], fontWeight: 'bold' }}>Havoc Bane</span>)
                         </span>
-                    }
+                    }*/}
                 </div>
                 <div className="status-toggle-box-inner">
                     <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Woven Myriad - Convergence</h4>
@@ -212,9 +216,6 @@ export function chisaSequenceToggles({
                 {renderCheckbox('Marked by Unseen Snare?', '6-a', () =>
                     toggleSequence('6-a')
                 )}
-                {sequenceToggles['6-a'] && renderCheckbox('Target\'s HP below 50%?', '6-c', () =>
-                    toggleSequence('6-c')
-                )}
                 {sequenceToggles['6-a'] && renderCheckbox('Common Class targets?', '6-b', () =>
                     toggleSequence('6-b')
                 )}
@@ -227,7 +228,7 @@ export function chisaSequenceToggles({
 
 export function buffUI({ activeStates, toggleState, attributeColors, characterRuntimeStates, charId }) {
     const combatState = characterRuntimeStates[charId]?.CombatState;
-    const havocBane = combatState.havocBane ?? 0;
+    //const havocBane = combatState.havocBane ?? 0;
 
     return (
         <div className="echo-buffs">
@@ -236,7 +237,7 @@ export function buffUI({ activeStates, toggleState, attributeColors, characterRu
                     <div className="echo-buff-name">Thread of Bane</div>
                 </div>
                 <div className="echo-buff-effect">
-                    When dealing damage, ignore <span className='highlight'>3%</span> of the target's DEF for each stack of <span style={{ color: attributeColors['havoc'], fontWeight: 'bold' }}>Havoc Bane</span> on them, up to <span className='highlight'>18%</span> of their DEF.
+                    When dealing damage to targets affected by <span className='highlight'>Unseen Snare</span>, ignore <span className='highlight'>30%</span> of their DEF.
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -245,11 +246,11 @@ export function buffUI({ activeStates, toggleState, attributeColors, characterRu
                         onChange={() => toggleState('threadOfBane')}
                     />
                     Enable
-                    {activeStates.threadOfBane &&
+                    {/*{activeStates.threadOfBane &&
                         <span style={{ fontSize: '12px', color: 'gray' }}>
                             ({havocBane > 6 ? '6+' : havocBane} {havocBane !== 1 ? 'stacks' : 'stack'} of <span style={{ color: attributeColors['havoc'], fontWeight: 'bold' }}>Havoc Bane</span>)
                         </span>
-                    }
+                    }*/}
                 </label>
             </div>
 
@@ -279,6 +280,23 @@ export function buffUI({ activeStates, toggleState, attributeColors, characterRu
                             (Requires Thread of Bane)
                         </span>
                     )}
+                </label>
+            </div>
+
+            <div className="echo-buff">
+                <div className="echo-buff-header">
+                    <div className="echo-buff-name">S6: Thus, Hope is Rekindled with the Rising Dawn</div>
+                </div>
+                <div className="echo-buff-effect">
+                    <span className="highlight">Negative Status</span> DMG on targets affected by <span className="highlight">Unseen Snare</span> is Amplified by <span className="highlight">30%</span>.
+                </div>
+                <label className="modern-checkbox">
+                    <input
+                        type="checkbox"
+                        checked={activeStates.risingDawn || false}
+                        onChange={() => toggleState('risingDawn')}
+                    />
+                    Enable
                 </label>
             </div>
         </div>
