@@ -259,8 +259,7 @@ export function buffUI({ activeStates, toggleState, attributeColors, characterRu
                     <div className="echo-buff-name">S2: Into the Web of Endless Bonds</div>
                 </div>
                 <div className="echo-buff-effect">
-                    When nearby Resonators in the team are in <span className="highlight">Thread of Bane</span>, their DMG is Amplified by <span className="highlight">24%</span>.
-                    The <span className="highlight">Negative Status</span> DMG taken by targets near Resonators in <span className="highlight">Thread of Bane</span> is Amplified by <span className="highlight">24%</span>.
+                    Nearby Resonators in the team in <span className="highlight">Thread of Bane</span> gain <span className="highlight">50%</span> All Attribute DMG Bonus.
                 </div>
                 <label className="modern-checkbox"
                        style={{
