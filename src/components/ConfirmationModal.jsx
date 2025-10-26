@@ -9,6 +9,7 @@ export default function ConfirmationModal({
                                               onConfirm,
                                               onCancel,
                                               onClose,
+                                              currentSliderColor = '#7bf'
                                           }) {
     if (!open && !isClosing) return null;
 
@@ -47,7 +48,11 @@ export default function ConfirmationModal({
                 onClick={(e) => e.stopPropagation()}
             >
                 <h3 style={{ marginBottom: 'unset' }}>{title}</h3>
-                <h4>{message}</h4>
+                <h4
+                    style={{
+                        '--slider-color': currentSliderColor,
+                    }}
+                    dangerouslySetInnerHTML={{ __html: message }} />
 
                 <div className="modal-footer" style={{ display: 'flex', gap: '0.5rem' }}>
                     <button

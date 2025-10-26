@@ -1,5 +1,6 @@
 .rotation-pane {
     padding: 16px;
+    padding-bottom: unset;
     background: var(--bg-secondary);
     border-radius: 8px;
 }

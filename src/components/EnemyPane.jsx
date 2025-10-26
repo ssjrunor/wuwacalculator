@@ -126,12 +126,12 @@ export default function EnemyPane({
                     <input
                         type="range"
                         min="0"
-                        max="6"
+                        max="12"
                         value={combatState.aeroErosion ?? 0}
                         onChange={(e) => handleDebuffChange('aeroErosion', e.target.value)}
                         style={{
                             '--slider-color': 'rgb(15,205,160)',
-                            '--slider-fill': `${((combatState.aeroErosion ?? 0) / 6) * 100}%`
+                            '--slider-fill': `${((combatState.aeroErosion ?? 0) / 12) * 100}%`
                         }}
                     />
                 </div>
