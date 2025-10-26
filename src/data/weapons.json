@@ -40,14 +40,6 @@
     "type": 1
   },
   {
-    "id": "21010020",
-    "name": "Training Broadblade",
-    "description": "This broadblade is designed specifically for training and teaching, offering only the basic features.",
-    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010027_UI.T_IconWeapon21010027_UI.webp",
-    "rank": 1,
-    "type": 1
-  },
-  {
     "id": "21010023",
     "name": "Originite: Type I",
     "description": "To create new Tacetite weapons, the Huaxu Academy designed this test Broadblade for technical verification. Its main feature is healing through attacks, improving the physical abilities of Resonators while exhibiting impressive weapon performance.",
