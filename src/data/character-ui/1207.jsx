@@ -8,7 +8,7 @@ export default function LupaUI({ characterRuntimeStates, setCharacterRuntimeStat
     const packHuntValue = characterRuntimeStates?.[charId]?.activeStates?.packHunt ?? 0;
     const state = characterRuntimeStates?.[charId]?.activeStates;
     const team = state?.teamBase;
-    const sequence = characterRuntimeStates[charId].SkillLevels.sequence ?? 0;
+    const sequence = characterRuntimeStates?.[charId]?.SkillLevels?.sequence ?? 0;
 
     const isTeamValid = ((team?.length === 3 &&
         team?.every(char => Number(char.Attribute) === 2)) || sequence >= 3) ?? false;
@@ -122,7 +122,7 @@ export function CustomInherentSkills({
     const charId = character?.Id ?? character?.id ?? character?.link;
     const charLevel = characterRuntimeStates?.[charId]?.CharacterLevel ?? 1;
     const activeStates = characterRuntimeStates?.[charId]?.activeStates ?? {};
-    const sequence = characterRuntimeStates[charId].SkillLevels.sequence ?? 0;
+    const sequence = characterRuntimeStates?.[charId]?.SkillLevels?.sequence ?? 0;
 
     const toggleState = (key) => {
         setCharacterRuntimeStates(prev => ({
