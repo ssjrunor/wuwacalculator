@@ -21,8 +21,8 @@ const traceNodeIconMap = {
 export const traceIcons = Object.values(traceNodeIconMap);
 
 const skillToBuffMap = {
-    'ATK+': 'atkPercent', 'HP+': 'hpPercent', 'DEF+': 'defPercent',
-    'Healing Bonus+': 'healingBonus', 'Crit. Rate+': 'critRate', 'Crit. DMG+': 'critDmg',
+    'ATK+': 'atkPercent', 'HP+': 'hpPercent', 'HP Up': 'hpPercent', 'DEF+': 'defPercent',
+    'Healing Bonus+': 'healingBonus', 'Crit. Rate+': 'critRate', 'Crit. Rate Up': 'critRate', 'Crit. DMG+': 'critDmg',
     'Aero DMG Bonus+': 'aero',
     'Glacio DMG Bonus+': 'glacio',
     'Spectro DMG Bonus+': 'spectro',
