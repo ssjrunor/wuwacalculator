@@ -66,8 +66,15 @@ export const guides = [
                 <h4>9. Total Damage Summaries</h4>
                 <p>At the bottom of the Damage section, a <strong>Rotation Summary</strong> shows the total Normal, Crit, and Average values for your sequence. It also breaks down damage contribution by type (e.g., Basic, Skill, Liberation). If any healing or shielding abilities were used, these appear in separate totals in <span style="color: limegreen; font-weight: bold;">green</span> and <span style="color: #838383; font-weight: bold;">gray</span> respectively.</p>
                 <p>When a valid team rotation is active, you’ll see a <strong>Team Damage Summary</strong> below, showing each character’s percentage contribution to the total output.</p>
+                
+                <h4>10. Basic Rotations (<a href="https://www.prydwen.gg/wuthering-waves" target="_blank" rel="noopener noreferrer">Prydwen</a>)</h4>
+                <p>The <strong>Basic</strong> button in the <strong>Rotations</strong> section automatically loads a preset rotation sourced from <strong>Prydwen</strong>. These are curated “baseline” combos for each character, designed to help you get started or compare against your own builds.</p>
+                
+                <p>If a character has a rotation available in the database, clicking the <strong>Basic</strong> button will instantly apply it. Additionally, if a character has no existing rotation, their <strong>Prydwen</strong> rotation will load in automatically once.</p>
+                
+                <p>Note that <strong>beta characters</strong> will not have a Prydwen rotation until they are officially released in the game and receive one from <strong>Prydwen</strong>.</p>
 
-                <h4>10. Advanced Tips</h4>
+                <h4>11. Advanced Tips</h4>
                 <ul>
                     <li><strong>Snapshot Behavior:</strong> Locking skills allows testing “snapshot” buffs — like when a skill’s damage is fixed at activation even if later buffs expire.</li>
                     <li><strong>Skill Visibility:</strong> Hidden or disabled skills (like passive or auto-applied damage types) won’t appear in the menu or totals to prevent clutter.</li>
@@ -132,7 +139,7 @@ export const guides = [
                 <p>The Overview includes advanced metrics like <strong>Crit Value (CV)</strong> and <strong>Build Score</strong>, which evaluate how optimized your build is. These are derived automatically:</p>
                 <ul>
                     <li><strong>Crit Value (CV):</strong> A combined score from Crit Rate and Crit DMG — used to measure offensive balance.</li>
-                    <li><strong>Build Score:</strong> A normalized build quality metric based on Echo substat efficiency and scoring. (See more under the <strong>Scoring</strong> guide category.</li>
+                    <li><strong>Build Score:</strong> A normalized build quality metric based on Echo substat efficiency and scoring. (See more under the <strong>Build and Echo Scoring</strong> guide category.</li>
                 </ul>
                  `
             }
@@ -721,26 +728,26 @@ export const guides = [
                 <p>Each substat has a known range from its minimum to maximum possible value, divided into several “roll tiers.” The calculator grades each substat’s strength as a percentage between 0–100 based on its actual rolled value.</p>
         
                 <pre><code class="language-js">
-        # Example
-        min = 6.4%, max = 11.6%, possibleRolls = 7
-        roll = 9.6%
-        → Roll Grade = 30 + ((roll - min) / (max - min)) × (100 - 30)
+    # Example (ATK%)
+    min = 6.4%, max = 11.6%, possibleRolls = 8
+    roll = 9.6%
+    → Roll Grade = 30 + ((roll - min) / (max - min)) × (100 - 30)
                 </code></pre>
         
-                <p>Lower-tier rolls score closer to 30, while near-perfect rolls approach 100. This simulates in-game roll variance for consistent comparison.</p>
+                <p>Lower-tier rolls score closer to 30%, while near-perfect rolls approach 100%. This simulates in-game roll variance for consistent comparison.</p>
         
                 <h4>3. Main Stat and Substat Normalization</h4>
                 <p>Main stats and substats are normalized by comparing them to ideal reference values per Echo cost tier:</p>
                 <ul>
                   <li><strong>Cost 1 Echoes:</strong> HP% / ATK% / DEF% with flat HP as a fixed second stat.</li>
-                  <li><strong>Cost 3 Echoes:</strong> Elemental or ATK% mains, flat ATK fixed second stat.</li>
-                  <li><strong>Cost 4 Echoes:</strong> CRIT Rate, CRIT DMG, or Healing Bonus, with flat ATK as a secondary.</li>
+                  <li><strong>Cost 3 Echoes:</strong> Attribute DMG% / Energy Regen% / HP% / ATK% / DEF%, flat ATK fixed second stat.</li>
+                  <li><strong>Cost 4 Echoes:</strong> CRIT Rate% / CRIT DMG% / Healing Bonus% / HP% / ATK% / DEF%, with flat ATK as a secondary.</li>
                 </ul>
         
                 <pre><code class="language-js">
-        # Normalization
-        normalizedQuality = (actualValue / idealValue) × 100
-        # idealValue used is 44 (crit dmg's main stat value because it's the highest)
+    # Normalization
+    normalizedQuality = (actualValue / idealValue) × 100
+    # idealValue used is 44 (crit dmg's main stat value because it's the highest)
                 </code></pre>
         
                 <p>This keeps all stats comparable even when using different Echo costs or stat categories.</p>
@@ -749,15 +756,16 @@ export const guides = [
                 <p>Each character in the database has a <strong>stat weight profile</strong> that defines how much value they gain from each stat type. These weights are stored per-character and applied automatically when computing Echo scores.</p>
         
                 <pre><code class="language-js">
-        # Example (Pheobe)
-        {
-          atkPercent: 1,
-          atkFlat: 0.75,
-          critRate: 1,
-          critDmg: 1,
-          heavyAtk: 0.75,
-          spectro: 1
-        }
+    # Example (Pheobe)
+    {
+        atkPercent: 1,
+        atkFlat: 0.75,
+        energyRegen: 1,
+        critRate: 1,
+        critDmg: 1,
+        heavyAtk: 0.75,
+        spectro: 1
+    }
                 </code></pre>
         
                 <p>Weights range between <code>0</code> (irrelevant) and <code>1</code> (highly desirable). They ensure the system favors stats that actually scale with the character’s kit.</p>
@@ -766,9 +774,9 @@ export const guides = [
                 <p>The calculator combines roll quality and stat weights to produce three key metrics for each Echo:</p>
         
                 <pre><code class="language-js">
-        mainScore = (mainStatValue × normalizedQuality × weight)
-        subScore  = Σ (subStatValue × normalizedQuality × weight)
-        totalScore = mainScore + subScore
+    mainScore = (mainStatValue × normalizedQuality × weight)
+    subScore  = Σ (subStatValue × normalizedQuality × weight)
+    totalScore = mainScore + subScore
                 </code></pre>
         
                 <p>Every Echo’s <code style="font-weight: bold">totalScore</code> represents its contribution to your build’s overall power potential, scaled by how relevant those stats are for your character.</p>
@@ -777,7 +785,7 @@ export const guides = [
                 <p>Once all Echoes are scored, the system sums their weighted totals and divides them by the theoretical maximum possible score for that character’s top 5 substats:</p>
         
                 <pre><code class="language-js">
-        buildScore = (TotalEchoScore / Top5SubstatMax) × 100
+    buildScore = (TotalEchoScore / Top5SubstatMax) × 100
                 </code></pre>
         
                 <p>This gives your overall build a “Percent Efficiency” score, where 100% would represent a mathematically perfect distribution of substats and main stats for that character.</p>
@@ -786,7 +794,7 @@ export const guides = [
                 <p>As a secondary metric, <strong>CV</strong> (Crit Value) is shown to summarize your offensive potential:</p>
         
                 <pre><code class="language-js">
-        CV = (Crit Rate × 2) + Crit DMG
+    CV = (Crit Rate × 2) + Crit DMG
                 </code></pre>
         
                 <p>While it’s a simpler measure, it’s useful for comparing builds of DPS characters that rely heavily on critical scaling.</p>

@@ -661,6 +661,7 @@ export default function OverviewDetailPane({
                             {[...Array(5)].map((_, index) => {
                                 const echo = echoes[index] ?? null;
                                 const score = (getEchoScores(character.link, echo).totalScore / maxScore) * 100;
+                                const cv = (echo?.subStats?.critRate ?? 0) * 2 + (echo?.subStats?.critDmg ?? 0);
 
                                 return (
                                     <div
@@ -674,6 +675,7 @@ export default function OverviewDetailPane({
                                             getImageSrc={getImageSrc}
                                             score={score}
                                             setIconMap={setIconMap}
+                                            cv={cv}
                                         />
                                     </div>
                                 );
@@ -770,7 +772,8 @@ export function EchoGridPreview({
                                     getImageSrc,
                                     score = null,
                                     setIconMap,
-                                    className = ''
+                                    className = '',
+                                    cv = null
                                 }) {
     return (
         <>
@@ -787,10 +790,18 @@ export function EchoGridPreview({
                             )}
                             <div className={`echo-slot-cost-badge bag overview ${className}`}>{echo.cost}</div>
                         </div>
-                        <div className={`damage-tooltip-wrapper cv-container-tooltip ${className}`} data-tooltip={`Echo Score`}>
+                        <div className={`cv-container-tooltip ${className}`} data-tooltip={`Echo Score`}
+                        style={{ display: 'grid', gap: '4px' }}>
                             {score > 0 && (
-                                <div className={`cv-container overview-weapon-details echo-buff overview ${className}`}>
-                                    {score.toFixed(1)}%
+                                <div data-tooltip={`Echo Score`}
+                                    className={`damage-tooltip-wrapper cv-container overview-weapon-details echo-buff overview ${className}`}>
+                                    {cv ? `SR:` : ''} {score.toFixed(1)}%
+                                </div>
+                            )}
+                            {( cv && cv > 0) && (
+                                <div data-tooltip={`Echo CV`}
+                                     className={`damage-tooltip-wrapper cv-container overview-weapon-details echo-buff overview ${className}`}>
+                                    CV: {cv.toFixed(1)}%
                                 </div>
                             )}
                         </div>

@@ -13,6 +13,7 @@ import GuidesModal from "./GuideModal.jsx";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import Select from 'react-select';
 import SkillMenu, {skillTypeIconMap, skillTypeLabelMap, tabDisplayOrder} from "./SkillMenu.jsx";
+import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
 
 const errorMessages = [
     "Pro Tip: Try using this on {character} instead, unless you enjoy seeing these alerts.",
@@ -100,8 +101,10 @@ export default function RotationsPane({
         activationConstraint: { distance: 5 }
     }));
     const allSkillResults = skillResults ?? characterRuntimeStates[charId]?.allSkillResults ?? getSkillDamageCache();
-    const groupedSkillOptions = React.useMemo(() => {
-        const allSkills = allSkillResults.filter(skill => skill.visible !== false);
+    const precomputedGroups = characterRuntimeStates[charId]?.groupedSkillOptions;
+    const groupedSkillOptions = useMemo(() => {
+        if (precomputedGroups) return precomputedGroups;
+        const allSkills = (allSkillResults ?? []).filter(skill => skill.visible !== false);
         const groups = {};
 
         for (const skill of allSkills) {
@@ -116,7 +119,8 @@ export default function RotationsPane({
             });
         }
         return groups;
-    }, []);
+    }, [precomputedGroups, allSkillResults]);
+    const defaultRotationData = buildRotation(charId, groupedSkillOptions);
     const [sortKey, setSortKey] = usePersistentState('sortKey', 'date');
     const [sortOrder, setSortOrder] = usePersistentState('sortOrder', 'desc');
     const [editingId, setEditingId] = useState(null);
@@ -138,24 +142,8 @@ export default function RotationsPane({
         setExpandedTabs(prev => ({ ...prev, [key]: !prev[key] }));
     };
     const [editIndex, setEditIndex] = useState(null);
-    const handleAddSkill = (skill) => {
-        const type = Array.isArray(skill.type) ? skill.type[0] : skill.type;
-        const iconPath = type && typeof type === 'string' && skillTypeIconMap[type.toLowerCase?.()]
-            ? skillTypeIconMap[type.toLowerCase()]
-            : null;
-        const newEntryBase = {
-            id: crypto.randomUUID(),
-            label: skill.name,
-            detail: skillTypeLabelMap[type] ?? type,
-            tab: skill.tab,
-            iconPath,
-            visible: skill.visible,
-            multiplier: 1,
-            locked: false,
-            snapshot: undefined,
-            createdAt: Date.now(),
-            element: skill.element ?? null
-        };
+    function handleAddSkill(skill, entry) {
+        const newEntryBase = makeEntry(skill);
 
         setRotationEntries(prev => {
             const copy = [...prev];
@@ -185,7 +173,7 @@ export default function RotationsPane({
 
         setEditIndex(null);
         setShowSkillOptions(false);
-    };
+    }
 
     useEffect(() => {
         if (!charId) return;
@@ -468,6 +456,57 @@ export default function RotationsPane({
         label: opt.name
     }));
 
+    function loadBuiltRotation () {
+        const rotations = defaultRotationData?.builtRotations;
+        if (!rotations || rotations.length === 0) {
+            setPopupMessage({
+                message: `${activeCharacter.displayName} doesn't have one yet... (˶º⤙º˶)`,
+                icon: '❤',
+                color: { light: 'green', dark: 'limegreen' },
+                duration: 60000,
+                prompt: {
+                    message: 'DO IT YOURSELF~!',
+                    action: () => {
+                        setShowSkillOptions(true);
+                    }
+                },
+                onClose: () => setTimeout(() => setShowToast(false), 300)
+            });
+            setShowToast(true);
+        } else {
+            if (rotationEntries && rotationEntries.length > 0) {
+                setConfirmMessage({
+                    confirmLabel: 'Overwrite',
+                    message: `This will overwrite the current rotation with <a href="${defaultRotationData?.link}" target="_blank" rel="noopener noreferrer">Prydwen's</a>. This action cannot be undone...`,
+                    onConfirm: () => {
+                        setRotationEntries(rotations);
+                        setPopupMessage({
+                            message: 'Loaded~! (〜^∇^)〜',
+                            icon: '✔',
+                            color: { light: 'green', dark: 'limegreen' },
+                        });
+                        setShowToast(true);
+                    },
+                });
+            } else {
+                setConfirmMessage({
+                    title: 'Load in basic rotation ( ദ്ദി ˙ᗜ˙ )',
+                    message: `This will load in <a href="${defaultRotationData?.link}" target="_blank" rel="noopener noreferrer">Prydwen's</a> standard rotation for this character.`,
+                    onConfirm: () => {
+                        setRotationEntries(rotations);
+                        setPopupMessage({
+                            message: 'Loaded~! (〜^∇^)〜',
+                            icon: '✔',
+                            color: { light: 'green', dark: 'limegreen' },
+                        });
+                        setShowToast(true);
+                    },
+                });
+            }
+            setShowConfirm(true);
+        }
+    }
+
     return (
         <div className="rotation-pane">
             <div className="rotation-view-toggle">
@@ -483,10 +522,17 @@ export default function RotationsPane({
                 >
                     Team
                 </button>
-                <button onClick={() => openGuide('Rotations')} className="btn-primary echoes"
-                        style={{ marginLeft: 'auto'}}>
-                    See Guide
-                </button>
+                <div className="rotation-control-buttons"
+                     style={{ marginLeft: 'auto', display: 'flex', gap: '1rem'}}>
+                    <button
+                        onClick={loadBuiltRotation}
+                        className="btn-primary echoes">
+                        Basic
+                    </button>
+                    <button onClick={() => openGuide('Rotations')} className="btn-primary echoes">
+                        See Guide
+                    </button>
+                </div>
             </div>
 
             {viewMode === 'new' && (
@@ -612,22 +658,22 @@ export default function RotationsPane({
                             modifiers={[restrictToFirstScrollableAncestor]}
                             onDragEnd={({ active, over }) => {
                                 if (active.id !== over?.id) {
-                                    const oldIndex = normalizedEntries.findIndex(e => e.createdAt.toString() === active.id);
-                                    const newIndex = normalizedEntries.findIndex(e => e.createdAt.toString() === over.id);
+                                    const oldIndex = normalizedEntries.findIndex(e => e.id === active.id);
+                                    const newIndex = normalizedEntries.findIndex(e => e.id === over.id);
                                     setRotationEntries((items) => arrayMove(items, oldIndex, newIndex));
                                 }
                             }}
                         >
                             <SortableContext
-                                items={normalizedEntries.map(e => e.createdAt.toString())}
+                                items={normalizedEntries.map(e => e.id)}
                                 strategy={verticalListSortingStrategy}
                             >
                                 {normalizedEntries
-                                    .filter(entry => entry.visible !== false)
+                                    .filter(entry => entry.visible)
                                     .map((entry, idx) => (
                                     <RotationItem
-                                        key={entry.createdAt.toString()}
-                                        id={entry.createdAt.toString()}
+                                        key={entry.id}
+                                        id={entry.id}
                                         index={idx}
                                         entry={entry}
                                         onEdit={(i) => {
@@ -1133,8 +1179,69 @@ export default function RotationsPane({
                     onConfirm={confirmMessage.onConfirm}
                     onCancel={confirmMessage.onCancel}
                     onClose={() => setShowConfirm(false)}
+                    currentSliderColor={currentSliderColor}
                 />
             )}
         </div>
     );
+}
+
+export function buildRotation(charId, groupedSkillOptions) {
+    const builtRotations = [];
+    const rotationData = getDefaultRotationEntries(charId);
+    const entries = rotationData?.entries;
+
+    if (!Array.isArray(entries) || entries.length === 0) return null;
+
+    function findSkillInGroups(entryName, entryTab = null) {
+        const nameLower = entryName.toLowerCase();
+
+        if (entryTab && groupedSkillOptions[entryTab]) {
+            const foundInTab = groupedSkillOptions[entryTab].find(skill =>
+                skill.name.toLowerCase().includes(nameLower)
+            );
+            if (foundInTab) return foundInTab;
+        }
+
+        for (const tab in groupedSkillOptions) {
+            const found = groupedSkillOptions[tab].find(skill =>
+                skill.name.toLowerCase().includes(nameLower)
+            );
+            if (found) return found;
+        }
+
+        return null;
+    }
+
+    for (const entry of entries) {
+        const entryName = entry.name.toLowerCase();
+        const entryTab = entry.tab ?? null;
+        const skill = findSkillInGroups(entryName, entryTab);
+        if (skill) {
+            builtRotations.push(makeEntry(skill, entry));
+        }
+    }
+
+    return { builtRotations, link: rotationData.link };
+}
+
+
+function makeEntry (skill, entry = null) {
+    const type = Array.isArray(skill.type) ? skill.type[0] : skill.type;
+    const iconPath = type && typeof type === 'string' && skillTypeIconMap[type.toLowerCase?.()]
+        ? skillTypeIconMap[type.toLowerCase()]
+        : null;
+    return {
+        id: crypto.randomUUID(),
+        label: skill.name,
+        detail: skillTypeLabelMap[type] ?? type,
+        tab: skill.tab,
+        iconPath,
+        visible: skill.visible,
+        multiplier: entry?.multiplier ?? 1,
+        locked: false,
+        snapshot: undefined,
+        createdAt: Date.now(),
+        element: skill.element ?? null
+    };
 }

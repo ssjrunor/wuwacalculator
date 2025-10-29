@@ -25,7 +25,7 @@ import {fetchWeapons} from '../json-data-scripts/fetchWeapons';
 import {getWeaponOverride} from '../data/weapon-behaviour';
 import {applyEchoLogic} from '../data/buffs/applyEchoLogic';
 import {applyWeaponBuffLogic} from "../data/buffs/weaponBuffs.js";
-import RotationsPane from "../components/RotationsPane.jsx";
+import RotationsPane, {buildRotation} from "../components/RotationsPane.jsx";
 import EchoesPane from '../components/EchoesPane';
 import {echoes} from "../json-data-scripts/getEchoes.js";
 import {applyEchoSetBuffLogic, applyMainEchoBuffLogic, applySetEffect} from "../data/buffs/setEffect.js";
@@ -41,6 +41,8 @@ import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
 import {getCuteMessage} from "../components/cuteMessages.jsx";
 import {getSkillData} from "../utils/computeSkillDamage.js";
 import {getAllSkillLevelsWithEcho, getEffectiveSkillLevels, prepareDamageData} from "../utils/prepareDamageData.js";
+import {getSkillDamageCache} from "../utils/skillDamageCache.js";
+import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
 
 export default function Calculator() {
     const [characters, setCharacters] = useState([]);
@@ -58,7 +60,7 @@ export default function Calculator() {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-10-24 12:23';
+    const LATEST_CHANGELOG_VERSION = '2025-10-28 10:37';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
@@ -432,21 +434,19 @@ export default function Calculator() {
 
 
     useEffect(() => {
-        if (activeCharacterId) {
-            setTeam(prev => {
-                if (!prev || prev.length < 3) {
-                    return [activeCharacterId, null, null];
-                }
+        if (!activeCharacterId) return;
 
-                if (prev[0] !== activeCharacterId) {
-                    const updated = [...prev];
-                    updated[0] = activeCharacterId;
-                    return updated;
-                }
+        setTeam(prev => {
+            if (!Array.isArray(prev)) prev = [null, null, null];
 
+            if (prev[0]?.toString() === activeCharacterId.toString()) {
                 return prev;
-            });
-        }
+            }
+
+            const newTeam = [...prev];
+            newTeam[0] = activeCharacterId;
+            return newTeam;
+        });
     }, [activeCharacterId]);
 
     const overrideLogic = getCharacterOverride(
@@ -883,6 +883,22 @@ export default function Calculator() {
     });
 
     const skillResults = [...charSkillResults, ...echoSkillResults, ...negativeEffects];
+    useEffect(() => {
+        setCharacterRuntimeStates(prev => {
+            const prevChar = prev?.[charId] ?? {};
+            const prevResults = prevChar.allSkillResults ?? [];
+            if (JSON.stringify(prevResults) === JSON.stringify(skillResults)) return prev;
+
+            return {
+                ...prev,
+                [charId]: {
+                    ...prevChar,
+                    allSkillResults: skillResults,
+                },
+            };
+        });
+    }, [skillResults]);
+
     const skillLevels = getAllSkillLevels(charId, activeCharacter, skillTabs);
     const allSkillLevels = getAllSkillLevelsWithEcho({
         charId,
@@ -912,22 +928,71 @@ export default function Calculator() {
             tab,
         };
 
+        const allSkillResults =
+            skillResults ??
+            characterRuntimeStates[charId]?.allSkillResults ??
+            getSkillDamageCache();
+
+        const groupedSkillOptions = (() => {
+            const groups = {};
+            for (const skill of allSkillResults.filter(s => s.visible)) {
+                const tab = skill.tab ?? "unknown";
+                if (!groups[tab]) groups[tab] = [];
+                groups[tab].push({
+                    name: skill.name,
+                    type: skill.skillType,
+                    tab,
+                    visible: skill.visible,
+                    element: skill.element ?? null,
+                });
+            }
+            return groups;
+        })();
+
+        const rotationData = getDefaultRotationEntries(charId);
+        const entries = rotationData?.entries ?? [];
+        const defaultRotationData = buildRotation(charId, groupedSkillOptions);
+        const builtRotations = defaultRotationData?.builtRotations ?? [];
+
         setCharacterRuntimeStates(prev => {
             const prevChar = prev?.[charId] ?? {};
-            const existing = prevChar.randGenSettings;
-            if (existing) return prev;
+            const newChar = { ...prevChar };
+
+            let changed = false;
+
+            if (!newChar.randGenSettings?.level) {
+                newChar.randGenSettings = defaultRandGen;
+                changed = true;
+            }
+
+            if (!newChar.groupedSkillOptions) {
+                newChar.groupedSkillOptions = groupedSkillOptions;
+                changed = true;
+            }
+
+
+            const existingRotation = newChar.rotationEntries ?? [];
+            const hasNoRotation = existingRotation.length === 0;
+            const hasPreset =
+                Array.isArray(entries) && entries.length > 0 && builtRotations.length > 0;
+            if (hasNoRotation && hasPreset && !newChar._rotationInitialized) {
+                setRotationEntries(builtRotations);
+                newChar.rotationEntries = rotationEntries;
+                newChar._rotationInitialized = true;
+                changed = true;
+            }
+
+            if (!changed) return prev;
 
             return {
                 ...prev,
-                [charId]: {
-                    ...prevChar,
-                    randGenSettings: defaultRandGen,
-                },
+                [charId]: newChar,
             };
         });
-    }, [activeCharacter, skillTabs, allSkillLevels]);
 
-    //console.log(mergedBuffs);
+    }, [charId, skillTabs, allSkillLevels, skillResults]);
+
+    //console.log(characterRuntimeStates[charId]);
 
     return (
         <>

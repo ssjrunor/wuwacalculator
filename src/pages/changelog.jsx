@@ -611,4 +611,16 @@ export const changelog = [
         ],
         shortDesc: `New <strong>Echo Generator</strong> system added~! (〜^∇^)〜`
     },
+    {
+        date: '28/10/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `
+            You can now load in a premade rotation for most characters in the <strong>Rotation</strong> section. Only released characters for now...
+        `
+            },
+        ],
+        shortDesc: `Added <strong>Premade Rotations</strong>~! (〜^∇^)〜`
+    },
 ];

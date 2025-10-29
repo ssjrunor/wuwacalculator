@@ -18,17 +18,13 @@ export function applyAaltoLogic({
     const name = skillMeta.name?.toLowerCase();
     const tab = skillMeta.tab ?? '';
 
-    if (name.includes('mist avatar hp')) {
-        skillMeta.visible = false;
-    }
+    if (name.includes('mist avatar hp')) skillMeta.visible = false;
 
-    if (tab === 'forteCircuit') {
-        skillMeta.skillType = 'skill';
-    }
+    if (name.includes('gate of quandary atk increase')) skillMeta.visible = false;
 
-    if (name.includes('aimed')) {
-        skillMeta.skillType = 'heavy';
-    }
+    if (tab === 'forteCircuit')
+
+    if (name.includes('aimed')) skillMeta.skillType = 'heavy';
 
     if (isToggleActiveLocal('inherent1') && skillMeta.skillType === 'heavy') {
         skillMeta.critRateBonus = (skillMeta.critRateBonus ?? 0) + 999999;

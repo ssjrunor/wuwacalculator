@@ -124,12 +124,11 @@
 }
 
 .skills-modal-content h4 a {
-    color: grey;
     transition: all ease 0.3s;
     text-decoration: underline;
     font-weight: 600;
 }
 
 .skills-modal-content h4 a:hover {
-    color: var(--slider-color, #7bf);
+    color: var(--slider-color, #5e46ff);
 }

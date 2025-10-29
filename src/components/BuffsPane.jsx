@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import CharacterMenu from './CharacterMenu';
 import ExpandableSection from "./Expandable.jsx";
 import EchoBuffs, {echoBuffList} from "./EchoBuffs.jsx";
 import WeaponBuffs, {weaponBuffList} from "./WeaponBuffs.jsx";
 import {loadCharacterBuffUI} from "../data/character-ui/index.js";
-import { attributeColors } from '../utils/attributeHelpers';
-import { X } from 'lucide-react';
+import {attributeColors} from '../utils/attributeHelpers';
+import {X} from 'lucide-react';
 import {preloadImages} from "../pages/calculator.jsx";
 import {calculateRotationTotals} from "./Rotations.jsx";
 import GuidesModal from "./GuideModal.jsx";
@@ -414,8 +414,7 @@ export function getResolvedTeamRotations(runtime, characterRuntimeStates, savedR
         const selectedIndex = allTotals.findIndex(entry => entry.id === selectedId);
         const fallbackIndex = selectedIndex >= 0 ? selectedIndex : 0;
 
-        const selected = allTotals[fallbackIndex];
-        teamRotation[teammateId] = selected;
+        teamRotation[teammateId] = allTotals[fallbackIndex];
     }
 
     return teamRotation;

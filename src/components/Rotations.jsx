@@ -11,7 +11,7 @@ function formatNumber(num) {
 export default function Rotations({ rotationEntries, characterRuntimeStates, charId, skillResults }) {
     if (!Array.isArray(rotationEntries) || rotationEntries.length === 0) return null;
 
-    const skillCache = skillResults ?? characterRuntimeStates[charId]?.allSkillResults ?? getSkillDamageCache();
+    const skillCache = characterRuntimeStates[charId]?.allSkillResults ?? skillResults ?? getSkillDamageCache();
     const safeEntries = Array.isArray(rotationEntries) ? rotationEntries : [];
     const { total, supportTotals, breakdownMap } = calculateRotationTotals(skillCache, safeEntries);
 

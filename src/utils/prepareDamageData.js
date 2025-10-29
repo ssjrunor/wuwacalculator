@@ -25,37 +25,33 @@ export function prepareDamageData({
     const { frazzle } = calculateSpectroFrazzleDamage(combatState, mergedBuffs, characterLevel);
     const { erosion } = calculateAeroErosionDamage(combatState, mergedBuffs, characterLevel);
 
-    if (frazzle > 0) {
-        negativeEffects.push({
-            name: 'Spectro Frazzle',
-            tab: 'negativeEffect',
-            skillType: 'spectroFrazzle',
-            normal: Math.floor(frazzle),
-            crit: Math.floor(frazzle),
-            avg: Math.floor(frazzle),
-            isSupportSkill: false,
-            element: 'spectro',
-            visible: true,
-            supportLabel: null,
-            supportColor: null
-        });
-    }
+    negativeEffects.push({
+        name: 'Spectro Frazzle',
+        tab: 'negativeEffect',
+        skillType: 'spectroFrazzle',
+        normal: Math.floor(frazzle),
+        crit: Math.floor(frazzle),
+        avg: Math.floor(frazzle),
+        isSupportSkill: false,
+        element: 'spectro',
+        visible: frazzle > 0,
+        supportLabel: null,
+        supportColor: null
+    });
 
-    if (erosion > 0) {
-        negativeEffects.push({
-            name: 'Aero Erosion',
-            tab: 'negativeEffect',
-            skillType: 'aeroErosion',
-            normal: Math.floor(erosion),
-            crit: Math.floor(erosion),
-            avg: Math.floor(erosion),
-            isSupportSkill: false,
-            element: 'aero',
-            visible: true,
-            supportLabel: null,
-            supportColor: null
-        });
-    }
+    negativeEffects.push({
+        name: 'Aero Erosion',
+        tab: 'negativeEffect',
+        skillType: 'aeroErosion',
+        normal: Math.floor(erosion),
+        crit: Math.floor(erosion),
+        avg: Math.floor(erosion),
+        isSupportSkill: false,
+        element: 'aero',
+        visible: erosion > 0,
+        supportLabel: null,
+        supportColor: null
+    });
 
     const mainEcho = characterRuntimeStates?.[charId]?.equippedEchoes?.[0];
     if (mainEcho) {
@@ -117,7 +113,6 @@ export function prepareDamageData({
     const allLevels = getAllSkillLevels(charId, activeCharacter, skillTabs);
 
     for (const tab of skillTabs) {
-        //const skill = getSkillData(activeCharacter, tab);
         const levels = allLevels[tab] ?? [];
 
         levels.forEach((level) => {
@@ -197,9 +192,18 @@ export function getEffectiveSkillLevels(charId, activeCharacter, tab, skill) {
         const skillName = skill?.Name ?? "";
 
 
-        if (label === 'Skill DMG' || label === 'Skill Dmg' || label === 'Skill Damage') {
+        if (
+            label === 'Press DMG' ||
+            label === 'Press Dmg' ||
+            label === 'Hold DMG' ||
+            label === 'Hold Dmg' ||
+            label === 'Mid-air Press DMG' ||
+            label === 'Mid-air Press Dmg'
+        ) {
+            label = `${skillName} ${label}`;
+        } else if (label === 'Skill DMG' || label === 'Skill Dmg' || label === 'Skill Damage' || label === 'DMG' || label === 'Dmg') {
             label = `${skillName} DMG`;
-        } else if (label === 'Healing' || label === 'Shielding' || label === 'Shield') {
+        }  else if (label === 'Healing' || label === 'Shielding' || label === 'Shield') {
             label = `${skillName} ${label}`;
         }
 
