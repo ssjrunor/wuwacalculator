@@ -103,7 +103,9 @@ export default function RotationsPane({
     const allSkillResults = skillResults ?? characterRuntimeStates[charId]?.allSkillResults ?? getSkillDamageCache();
     const precomputedGroups = characterRuntimeStates[charId]?.groupedSkillOptions;
     const groupedSkillOptions = useMemo(() => {
-        if (precomputedGroups) return precomputedGroups;
+        if (precomputedGroups && Object.keys(precomputedGroups).length > 0)
+            return precomputedGroups;
+
         const allSkills = (allSkillResults ?? []).filter(skill => skill.visible !== false);
         const groups = {};
 
@@ -113,13 +115,27 @@ export default function RotationsPane({
             groups[tab].push({
                 name: skill.name,
                 type: skill.skillType,
-                tab: tab,
+                tab,
                 visible: skill.visible,
-                element: skill.element ?? null
+                element: skill.element ?? null,
             });
         }
+
         return groups;
     }, [precomputedGroups, allSkillResults]);
+
+    useEffect(() => {
+        if (!charId || !groupedSkillOptions) return;
+
+        setCharacterRuntimeStates(prev => ({
+            ...prev,
+            [charId]: {
+                ...prev[charId],
+                groupedSkillOptions,
+            },
+        }));
+    }, [groupedSkillOptions]);
+
     const defaultRotationData = buildRotation(charId, groupedSkillOptions);
     const [sortKey, setSortKey] = usePersistentState('sortKey', 'date');
     const [sortOrder, setSortOrder] = usePersistentState('sortOrder', 'desc');

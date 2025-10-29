@@ -992,7 +992,7 @@ export default function Calculator() {
 
     }, [charId, skillTabs, allSkillLevels, skillResults]);
 
-    //console.log(characterRuntimeStates[charId]);
+    console.log(characterRuntimeStates[charId]);
 
     return (
         <>
