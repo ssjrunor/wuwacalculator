@@ -295,7 +295,7 @@ export function getMainRotationTotals(mainCharId, characterRuntimeStates, savedR
 
     if (hasValidTeamRotation) {
         const liveTotal = getTeamRotationTotal(mainCharId, characterRuntimeStates, skillResults);
-        const { normal, crit, avg } = liveTotal?.teamTotal;
+        const { normal, crit, avg } = liveTotal?.teamTotal ?? { normal: 0, crit: 0, avg: 0 };
         if (normal !== 0 || crit !== 0 || avg !== 0 || liveTotal) {
             teamRotations.push({
                 name: runtime?.Name,
