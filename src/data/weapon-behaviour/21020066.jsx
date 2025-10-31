@@ -75,7 +75,7 @@ export function applyWeaponLogic({
     const atk = parseFloat(currentParamValues[0]);
     const heavy = parseFloat(currentParamValues[2]);
     const stacks = characterState?.activeStates?.stacks ?? 0;
-    const echoSkill = parseFloat(currentParamValues[3]);
+    const echoSkill = parseFloat(currentParamValues[5]);
 
     console.log(currentParamValues);
 
