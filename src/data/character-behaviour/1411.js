@@ -77,7 +77,7 @@ export function applyQYLogic({
 
     if (isActiveSequence(3)) {
         if (tab === 'resonanceLiberation') {
-            skillMeta.multiplier *= 6;
+            skillMeta.multiplier += 5;
         }
 
         if (isToggleActive(3) && inherent1) {
