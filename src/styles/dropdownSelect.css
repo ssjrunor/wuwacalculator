@@ -11,11 +11,6 @@
     display: block;
 }
 
-.dark .dropdown-label,
-.dark-alt .dropdown-label {
-    color: #fff;
-}
-
 .select-container {
     position: relative;
 }

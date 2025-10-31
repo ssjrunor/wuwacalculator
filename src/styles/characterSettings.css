@@ -21,13 +21,11 @@
 }
 
 .dark .character-settings,
-    .dark .skills-settings {
+.dark .skills-settings {
     background: rgba(31, 41, 55, 0.44);
-        border-color: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.1);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.19);
-    }
-
-
+}
 
 .skills-settings .echo-info {
     position: absolute;
@@ -41,9 +39,4 @@
 .skills-settings .echo-info:hover {
     cursor: pointer;
     transform: scale(1.2);
-}
-
-.dark .skills-settings .echo-info,
-.dark-alt .skills-settings .echo-info {
-    color: white;
 }

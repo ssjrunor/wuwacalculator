@@ -5,7 +5,11 @@ import useDarkMode from "../hooks/useDarkMode.js";
 
 export default function PrivacyPolicy() {
     const navigate = useNavigate();
-    const { theme, setTheme, effectiveTheme } = useDarkMode();
+    const {
+        theme,
+        setTheme,
+        effectiveTheme,
+    } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
     const toggleTheme = () => {

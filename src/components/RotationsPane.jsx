@@ -483,6 +483,7 @@ export default function RotationsPane({
                 prompt: {
                     message: 'DO IT YOURSELF~!',
                     action: () => {
+                        if (viewMode !== 'new') setViewMode('new');
                         setShowSkillOptions(true);
                     }
                 },
@@ -495,6 +496,7 @@ export default function RotationsPane({
                     confirmLabel: 'Overwrite',
                     message: `This will overwrite the current rotation with <a href="${defaultRotationData?.link}" target="_blank" rel="noopener noreferrer">Prydwen's</a>. This action cannot be undone...`,
                     onConfirm: () => {
+                        if (viewMode !== 'new') setViewMode('new');
                         setRotationEntries(rotations);
                         setPopupMessage({
                             message: 'Loaded~! (〜^∇^)〜',
@@ -509,6 +511,8 @@ export default function RotationsPane({
                     title: 'Load in basic rotation ( ദ്ദി ˙ᗜ˙ )',
                     message: `This will load in <a href="${defaultRotationData?.link}" target="_blank" rel="noopener noreferrer">Prydwen's</a> standard rotation for this character.`,
                     onConfirm: () => {
+                        if (viewMode !== 'new') setViewMode('new');
+                        console.log(viewMode);
                         setRotationEntries(rotations);
                         setPopupMessage({
                             message: 'Loaded~! (〜^∇^)〜',
@@ -777,6 +781,7 @@ export default function RotationsPane({
                                             message: 'Save a Rotation~',
                                             action: () => {
                                                 setViewMode('new');
+                                                if (rotationEntries.length === 0) setShowSkillOptions(true);
                                             }
                                         },
                                         onClose: () => setTimeout(() => setShowToast(false), 300)

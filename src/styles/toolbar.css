@@ -310,15 +310,9 @@
     outline: none;
     box-shadow: none;
     -webkit-tap-highlight-color: transparent;
-    transition: background 300ms ease, grid-template-columns 0.3s ease, border 300ms ease;
+    transition: background 300ms ease, grid-template-columns 0.2s ease, border 300ms ease;
 }
 
-.dark .sidebar-button,
-.dark-alt .sidebar-sub-button,
-.dark-alt .sidebar-button,
-.dark .sidebar-sub-button {
-    color: #ddd;
-}
 .sidebar.collapsed .sidebar-button,
 .sidebar.collapsed .sidebar-sub-button {
     grid-template-columns: 3.75rem 0;
@@ -330,7 +324,7 @@
     align-items: center;
     padding-left: 0.5rem;
     font-size: 1rem;
-    overflow: hidden;
+    overflow: visible;
     max-width: 11.25rem;
     transition: max-width 0.3s ease;
 }
@@ -414,7 +408,6 @@
 }
 
 .label-text {
-    transition: ease all 0.3s !important;
     font-weight: bold;
 }
 

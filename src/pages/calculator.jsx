@@ -60,14 +60,19 @@ export default function Calculator() {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-10-28 10:37';
+    const LATEST_CHANGELOG_VERSION = '2025-10-30 04:35';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
     const [showChangelog, setShowChangelog] = useState(false);
     const [shouldScrollChangelog, setShouldScrollChangelog] = useState(false);
     const [characterLevel, setCharacterLevel] = useState(1);
-    const { isDark, theme, setTheme, effectiveTheme } = useDarkMode();
+    const {
+        isDark,
+        theme,
+        setTheme,
+        effectiveTheme,
+    } = useDarkMode();
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
@@ -229,8 +234,8 @@ export default function Calculator() {
                 color: { light: 'green', dark: 'limegreen' },
                 duration: 60000,
                 prompt: {
-                    message: 'See changelog~!',
-                    action: () => navigate('/changelog')
+                    message: latest?.actionMessage ?? 'See changelog~!',
+                    action: latest?.action ?? (latest?.navigate ? (() => navigate(latest?.navigate)) : (() => navigate('/changelog'))),
                 }
             });
             setShowToast(true);
@@ -1015,43 +1020,43 @@ export default function Calculator() {
                                 iconName="character"
                                 altText="Characters"
                                 onClick={() => switchLeftPane('characters')}
-                                effectiveTheme={effectiveTheme}
+                                isDark={isDark}
                             />
                             <ToolbarIconButton
                                 iconName="weapon"
                                 altText="Weapon"
                                 onClick={() => switchLeftPane('weapon')}
-                                effectiveTheme={effectiveTheme}
+                                isDark={isDark}
                             />
                             <ToolbarIconButton
                                 iconName="echoes"
                                 altText="Echoes"
                                 onClick={() => switchLeftPane('echoes')}
-                                effectiveTheme={effectiveTheme}
+                                isDark={isDark}
                             />
                             <ToolbarIconButton
                                 iconName="teams"
                                 altText="Team"
                                 onClick={() => switchLeftPane('teams')}
-                                effectiveTheme={effectiveTheme}
+                                isDark={isDark}
                             />
                             <ToolbarIconButton
                                 iconName="enemy"
                                 altText="Enemy"
                                 onClick={() => switchLeftPane('enemy')}
-                                effectiveTheme={effectiveTheme}
+                                isDark={isDark}
                             />
                             <ToolbarIconButton
                                 iconName="buffs"
                                 altText="Buffs"
                                 onClick={() => switchLeftPane('buffs')}
-                                effectiveTheme={effectiveTheme}
+                                isDark={isDark}
                             />
                             <ToolbarIconButton
                                 iconName="rotations"
                                 altText="Rotation"
                                 onClick={() => switchLeftPane('rotation')}
-                                effectiveTheme={effectiveTheme}
+                                isDark={isDark}
                             />
                         </div>
                     )}
@@ -1132,49 +1137,49 @@ export default function Calculator() {
                                         label="Characters"
                                         onClick={() => switchLeftPane('characters')}
                                         selected={leftPaneView === 'characters'}
-                                        effectiveTheme={effectiveTheme}
+                                        isDark={isDark}
                                     />
                                     <ToolbarSidebarButton
                                         iconName="weapon"
                                         label="Weapon"
                                         onClick={() => switchLeftPane('weapon')}
                                         selected={leftPaneView === 'weapon'}
-                                        effectiveTheme={effectiveTheme}
+                                        isDark={isDark}
                                     />
                                     <ToolbarSidebarButton
                                         iconName="echoes"
                                         label="Echoes"
                                         onClick={() => switchLeftPane('echoes')}
                                         selected={leftPaneView === 'echoes'}
-                                        effectiveTheme={effectiveTheme}
+                                        isDark={isDark}
                                     />
                                     <ToolbarSidebarButton
                                         iconName="teams"
                                         label="Team Buffs"
                                         onClick={() => switchLeftPane('teams')}
                                         selected={leftPaneView === 'teams'}
-                                        effectiveTheme={effectiveTheme}
+                                        isDark={isDark}
                                     />
                                     <ToolbarSidebarButton
                                         iconName="enemy"
                                         label="Enemy"
                                         onClick={() => switchLeftPane('enemy')}
                                         selected={leftPaneView === 'enemy'}
-                                        effectiveTheme={effectiveTheme}
+                                        isDark={isDark}
                                     />
                                     <ToolbarSidebarButton
                                         iconName="buffs"
                                         label="Custom Bonuses"
                                         onClick={() => switchLeftPane('buffs')}
                                         selected={leftPaneView === 'buffs'}
-                                        effectiveTheme={effectiveTheme}
+                                        isDark={isDark}
                                     />
                                     <ToolbarSidebarButton
                                         iconName="rotations"
                                         label="Rotation"
                                         onClick={() => switchLeftPane('rotation')}
                                         selected={leftPaneView === 'rotations'}
-                                        effectiveTheme={effectiveTheme}
+                                        isDark={isDark}
                                     />
                                 </div>
                             )}
@@ -1197,7 +1202,7 @@ export default function Calculator() {
                                 </div>
                                 <div className="label-slot">
                                     <span className="label-text">
-                                        {effectiveTheme === 'light' ? 'Dawn' : 'Dusk'}
+                                        {!isDark ? 'Dawn' : 'Dusk'}
                                     </span>
                                 </div>
                             </button>
@@ -1307,13 +1312,13 @@ export default function Calculator() {
                                                 setTraceNodeBuffs={setTraceNodeBuffs}
                                                 characterRuntimeStates={characterRuntimeStates}
                                                 setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                                effectiveTheme={effectiveTheme}
                                                 triggerRef={triggerRef}
                                                 characterStates={characterStates}
                                                 attributeMap={attributeMap}
                                                 weaponMap={weaponMap}
                                                 keywords={keywords}
                                                 rarityMap={rarityMap}
+                                                isDark={isDark}
                                             />
                                         ) : (
                                             <div className="loading">Loading characters...</div>

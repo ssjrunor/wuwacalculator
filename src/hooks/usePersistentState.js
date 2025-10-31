@@ -47,8 +47,11 @@ const namespaceMap = {
     controls: [
         'filterOption', 'guideToastShown', 'leftPaneView', 'seenChangelogVersion',
         'showCharacterOverview', 'showSubHits', 'smartFilter', 'sortKey', 'sortOrder',
-        'user-dark-variant', 'user-has-selected-theme', 'user-theme',
-        'userBodyFontName', 'userBodyFontURL', 'cookieNoticeDismissed', 'googleTokens'
+        'userBodyFontName', 'userBodyFontURL', 'cookieNoticeDismissed', 'googleTokens',
+        'user-light-variant',
+        'user-dark-variant',
+        'user-has-selected-theme',
+        'user-theme'
     ],
     stores: [
         'echoBag', 'echoPresets', 'globalSavedRotations',

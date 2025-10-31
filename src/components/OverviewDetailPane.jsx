@@ -790,17 +790,18 @@ export function EchoGridPreview({
                             )}
                             <div className={`echo-slot-cost-badge bag overview ${className}`}>{echo.cost}</div>
                         </div>
-                        <div className={`cv-container-tooltip ${className}`} data-tooltip={`Echo Score`}
-                        style={{ display: 'grid', gap: '4px' }}>
+                        <div className={`cv-container-tooltip ${className}`} style={{ display: 'grid', gap: '4px' }}>
                             {score > 0 && (
                                 <div data-tooltip={`Echo Score`}
                                     className={`damage-tooltip-wrapper cv-container overview-weapon-details echo-buff overview ${className}`}>
-                                    {cv ? `SR:` : ''} {score.toFixed(1)}%
+                                    {cv ? `Sc:` : ''} {score.toFixed(1)}%
                                 </div>
                             )}
-                            {( cv && cv > 0) && (
-                                <div data-tooltip={`Echo CV`}
-                                     className={`damage-tooltip-wrapper cv-container overview-weapon-details echo-buff overview ${className}`}>
+                            {cv > 0 && (
+                                <div
+                                    data-tooltip="Echo CV"
+                                    className={`damage-tooltip-wrapper cv-container overview-weapon-details echo-buff overview ${className}`}
+                                >
                                     CV: {cv.toFixed(1)}%
                                 </div>
                             )}

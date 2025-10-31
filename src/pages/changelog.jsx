@@ -5,7 +5,11 @@ import {HelpCircle, History, Info, Moon, Settings, Sparkle, Sun} from "lucide-re
 
 export default function Changelog() {
     const navigate = useNavigate();
-    const { theme, setTheme, effectiveTheme } = useDarkMode();
+    const {
+        theme,
+        setTheme,
+        effectiveTheme,
+    } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
 
@@ -623,4 +627,25 @@ export const changelog = [
         ],
         shortDesc: `Added <strong>Premade Rotations</strong>~! (〜^∇^)〜`
     },
+    {
+        date: '31/10/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `
+            Introduced a brand-new <strong>Themes</strong>~!  
+            Enjoy the elegant the playful <strong>Pastel Pink</strong>, cool <strong>Pastel Blue</strong>, and vibrant <strong>Vibrant Citrus</strong> light modes... PLUS the shimmering <strong>Glassy Rainbow</strong> and <strong>Scarlet Nebula</strong> (a deep crimson semi-gloss dark theme with ember glows) dark mode themes.  
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `
+            This update also introduces a visually different theme selector. You can now visually choose your preferred <em>light</em> and <em>dark</em> mode themes using color swatches instead of dropdowns.
+            `
+            }
+        ],
+        shortDesc: `New <strong>Themesssss</strong>. CHECK THEM OUTTT T-T~!`,
+        navigate: "/settings#theme-variants",
+        actionMessage: "DO IT! DO IT! DO IT! DO IT! DO IT!"
+    }
 ];

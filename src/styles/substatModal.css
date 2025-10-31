@@ -151,6 +151,8 @@
     transform: scale(1.01);
 }
 
+.pastel-pink .edit-substats-modal .stat-toggle.active,
+.pastel-blue .edit-substats-modal .stat-toggle.active,
 .edit-substats-modal .stat-toggle.active {
     background: rgb(29, 172, 166);
     transform: scale(1);

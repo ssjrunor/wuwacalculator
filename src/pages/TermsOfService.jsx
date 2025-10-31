@@ -5,7 +5,11 @@ import {HelpCircle, History, Info, Moon, Settings, Sparkle, Sun} from "lucide-re
 
 export default function TermsOfService() {
     const navigate = useNavigate();
-    const { theme, setTheme, effectiveTheme } = useDarkMode();
+    const {
+        theme,
+        setTheme,
+        effectiveTheme,
+    } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
     const toggleTheme = () => {

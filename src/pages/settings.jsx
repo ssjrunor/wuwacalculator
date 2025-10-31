@@ -9,6 +9,7 @@ import ConfirmationModal from "../components/ConfirmationModal.jsx";
 import ImportOverviewMini from "../components/ImportOverviewMini.jsx";
 import {getPersistentValue, setPersistentValue, usePersistentState} from "../hooks/usePersistentState.js";
 import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
+import { useLocation } from "react-router-dom";
 
 const FONT_LINKS = {
     Onest: 'https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap',
@@ -37,7 +38,16 @@ export default function Setting() {
     });
 
     const navigate = useNavigate();
-    const { theme, setTheme, darkVariant, setDarkVariant, effectiveTheme } = useDarkMode();
+    const {
+        theme,
+        setTheme,
+        variants,
+        effectiveTheme,
+        lightVariant,
+        darkVariant,
+        setLightVariant,
+        setDarkVariant,
+    } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [importPreview, setImportPreview] = useState(null);
     const [showImportModal, setShowImportModal] = useState(false);
@@ -397,6 +407,17 @@ export default function Setting() {
         setShowToast(true);
     }
 
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.hash) {
+            const section = document.querySelector(location.hash);
+            if (section) {
+                section.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }
+    }, [location]);
+
     const canPreview = validLink || !fontLink;
 
     return (
@@ -587,7 +608,6 @@ export default function Setting() {
 
                                 <select
                                     id="font-select"
-                                    className="main-stat-select"
                                     value={selectedFont}
                                     style={{ marginTop: '0.5rem' }}
                                     onChange={(e) => {
@@ -743,27 +763,26 @@ export default function Setting() {
                             )}
                         </div>
 
-                        <div className="echo-buff">
-                            <h2>Dark Mode Theme</h2>
+                        <div className="echo-buff" id="theme-variants">
+                            <h2>Theme Variants</h2>
                             <p style={{ marginBottom: '1rem' }}>
-                                Choose your preferred dark mode theme. This only affects how the interface looks when dark mode is enabled.
+                                Choose your preferred theme variant for both light and dark modes.
+                                These control the appearance of the interface depending on which mode is active.
                             </p>
-                            <div className="settings-label">
-                                <label htmlFor="main-stat-select" className="main-stat-label" style={{ marginRight: '1rem' }}>Default Dark theme:</label>
-                                <select
-                                    id="dark-variant"
-                                    className="main-stat-select"
-                                    style={{ marginTop: '0.5rem' }}
-                                    value={darkVariant}
-                                    onChange={(e) => {
-                                        const newVariant = e.target.value;
-                                        setDarkVariant(newVariant);
-                                    }}
-                                >
-                                    <option value="dark">Midnight</option>
-                                    <option value="dark-alt">Blackest</option>
-                                </select>
-                            </div>
+
+                            <ThemeVariantGrid
+                                mode="light"
+                                value={lightVariant}
+                                onChange={setLightVariant}
+                                variants={variants}
+                            />
+
+                            <ThemeVariantGrid
+                                mode="dark"
+                                value={darkVariant}
+                                onChange={setDarkVariant}
+                                variants={variants}
+                            />
                         </div>
                         <div className="echo-buff">
                             <h2>Google Drive Sync</h2>
@@ -885,3 +904,90 @@ export default function Setting() {
         </div>
     );
 }
+
+
+export function ThemeVariantGrid({
+                                             mode = "dark",
+                                             value,
+                                             onChange,
+                                             variants
+                                         }) {
+    const list = variants[mode] || [];
+
+    return (
+        <div className="theme-variant-grid">
+            {list.map(opt => {
+                const isActive = value === opt;
+
+                return (
+                    <div
+                        data-tooltip={themeMap[opt].name}
+                        className={`damage-tooltip-wrapper`}>
+                        <button
+                            key={opt}
+                            className={`theme-swatch ${isActive ? "active" : ""}`}
+                            onClick={() => onChange(opt)}
+                            style={{
+                                background: themeMap[opt].preview,
+                            }}
+                        >
+                            {themeMap[opt].newStatus && <span className="badge-new">NEW</span>}
+                        </button>
+                    </div>
+                );
+            })}
+        </div>
+    );
+}
+
+/* --- Small helper that previews each theme visually --- */
+export const themeMap = {
+    // ---------- LIGHT THEMES ----------
+    "light": {
+        name: "Classic",
+        newStatus: false,
+        preview: "white",
+    },
+    "pastel-pink": {
+        name: "Pastel Pink",
+        newStatus: true,
+        preview: "#ffd8e0",
+    },
+    "pastel-blue": {
+        name: "Pastel Blue",
+        newStatus: true,
+        preview: "#d8ebff",
+    },
+    "vibrant-citrus": {
+        name: "Vibrant Citrus",
+        newStatus: true,
+        preview: "#fff2d7",
+    },
+    "glassy-rainbow": {
+        name: "Glassy Rainbow",
+        newStatus: true,
+        preview: "linear-gradient(135deg, #ffebf8, #e6faff, #fff9e6)",
+    },
+
+    // ---------- DARK THEMES ----------
+    "dark": {
+        name: "Midnight",
+        newStatus: false,
+        preview: "#131922",
+    },
+    "dark-alt": {
+        name: "Blackest",
+        newStatus: false,
+        preview: "black",
+    },
+    "cosmic-rainbow": {
+        name: "Cosmic Rainbow",
+        newStatus: true,
+        preview: "linear-gradient(145deg, rgb(25 10 69), rgb(57 37 80))",
+    },
+    "scarlet-nebula": {
+        name: "Scarlet Nebula",
+        newStatus: true,
+        preview: "linear-gradient(135deg, rgb(53, 0, 0), rgb(85, 0, 0))",
+    },
+};

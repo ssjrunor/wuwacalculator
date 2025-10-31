@@ -127,7 +127,7 @@ function PresetTile({ preset, characters, setViewingPreset, setShowPresetModal }
 }
 
 export function EchoPresetPreview({ open, onClose, preset, charId, getImageSrc, characterRuntimeStates, onEquipPreset,
-                                      setEditingPresetId, setEditedPresetName, editingPresetId, editedPresetName }) {
+                                      setEditingPresetId, setEditedPresetName, editingPresetId, editedPresetName, characters }) {
     if (!open) return null;
 
     const activeId = preset?.charId ?? charId;
@@ -177,6 +177,9 @@ export function EchoPresetPreview({ open, onClose, preset, charId, getImageSrc, 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [editingPresetId, preset.id, editedPresetName]);
+
+    const displayName =
+        characters.find(c => String(c.link) === String(preset?.charId ?? runtimes[activeId]?.id))?.displayName ?? 'Unknown';
 
     return (
         <div
@@ -231,7 +234,7 @@ export function EchoPresetPreview({ open, onClose, preset, charId, getImageSrc, 
                         </h4>
                         <span className="preset-date overview-weapon-details build-score">
                         {(charId !== activeId) && (
-                            <>{percentScore > 0 ? percentScore.toFixed(1) : '??'}% for {preset.charName ?? runtimes[activeId].Name}</>
+                            <>{percentScore > 0 ? percentScore.toFixed(1) : '??'}% for {displayName}</>
                         )}
                     </span>
                     </div>

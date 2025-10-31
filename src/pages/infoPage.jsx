@@ -6,7 +6,11 @@ import useDarkMode from "../hooks/useDarkMode";
 
 export default function InfoPage() {
     const navigate = useNavigate();
-    const { theme, setTheme, effectiveTheme } = useDarkMode();
+    const {
+        theme,
+        setTheme,
+        effectiveTheme,
+    } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
 

@@ -15,13 +15,13 @@ input[type="range"] {
     --slider-fill-color: var(--slider-color, #888);
     -webkit-appearance: none;
     width: 100%;
-    height: 4px;
+    height: 6px;
     background: linear-gradient(
             to right,
             var(--slider-fill-color) 0%,
             var(--slider-fill-color) var(--slider-fill, 0%),
-            #ddd var(--slider-fill, 0%),
-            #ddd 100%
+            white var(--slider-fill, 0%),
+            white 100%
     );
     border-radius: 4px;
     outline: none;
@@ -31,8 +31,8 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background-color: var(--slider-color, #888);
     cursor: pointer;

@@ -6,13 +6,13 @@
 }
 
 .rarity-4 {
-    border-color: rgba(132, 72, 168, 0.75);
-    background-color: rgba(121, 46, 166, 0.08);
+    border-color: rgba(132, 72, 168, 0.75) !important;
+    background-color: rgba(121, 46, 166, 0.08) !important;
 }
 
 .rarity-5 {
-    border-color: rgba(255, 183, 0, 0.59);
-    background-color: rgba(255, 183, 0, 0.09);
+    border-color: rgba(255, 183, 0, 0.59) !important;
+    background-color: rgba(255, 183, 0, 0.09) !important;
 }
 
 .icon-menu-img.rarity-4 {
@@ -30,8 +30,21 @@
     border-radius: 50%;
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: ease all 0.3s;
+    transition: ease all 0.4s;
     cursor: pointer;
+}
+
+.light .header-icon {
+    width: 93px;
+    height: 93px;
+}
+
+.light .echo-slot-icon-wrapper .header-icon {
+    border: none;
+}
+
+.echo-slot-icon-wrapper .header-icon {
+    border: 3px solid transparent;
 }
 
 .header-icon:hover {

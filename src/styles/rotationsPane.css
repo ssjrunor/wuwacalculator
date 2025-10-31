@@ -228,12 +228,12 @@ select {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.29) !important;
 }
 
-.view-toggle-button.active {
+.view-toggle-button.active,
+.pastel-pink .view-toggle-button.active,
+.pastel-blue .view-toggle-button.active,
+.vibrant-citrus .view-toggle-button.active {
     background: #444;
     color: white;
-}
-
-.view-toggle-button.active {
     pointer-events: none !important;
 }
 
@@ -595,61 +595,6 @@ select:focus {
 .dark .custom-select__menu {
     background-color: rgba(100, 100, 100, 0.3) !important;
     color: #ddd !important;
-}
-
-.dark .custom-select__indicator,
-.dark-alt .custom-select__indicator {
-    color: #ddd !important;
-}
-
-.dark .custom-select__indicator:hover,
-.dark-alt .custom-select__indicator:hover {
-    color: #8c8c8c !important;
-}
-
-.dark .custom-select__clear-indicator.custom-select__indicator:hover,
-.dark-alt .custom-select__clear-indicator.custom-select__indicator:hover {
-    color: #ff4343 !important;
-}
-
-.dark .custom-select__multi-value,
-.dark-alt .custom-select__multi-value {
-    background: rgba(255, 255, 255, 0.13) !important;
-    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.11) !important;
-}
-
-.dark .custom-select__single-value__label,
-.dark-alt .custom-select__single-value__label,
-.dark .custom-select__multi-value__label,
-.dark-alt .custom-select__multi-value__label {
-    color: #ddd !important;
-}
-
-.dark .custom-select__option--is-focused,
-.dark-alt .custom-select__option--is-focused,
-.dark-alt .custom-select__option--is-selected,
-.dark .custom-select__option--is-selected {
-    background-color: rgba(255, 255, 255, 0.15) !important;
-}
-
-.dark .custom-select__indicator-separator,
-.dark-alt .custom-select__indicator-separator {
-    opacity: 0.4;
-}
-
-.dark .custom-select__input,
-.dark-alt .custom-select__input {
-    color: #ddd !important;
-}
-
-.dark-alt .custom-select__control,
-.dark-alt .custom-select__menu {
-    background: rgba(100, 100, 100, 0.3) !important;
-    color: #ddd !important;
-}
-
-.dark-alt .custom-select__multi-value {
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.64) !important;
 }
 
 .custom-select__single-value {

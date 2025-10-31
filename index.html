@@ -22,20 +22,34 @@
         const theme =
                 controls['user-theme'] ??
                 safeParse('user-theme', 'system');
+
+        const lightVariant =
+                controls['user-light-variant'] ??
+                safeParse('user-light-variant', 'light');
+
         const darkVariant =
                 controls['user-dark-variant'] ??
                 safeParse('user-dark-variant', 'dark');
 
         const root = document.documentElement;
-        root.classList.remove('light', 'dark', 'dark-alt');
+        root.classList.remove('light',
+                'dark',
+                'dark-alt',
+                'pastel-pink',
+                'pastel-blue',
+                'vibrant-citrus',
+                'glassy-rainbow',
+                'cosmic-rainbow',
+                'scarlet-nebula'
+        );
 
         if (theme === 'light') {
-          root.classList.add('light');
+          root.classList.add(lightVariant);
         } else if (theme === 'dark') {
           root.classList.add(darkVariant);
         } else {
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          root.classList.add(prefersDark ? darkVariant : 'light');
+          root.classList.add(prefersDark ? darkVariant : lightVariant);
         }
       } catch (e) {
         console.warn('Theme preload failed:', e);

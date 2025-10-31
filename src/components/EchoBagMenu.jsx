@@ -364,6 +364,7 @@ export default function EchoBagMenu({
                 <EchoPresetPreview
                     open={showPresetModal}
                     preset={viewingPreset}
+                    characters={characters}
                     charId={charId}
                     getImageSrc={getImageSrc}
                     characterRuntimeStates={characterRuntimeStates}

@@ -30,8 +30,15 @@ import './echoBag.css'
 import './parser.css';
 import './advancedRotation.css';
 import './dark-alt.css';
+import './dark.css';
 import './CharacterOverviewPane.css';
 import './characterDetail.css';
 import './NotificationToast.css';
 import './ImportOverviewMini.css';
 import './presetStore.css';
+import './pastel-pink.css';
+import './pastel-blue.css';
+import './vibrant-citrus.css';
+import './glassy-rainbow.css';
+import './cosmic-rainbow.css';
+import './scarlet-nebula.css';

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useDarkMode from "../hooks/useDarkMode.js";
+import {getCuteMessage} from "./cuteMessages.jsx";
 
 export default function NotificationToast({
                                               message = 'Yo!',
@@ -18,12 +19,13 @@ export default function NotificationToast({
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        setVisible(true);
-
-        const hideTimer = setTimeout(() => setVisible(false), duration - 300);
-        const closeTimer = setTimeout(onClose, duration);
+        let showTimer, hideTimer, closeTimer;
+        showTimer = setTimeout(() => setVisible(true), 300);
+        hideTimer = setTimeout(() => setVisible(false), 300 + duration - 300);
+        closeTimer = setTimeout(onClose, 300 + duration);
 
         return () => {
+            clearTimeout(showTimer);
             clearTimeout(hideTimer);
             clearTimeout(closeTimer);
         };
@@ -86,19 +88,19 @@ export default function NotificationToast({
                 onClick={prompt?.action ? handlePromptClick : undefined}
             >
                 <div className="notification-main">
-                    <span className="notification-icon">{icon}</span>
-                    <span
+                    <div className="notification-icon">{icon}</div>
+                    <div
                         className="notification-text"
                         dangerouslySetInnerHTML={{ __html: message }}
                     />
                 </div>
 
                 {prompt?.message && (
-                    <div
+                    <span
                         className={`notification-prompt ${prompt.action ? 'clickable' : ''}`}
                     >
                         {prompt.message}
-                    </div>
+                    </span>
                 )}
             </div>
         </>

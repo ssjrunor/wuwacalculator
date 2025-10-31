@@ -6,10 +6,6 @@
     color: var(--color-foreground, #222);
     min-width: 375px;
 }
-.dark-alt .character-overview-pane {
-    background: rgba(9, 9, 9, 0.85);
-    color: #ddd;
-}
 
 .dark .character-overview-pane {
     background: #131922;
@@ -24,13 +20,6 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     font-size: 1.25rem;
     font-weight: bold;
-}
-
-.dark .character-overview-header,
-.dark .horizontal-character-scroll,
-.dark-alt .character-overview-header,
-.dark-alt .horizontal-character-scroll {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .character-overview-close {
@@ -158,10 +147,6 @@
     border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 0.01rem solid transparent;
-}
-
-.dark-alt .scroll-icon .header-icon {
-    border: 0.01rem solid rgba(255, 255, 255, 0.1);
 }
 
 .character-overview-collapsed {

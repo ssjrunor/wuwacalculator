@@ -56,13 +56,6 @@
     color: #2a2a2a;
 }
 
-.dark .main-echo-description.guides,
-.dark-alt .main-echo-description.guides,
-.dark-alt .changelog-entries.guides p,
-.dark .changelog-entries.guides p {
-    color: #cfcfcf;
-}
-
 .info-section.guides:hover .toggle-effect-button.guides{
     opacity: 1;
 }

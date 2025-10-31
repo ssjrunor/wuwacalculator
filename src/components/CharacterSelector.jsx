@@ -36,7 +36,7 @@ export default function CharacterSelector({
                                               attributeIconPath, currentSliderColor, sliderValues, setSliderValues,
                                               characterLevel, setCharacterLevel, setSkillsModalOpen, setMenuOpen,
                                               traceNodeBuffs, setTraceNodeBuffs,
-                                              characterRuntimeStates, setCharacterRuntimeStates, effectiveTheme, triggerRef,
+                                              characterRuntimeStates, setCharacterRuntimeStates, isDark, triggerRef,
                                               characterStates, keywords, rarityMap
                                           }) {
     const safeLevel = Math.min(Math.max(Number(characterLevel ?? 1), 1), 90);
@@ -267,7 +267,7 @@ export default function CharacterSelector({
                             )
                             .map(([nodeId, node]) => {
                                 const iconFile = traceNodeIconMap[node.Skill.Name];
-                                const themeSuffix = ['dark', 'dark-alt'].includes(effectiveTheme) ? 'dark' : 'light';
+                                const themeSuffix = isDark ? 'dark' : 'light';
                                 const iconPath = `/assets/skill-icons/${themeSuffix}/${iconFile}.webp?v=${themeSuffix}`;
                                 const isActive = traceNodeBuffs?.activeNodes?.[nodeId] ?? false;
                                 const tooltipText = cleanTooltipText(

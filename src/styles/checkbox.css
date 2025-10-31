@@ -116,8 +116,3 @@
     background-color: #6366f1;
     border-color: #6366f1;
 }
-
-.dark-alt .modern-checkbox input[type="checkbox"]:checked {
-    background-color: #a015f3;
-    border-color: #a015f3;
-}

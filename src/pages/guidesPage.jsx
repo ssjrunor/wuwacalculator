@@ -7,7 +7,11 @@ import { useLocation } from 'react-router-dom';
 
 export default function GuidesPage() {
     const navigate = useNavigate();
-    const { theme, setTheme, effectiveTheme } = useDarkMode();
+    const {
+        theme,
+        setTheme,
+        effectiveTheme,
+    } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
 

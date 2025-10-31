@@ -46,10 +46,6 @@ html, body, #root {
     background: #131922;
 }
 
-.dark-alt .layout, .dark-alt html, .dark-alt body, .dark-alt #root {
-    background: black;
-}
-
 .layout.collapsed-mode {
     overflow-y: auto;
 }

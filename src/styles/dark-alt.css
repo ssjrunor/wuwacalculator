@@ -515,12 +515,111 @@
 .dark-alt .echo-card-section {
     color: #a6a6a6;
 }
-.dark .echo-slot-icon-wrapper .header-icon,
-.dark-alt .echo-slot-icon-wrapper .header-icon {
-    border: 0.01rem solid #444 !important;
-}
 
 .dark-alt .edit-substats-modal.echo-bag-modal {
     background: rgba(0, 0, 0, 0.73) !important;
     backdrop-filter: blur(10px);
+}
+
+.dark-alt .custom-select__control,
+.dark-alt .custom-select__menu {
+    background: rgba(100, 100, 100, 0.3) !important;
+    color: #ddd !important;
+}
+
+.dark-alt .custom-select__multi-value {
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.64) !important;
+}
+
+.dark-alt .overview-buffs::before {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.14) 0%, transparent 100%);
+}
+
+.dark-alt .scroll-icon .header-icon {
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-alt .import-overview-mini {
+    background: rgba(0, 0, 0, 0.05);
+    border:1px solid transparent;
+}
+
+.dark-alt .preset-preview .echo-tile,
+.dark-alt .import-echo-grid .echo-tile {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.dark-alt .rv-container {
+    border-color: rgba(204, 216, 221, 0.41) !important;
+}
+
+.dark-alt .preset-tile.dropdown-item {
+    backdrop-filter: blur(15px);
+    background-color: rgba(14, 14, 14, 0.86);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.dark-alt .preset-tile.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29);
+}
+
+.dark-alt .preset-tile .echo-slot-icon {
+    background-color: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.62);
+}
+
+.dark-alt .preset-tile.dropdown-item {
+    backdrop-filter: blur(15px);
+    background-color: rgba(14, 14, 14, 0.86);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.dark-alt .preset-tile.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29);
+}
+
+.dark-alt .preset-tile .echo-slot-icon {
+    background-color: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.62);
+}
+
+.dark-alt .character-overview-details {
+    background: rgba(0, 0, 0, 0.82);
+}
+
+.dark-alt .notification-toast {
+    border: 0.1rem solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.94);
+}
+
+.dark-alt .overview-weapon.mini {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+}
+
+.dark-alt .modern-checkbox input[type="checkbox"]:checked {
+    background-color: #a015f3;
+    border-color: #a015f3;
+}
+
+.dark-alt .character-overview-pane {
+    background: rgba(9, 9, 9, 0.85);
+    color: #ddd;
+}
+
+.dark-alt .btn-primary.max.maxed {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark-alt .layout, .dark-alt html, .dark-alt body, .dark-alt #root {
+    background: black;
+}
+
+.dark-alt .header-icon.overview,
+.dark-alt .gear-icon.overview-weapon {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 0%, black 100%);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
 }

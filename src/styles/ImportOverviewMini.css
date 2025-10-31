@@ -9,11 +9,6 @@
     padding: 1rem 0.8rem;
 }
 
-.dark-alt .import-overview-mini {
-    background: rgba(0, 0, 0, 0.05);
-    border:1px solid transparent;
-}
-
 .import-overview-header {
     display: grid;
     grid-template-columns: 4fr 1fr;
@@ -31,11 +26,6 @@
     padding: 0.75rem;
     box-sizing: border-box;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.29);
-}
-
-.dark .import-overview-mini,
-.dark-alt .import-overview-mini {
-    background: rgba(255, 255, 255, 0.05);
 }
 
 .import-character .main-char-icon {
@@ -87,12 +77,6 @@
     background: rgba(119, 119, 119, 0.08);
     border: 1px dashed rgba(0, 0, 0, 0.4);
     opacity: 0.6;
-}
-
-.dark .import-teammates-inline .team-icon.empty-slot,
-.dark-alt .import-teammates-inline .team-icon.empty-slot {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .import-weapon-block {
@@ -167,18 +151,6 @@
     font-size: 0.7rem;
     opacity: 0.8;
     flex-shrink: 0;
-}
-
-/* optional theme variants */
-.dark .skill-bar-fill,
-.dark-alt .skill-bar-fill {
-    background: linear-gradient(
-            to right,
-            var(--accent-color, rgba(32, 191, 185, 0.89)) calc((var(--level) / var(--max-level)) * 100%),
-            rgba(255, 255, 255, 0.1) 0
-    );
-
-    opacity: 0.8;
 }
 
 .import-character .charInfo {
@@ -318,18 +290,6 @@
 .stat-icon.echo-parser-preview,
 .stat-icon.settings-import-preview {
     background-color: #5e5e5e !important;
-}
-
-.dark-alt .preset-preview .echo-tile,
-.dark-alt .import-echo-grid .echo-tile {
-    background-color: rgba(255, 255, 255, 0);
-}
-
-.dark-alt .stat-icon.echo-parser-preview,
-.dark .stat-icon.echo-parser-preview,
-.dark-alt .stat-icon.settings-import-preview,
-.dark .stat-icon.settings-import-preview {
-    background-color: #ddd !important;
 }
 
 .dark .preset-preview .echo-tile,

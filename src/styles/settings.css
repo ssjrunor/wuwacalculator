@@ -111,12 +111,60 @@
     color: #2a2a2a;
 }
 
-.dark-alt .settings-label input,
-.dark .settings-label input {
-    color: #ffffff;
-}
-
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.theme-variant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+.theme-swatch {
+    aspect-ratio: 1 / 1;
+    border-radius: 0.6rem;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.15s ease, border 0.2s ease;
+}
+
+.theme-swatch:hover {
+    transform: scale(1.05);
+    border-color: rgb(32, 191, 185);
+}
+
+.theme-swatch.active {
+    border-color: rgb(32, 191, 185);
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.2), 0 0 10px rgba(32, 191, 185, 0.89);
+}
+
+.badge-new {
+    position: absolute;
+    top: -0.4rem;
+    right: -0.4rem;
+    background: #ff4040;
+    color: white;
+    font-size: 0.55rem;
+    font-weight: bold;
+    border-radius: 0.4rem;
+    padding: 0.10rem 0.20rem;
+    box-shadow: 0 0 6px rgb(0, 0, 0);
+}
+
+.theme-swatch.active::after {
+    content: "✦";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.25rem;
+    color: rgb(32, 191, 185);
+    text-shadow: 0 0 12px rgb(0, 0, 0);
+    pointer-events: none;
+    opacity: 0.95;
 }

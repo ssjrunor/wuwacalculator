@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function ToolbarIconButton({ iconName, onClick, altText, effectiveTheme }) {
+export default function ToolbarIconButton({ iconName, onClick, altText, isDark }) {
     let iconPath;
 
-    if (effectiveTheme.includes('dark')) {
+    if (isDark) {
         iconPath = `/assets/icons/dark/${iconName}.png`;
     } else {
         iconPath = `/assets/icons/light/${iconName}.png`;
@@ -16,8 +16,8 @@ export default function ToolbarIconButton({ iconName, onClick, altText, effectiv
     );
 }
 
-export function ToolbarSidebarButton({ iconName, label, onClick, selected, effectiveTheme }) {
-    const iconPath = `/assets/icons/${['dark', 'dark-alt'].includes(effectiveTheme) ? 'dark' : 'light'}/${iconName}.png`;
+export function ToolbarSidebarButton({ iconName, label, onClick, selected, isDark }) {
+    const iconPath = `/assets/icons/${isDark ? 'dark' : 'light'}/${iconName}.png`;
 
     return (
         <button
