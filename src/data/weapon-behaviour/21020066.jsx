@@ -77,8 +77,6 @@ export function applyWeaponLogic({
     const stacks = characterState?.activeStates?.stacks ?? 0;
     const echoSkill = parseFloat(currentParamValues[5]);
 
-    console.log(currentParamValues);
-
     mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
     mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + heavy * stacks;
 

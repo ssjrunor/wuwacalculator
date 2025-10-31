@@ -22138,7 +22138,7 @@
         ]
       }
     },
-    "Effect": "Increases ATK by {0}. When the wielder casts Intro Skill or inflicts Negative Status, Resonance Liberation DMG is increased by {1}, stacking up to {2} times for {3}s.\nAt max stacks, when Resonators in the team inflict Negative Status or deal Negative Status DMG, grants {4} DMG Bonus of all Attributes for {5}s. Effects of the same name cannot be stacked.",
+    "Effect": "ATK is increased by {0}. When the wielder casts Intro Skill or inflicts Negative Status, they gain {1} Resonance Liberation DMG Bonus, stacking up to {2} times for {3}s.\nAt max stacks, when Resonators in the team inflict Negative Status or deal Negative Status DMG, grants {4} All-Attribute DMG Bonus for {5}s. Effects of the same name cannot be stacked.",
     "EffectName": "Thread of Fate",
     "Param": [
       [

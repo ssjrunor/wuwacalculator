@@ -52,17 +52,21 @@ export function applyBulingLogic({
         mergedBuffs.__bulingInherent1 = true;
     }
 
-    if (isActiveSequence(1) && !mergedBuffs.__bulingS1 && isToggleActive(1)) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
+    if (isActiveSequence(1) && tab === 'resonanceLiberation') {
+        skillMeta.skillCritRate = (mergedBuffs.skillCritRate ?? 0) + 20;
         mergedBuffs.__bulingS1 = true;
     }
 
-    if (name.includes('blessed by fortune healing')) skillMeta.visible = isActiveSequence(4);
+    if (name.includes('summoner of spirits, seeker of fate healing')) skillMeta.visible = isActiveSequence(3);
+    if (isActiveSequence(4) && !mergedBuffs.__bulingS4) {
+        mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + 20;
+        mergedBuffs.__bulingS4 = true;
+    }
 
     if (isActiveSequence(6) &&
         !mergedBuffs.__bulingS6 &&
         isToggleActive(6) && characterState?.activeStates?.heavenEarthMind) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 55;
+        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 50;
         mergedBuffs.__bulingS6 = true;
     }
 
@@ -100,7 +104,7 @@ export const bulingMultipliers = {
     ],
     forteCircuit: [
         {
-            name: "S4: Wanderer of Solaris, Blessed by Fortune Healing",
+            name: "S3: Summoner of Spirits, Seeker of Fate Healing",
             scaling: { atk: 1 },
             healing: true,
             Param: [
@@ -126,7 +130,7 @@ export function bulingBuffsLogic({
     }
 
     mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) +
-    ((state.almightyCelestialLord && state.heavenEarthMind) ? 55 : 0);
+    ((state.almightyCelestialLord && state.heavenEarthMind) ? 50 : 0);
 
     return { mergedBuffs };
 }

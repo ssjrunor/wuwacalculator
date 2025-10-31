@@ -1,3 +1,20 @@
+export const negativeStatusTypes = [
+    'spectroFrazzle',
+    'aeroErosion',
+    'havocBane',
+    'electroFlare'
+];
+
+export function isNegativeStatus(type) {
+    if (!type) return false;
+
+    if (Array.isArray(type)) {
+        return type.some(t => negativeStatusTypes.includes(t));
+    }
+
+    return negativeStatusTypes.includes(type);
+}
+
 export function calculateDamage({
                                     finalStats,
     flat,
@@ -64,7 +81,10 @@ export function calculateDamage({
     const enemyDef = Math.max(0, rawEnemyDef);
     const defMult = (800 + 8 * charLevel) / (800 + 8 * charLevel + enemyDef);
 
-    const dmgReductionTotal = 1 + ((mergedBuffs.dmgReduction ?? 0) + skillDmgTaken)/100;
+    const dmgReductionTotal = 1 + (
+        (mergedBuffs.dmgReduction ?? 0) + skillDmgTaken +
+        isNegativeStatus(skillType) ? (mergedBuffs?.negativeStatus?.dmgReduction ?? 0) : 0)/100;
+
     const elementReductionTotal = 1 + (mergedBuffs.elementDmgReduction ?? 0)/100;
 
     let skillTypeBonus = skillDmgBonus;
@@ -140,8 +160,9 @@ export function calculateSpectroFrazzleDamage(combatState, mergedBuffs, characte
     let enemyDef = ((8 * enemyLevel) + 792) * (1 - (defIgnore + defShred) / 100);
     enemyDef = enemyDef > 0 ? enemyDef : 0;
     const defMult = (800 + 8 * charLevel) / (800 + 8 * charLevel + enemyDef);
+    const dmgReduction = 1 + (mergedBuffs?.negativeStatus?.dmgReduction ?? 0)/100;
 
-    const perStackDmg = perStack * (1 + bonus / 100) * (resMult * defMult);
+    const perStackDmg = perStack * (1 + bonus / 100) * (resMult * defMult * dmgReduction);
     const totalDmg = total * (1 + bonus / 100) * (resMult * defMult);
 
     return {frazzleTotal: totalDmg, frazzle: perStackDmg };
@@ -182,8 +203,9 @@ export function calculateAeroErosionDamage(combatState, mergedBuffs, characterLe
     let enemyDef = ((8 * enemyLevel) + 792) * (1 - (defIgnore + defShred) / 100);
     enemyDef = enemyDef > 0 ? enemyDef : 0;
     const defMult = (800 + 8 * charLevel) / (800 + 8 * charLevel + enemyDef);
+    const dmgReduction = 1 + (mergedBuffs?.negativeStatus?.dmgReduction ?? 0)/100;
 
-    const perStackDmg = perStack * (1 + bonus / 100) * (resMult * defMult);
+    const perStackDmg = perStack * (1 + bonus / 100) * (resMult * defMult * dmgReduction);
     const totalDmg = total * (1 + bonus / 100) * (resMult * defMult);
 
     return { erosionTotal: totalDmg, erosion: perStackDmg };

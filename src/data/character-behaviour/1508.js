@@ -53,7 +53,7 @@ export function applyChisaLogic({
 
     if (!mergedBuffs.__threadOfBane && characterState.activeStates.threadOfBane) {
         //const bonusDefIgnore = Math.min(havocBane * 3, 18);
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 30;
+        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 18;
         mergedBuffs.__threadOfBane = true
     }
 
@@ -73,6 +73,18 @@ export function applyChisaLogic({
         mergedBuffs.__chisaS1 = true;
     }
 
+    if (name.includes('unseen snare execution dmg')) {
+        const fixedDmg = 61803;
+        const enemyHp = characterState?.activeStates?.chisaSeq1EnemyHP ?? 0;
+        if (enemyHp > 100_000) {
+            skillMeta.fixedDmg = fixedDmg;
+        } else {
+            const calculatedDmg = enemyHp * 0.61803;
+            skillMeta.fixedDmg = (calculatedDmg > fixedDmg) ? fixedDmg : calculatedDmg;
+            skillMeta.visible = enemyHp > 0 && isActiveSequence(1);
+        }
+    }
+
     if (isActiveSequence(2)) {
         skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + (skillMeta.element === 'havoc' ? 10 : 0);
         if (!mergedBuffs.__chisaS2 && characterState.activeStates.threadOfBane) {
@@ -90,18 +102,10 @@ export function applyChisaLogic({
 
     if(isActiveSequence(5) && tab === 'resonanceLiberation') skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 100;
 
-    if (isToggleActive('6-a') && isActiveSequence(6) && tab.includes('o')) {
-        negativeStatus.forEach(s =>
-            mergedBuffs.damageTypeAmplify[s] = (mergedBuffs.damageTypeAmplify[s] ?? 0) + 30
-        );
-        if (!mergedBuffs.__chisaS6a) {
-            mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 30;
-            mergedBuffs.__chisaS6a = true;
-        }
-        if (isToggleActive('6-b') && !mergedBuffs.__chisaS6b) {
-            mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 30;
-            mergedBuffs.__chisaS6b = true;
-        }
+    if (isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__chisaS6) {
+        mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 30;
+        mergedBuffs.negativeStatus.dmgReduction = (mergedBuffs.negativeStatus?.dmgReduction ?? 0) + 30;
+        mergedBuffs.__chisaS6 = true;
     }
 
     return {mergedBuffs, combatState, skillMeta};
@@ -120,6 +124,10 @@ export const chisaMultipliers = {
             name: "Sawring - Eradication Shield",
             scaling: { Atk: 1 },
             shielding: true
+        },
+        {
+            name: "S1: Unseen Snare Execution DMG",
+            scaling: { Atk: 1 }
         }
     ],
     resonanceLiberation: [
@@ -140,7 +148,7 @@ export function chisaBuffsLogic({
 
     if (state.threadOfBane) {
         //const bonusDefIgnore = Math.min(havocBane * 3, 18);
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 30;
+        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 18;
     }
 
     if (state.endlessBonds && state.threadOfBane) {
@@ -148,11 +156,9 @@ export function chisaBuffsLogic({
             mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 50;
         }
     }
+    mergedBuffs.negativeStatus.dmgReduction = (mergedBuffs.negativeStatus?.dmgReduction ?? 0) +
+        (state.risingDawn ? 30 : 0)
 
-    negativeStatus.forEach(s =>
-        mergedBuffs.damageTypeAmplify[s] = (mergedBuffs.damageTypeAmplify[s] ?? 0) +
-            (state.risingDawn ? 30 : 0)
-    )
 
     return { mergedBuffs };
 }

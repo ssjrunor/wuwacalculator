@@ -17,7 +17,7 @@ export default function ChisaUI({ setCharacterRuntimeStates, charId, activeState
                     <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Thread of Bane</h4>
                     <div>
                         <p>
-                            When dealing damage to targets affected by <span className='highlight'>Unseen Snare</span>, ignore <span className='highlight'>30%</span> of their DEF.
+                            When dealing damage to targets affected by <span className='highlight'>Unseen Snare</span>, ignore <span className='highlight'>18%</span> of their DEF.
                         </p>
                     </div>
                     <label className="modern-checkbox">
@@ -187,38 +187,85 @@ export function CustomInherentSkills({
 }
 
 export function chisaSequenceToggles({
-                                            nodeKey,
-                                            sequenceToggles,
-                                            toggleSequence,
-                                            currentSequenceLevel,
-                                        }) {
+                                         nodeKey,
+                                         sequenceToggles,
+                                         toggleSequence,
+                                         currentSequenceLevel,
+                                         characterRuntimeStates,
+                                         setCharacterRuntimeStates,
+                                         charId
+                                     }) {
+    // Only show for specific sequence nodes
     const validKeys = ['1', '6'];
     if (!validKeys.includes(String(nodeKey))) return null;
 
     const requiredLevel = Number(nodeKey);
     const isDisabled = currentSequenceLevel < requiredLevel;
 
-    const renderCheckbox = (label, key, onChangeHandler = () => toggleSequence(key)) => (
+    // Simple reusable checkbox renderer
+    const renderCheckbox = (label, key) => (
         <label className="modern-checkbox" style={{ opacity: isDisabled ? 0.5 : 1 }}>
             <input
                 type="checkbox"
                 checked={sequenceToggles[key] || false}
-                onChange={onChangeHandler}
+                onChange={() => toggleSequence(key)}
                 disabled={isDisabled}
             />
             {label}
         </label>
     );
 
-    if (nodeKey === '6') {
+    // Numeric input tied to runtime state
+    const renderInputField = (label, key) => {
+        const currentValue =
+            characterRuntimeStates?.[charId]?.activeStates?.[key] ?? 0;
+
+        return (
+            <div
+                className="slider-label-with-input"
+                style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+            >
+                <label htmlFor={key} style={{ fontWeight: 'bold' }}>
+                    {label}
+                </label>
+                <input
+                    id={key}
+                    type="number"
+                    className="character-level-input"
+                    step="5000"
+                    min="0"
+                    max="100000000"
+                    style={{ width: '70px' }}
+                    value={currentValue}
+                    disabled={isDisabled}
+                    onChange={(e) => {
+                        const val = Math.max(
+                            0,
+                            Math.min(100_000_000, Number(e.target.value) || 0)
+                        );
+                        setCharacterRuntimeStates((prev) => ({
+                            ...prev,
+                            [charId]: {
+                                ...(prev[charId] ?? {}),
+                                activeStates: {
+                                    ...(prev[charId]?.activeStates ?? {}),
+                                    [key]: val
+                                }
+                            }
+                        }));
+                    }}
+                />
+            </div>
+        );
+    };
+
+    // Sequence 1 logic: toggle → reveal input
+    if (nodeKey === '1') {
         return (
             <div className="sequence-checkbox-group">
-                {renderCheckbox('Marked by Unseen Snare?', '6-a', () =>
-                    toggleSequence('6-a')
-                )}
-                {sequenceToggles['6-a'] && renderCheckbox('Common Class targets?', '6-b', () =>
-                    toggleSequence('6-b')
-                )}
+                {renderCheckbox('Enable', 1)}
+                {sequenceToggles[1] &&
+                    renderInputField("Enemy's Current HP", 'chisaSeq1EnemyHP')}
             </div>
         );
     }
@@ -237,7 +284,7 @@ export function buffUI({ activeStates, toggleState, attributeColors, characterRu
                     <div className="echo-buff-name">Thread of Bane</div>
                 </div>
                 <div className="echo-buff-effect">
-                    When dealing damage to targets affected by <span className='highlight'>Unseen Snare</span>, ignore <span className='highlight'>30%</span> of their DEF.
+                    When dealing damage to targets affected by <span className='highlight'>Unseen Snare</span>, ignore <span className='highlight'>18%</span> of their DEF.
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -287,7 +334,8 @@ export function buffUI({ activeStates, toggleState, attributeColors, characterRu
                     <div className="echo-buff-name">S6: Thus, Hope is Rekindled with the Rising Dawn</div>
                 </div>
                 <div className="echo-buff-effect">
-                    <span className="highlight">Negative Status</span> DMG on targets affected by <span className="highlight">Unseen Snare</span> is Amplified by <span className="highlight">30%</span>.
+                    <span className="highlight">
+                        Targets affected by <span className="highlight">Unseen Snare - Finality</span> take <span className="highlight">30%</span> more DMG from the Negative Statuses.</span>.
                 </div>
                 <label className="modern-checkbox">
                     <input

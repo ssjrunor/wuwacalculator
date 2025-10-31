@@ -11,7 +11,7 @@ export function WeaponUI({
                          }) {
     const stacks = characterRuntimeStates?.[charId]?.activeStates?.threadOfFateStacks ?? 0;
     keywords.push(
-        'Negative Status DMG', 'Negative Status', 'Intro Skill', 'Resonance Liberation DMG'
+        'All-Attribute DMG Bonus', 'Negative Status DMG', 'Negative Status', 'Intro Skill', 'Resonance Liberation DMG'
     )
 
     const handleChange = (newValue) => {
@@ -31,12 +31,12 @@ export function WeaponUI({
         <div className="status-toggles">
             <div className="status-toggle-box">
                 <div className="status-toggle-box-inner">
-                    <p>{highlightKeywordsInText(`Increases ATK by ${currentParamValues[0]}.`, keywords)}</p>
+                    <p>{highlightKeywordsInText(`ATK is increased by ${currentParamValues[0]}.`, keywords)}</p>
                 </div>
 
                 <div className="status-toggle-box-inner">
                     <p>
-                        {highlightKeywordsInText(`When the wielder casts Intro Skill or inflicts Negative Status, Resonance Liberation DMG is increased by ${currentParamValues[1]}, stacking up to 3 times for 15s.`, keywords)}
+                        {highlightKeywordsInText(`When the wielder casts Intro Skill or inflicts Negative Status, they gain ${currentParamValues[1]}Resonance Liberation DMG Bonus, stacking up to 3 times for 15s.`, keywords)}
                     </p>
                     <label className="modern-checkbox">
                         <DropdownSelect
@@ -50,7 +50,7 @@ export function WeaponUI({
                     </label>
                     <p>
                         {highlightKeywordsInText(`At max stacks, when Resonators in the team inflict Negative Status or deal Negative Status DMG, grants ${currentParamValues[4]}
-                        DMG Bonus of all Attributes for 15s. Effects of the same name cannot be stacked.`, keywords)}
+                        All-Attribute DMG Bonus for 15s. Effects of the same name cannot be stacked.`, keywords)}
                     </p>
                     <label className="modern-checkbox">
                         <input

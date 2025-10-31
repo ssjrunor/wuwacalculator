@@ -8,7 +8,7 @@ export default function BulingUI({ activeStates, toggleState }) {
             <div className="status-toggle-box">
                 <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Thunder Begets Life</h4>
                 <div> <h4 style={{ marginBottom: 'unset' }}>Thunder Spell - Yin and Yang</h4>
-                    <p style={{ margin: '4px 0' }}> Increases the ATK of all nearby Resonators in the team by <span className='highlight'>15%</span>.</p>
+                    <p style={{ margin: '4px 0' }}> <span className='highlight'>Thunder Spell - Yin and Yang</span> increases the grants <span className='highlight'>10% Resonance Skill DMG Bonus</span> to all active Resonators in the team.</p>
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -22,7 +22,7 @@ export default function BulingUI({ activeStates, toggleState }) {
                 </label>
                 <div> <h4 style={{ marginBottom: 'unset' }}>Thunder Spell - Heaven, Earth, Mind</h4>
                     <p style={{ margin: '4px 0' }}>
-                        increases the ATK of all nearby Resonators by <span className='highlight'>15%</span> and grants <span className='highlight'>20% Resonance Skill DMG Bonus</span>.</p>
+                        <span className="highlight">Thunder Spell - Heaven, Earth, Mind</span> grants <span className="highlight">30% Resonance Skill DMG Bonus</span> to all active Resonators in the team.</p>
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -159,7 +159,7 @@ export function CustomInherentSkills({
 }
 
 export function bulingSequenceToggles({ nodeKey, sequenceToggles, toggleSequence, currentSequenceLevel }) {
-    if (!['1', '6'].includes(String(nodeKey))) return null;
+    if (!['6'].includes(String(nodeKey))) return null;
 
     const requiredLevel = Number(nodeKey);
     const isDisabled = currentSequenceLevel < requiredLevel;
@@ -198,7 +198,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                     <div className="echo-buff-name">Thunder Begets Life</div>
                 </div>
                 <div className="echo-buff-effect"> <h4 style={{ marginBottom: 'unset' }}>Thunder Spell - Yin and Yang</h4>
-                    <div className="echo-buff-effect"> Increases the ATK of all nearby Resonators in the team by <span className='highlight'>15%</span>.</div>
+                    <div className="echo-buff-effect"> <span className='highlight'>Thunder Spell - Yin and Yang</span> increases the grants <span className='highlight'>10% Resonance Skill DMG Bonus</span> to all active Resonators in the team.</div>
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -212,7 +212,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                 </label>
                 <div className="echo-buff-effect"> <h4 style={{ marginBottom: 'unset' }}>Thunder Spell - Heaven, Earth, Mind</h4>
                     <div className="echo-buff-effect">
-                        increases the ATK of all nearby Resonators by <span className='highlight'>15%</span> and grants <span className='highlight'>20% Resonance Skill DMG Bonus</span>.</div>
+                        <span className="highlight">Thunder Spell - Heaven, Earth, Mind</span> grants <span className="highlight">30% Resonance Skill DMG Bonus</span> to all active Resonators in the team.</div>
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -251,7 +251,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                     <div className="echo-buff-name">S6: "Almighty Celestial Lord of Thunder and Lightning"</div>
                 </div>
                 <div className="echo-buff-effect">
-                    When the <span className="highlight">Thunder Spell: Heaven, Earth, Mind</span> state is active, all nearby Resonators in the team have their <span className="highlight">Resonance Skill DMG Bonus</span> increased to <span className="highlight">40%</span>.
+                    When the <span className="highlight">Thunder Spell: Heaven, Earth, Mind</span> state is active, all nearby Resonators in the team have their <span className="highlight">Resonance Skill DMG Bonus</span> increased to <span className="highlight">50%</span>.
                 </div>
                 <label className="modern-checkbox"
                        style={{

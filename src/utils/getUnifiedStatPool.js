@@ -37,6 +37,7 @@ export function getUnifiedStatPool(buffSources, overrideLogic = null) {
         spectroFrazzleDmg: 0,
         aeroErosionDmg: 0,
         physical: 0,
+        negativeStatus: {}
     };
 
     const ELEMENT_KEYS = ['aero', 'glacio', 'spectro', 'fusion', 'electro', 'havoc', 'physical'];
