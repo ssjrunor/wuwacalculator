@@ -572,5 +572,19 @@ const defaultRotationEntries = {
             { name: "Feather Release Damage", multiplier: 1 },
         ],
         link: 'https://www.prydwen.gg/wuthering-waves/characters/yangyang'
+    },
+    '1411': {
+        entries: [
+            { name: "Attack the Must-Defend DMG", multiplier: 1 },
+            { name: "Thus Spoke the Blade: Inkwash Stage 3 DMG", multiplier: 1 },
+            { name: "Thus Spoke the Blade: Inkwash Stage 4 DMG", multiplier: 1 },
+            { name: "Sundering Strike DMG", multiplier: 1 },
+            { name: "Thus Spoke the Blade: To Teach DMG", multiplier: 1 },
+            { name: "Thus Spoke the Blade: To Save DMG", multiplier: 1 },
+            { name: "Thus Spoke the Blade: To Sacrifice DMG", multiplier: 1 },
+            { name: "Through the Groves DMG", multiplier: 1 },
+            { name: "Strike Before Ready DMG", multiplier: 1 },
+        ],
+        link: 'https://www.prydwen.gg/wuthering-waves/characters/qiuyuan'
     }
 };
