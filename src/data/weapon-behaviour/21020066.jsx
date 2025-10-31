@@ -33,7 +33,7 @@ export function WeaponUI({
 
                 <div className="status-toggle-box-inner">
                     <p>
-                        {highlightKeywordsInText(`Casting Echo Skill grants 1 stack of Bamboo Cleaver, which grants ${currentParamValues[1]} Heavy Attack DMG Bonus to the wielder. This effect can be triggered by Echoes of the same name once only, stacking up to 2 times, lasting for 30s.
+                        {highlightKeywordsInText(`Casting Echo Skill grants 1 stack of Bamboo Cleaver, which grants ${currentParamValues[2]}% Heavy Attack DMG Bonus to the wielder. This effect can be triggered by Echoes of the same name once only, stacking up to 2 times, lasting for 30s.
                         When Bamboo Cleaver reaches max stacks, casting Echo Skill resets its duration.`, keywords)}
                     </p>
                     <label className="modern-checkbox">
@@ -47,7 +47,7 @@ export function WeaponUI({
                         Stacks
                     </label>
                     <p>
-                        {highlightKeywordsInText(`Casting Intro Skill grants ${currentParamValues[3]} Echo Skill DMG
+                        {highlightKeywordsInText(`Casting Intro Skill grants ${currentParamValues[5]} Echo Skill DMG
                         Bonus to all Resonators in the team for 30s. Effects of the same name cannot be stacked.`, keywords)}
                     </p>
                     <label className="modern-checkbox">
@@ -73,9 +73,11 @@ export function applyWeaponLogic({
                                      currentParamValues = [],
                                  }) {
     const atk = parseFloat(currentParamValues[0]);
-    const heavy = parseFloat(currentParamValues[1]);
+    const heavy = parseFloat(currentParamValues[2]);
     const stacks = characterState?.activeStates?.stacks ?? 0;
     const echoSkill = parseFloat(currentParamValues[3]);
+
+    console.log(currentParamValues);
 
     mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
     mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + heavy * stacks;
