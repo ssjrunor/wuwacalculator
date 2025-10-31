@@ -295,13 +295,13 @@ export function getMainRotationTotals(mainCharId, characterRuntimeStates, savedR
 
     if (hasValidTeamRotation) {
         const liveTotal = getTeamRotationTotal(mainCharId, characterRuntimeStates, skillResults);
-        const { normal, crit, avg } = liveTotal.teamTotal;
+        const { normal, crit, avg } = liveTotal?.teamTotal;
         if (normal !== 0 || crit !== 0 || avg !== 0 || liveTotal) {
             teamRotations.push({
                 name: runtime?.Name,
                 id: 'live Team',
-                total: liveTotal.teamTotal,
-                contributors: liveTotal.characterContributions
+                total: liveTotal?.teamTotal,
+                contributors: liveTotal?.characterContributions
             });
         }
     }
