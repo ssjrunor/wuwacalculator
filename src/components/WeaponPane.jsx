@@ -240,17 +240,6 @@ export default function WeaponPane({ activeCharacter, combatState, setCombatStat
                     </div>
 
                 </div>
-
-
-                <WeaponMenu
-                    weapons={filteredWeapons}
-                    handleWeaponSelect={handleWeaponSelect}
-                    menuOpen={weaponMenuOpen}
-                    menuRef={weaponMenuRef}
-                    setMenuOpen={setWeaponMenuOpen}
-                    selectedRarities={selectedRarities}
-                    setSelectedRarities={setSelectedRarities}
-                />
             </div>
             <div className="inherent-skills-box">
                 <div className="slider-group">
@@ -325,6 +314,15 @@ export default function WeaponPane({ activeCharacter, combatState, setCombatStat
                     </div>
                 )
             )}
+            <WeaponMenu
+                weapons={filteredWeapons}
+                handleWeaponSelect={handleWeaponSelect}
+                menuOpen={weaponMenuOpen}
+                menuRef={weaponMenuRef}
+                setMenuOpen={setWeaponMenuOpen}
+                selectedRarities={selectedRarities}
+                setSelectedRarities={setSelectedRarities}
+            />
         </>
 
     );
