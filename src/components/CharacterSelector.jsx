@@ -208,6 +208,7 @@ export default function CharacterSelector({
                 handleCharacterSelect={handleCharacterSelect}
                 menuRef={menuRef}
                 menuOpen={menuOpen}
+                setMenuOpen={setMenuOpen}
                 rarityMap={rarityMap}
             />
 

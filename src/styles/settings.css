@@ -36,10 +36,6 @@
 }
 
 @media(max-width: 570px) {
-    .settings-header {
-        height: 6rem;
-    }
-
     .settings-header h1 {
         font-size: 3rem;
     }
@@ -127,20 +123,30 @@
     aspect-ratio: 1 / 1;
     border-radius: 0.6rem;
     border: 2px solid transparent;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4) !important;
     cursor: pointer;
     position: relative;
     transition: transform 0.15s ease, border 0.2s ease;
 }
 
+.theme-swatch.plain {
+    background-color: var(--preview-value, white);
+    border-color: var(--preview-value, white);
+}
+
+.theme-swatch.gradient {
+    background-repeat: unset !important;
+    background: var(--preview-value);
+}
+
 .theme-swatch:hover {
     transform: scale(1.05);
-    border-color: rgb(32, 191, 185);
+    border-color: rgb(32, 191, 185) !important;
 }
 
 .theme-swatch.active {
-    border-color: rgb(32, 191, 185);
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.2), 0 0 10px rgba(32, 191, 185, 0.89);
+    border-color: rgb(32, 191, 185) !important;
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.2), 0 0 10px rgba(32, 191, 185, 0.89) !important;
 }
 
 .badge-new {

@@ -4,9 +4,7 @@ import skillTabs from '../constants/skillTabs';
 import {highlightKeywordsInText} from "../constants/echoSetData.jsx";
 
 
-export default function SkillsModal({ skillsModalOpen, setSkillsModalOpen, activeCharacter, activeSkillTab, setActiveSkillTab, sliderValues, currentSliderColor, keywords }) {
-    if (!skillsModalOpen) return null;
-
+export default function SkillsModal({ skillsModalOpen, setSkillsModalOpen, activeCharacter, activeSkillTab, setActiveSkillTab, sliderValues, currentSliderColor, keywords, isDark }) {
     const getSkillData = (tab) => {
         if (!activeCharacter?.raw?.SkillTrees) return null;
         const tree = Object.values(activeCharacter.raw.SkillTrees).find(tree =>
@@ -16,6 +14,7 @@ export default function SkillsModal({ skillsModalOpen, setSkillsModalOpen, activ
     };
 
     const [isClosing, setIsClosing] = useState(false);
+    if (!skillsModalOpen) return null;
 
     const handleClose = () => {
         setIsClosing(true);
@@ -26,8 +25,14 @@ export default function SkillsModal({ skillsModalOpen, setSkillsModalOpen, activ
     };
 
     return (
-        <div className={`skills-modal-overlay ${isClosing ? 'closing' : ''}`} onClick={handleClose}>
-            <div className="skills-modal-content" onClick={(e) => e.stopPropagation()}>
+        <div
+            className={`skills-modal-overlay ${isClosing ? 'closing' : ''}`}
+            onClick={handleClose}
+        >
+            <div
+                className={`skills-modal-content ${isDark ? 'dark-text' : 'light-text'} ${isClosing ? 'closing' : ''}`}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className="rotation-view-toggle">
                     {skillTabs.map(tab => (
                         <button key={tab} className={`view-toggle-button ${activeSkillTab === tab ? 'active' : ''}`} onClick={() => setActiveSkillTab(tab)}>

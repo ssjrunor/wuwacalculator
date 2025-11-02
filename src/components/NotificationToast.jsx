@@ -19,13 +19,12 @@ export default function NotificationToast({
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        let showTimer, hideTimer, closeTimer;
-        showTimer = setTimeout(() => setVisible(true), 300);
-        hideTimer = setTimeout(() => setVisible(false), 300 + duration - 300);
-        closeTimer = setTimeout(onClose, 300 + duration);
+        setVisible(true);
+
+        const hideTimer = setTimeout(() => setVisible(false), duration - 300);
+        const closeTimer = setTimeout(onClose, duration);
 
         return () => {
-            clearTimeout(showTimer);
             clearTimeout(hideTimer);
             clearTimeout(closeTimer);
         };

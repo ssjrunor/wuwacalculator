@@ -12,11 +12,13 @@ import GuidesPage from "./pages/guidesPage.jsx";
 import {getPersistentValue, setPersistentValue, usePersistentState} from "./hooks/usePersistentState.js";
 import {refreshAccessTokenIfNeeded} from "./utils/googleAuth.js";
 import {useGoogleAuth} from "./hooks/useGoogleAuth.js";
+import useDarkMode from "./hooks/useDarkMode.js";
 
 const GA_ID = 'G-W502BDD62S';
 
 export default function App() {
     const { user, accessToken } = useGoogleAuth();
+    const themeControl = useDarkMode();
     const [showCookieNotice, setShowCookieNotice] = useState(false);
 
     usePageTracking();
@@ -80,9 +82,9 @@ export default function App() {
     return (
         <>
             <Routes>
-                <Route path="/" element={<Calculator />} />
+                <Route path="/" element={<Calculator {...themeControl}/>} />
                 <Route path="/info" element={<InfoPage />} />
-                <Route path="/settings" element={<Setting />} />
+                <Route path="/settings" element={<Setting {...themeControl} />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/changelog" element={<Changelog />} />

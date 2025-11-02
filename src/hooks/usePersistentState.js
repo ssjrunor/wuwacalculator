@@ -50,7 +50,9 @@ const namespaceMap = {
         'userBodyFontName', 'userBodyFontURL', 'cookieNoticeDismissed', 'googleTokens',
         'user-light-variant',
         'user-dark-variant',
+        'user-background-variant',
         'user-has-selected-theme',
+        'user-previous-theme',
         'user-theme'
     ],
     stores: [

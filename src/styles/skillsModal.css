@@ -44,11 +44,13 @@
     animation: fadeOutScale 0.3s ease forwards;
 }
 
-.skills-modal-overlay.closing {
+.skills-modal-overlay.closing,
+.skills-modal-overlay.hiding {
     animation: fadeOutOverlay 0.3s ease forwards;
 }
 
-.skills-modal-overlay:not(.closing) {
+.skills-modal-overlay:not(.closing),
+.skills-modal-overlay:not(.hiding) {
     animation: fadeInOverlay 0.3s ease;
 }
 

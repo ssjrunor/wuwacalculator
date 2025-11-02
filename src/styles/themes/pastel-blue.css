@@ -1,0 +1,201 @@
+.pastel-blue .buffs-box {
+    background-color: #e4f2ff;
+    border: 1px solid rgba(0, 80, 177, 0.25);
+}
+
+.pastel-blue .character-overview-pane {
+    background: var(--color-muted, #d8ebff);
+}
+
+.pastel-blue .character-row-item {
+    background: rgba(228, 241, 255, 0.7);
+    border: 1px solid rgba(0, 80, 177, 0.15);
+}
+
+.pastel-blue .character-row-item:hover {
+    background: rgba(210, 230, 255, 0.7);
+}
+
+.pastel-blue .custom-select.small,
+.pastel-blue .character-level-input,
+.pastel-blue .character-settings input[type="number"],
+.pastel-blue .buff-row input {
+    border: 1px solid saddlebrown;
+    background-color: rgb(235, 245, 255);
+}
+
+.pastel-blue .custom-select__control,
+.pastel-blue .custom-select__menu {
+    border: 1px solid saddlebrown !important;
+    background-color: rgb(235, 245, 255) !important;
+}
+
+.pastel-blue .edit-substats-modal,
+.pastel-blue .skills-modal-content,
+.pastel-blue .skill-menu-panel,
+.pastel-blue .icon-menu-vertical {
+    background: rgba(228, 241, 255, 0.93);
+}
+
+.pastel-blue .dropdown-item {
+    background-color: rgba(228, 241, 255, 0.7);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.pastel-blue .dropdown-item:hover {
+    background-color: rgba(210, 230, 255, 0.7);
+}
+
+.pastel-blue .character-settings,
+.pastel-blue .skills-settings {
+    background-color: #e4f2ff;
+    border: 1px solid rgba(0, 80, 177, 0.25);
+}
+
+.pastel-blue .modern-checkbox input[type="checkbox"]:checked {
+    background-color: #ff0000;
+    border-color: #ff8888;
+}
+
+.pastel-blue .buff-row {
+    background: rgba(0, 80, 255, 0.07);
+}
+
+.pastel-blue .buff-row input {
+    background-color: rgb(235, 245, 255);
+    border: 1px solid rgba(0, 80, 177, 0.15);
+}
+
+.pastel-blue .clear-button {
+    background-color: #ebf6ff;
+}
+
+.pastel-blue .clear-button:hover {
+    background-color: #f3faff;
+}
+
+.pastel-blue .stats-box {
+    background-color: #e4f2ff;
+    border: 1px solid rgba(0, 80, 177, 0.25);
+}
+
+.pastel-blue .stats-grid {
+    border: 1px solid rgba(0, 80, 177, 0.15);
+}
+
+.pastel-blue .stat-row:nth-child(even) {
+    background-color: rgba(108, 174, 255, 0.06);
+}
+
+.pastel-blue .stat-row:nth-child(odd) {
+    background-color: #ebf6ff;
+}
+
+.pastel-blue .damage-box {
+    background-color: #e4f2ff;
+    border: 1px solid rgba(0, 80, 177, 0.25);
+}
+
+.pastel-blue .damage-inner-box {
+    border: 1px solid rgba(0, 80, 177, 0.15);
+    background-color: rgba(108, 174, 255, 0.06);
+}
+
+.pastel-blue .bag.echo-tile {
+    background-color: rgba(226, 238, 255, 0.43);
+}
+
+.pastel-blue .echo-buff {
+    background-color: rgba(108, 174, 255, 0.06);
+    border: 1px solid rgba(0, 80, 177, 0.15);
+}
+
+.pastel-blue .highlight {
+    color: saddlebrown !important;
+}
+
+.pastel-blue .main-echo-description {
+    background: rgba(0, 54, 99, 0.07);
+    border-left: 4px solid #68a4ff;
+}
+
+.pastel-blue .echo-slot-title,
+.pastel-blue .echo-name {
+    color: saddlebrown;
+}
+
+.pastel-blue .echo-details {
+    border: 1px solid rgba(0, 80, 177, 0.15);
+}
+
+.pastel-blue .echo-tat-divider {
+    border-top: 1px solid rgba(0, 80, 177, 0.15);
+}
+
+.pastel-blue .layout,
+.pastel-blue html,
+.pastel-blue body,
+.pastel-blue #root {
+    background: #d8ebff;
+}
+
+.pastel-blue .header-icon {
+    background: #f0f7ff;
+    border-color: rgba(0, 80, 177, 0.25);
+}
+
+.pastel-blue .echo-slot-icon-wrapper .header-icon {
+    border-color: rgba(0, 80, 177, 0.25) !important;
+}
+
+.pastel-blue .inherent-skills-box {
+    background-color: #e4f2ff;
+    border: 1px solid rgba(0, 80, 177, 0.25);
+}
+
+.pastel-blue .partition {
+    background-color: #d8ebff;
+}
+
+.pastel-blue .avg {
+    color: darkgoldenrod;
+}
+
+.pastel-blue .rotation-item {
+    background: #e3f0ff;
+    border: 1px solid rgba(0, 80, 177, 0.15);
+    box-shadow: 3px 3px 8px rgba(0, 35, 69, 0.15);
+}
+
+.pastel-blue .view-toggle-button,
+.pastel-blue select {
+    background: #ebf6ff;
+}
+
+.pastel-blue .skills-modal-content-area {
+    background-color: #e4f2ff;
+}
+
+.pastel-blue .edit-substats-modal .stat-toggle,
+.pastel-blue .edit-substats-modal .substat-input,
+.pastel-blue .main-stat-select {
+    background: rgba(111, 122, 151, 0.7);
+}
+
+.pastel-blue .main-stat-select:hover {
+    background: rgba(75, 89, 126, 0.7);
+}
+
+.pastel-blue .toolbar {
+    background-color: #e4f2ff;
+    border-bottom: 1px solid rgba(0, 80, 177, 0.25);
+}
+
+.pastel-blue .sidebar {
+    border-right: 1px solid rgba(0, 80, 177, 0.25);
+    background-color: #e4f2ff;
+}
+
+.pastel-blue .weapon-icon-wrapper {
+    border: 1px solid transparent;
+}

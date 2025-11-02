@@ -44,7 +44,7 @@ import {getAllSkillLevelsWithEcho, getEffectiveSkillLevels, prepareDamageData} f
 import {getSkillDamageCache} from "../utils/skillDamageCache.js";
 import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
 
-export default function Calculator() {
+export default function Calculator(props) {
     const [characters, setCharacters] = useState([]);
     loadBase( characters );
     const [popupMessage, setPopupMessage] = useState({
@@ -68,11 +68,11 @@ export default function Calculator() {
     const [shouldScrollChangelog, setShouldScrollChangelog] = useState(false);
     const [characterLevel, setCharacterLevel] = useState(1);
     const {
-        isDark,
         theme,
         setTheme,
-        effectiveTheme,
-    } = useDarkMode();
+        isDark,
+        variant
+    } = props;
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
@@ -1010,9 +1010,10 @@ export default function Calculator() {
                 sliderValues={sliderValues}
                 currentSliderColor={currentSliderColor}
                 keywords={keywords}
+                isDark={isDark}
             />
 
-            <div className="layout">
+            <div className={`layout ${isDark ? 'dark-text' : 'light-text'} `}>
                 <div className="toolbar">
                     {!moveToolbarToSidebar && (
                         <div className="toolbar-group">
@@ -1195,17 +1196,19 @@ export default function Calculator() {
                                 </div>
                             </button>
 
-                            <button className="sidebar-button" onClick={toggleTheme}>
-                                <div className="icon-slot theme-toggle-icon">
-                                    <Sun className="icon-sun" size={24} />
-                                    <Moon className="icon-moon" size={24} />
-                                </div>
-                                <div className="label-slot">
+                            {theme !== "background" && (
+                                <button className="sidebar-button" onClick={toggleTheme}>
+                                    <div className="icon-slot theme-toggle-icon">
+                                        <Sun className="icon-sun" size={24} />
+                                        <Moon className="icon-moon" size={24} />
+                                    </div>
+                                    <div className="label-slot">
                                     <span className="label-text">
                                         {!isDark ? 'Dawn' : 'Dusk'}
                                     </span>
-                                </div>
-                            </button>
+                                    </div>
+                                </button>
+                            )}
                         </div>
                         <div className="sidebar-footer">
                             <button className="sidebar-button"
@@ -1288,6 +1291,7 @@ export default function Calculator() {
                                     setCharacterRuntimeStates={setCharacterRuntimeStates}
                                     handleReset={handleReset}
                                     allRotations={allRotations}
+                                    theme={theme}
                                 />
                                 ) : (
                             <div className="split">
@@ -1628,3 +1632,61 @@ function getHighlightKeywords(character) {
 }
 
 const skillTabs = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill', 'outroSkill', 'echoAttacks', 'negativeEffect'];
+
+export async function cropAndCompressImage(
+    fileOrUrl,
+    quality = 0.1,
+    targetWidth = window.innerWidth,
+    targetHeight = window.innerHeight
+) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.src = typeof fileOrUrl === "string" ? fileOrUrl : URL.createObjectURL(fileOrUrl);
+
+        img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            const inputWidth = img.width;
+            const inputHeight = img.height;
+            const inputAspect = inputWidth / inputHeight;
+            const targetAspect = targetWidth / targetHeight;
+
+            let cropWidth, cropHeight, startX, startY;
+
+            if (inputAspect > targetAspect) {
+                cropHeight = inputHeight;
+                cropWidth = inputHeight * targetAspect;
+                startX = (inputWidth - cropWidth) / 2;
+                startY = 0;
+            } else {
+                cropWidth = inputWidth;
+                cropHeight = inputWidth / targetAspect;
+                startX = 0;
+                startY = (inputHeight - cropHeight) / 2;
+            }
+
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+            ctx.drawImage(img, startX, startY, cropWidth, cropHeight, 0, 0, targetWidth, targetHeight);
+
+            canvas.toBlob(
+                (blob) => {
+                    if (!blob) return reject("Compression failed");
+
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const base64data = reader.result;
+                        resolve(base64data);
+                    };
+                    reader.readAsDataURL(blob);
+                },
+                "image/webp",
+                quality
+            );
+        };
+
+        img.onerror = reject;
+    });
+}

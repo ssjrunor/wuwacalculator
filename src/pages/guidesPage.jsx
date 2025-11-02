@@ -11,6 +11,7 @@ export default function GuidesPage() {
         theme,
         setTheme,
         effectiveTheme,
+        isDark
     } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -90,7 +91,7 @@ export default function GuidesPage() {
     }, [location]);
 
     return (
-        <div className="layout">
+        <div className={`layout ${isDark ? 'dark-text' : 'light-text'} `}>
             <div className="toolbar">
                 <div className="toolbar-group">
                     <button
@@ -162,19 +163,19 @@ export default function GuidesPage() {
                                 </div>
                             </button>
                         </div>
-                        <button className="sidebar-button" onClick={toggleTheme}>
-                            <div className="icon-slot">
+                        {theme !== "background" && (
+                            <button className="sidebar-button" onClick={toggleTheme}>
                                 <div className="icon-slot theme-toggle-icon">
                                     <Sun className="icon-sun" size={24} />
                                     <Moon className="icon-moon" size={24} />
                                 </div>
-                            </div>
-                            <div className="label-slot">
+                                <div className="label-slot">
                                     <span className="label-text">
-                                        {effectiveTheme === 'light' ? 'Dawn' : 'Dusk'}
+                                        {!isDark ? 'Dawn' : 'Dusk'}
                                     </span>
-                            </div>
-                        </button>
+                                </div>
+                            </button>
+                        )}
                     </div>
                     <div className="sidebar-footer">
                     </div>

@@ -32,6 +32,8 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: ease all 0.4s;
     cursor: pointer;
+    background: transparent;
+    backdrop-filter: blur(4px);
 }
 
 .light .header-icon {

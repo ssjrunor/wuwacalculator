@@ -244,7 +244,7 @@ export default function EchoBagMenu({
                     </div>
                     {viewMode === 'presets' ? (
                         <div className="button-group-container echo" style={{ gap: '0.5rem' }}>
-                            <div style={{ fontWeight: 'bold', color: '#555' }}>Filter by:</div>
+                            <div style={{ fontWeight: 'bold'}}>Filter by:</div>
                             <Select
                                 value={filterOptions.find(opt => opt.value === filterOption)}
                                 onChange={(opt) => setFilterOption(opt.value)}

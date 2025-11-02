@@ -10,6 +10,8 @@
     justify-content: center;
     cursor: pointer;
     border: 1px solid transparent;
+    background: transparent;
+    backdrop-filter: blur(4px);
 }
 
 .rarity-1 {

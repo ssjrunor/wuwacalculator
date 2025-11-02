@@ -245,7 +245,6 @@
     justify-content: center;
     animation: fadeIn 0.3s ease;
     transition: opacity 0.3s ease;
-    backdrop-filter: blur(1px);
 }
 
 @keyframes fadeIn {

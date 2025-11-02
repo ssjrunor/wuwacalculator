@@ -1,15 +1,17 @@
-import React, {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
-import {Sun, Moon, Sparkle, Info, Settings, History, HelpCircle} from "lucide-react";
-import useDarkMode from "../hooks/useDarkMode";
-import {googleLogout, useGoogleLogin} from '@react-oauth/google';
+import React, {useEffect, useRef, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {HelpCircle, History, Info, Moon, Settings, Sparkle, Sun} from "lucide-react";
 import {getSyncData, restoreFromDrive, uploadToDrive} from "../utils/driveSync.js";
 import NotificationToast from "../components/NotificationToast.jsx";
 import ConfirmationModal from "../components/ConfirmationModal.jsx";
 import ImportOverviewMini from "../components/ImportOverviewMini.jsx";
 import {getPersistentValue, setPersistentValue, usePersistentState} from "../hooks/usePersistentState.js";
 import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
-import { useLocation } from "react-router-dom";
+import {cropAndCompressImage} from "./calculator.jsx";
+import {loadImage} from "../utils/imageCache.js";
+import PlainModal from "../components/PlainModal.jsx";
+import {getCuteMessage} from "../components/cuteMessages.jsx";
+
 
 const FONT_LINKS = {
     Onest: 'https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap',
@@ -19,12 +21,15 @@ const FONT_LINKS = {
     Caveat: 'https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap',
 };
 
-export default function Setting() {
+export default function Setting(props) {
+    const fileInputRef = useRef(null);
     const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
         icon: null,
         message: null,
-        color: null
+        color: null,
+        duration: 3000,
+        prompt: {}
     });
 
     const [showConfirm, setShowConfirm] = useState(false);
@@ -42,12 +47,18 @@ export default function Setting() {
         theme,
         setTheme,
         variants,
-        effectiveTheme,
+        toggleBlurMode,
         lightVariant,
         darkVariant,
+        backgroundVariant,
         setLightVariant,
         setDarkVariant,
-    } = useDarkMode();
+        setBackgroundVariant,
+        setBackgroundImage,
+        backgroundImage,
+        isDark,
+        blurMode
+    } = props;
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [importPreview, setImportPreview] = useState(null);
     const [showImportModal, setShowImportModal] = useState(false);
@@ -419,9 +430,11 @@ export default function Setting() {
     }, [location]);
 
     const canPreview = validLink || !fontLink;
+    const [modalOpen, setModalOpen] = useState(false);
+    const [clickCounter, setClickCounter] = useState(0);
 
     return (
-        <div className="layout">
+        <div className={`layout ${isDark ? 'dark-text' : 'light-text'} `}>
             <div className="toolbar">
                 <div className="toolbar-group">
                     <button
@@ -492,19 +505,19 @@ export default function Setting() {
                                 </div>
                             </button>
                         </div>
-                        <button className="sidebar-button" onClick={toggleTheme}>
-                            <div className="icon-slot">
+                        {theme !== "background" && (
+                            <button className="sidebar-button" onClick={toggleTheme}>
                                 <div className="icon-slot theme-toggle-icon">
                                     <Sun className="icon-sun" size={24} />
                                     <Moon className="icon-moon" size={24} />
                                 </div>
-                            </div>
-                            <div className="label-slot">
+                                <div className="label-slot">
                                     <span className="label-text">
-                                        {effectiveTheme === 'light' ? 'Dawn' : 'Dusk'}
+                                        {!isDark ? 'Dawn' : 'Dusk'}
                                     </span>
-                            </div>
-                        </button>
+                                </div>
+                            </button>
+                        )}
                     </div>
                     <div className="sidebar-footer">
                         <a
@@ -641,7 +654,6 @@ export default function Setting() {
                                 </select>
                             </div>
 
-                            {/* Paste your own font link */}
                             <div className="settings-label">
                                 <h4 style={{ marginBottom: 'unset' }}>Custom Font Link:</h4>
                                 <input
@@ -661,7 +673,6 @@ export default function Setting() {
                             {selectedFont && (
                                 <>
                                     <h4 style={{ marginBottom: 'unset' }}>Preview:</h4>
-
                                     <div
                                         style={{
                                             position: 'relative',
@@ -764,17 +775,18 @@ export default function Setting() {
                         </div>
 
                         <div className="echo-buff" id="theme-variants">
-                            <h2>Theme Variants</h2>
+                            <h2>Appearance</h2>
                             <p style={{ marginBottom: '1rem' }}>
                                 Choose your preferred theme variant for both light and dark modes.
                                 These control the appearance of the interface depending on which mode is active.
                             </p>
-
                             <ThemeVariantGrid
                                 mode="light"
                                 value={lightVariant}
                                 onChange={setLightVariant}
                                 variants={variants}
+                                theme={theme}
+                                backgroundImage={backgroundImage}
                             />
 
                             <ThemeVariantGrid
@@ -782,7 +794,71 @@ export default function Setting() {
                                 value={darkVariant}
                                 onChange={setDarkVariant}
                                 variants={variants}
+                                theme={theme}
+                                backgroundImage={backgroundImage}
                             />
+
+                            <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>
+                                Background themes may reduce performance on some systems and browsers. <span
+                                    className={`dropzone-click-text`}
+                                    onClick={() => setModalOpen(true)}
+                                >
+                                    See more.
+                                </span>
+                            </p>
+                            <ThemeVariantGrid
+                                mode="background"
+                                value={backgroundVariant}
+                                onChange={setBackgroundVariant}
+                                variants={variants}
+                                unselect={theme !== 'background'}
+                                theme={theme}
+                                backgroundImage={backgroundImage}
+                            />
+
+                            {theme === 'background' && (
+                                <>
+                                    <p style={{ margin: '1rem 0 0.5rem 0' }}>
+                                        𓂃˖˳·˖ ִֶָ ⋆ Upload a picture you want as a background (⸝⸝> ᴗ•⸝⸝)  ͙⋆ ִֶָ˖·˳˖𓂃 ִֶָ
+                                    </p>
+                                    <div
+                                        className="modal-dropzone"
+                                        onDragOver={(e) => e.preventDefault()}
+                                        onDrop={(e) => {
+                                            e.preventDefault();
+                                            const file = e.dataTransfer.files?.[0];
+                                            if (file) setBackgroundImage(file);
+                                        }}
+                                    >
+                                        <div className="modal-dropzone-text">
+                                            <p
+                                                className="dropzone-click-text"
+                                                onClick={() => fileInputRef.current?.click()}
+                                            >
+                                                Choose Image
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <input
+                                        ref={fileInputRef}
+                                        type="file"
+                                        accept="image/*"
+                                        style={{ display: 'none' }}
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) setBackgroundImage(file);
+                                        }}
+                                    />
+                                </>
+                            )}
+                            <p style={{
+                                marginBottom: 'unset',
+                                fontSize: '0.9rem',
+                                opacity: 0.75,
+                                textAlign: 'center'
+                            }}>
+                                Light and dark mode switching is disabled while using a background image.
+                            </p>
                         </div>
                         <div className="echo-buff">
                             <h2>Google Drive Sync</h2>
@@ -883,10 +959,15 @@ export default function Setting() {
                     message={popupMessage.message}
                     icon={popupMessage.icon}
                     color={popupMessage.color}
-                    onClose={() => setShowToast(false)}
+                    onClose={
+                        popupMessage.onClose
+                            ? popupMessage.onClose
+                            : () => setTimeout(() => setShowToast(false), 300)
+                    }
                     position={'top'}
                     bold={true}
-                    duration={3000}
+                    duration={popupMessage.duration}
+                    prompt={popupMessage.prompt}
                 />
             )}
 
@@ -901,37 +982,165 @@ export default function Setting() {
                     onClose={() => setShowConfirm(false)}
                 />
             )}
+            <PlainModal modalOpen={modalOpen} setModalOpen={setModalOpen} height={'fit-content'}>
+                <h2 style={{ margin: 'unset' }}>About Background Themes</h2>
+                <p style={{ lineHeight: 1.6, margin: 'unset' }}>
+                    Background themes use Frosted or blurred elements for most things on
+                    here which in turn use a real-time effect called
+                    <strong> BACKDROP FILTERING</strong>. It looks smooth and glassy but can
+                    be demanding on your GPU, especially when large images or multiple
+                    translucent layers are involved.
+                </p>
+
+                <p style={{ lineHeight: 1.6, margin: 'unset' }}>
+                    If your device feels slow, turn off blur or try switching to a simpler theme in
+                    the Appearance settings. You’ll get much faster animations and
+                    reduced memory usage with almost the same visual quality (just
+                    no custom background).
+                </p>
+
+                <p style={{ lineHeight: 1.6, opacity: 0.7, margin: 'unset' }}>
+                    *Technical note:* Each time the screen updates, the browser must
+                    re-render and blur everything behind your frosted layer. On some
+                    systems, this can cause frame drops or increased fan noise.
+                </p>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', gap: '1rem' }}>
+                        <span className="highlight">
+                            ❯❯❯❯ To turn <span style={{ color: 'red' }}>{blurMode === "on" ? "OFF" : "ON"}</span> blur effect on some surfaces and elements click "THE Button"
+                        </span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
+                        {clickCounter <= 8 && (
+                            <button
+                                className="clear-button"
+                                onClick={() => {
+                                    aLittleTrolling({
+                                        clickCounter,
+                                        setClickCounter,
+                                        setShowToast,
+                                        toggleBlurMode,
+                                        setPopupMessage,
+                                        showToast
+                                    })
+                                }}
+                                style={{ margin: 'unset' }}
+                            >
+                                a button
+                            </button>
+                        )}
+                        <button
+                            className="clear-button"
+                            onClick={() => {
+                                toggleBlurMode();
+                                if (clickCounter > 8) {
+                                    setPopupMessage({
+                                        message: `ok you get get the funny button back`,
+                                        icon: '',
+                                        color: {light: 'green', dark: 'limegreen'},
+                                        duration: 10000,
+                                    });
+                                    setShowToast(true);
+                                    setTimeout(() => {
+                                        setClickCounter(0);
+                                    }, 2000);
+                                }
+                            }}
+                            style={{ margin: 'unset' }}
+                        >
+                            THE Button
+                        </button>
+                    </div>
+                </div>
+
+                {/*<button
+                    className="btn-primary"
+                    onClick={() => setModalOpen(false)}
+                    style={{ margin: 'unset', marginTop: 'auto' }}
+                >
+                    Got it
+                </button>*/}
+            </PlainModal>
         </div>
     );
 }
 
 
-export function ThemeVariantGrid({
-                                             mode = "dark",
-                                             value,
-                                             onChange,
-                                             variants
-                                         }) {
+export function ThemeVariantGrid({ mode = "dark", value, onChange, variants, unselect = false, theme, backgroundImage }) {
     const list = variants[mode] || [];
+    const [refresh, setRefresh] = useState(0);
+    const [previewMap, setPreviewMap] = useState({});
+    const dynamicThemeMap = themeMap(backgroundImage);
+
+    useEffect(() => {
+        const observer = new MutationObserver(() => setRefresh((r) => r + 1));
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["style"],
+        });
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        let isCancelled = false;
+
+        async function loadPreviews() {
+            for (const opt of list) {
+                const entry = dynamicThemeMap[opt];
+                if (!entry) continue;
+
+                let previewValue = entry.preview;
+                if (typeof previewValue === "function") {
+                    previewValue = await Promise.resolve(entry.preview());
+                }
+
+                if (!isCancelled) {
+                    setPreviewMap((prev) => ({ ...prev, [opt]: previewValue }));
+                }
+            }
+        }
+
+        loadPreviews();
+        return () => (isCancelled = true);
+    }, [list, refresh, backgroundImage]);
 
     return (
         <div className="theme-variant-grid">
-            {list.map(opt => {
-                const isActive = value === opt;
+            {list.map((opt) => {
+                const isActive = value === opt && !unselect;
+                const previewValue = previewMap[opt] || "#ccc";
+                const disable = mode !== "background" && theme === "background";
+                const backgroundImage = previewValue.startsWith("data:image")
+                    ? `url(${previewValue})`
+                    : ''
 
                 return (
                     <div
-                        data-tooltip={themeMap[opt].name}
-                        className={`damage-tooltip-wrapper`}>
+                        key={opt}
+                        data-tooltip={dynamicThemeMap[opt].name}
+                        className="damage-tooltip-wrapper"
+                        style={{
+                            opacity: disable ? 0.5 : 1,
+                            pointerEvents: disable ? 'none' : 'auto'
+                        }}
+                    >
                         <button
-                            key={opt}
-                            className={`theme-swatch ${isActive ? "active" : ""}`}
+                            className={`theme-swatch 
+                            ${isActive ? "active" : ""} 
+                            ${mode !== 'background' ? (previewValue.startsWith('linear') ? 'gradient' : 'plain') : ''}`}
                             onClick={() => onChange(opt)}
                             style={{
-                                background: themeMap[opt].preview,
+                                '--preview-value': previewValue,
+                                backgroundImage: backgroundImage,
+                                backgroundRepeat: "no-repeat",
+                                backgroundSize: "cover",
+                                borderColor: mode === 'background' ? 'white' : 'transparent',
+                                backgroundPosition: "center"
                             }}
+                            disabled={disable}
                         >
-                            {themeMap[opt].newStatus && <span className="badge-new">NEW</span>}
+                            {dynamicThemeMap[opt].newStatus && (
+                                <span className="badge-new">NEW</span>
+                            )}
                         </button>
                     </div>
                 );
@@ -940,9 +1149,33 @@ export function ThemeVariantGrid({
     );
 }
 
-/* --- Small helper that previews each theme visually --- */
-export const themeMap = {
-    // ---------- LIGHT THEMES ----------
+let cachedPreview = null;
+
+export async function getFrostedAuroraPreview(backgroundImage) {
+    try {
+        if (cachedPreview) return cachedPreview;
+        const cacheKey = `bgcache:${backgroundImage}:${window.innerWidth}x${window.innerHeight}`;
+        const cachedBlob = await loadImage(cacheKey);
+
+        let sourceUrl;
+
+        if (cachedBlob) {
+            sourceUrl = URL.createObjectURL(cachedBlob);
+        } else {
+            sourceUrl = backgroundImage;
+        }
+
+        const base64 = await cropAndCompressImage(sourceUrl, 0.6, 64, 64);
+        cachedPreview = base64;
+
+        return base64;
+    } catch (err) {
+        console.warn("⚠️ Failed to get frosted preview:", err);
+        return "white";
+    }
+}
+
+export const themeMap = (backgroundImage) => ({
     "light": {
         name: "Classic",
         newStatus: false,
@@ -968,8 +1201,6 @@ export const themeMap = {
         newStatus: true,
         preview: "linear-gradient(135deg, #ffebf8, #e6faff, #fff9e6)",
     },
-
-    // ---------- DARK THEMES ----------
     "dark": {
         name: "Midnight",
         newStatus: false,
@@ -990,4 +1221,121 @@ export const themeMap = {
         newStatus: true,
         preview: "linear-gradient(135deg, rgb(53, 0, 0), rgb(85, 0, 0))",
     },
-};
+    "frosted-aurora": {
+        name: "Image",
+        newStatus: true,
+        preview: async () => await getFrostedAuroraPreview(backgroundImage),
+    },
+});
+
+function aLittleTrolling ({clickCounter, setClickCounter, setShowToast, toggleBlurMode, setPopupMessage, showToast}) {
+    if (showToast) setShowToast(false);
+    setTimeout(() => {
+        if (clickCounter <= 4) {
+            switch (clickCounter) {
+                case 0:
+                    setPopupMessage({
+                        message: 'Oh did you click "a" button? hmm??',
+                        icon: '',
+                        color: {light: 'green', dark: 'limegreen'},
+                        duration: 10000,
+                        prompt: {
+                            message: 'an enticing link~',
+                            action: () => window.open('https://youtu.be/oPLObjVAvIU?si=xO8gapHdLmygFvUG', '_blank')
+                        },
+                        onClose: () => setTimeout(() => setShowToast(false), 300)
+                    });
+                    setShowToast(true);
+                    setClickCounter(prev => prev + 1);
+                    break;
+                case 1:
+                    setPopupMessage({
+                        message: 'Again...? hmm...',
+                        icon: '',
+                        color: {light: 'green', dark: 'limegreen'},
+                        duration: 10000,
+                        prompt: {
+                            message: "it's a link to something",
+                            action: () => window.open('https://youtu.be/oPLObjVAvIU?si=xO8gapHdLmygFvUG', '_blank')
+                        },
+                        onClose: () => setTimeout(() => setShowToast(false), 300)
+                    });
+                    setShowToast(true);
+                    setClickCounter(prev => prev + 1);
+                    break;
+                case 2:
+                    setPopupMessage({
+                        message: 'yeah just click the link...',
+                        icon: '',
+                        color: {light: 'green', dark: 'limegreen'},
+                        duration: 10000,
+                        prompt: {
+                            message: "link",
+                            action: () => window.open('https://youtu.be/oPLObjVAvIU?si=xO8gapHdLmygFvUG', '_blank')
+                        },
+                        onClose: () => setTimeout(() => setShowToast(false), 300)
+                    });
+                    setShowToast(true);
+                    setClickCounter(prev => prev + 1);
+                    break;
+                case 3:
+                    setPopupMessage({
+                        message: 'why...',
+                        icon: '',
+                        color: {light: 'green', dark: 'limegreen'},
+                        duration: 10000,
+                        prompt: {
+                            message: "you WILL be rick-rolled",
+                            action: () => window.open('https://youtu.be/oPLObjVAvIU?si=xO8gapHdLmygFvUG', '_blank')
+                        },
+                        onClose: () => setTimeout(() => setShowToast(false), 300)
+                    });
+                    setShowToast(true);
+                    setClickCounter(prev => prev + 1);
+                    break;
+                case 4:
+                    setPopupMessage({
+                        message: 'you win, just toggle it already',
+                        icon: '',
+                        color: {light: 'green', dark: 'limegreen'},
+                        duration: 10000,
+                        prompt: {
+                            message: "toggle",
+                            action: toggleBlurMode
+                        },
+                        onClose: () => setTimeout(() => setShowToast(false), 300)
+                    });
+                    setShowToast(true);
+                    setClickCounter(prev => prev + 1);
+                    break;
+                default:
+                    break;
+            }
+        } else if (clickCounter > 4 && clickCounter <= 7) {
+            setPopupMessage({
+                message: 'toggle blur effect',
+                icon: '',
+                color: {light: 'green', dark: 'limegreen'},
+                duration: 10000,
+                prompt: {
+                    message: "toggle",
+                    action: toggleBlurMode
+                },
+                onClose: () => setTimeout(() => setShowToast(false), 300)
+            });
+            setShowToast(true);
+            setClickCounter(prev => prev + 1);
+        } else {
+            setPopupMessage({
+                message: "Ok i'm taking away the button",
+                icon: '',
+                color: {light: 'green', dark: 'limegreen'},
+                duration: 10000,
+            });
+            setShowToast(true);
+            setTimeout(() => {
+                setClickCounter(prev => prev + 1);
+            }, 2000);
+        }
+    }, showToast ? 500 : 0);
+}

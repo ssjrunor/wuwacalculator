@@ -191,3 +191,13 @@
     transform: translateX(-50%) translateY(-0.25rem);
     transition-delay: 0.8s;
 }
+
+.grid-stat-icon {
+    width: 18px;
+    height: 18px;
+    background-color: var(--stat-color, #999);
+    webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    webkit-mask-size: contain;
+    mask-size: contain
+}

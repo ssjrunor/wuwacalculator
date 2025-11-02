@@ -1,0 +1,208 @@
+.pastel-pink .buffs-box {
+    background-color: #ffe4e9;
+    border: 1px solid rgba(177, 0, 90, 0.25);
+}
+
+.pastel-pink .character-overview-pane {
+    background: var(--color-muted, #ffd8e0);
+}
+
+.pastel-pink .character-row-item {
+    background: rgba(255, 228, 233, 0.7);
+    border: 1px solid rgba(177, 0, 90, 0.15);
+}
+
+.pastel-pink .character-row-item:hover {
+    background: rgba(255, 210, 216, 0.7);
+}
+
+.pastel-pink .edit-substats-modal,
+.pastel-pink .skills-modal-content,
+.pastel-pink .skill-menu-panel,
+.pastel-pink .icon-menu-vertical {
+    background: rgba(255, 228, 233, 0.93);
+}
+
+.pastel-pink .dropdown-item {
+    background-color: rgba(255, 228, 233, 0.7);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.pastel-pink .dropdown-item:hover {
+    background-color: rgba(255, 210, 216, 0.7);
+}
+
+.pastel-pink .character-settings,
+.pastel-pink .skills-settings {
+    background-color: #ffe4e9;
+    border: 1px solid rgba(177, 0, 90, 0.25);
+}
+
+.pastel-pink .modern-checkbox input[type="checkbox"]:checked {
+    background-color: #ff0080;
+    border-color: #C60066FF;
+}
+
+.pastel-pink .buff-row {
+    background: rgba(255, 0, 45, 0.07);
+}
+
+.pastel-pink .custom-select.small,
+.pastel-pink .character-level-input,
+.pastel-pink .character-settings input[type="number"],
+.pastel-pink .buff-row input {
+    background-color: rgb(255, 235, 237);
+    border: 1px solid rgba(177, 0, 90, 0.42);
+}
+
+.pastel-pink .custom-select__control,
+.pastel-pink .custom-select__menu {
+    background-color: rgb(255, 235, 237) !important;
+    border: 1px solid rgba(177, 0, 90, 0.42) !important;
+}
+
+.pastel-pink .clear-button {
+    background-color: #ffebef;
+}
+
+.pastel-pink .clear-button:hover {
+    background-color: #fff3f3;
+}
+
+.pastel-pink .stats-box {
+    background-color: #ffe4e9;
+    border: 1px solid rgba(177, 0, 90, 0.25);
+}
+
+.pastel-pink .stats-grid {
+    border: 1px solid rgba(177, 0, 90, 0.15);
+}
+
+.pastel-pink .stat-row:nth-child(even) {
+    background-color: rgba(255, 108, 130, 0.06);
+}
+
+.pastel-pink .stat-row:nth-child(odd) {
+    background-color: #ffebef;
+}
+
+.pastel-pink .damage-box {
+    background-color: #ffe4e9;
+    border: 1px solid rgba(177, 0, 90, 0.25);
+}
+
+.pastel-pink .damage-inner-box {
+    border: 1px solid rgba(177, 0, 90, 0.15);
+    background-color: rgba(255, 108, 130, 0.06);
+}
+
+.pastel-pink .bag.echo-tile {
+    background-color: rgba(255, 226, 230, 0.43);
+}
+
+.pastel-pink .echo-buff {
+    background-color: rgba(255, 108, 130, 0.06);
+    border: 1px solid rgba(177, 0, 90, 0.15);
+}
+
+.pastel-pink .highlight {
+    color: #ff6884 !important;
+}
+
+.pastel-pink .main-echo-description {
+    background: rgba(99, 0, 16, 0.07);
+    border-left: 4px solid #ff6884;
+}
+
+.pastel-pink .echo-slot-title,
+.pastel-pink .echo-name {
+    color: #ff6884;
+}
+
+.pastel-pink .echo-details {
+    border: 1px solid rgba(177, 0, 90, 0.15);
+}
+
+.pastel-pink .echo-tat-divider {
+    border-top: 1px solid rgba(177, 0, 90, 0.15);
+}
+
+.pastel-pink .main-echo-description {
+    background: rgba(99, 0, 16, 0.07);
+    border-left: 4px solid #ff6884;
+}
+
+.pastel-pink .echo-parser-preview.skills-modal-content {
+    background-color: rgba(255, 228, 233, 0.93);
+}
+
+.pastel-pink .layout, .pastel-pink html, .pastel-pink body, .pastel-pink #root {
+    background: #ffd8e0;
+}
+
+.pastel-pink .header-icon {
+    background: #fff0f4;
+    border-color: rgba(177, 0, 90, 0.25);
+}
+
+.pastel-pink .echo-slot-icon-wrapper .header-icon {
+    border-color: rgba(177, 0, 90, 0.25) !important;
+}
+
+.pastel-pink .inherent-skills-box {
+    background-color: #ffe4e9;
+    border: 1px solid rgba(177, 0, 90, 0.25);
+}
+
+.pastel-pink .partition {
+    background-color: #ffd8e0;
+}
+
+.pastel-pink .avg {
+    color: rgba(0, 102, 255, 0.64);
+}
+
+.pastel-pink .rotation-item {
+    background: #ffe3eb;
+    border: 1px solid rgba(177, 0, 90, 0.15);
+    box-shadow: 3px 3px 8px rgba(69, 0, 35, 0.15);
+}
+
+.pastel-pink .view-toggle-button,
+.pastel-pink select {
+    background: #ffebef;
+}
+
+.pastel-pink .skills-modal-content-area {
+    background-color: #ffe4e9;
+}
+
+.pastel-pink .edit-substats-modal .stat-toggle {
+    background: rgba(151, 111, 122, 0.7);
+}
+
+.pastel-pink .edit-substats-modal .substat-input {
+    background: rgba(151, 111, 122, 0.7);
+}
+
+.pastel-pink .main-stat-select {
+    background: rgba(151, 111, 122, 0.7);
+}
+
+.pastel-pink .main-stat-select:hover {
+    background: rgba(126, 75, 89, 0.7);
+}
+
+.pastel-pink .toolbar {
+    background-color: #ffe4e9;
+    border-bottom: 1px solid rgba(177, 0, 90, 0.25);
+}
+
+.pastel-pink .sidebar {
+    border-right: 1px solid rgba(177, 0, 90, 0.25);
+    background-color: #ffe4e9;
+}
+
+.pastel-pink .weapon-icon-wrapper {
+    border: 1px solid transparent;
+}

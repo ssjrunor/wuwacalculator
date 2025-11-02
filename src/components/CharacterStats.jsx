@@ -121,16 +121,11 @@ export default function CharacterStats({ activeCharacter, baseCharacterState, ch
                             {statIconMap[stat.label] && (
                                 <div
                                     style={{
-                                        width: 18,
-                                        height: 18,
-                                        backgroundColor: stat.color ?? '#999',
+                                        '--stat-color': stat.color,
                                         WebkitMaskImage: `url(${statIconMap[stat.label]})`,
                                         maskImage: `url(${statIconMap[stat.label]})`,
-                                        WebkitMaskRepeat: 'no-repeat',
-                                        maskRepeat: 'no-repeat',
-                                        WebkitMaskSize: 'contain',
-                                        maskSize: 'contain'
                                     }}
+                                    className="grid-stat-icon"
                                 />
                             )}
                             {stat.label}

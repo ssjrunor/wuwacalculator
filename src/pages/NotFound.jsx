@@ -9,6 +9,7 @@ export default function NotFound() {
         theme,
         setTheme,
         effectiveTheme,
+        isDark
     } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
@@ -48,7 +49,7 @@ export default function NotFound() {
     }, [hamburgerOpen]);
 
     return (
-        <div className="layout">
+        <div className={`layout ${isDark ? 'dark-text' : 'light-text'} `}>
             <div className="toolbar">
                 <div className="toolbar-group">
                     <button
@@ -82,19 +83,19 @@ export default function NotFound() {
                                 <span className="label-text">Home</span>
                             </div>
                         </button>
-                        <button className="sidebar-button" onClick={toggleTheme}>
-                            <div className="icon-slot">
+                        {theme !== "background" && (
+                            <button className="sidebar-button" onClick={toggleTheme}>
                                 <div className="icon-slot theme-toggle-icon">
                                     <Sun className="icon-sun" size={24} />
                                     <Moon className="icon-moon" size={24} />
                                 </div>
-                            </div>
-                            <div className="label-slot">
-                                <span className="label-text">
-                                    {effectiveTheme === 'light' ? 'Dawn' : 'Dusk'}
-                                </span>
-                            </div>
-                        </button>
+                                <div className="label-slot">
+                                    <span className="label-text">
+                                        {!isDark ? 'Dawn' : 'Dusk'}
+                                    </span>
+                                </div>
+                            </button>
+                        )}
                     </div>
                     <div className="sidebar-footer">
                         <a
@@ -123,9 +124,13 @@ export default function NotFound() {
                     />
                 )}
 
-                <div style={{ padding: '2rem' }}>
+                <div style={{ padding: '2rem', width: '100%' }}>
                     <h1>404 - Page Not Found</h1>
-                    <p>Woah there buddy... you got too much DIP on your chip</p>
+                    <img
+                        src="https://media1.tenor.com/m/6OJmN4DnIm0AAAAd/ericdoa-imagine-if-ninja-got-a-low-taper-fade.gif"
+                        alt="Lost funny gif"
+                        style={{ width: '500px', marginTop: '1rem', display: 'flex'}}
+                    />
                 </div>
             </div>
         </div>

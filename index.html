@@ -3,6 +3,9 @@
 <head>
   <script>
     (function() {
+      // --- skip if React already applied theme ---
+      if (document.documentElement.dataset.themeLocked === "true") return;
+
       function safeParse(key, fallback) {
         try {
           const raw = localStorage.getItem(key);
@@ -32,15 +35,10 @@
                 safeParse('user-dark-variant', 'dark');
 
         const root = document.documentElement;
-        root.classList.remove('light',
-                'dark',
-                'dark-alt',
-                'pastel-pink',
-                'pastel-blue',
-                'vibrant-citrus',
-                'glassy-rainbow',
-                'cosmic-rainbow',
-                'scarlet-nebula'
+        root.classList.remove(
+                'light','dark','dark-alt','pastel-pink','pastel-blue',
+                'vibrant-citrus','glassy-rainbow','cosmic-rainbow',
+                'scarlet-nebula','frosted-aurora'
         );
 
         if (theme === 'light') {
@@ -51,8 +49,42 @@
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           root.classList.add(prefersDark ? darkVariant : lightVariant);
         }
+
+        // mark preload as complete so React knows not to redo
+        root.dataset.themeLoaded = "true";
       } catch (e) {
         console.warn('Theme preload failed:', e);
+      }
+    })();
+
+    (function preloadIndexedDBBackground() {
+      if (!document.documentElement.dataset.themeLoaded) return;
+      const root = document.documentElement;
+      if (!root.className.includes("frosted-aurora")) return;
+      const activeKey = localStorage.getItem("activeBgKey");
+      if (!activeKey) return;
+      try {
+        const request = indexedDB.open("WuWaImageCache", 1);
+        request.onsuccess = () => {
+          const db = request.result;
+          if (!db.objectStoreNames.contains("images")) return;
+          const tx = db.transaction("images", "readonly");
+          const store = tx.objectStore("images");
+          const getReq = store.get(activeKey);
+          getReq.onsuccess = () => {
+            const blob = getReq.result;
+            if (!blob) return;
+            const url = URL.createObjectURL(blob);
+            root.style.backgroundImage = `url(${url})`;
+            root.dataset.bgKey = activeKey;
+            root.style.backgroundSize = "cover";
+            root.style.backgroundPosition = "center";
+            root.style.backgroundAttachment = "fixed";
+            root.style.backgroundRepeat = "no-repeat";
+          };
+        };
+      } catch (err) {
+        console.warn("Failed to preload background:", err);
       }
     })();
   </script>

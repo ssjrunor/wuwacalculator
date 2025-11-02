@@ -10,6 +10,7 @@ export default function InfoPage() {
         theme,
         setTheme,
         effectiveTheme,
+        isDark
     } = useDarkMode();
     const [hamburgerOpen, setHamburgerOpen] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -50,7 +51,7 @@ export default function InfoPage() {
     }, [hamburgerOpen]);
 
     return (
-        <div className="layout">
+        <div className={`layout ${isDark ? 'dark-text' : 'light-text'} `}>
             <div className="toolbar">
                 <div className="toolbar-group">
                     <button
@@ -121,19 +122,19 @@ export default function InfoPage() {
                                 </div>
                             </button>
                         </div>
-                        <button className="sidebar-button" onClick={toggleTheme}>
-                            <div className="icon-slot">
+                        {theme !== "background" && (
+                            <button className="sidebar-button" onClick={toggleTheme}>
                                 <div className="icon-slot theme-toggle-icon">
                                     <Sun className="icon-sun" size={24} />
                                     <Moon className="icon-moon" size={24} />
                                 </div>
-                            </div>
-                            <div className="label-slot">
+                                <div className="label-slot">
                                     <span className="label-text">
-                                        {effectiveTheme === 'light' ? 'Dawn' : 'Dusk'}
+                                        {!isDark ? 'Dawn' : 'Dusk'}
                                     </span>
-                            </div>
-                        </button>
+                                </div>
+                            </button>
+                        )}
                     </div>
                     <div className="sidebar-footer">
                     </div>
@@ -177,6 +178,11 @@ export default function InfoPage() {
                             <p>Join the <a href="https://discord.gg/wNaauhE4uH" target="_blank" rel="noopener noreferrer">discord</a> bro.</p>
                         </div>
                     </div>
+                    <img
+                        src="https://media.tenor.com/b67Xti8TUp8AAAAi/kakyoin-stand-anime.gif"
+                        className="info-section-gif"
+                        alt="Lost funny gif"
+                    />
                     <div className="legal">
                         <hr style={{ margin: '1rem 0', opacity: '0.1' }} />
                         <div className="legal-links">

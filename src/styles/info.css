@@ -80,3 +80,12 @@
     transform: unset;
     opacity: 1;
 }
+
+.info-section-gif {
+    position: fixed;
+    bottom:9%;
+    right: 5%;
+    height: 30%;
+    margin-top: 1rem;
+    opacity: 0.7;
+}

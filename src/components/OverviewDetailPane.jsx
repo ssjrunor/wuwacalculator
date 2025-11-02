@@ -33,7 +33,8 @@ export default function OverviewDetailPane({
                                                handleCharacterSelect,
                                                handleReset,
                                                sortedCharacterIds,
-                                               allRotations
+                                               allRotations,
+    theme
                                            }) {
     if (!character || !runtime) return null;
 
@@ -202,27 +203,38 @@ export default function OverviewDetailPane({
         onCancel: () => {}
     });
 
+
     return (
         <>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'row', gap: '1rem', marginBottom: '1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', flexDirection: 'row', gap: '1rem', marginBottom: '1rem' }}>
                 <button onClick={() => openGuide('Overview')} className="btn-primary echoes"
                         style={{ marginRight: 'auto'}}>
                     See Guide
                 </button>
-                <button
-                    className="download-btn rotation-button screenshot"
-                    onClick={handleCopyScreenshot}
-                >
-                    <Camera size={24} />
-                    <span className="label">Copy screenshot</span>
-                </button>
-                <button
-                    className="download-btn rotation-button screenshot"
-                    onClick={handleDownload}
-                >
-                    <Download size={24} />
-                    <span className="label">Download screenshot</span>
-                </button>
+                {(theme === "background") ? (
+                    <span>
+                        (Switch off of the current theme to enable screenshots)
+                    </span>
+                ) : (
+                    <>
+                        <button
+                            className="download-btn rotation-button screenshot"
+                            onClick={handleCopyScreenshot}
+                            disabled={theme === 'background'}
+                        >
+                            <Camera size={24} />
+                            <span className="label">Copy screenshot</span>
+                        </button>
+                        <button
+                            className="download-btn rotation-button screenshot"
+                            onClick={handleDownload}
+                            disabled={theme === 'background'}
+                        >
+                            <Download size={24} />
+                            <span className="label">Download screenshot</span>
+                        </button>
+                    </>
+                )}
             </div>
 
             <div ref={paneRef} >

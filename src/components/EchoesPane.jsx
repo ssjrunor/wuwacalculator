@@ -683,17 +683,12 @@ export default function EchoesPane({
                                                         <span className="echo-stat-label">
                                                             {iconUrl && (
                                                                 <div
-                                                                    className="stat-icon"
+                                                                    className="stat-icon grid-stat-icon"
                                                                     style={{
                                                                         width: 18,
                                                                         height: 18,
-                                                                        backgroundColor: '#999',
                                                                         WebkitMaskImage: `url(${iconUrl})`,
                                                                         maskImage: `url(${iconUrl})`,
-                                                                        WebkitMaskRepeat: 'no-repeat',
-                                                                        maskRepeat: 'no-repeat',
-                                                                        WebkitMaskSize: 'contain',
-                                                                        maskSize: 'contain',
                                                                         display: 'inline-block',
                                                                         marginRight: '0.25rem',
                                                                         verticalAlign: 'middle',
@@ -721,17 +716,12 @@ export default function EchoesPane({
                                                             <span className="echo-stat-label">
                                                                 {iconUrl && (
                                                                     <div
-                                                                        className="stat-icon"
+                                                                        className="stat-icon grid-stat-icon"
                                                                         style={{
                                                                             width: 18,
                                                                             height: 18,
-                                                                            backgroundColor: '#999',
                                                                             WebkitMaskImage: `url(${iconUrl})`,
                                                                             maskImage: `url(${iconUrl})`,
-                                                                            WebkitMaskRepeat: 'no-repeat',
-                                                                            maskRepeat: 'no-repeat',
-                                                                            WebkitMaskSize: 'contain',
-                                                                            maskSize: 'contain',
                                                                             display: 'inline-block',
                                                                             marginRight: '0.25rem',
                                                                             verticalAlign: 'middle',

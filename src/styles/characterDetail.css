@@ -230,12 +230,8 @@
     padding: 0.25rem 0.5rem;
     display: flex;
     flex-direction: column;
-    background-color: rgba(249, 249, 249, 0.76);
+    background: transparent;
     border-radius: 0 0 1rem 0;
-}
-
-.dark .character-overview-details {
-    background: rgba(25, 32, 43, 0.51);
 }
 
 .character-name.details {
