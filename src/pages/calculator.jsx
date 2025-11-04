@@ -970,11 +970,10 @@ export default function Calculator(props) {
                 changed = true;
             }
 
-            if (!newChar.groupedSkillOptions) {
+            if (JSON.stringify(newChar.groupedSkillOptions) !== JSON.stringify(groupedSkillOptions)) {
                 newChar.groupedSkillOptions = groupedSkillOptions;
                 changed = true;
             }
-
 
             const existingRotation = newChar.rotationEntries ?? [];
             const hasNoRotation = existingRotation.length === 0;
@@ -997,7 +996,7 @@ export default function Calculator(props) {
 
     }, [charId, skillTabs, allSkillLevels, skillResults]);
 
-    //console.log(characterRuntimeStates[charId]);
+    //console.log(characterRuntimeStates[charId].SkillLevels.sequence);
 
     return (
         <>

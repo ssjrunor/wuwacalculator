@@ -62,7 +62,7 @@ export function applyEncoreLogic({
     }
 
     if (isActiveSequence(5) && !mergedBuffs.__encoreS5) {
-        mergedBuffs.skillAtk = (mergedBuffs.skillAtk ?? 0) + 35;
+        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 35;
         mergedBuffs.__encoreS5 = true;
     }
 

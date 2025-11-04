@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 
-export default function PlainModal({ modalOpen, setModalOpen, children, height = null, width = null }) {
+export default function PlainModal({ modalOpen, setModalOpen, children, height="fit-content", width="fit-content" }) {
     if (!modalOpen) return null;
 
     const [isClosing, setIsClosing] = useState(false);
@@ -19,6 +19,7 @@ export default function PlainModal({ modalOpen, setModalOpen, children, height =
             <div
                 className={`skills-modal-content ${isClosing ? 'closing' : ''}`}
                 onClick={(e) => e.stopPropagation()}
+                style={{ maxHeight: `unset`, maxWidth: `unset`, width: width, height: height }}
                 ref={contentRef}
             >
                 {children}

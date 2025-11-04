@@ -10,8 +10,6 @@ import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
 import {cropAndCompressImage} from "./calculator.jsx";
 import {loadImage} from "../utils/imageCache.js";
 import PlainModal from "../components/PlainModal.jsx";
-import {getCuteMessage} from "../components/cuteMessages.jsx";
-
 
 const FONT_LINKS = {
     Onest: 'https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap',
@@ -982,7 +980,7 @@ export default function Setting(props) {
                     onClose={() => setShowConfirm(false)}
                 />
             )}
-            <PlainModal modalOpen={modalOpen} setModalOpen={setModalOpen} height={'fit-content'}>
+            <PlainModal modalOpen={modalOpen} setModalOpen={setModalOpen} width="800px">
                 <h2 style={{ margin: 'unset' }}>About Background Themes</h2>
                 <p style={{ lineHeight: 1.6, margin: 'unset' }}>
                     Background themes use Frosted or blurred elements for most things on

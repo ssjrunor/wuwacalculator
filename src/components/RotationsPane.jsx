@@ -100,8 +100,9 @@ export default function RotationsPane({
     const sensors = useSensors(useSensor(PointerSensor, {
         activationConstraint: { distance: 5 }
     }));
-    const allSkillResults = skillResults ?? characterRuntimeStates[charId]?.allSkillResults ?? getSkillDamageCache();
-    const precomputedGroups = characterRuntimeStates[charId]?.groupedSkillOptions;
+    const allSkillResults = characterRuntimeStates[charId]?.allSkillResults ?? skillResults ?? getSkillDamageCache();
+    const runtime = characterRuntimeStates[charId];
+    const precomputedGroups = runtime?.groupedSkillOptions;
     const groupedSkillOptions = useMemo(() => {
         if (precomputedGroups && Object.keys(precomputedGroups).length > 0)
             return precomputedGroups;
@@ -689,28 +690,35 @@ export default function RotationsPane({
                                 strategy={verticalListSortingStrategy}
                             >
                                 {normalizedEntries
-                                    .filter(entry => entry.visible)
+                                    .filter(entry => {
+                                        const match = allSkillResults.find(
+                                            s => s.name === entry.label && s.tab === entry.tab
+                                        );
+                                        return match?.visible !== false;
+                                    })
                                     .map((entry, idx) => (
-                                    <RotationItem
-                                        key={entry.id}
-                                        id={entry.id}
-                                        index={idx}
-                                        entry={entry}
-                                        onEdit={(i) => {
-                                            setEditIndex(i);
-                                            setShowSkillOptions(true);
-                                        }}
-                                        onDelete={(i) => setRotationEntries(prev => prev.filter((_, j) => j !== i))}
-                                        onMultiplierChange={(i, val) => {
-                                            const updated = [...rotationEntries];
-                                            updated[i].multiplier = val;
-                                            setRotationEntries(updated);
-                                        }}
-                                        setRotationEntries={setRotationEntries}
-                                        allSkillResults={allSkillResults}
-                                        currentSliderColor={currentSliderColor}
-                                    />
-                                ))}
+                                        <RotationItem
+                                            key={entry.id}
+                                            id={entry.id}
+                                            index={idx}
+                                            entry={entry}
+                                            onEdit={(i) => {
+                                                setEditIndex(i);
+                                                setShowSkillOptions(true);
+                                            }}
+                                            onDelete={(i) =>
+                                                setRotationEntries((prev) => prev.filter((_, j) => j !== i))
+                                            }
+                                            onMultiplierChange={(i, val) => {
+                                                const updated = [...rotationEntries];
+                                                updated[i].multiplier = val;
+                                                setRotationEntries(updated);
+                                            }}
+                                            setRotationEntries={setRotationEntries}
+                                            allSkillResults={allSkillResults}
+                                            currentSliderColor={currentSliderColor}
+                                        />
+                                    ))}
                             </SortableContext>
                         </DndContext>
                     </div>

@@ -25,18 +25,12 @@ export function applyChangliLogic({
     const inherent1Stacks = characterState?.activeStates?.inherent1 ?? 0;
     const inherent1 = Math.min(inherent1Stacks * 5, 20);
 
-    if (!mergedBuffs.__changliInherent1) {
-        mergedBuffs.skillDmgBonus = (mergedBuffs.skillDmgBonus ?? 0) + inherent1;
-        mergedBuffs.__changliInherent1 = true;
-    }
-
-    if (isToggleActiveLocal('inherent2') && !mergedBuffs.__changliInherent2) {
-        mergedBuffs.skillDmgBonus = (mergedBuffs.skillDmgBonus ?? 0) + 20;
-        mergedBuffs.__changliInherent2 = true;
-    }
+    if (tab === 'resonanceSkill')
+        skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + inherent1;
 
     if (isToggleActiveLocal('inherent2') && (tab === 'forteCircuit' || tab === 'resonanceLiberation')) {
         skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + 15;
+        skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 20;
     }
 
     if (isActiveSequence(1) && isToggleActive(1) && !mergedBuffs.__changliS1) {

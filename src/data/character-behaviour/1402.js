@@ -36,7 +36,7 @@ export function applyYangLogic({
     }
 
     if (isActiveSequence(3) && !mergedBuffs.yangS3) {
-        mergedBuffs.skillAtk = (mergedBuffs.skillAtk ?? 0) + 40;
+        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 40;
     }
 
     if (isActiveSequence(4) && name.includes('feather release\'s')) {

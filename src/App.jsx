@@ -13,6 +13,8 @@ import {getPersistentValue, setPersistentValue, usePersistentState} from "./hook
 import {refreshAccessTokenIfNeeded} from "./utils/googleAuth.js";
 import {useGoogleAuth} from "./hooks/useGoogleAuth.js";
 import useDarkMode from "./hooks/useDarkMode.js";
+import PlainModal from "./components/PlainModal.jsx";
+import DotArt, {art, DotArtGallery, TrollButtonsLayer} from "./constants/trolling.jsx";
 
 const GA_ID = 'G-W502BDD62S';
 
@@ -79,6 +81,26 @@ export default function App() {
         }
     }, [selectedFont, fontLink]);
 
+    const [modalOpen, setModalOpen] = useState(false);
+
+    useEffect(() => {
+        try {
+            const oldParent = JSON.parse(localStorage.getItem('__charInfo__') || '{}');
+            if (oldParent.characterRuntimeStates) {
+                console.info('[Migration] Moving characterRuntimeStates to __charStates__...');
+                const newParent = JSON.parse(localStorage.getItem('__charStates__') || '{}');
+
+                newParent.characterRuntimeStates = oldParent.characterRuntimeStates;
+                localStorage.setItem('__charStates__', JSON.stringify(newParent));
+
+                delete oldParent.characterRuntimeStates;
+                localStorage.setItem('__charInfo__', JSON.stringify(oldParent));
+            }
+        } catch (err) {
+            console.warn('[Migration] Failed:', err);
+        }
+    }, []);
+
     return (
         <>
             <Routes>
@@ -91,6 +113,14 @@ export default function App() {
                 <Route path="/guides" element={<GuidesPage />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
+
+            <TrollButtonsLayer setModalOpen={setModalOpen} count={5} />
+
+            <PlainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+                <DotArtGallery modalOpen={modalOpen} />
+                <h3 style={{ margin: 'unset' }}>aLsO!!.</h3>
+                <p style={{ margin: 'unset' }} >In case you were not aware, there's a discord server for this. <a href="https://discord.gg/wNaauhE4uH" target="_blank" rel="noopener noreferrer">Join~</a></p>
+            </PlainModal>
 
             {showCookieNotice && (
                 <CookieNotice onClose={() => setShowCookieNotice(false)} />

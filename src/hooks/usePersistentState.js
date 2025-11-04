@@ -48,22 +48,20 @@ const namespaceMap = {
         'filterOption', 'guideToastShown', 'leftPaneView', 'seenChangelogVersion',
         'showCharacterOverview', 'showSubHits', 'smartFilter', 'sortKey', 'sortOrder',
         'userBodyFontName', 'userBodyFontURL', 'cookieNoticeDismissed', 'googleTokens',
-        'user-light-variant',
-        'user-dark-variant',
-        'user-background-variant',
-        'user-has-selected-theme',
-        'user-previous-theme',
-        'user-theme'
+        'user-light-variant', 'user-dark-variant', 'user-background-variant',
+        'user-has-selected-theme', 'user-previous-theme', 'user-theme'
     ],
     stores: [
         'echoBag', 'echoPresets', 'globalSavedRotations',
         'globalSavedTeamRotations', 'rotationEntriesStore'
     ],
     charInfo: [
-        'activeCharacterId', 'characterRuntimeStates', 'enemyLevel',
-        'enemyRes', 'team'
+        'activeCharacterId', 'enemyLevel', 'enemyRes', 'team'
+    ],
+    charStates: [
+        'characterRuntimeStates'
     ]
-}
+};
 
 export function getPersistentValue(key, fallback = null) {
     try {
