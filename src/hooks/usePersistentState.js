@@ -56,11 +56,11 @@ const namespaceMap = {
         'globalSavedTeamRotations', 'rotationEntriesStore'
     ],
     charInfo: [
-        'activeCharacterId', 'enemyLevel', 'enemyRes', 'team'
+        'activeCharacterId', 'enemyLevel', 'enemyRes', 'team', 'characterRuntimeStates'
     ],
-    charStates: [
+    /*charStates: [
         'characterRuntimeStates'
-    ]
+    ]*/
 };
 
 export function getPersistentValue(key, fallback = null) {

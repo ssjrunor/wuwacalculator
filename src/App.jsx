@@ -83,7 +83,7 @@ export default function App() {
 
     const [modalOpen, setModalOpen] = useState(false);
 
-    useEffect(() => {
+ /*   useEffect(() => {
         try {
             const oldParent = JSON.parse(localStorage.getItem('__charInfo__') || '{}');
             if (oldParent.characterRuntimeStates) {
@@ -99,7 +99,7 @@ export default function App() {
         } catch (err) {
             console.warn('[Migration] Failed:', err);
         }
-    }, []);
+    }, []);*/
 
     return (
         <>
