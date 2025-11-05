@@ -48,8 +48,9 @@ const namespaceMap = {
         'filterOption', 'guideToastShown', 'leftPaneView', 'seenChangelogVersion',
         'showCharacterOverview', 'showSubHits', 'smartFilter', 'sortKey', 'sortOrder',
         'userBodyFontName', 'userBodyFontURL', 'cookieNoticeDismissed', 'googleTokens',
-        'user-light-variant', 'user-dark-variant', 'user-background-variant',
-        'user-has-selected-theme', 'user-previous-theme', 'user-theme'
+        'user-light-variant', 'user-dark-variant', 'user-background-variant', 'isDark',
+        'user-has-selected-theme', 'user-previous-theme', 'user-theme', 'user-bg-main-color',
+        'user-blur-mode', 'activeBgKey'
     ],
     stores: [
         'echoBag', 'echoPresets', 'globalSavedRotations',
@@ -70,6 +71,14 @@ export function getPersistentValue(key, fallback = null) {
             keys.forEach(k => (keyToNamespace[k] = ns));
         }
 
+        const isParentKey = key.startsWith('__') && key.endsWith('__');
+
+        if (isParentKey) {
+            const parent = localStorage.getItem(key);
+            if (parent) return JSON.parse(parent);
+            return fallback;
+        }
+
         const ns = keyToNamespace[key];
         const parentKey = ns ? `__${ns}__` : null;
 
@@ -83,20 +92,30 @@ export function getPersistentValue(key, fallback = null) {
     } catch (err) {
         console.warn('[PersistentStore] Failed to get key', key, err);
     }
+
     return fallback;
 }
 
 export function setPersistentValue(key, value) {
     if (typeof value === 'string') {
         try {
-            JSON.parse(value);
             value = JSON.parse(value);
-        } catch {}
+        } catch {
+            // leave it as a string if it’s not valid JSON
+        }
     }
+
     try {
         const keyToNamespace = {};
         for (const [ns, keys] of Object.entries(namespaceMap)) {
             keys.forEach(k => (keyToNamespace[k] = ns));
+        }
+
+        const isParentKey = key.startsWith('__') && key.endsWith('__');
+
+        if (isParentKey) {
+            localStorage.setItem(key, JSON.stringify(value));
+            return;
         }
 
         const ns = keyToNamespace[key];

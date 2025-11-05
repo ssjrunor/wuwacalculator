@@ -19,6 +19,17 @@ const FONT_LINKS = {
     Caveat: 'https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap',
 };
 
+const localStorageDataMap = {
+    "All Characters": "characterRuntimeStates",
+    "Current Character": "_",
+    "Echo Bag": "echoBag",
+    "Echo Presets": "echoPresets",
+    "Saved Team Rotations": "globalSavedTeamRotations",
+    "Saved Rotations": "globalSavedRotations",
+    "Settings": "__controls__",
+    "All Data": "_",
+};
+
 export default function Setting(props) {
     const fileInputRef = useRef(null);
     const [showToast, setShowToast] = useState(false);
@@ -75,41 +86,126 @@ export default function Setting(props) {
         }
     }, [importSuccess]);
 
-    const downloadCharacterState = () => {
-        const runtime = getPersistentValue('characterRuntimeStates', {});
-        const id = getPersistentValue('activeCharacterId', null);
+    function downloadCharacterState() {
+        const characterRuntimeStates = getPersistentValue("characterRuntimeStates", {});
+        const id = getPersistentValue("activeCharacterId", null);
 
-        if (!runtime[id]) {
+        if (!characterRuntimeStates[id]) {
             setPopupMessage({
-                message: 'Oh... no cached character data found... (ㆆ ᴗ ㆆ)',
-                icon: '✘',
-                color: 'red'
+                message: "Oh... no cached character data found... (ㆆ ᴗ ㆆ)",
+                icon: "✘",
+                color: "red"
             });
             setShowToast(true);
             return;
         }
 
-        const dataToSave = { ...runtime[id] };
+        const dataToSave = { ...characterRuntimeStates[id] };
 
         if (Array.isArray(dataToSave.Team)) {
             dataToSave.Team = [null, dataToSave.Team[1] ?? null, dataToSave.Team[2] ?? null];
         }
 
-        const blob = new Blob([JSON.stringify({ [id]: dataToSave }, null, 2)], {
+        const wrapped = {
+            "Current Character": { [id]: dataToSave }
+        };
+
+        const blob = new Blob([JSON.stringify(wrapped, null, 2)], {
             type: "application/json"
         });
 
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `${runtime[id].Name ?? "character"}-cache.json`;
+        a.download = `${characterRuntimeStates[id].Name ?? "character"}-cache.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-    };
+    }
 
-    const importCharacterState = (event) => {
+    function downloadAllData() {
+        const keys = ["__charInfo__", "__controls__", "__stores__"];
+        const combined = {
+            "All Data": {}
+        };
+
+        for (const key of keys) {
+            try {
+                combined["All Data"][key] = JSON.parse(localStorage.getItem(key) || "{}");
+            } catch (err) {
+                console.warn(`Failed to read or parse ${key}:`, err);
+                combined["All Data"][key] = { error: "Failed to parse data" };
+            }
+        }
+
+        const blob = new Blob([JSON.stringify(combined, null, 2)], {
+            type: "application/json"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "all-data-backup.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function downloadDataFromMap(typeName) {
+        const key = localStorageDataMap[typeName];
+        if (!key) {
+            setPopupMessage({
+                message: `Oh no... unknown data type: ${typeName} (ㆆ ᴗ ㆆ)`,
+                icon: "✘",
+                color: "red"
+            });
+            setShowToast(true);
+            return;
+        }
+
+        if (typeName === "Current Character") {
+            downloadCharacterState();
+            return;
+        }
+        if (typeName === "All Data") {
+            downloadAllData();
+            return;
+        }
+
+        const data = getPersistentValue(key, {});
+        if (!data || Object.keys(data).length === 0) {
+            setPopupMessage({
+                message: `Oh... no cached ${typeName} data found... (ㆆ ᴗ ㆆ)`,
+                icon: "✘",
+                color: "red"
+            });
+            setShowToast(true);
+            return;
+        }
+
+        const wrapped = { [typeName]: data };
+
+        const blob = new Blob([JSON.stringify(wrapped, null, 2)], {
+            type: "application/json"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${typeName.replace(/\s+/g, "_").toLowerCase()}-backup.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
+    function downloadSelectedBackups(selectedOptions = []) {
+        selectedOptions.forEach((typeName) => downloadDataFromMap(typeName));
+    }
+
+    function importDataFromFile(event) {
         const file = event.target.files?.[0];
         if (!file) return;
 
@@ -117,24 +213,63 @@ export default function Setting(props) {
         reader.onload = (e) => {
             try {
                 const parsed = JSON.parse(e.target.result);
-                const charId = Object.keys(parsed)[0];
-                const data = parsed[charId];
+                const topLevelKeys = Object.keys(parsed);
+                let importedCount = 0;
 
-                if (!charId || !data?.Id) throw new Error("Invalid format.");
+                const inverseMap = Object.fromEntries(
+                    Object.entries(localStorageDataMap).map(([label, key]) => [label, key])
+                );
 
-                setImportPreview(data);
-                setShowImportModal(true);
+                if (parsed["Current Character"]) {
+                    const charObject = parsed["Current Character"];
+                    const charId = Object.keys(charObject)[0];
+                    const data = charObject[charId];
+
+                    if (!charId || !data?.Id) {
+                        throw new Error("Invalid Current Character file format.");
+                    }
+
+                    setImportPreview(data);
+                    setShowImportModal(true);
+                    return;
+                }
+
+                if (parsed["All Data"]) {
+                    const nested = parsed["All Data"];
+                    for (const k of Object.keys(nested)) {
+                        localStorage.setItem(k, JSON.stringify(nested[k]));
+                        importedCount++;
+                    }
+                    window.location.href = window.location.href;
+                    return;
+                }
+
+                for (const label of topLevelKeys) {
+                    const storageKey = inverseMap[label];
+
+                    if (!storageKey || storageKey === "_") continue;
+
+                    const value = parsed[label];
+                    if (!value || typeof value !== "object") continue;
+
+                    localStorage.setItem(storageKey, JSON.stringify(value));
+                    importedCount++;
+                }
+                window.location.href = window.location.href;
+
             } catch (err) {
+                console.error("[Import] Failed to parse or import:", err);
                 setPopupMessage({
-                    message: 'This isn\'t a character file... what were you trying to do...? (╹ -╹)?',
-                    icon: '✘',
-                    color: 'red'
+                    message: "This file doesn’t look like one of ours... (╹ -╹)?",
+                    icon: "✘",
+                    color: "red"
                 });
                 setShowToast(true);
             }
         };
+
         reader.readAsText(file);
-    };
+    }
 
     const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
@@ -258,25 +393,7 @@ export default function Setting(props) {
         setPersistentValue('enemyRes', 20);
         setPersistentValue('characterRuntimeStates', {});
         setPersistentValue('activeCharacterId', 1506);
-        setPersistentValue('sliderValues', {
-            normalAttack: 1,
-            resonanceSkill: 1,
-            forteCircuit: 1,
-            resonanceLiberation: 1,
-            introSkill: 1,
-            sequence: 0
-        });
         window.location.href = '/';
-    };
-
-    const skillNameMap = {
-        normalAttack: 'Normal Attack',
-        forteCircuit: 'Forte Circuit',
-        resonanceSkill: 'Resonance Skill',
-        resonanceLiberation: 'Resonance Liberation',
-        introSkill: 'Intro Skill',
-        outroSkill: 'Outro Skill',
-        sequence: 'Sequence',
     };
 
     const [selectedFont, setSelectedFont] = usePersistentState('userBodyFontName', 'System UI');
@@ -429,7 +546,10 @@ export default function Setting(props) {
 
     const canPreview = validLink || !fontLink;
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalContentType, setModalContentType] = useState(null);
     const [clickCounter, setClickCounter] = useState(0);
+
+    const [dataBackUpOption, setDataBackUpOption] = useState(new Set(["All Data"]));
 
     return (
         <div className={`layout ${isDark ? 'dark-text' : 'light-text'} `}>
@@ -559,23 +679,29 @@ export default function Setting(props) {
                         <div className="echo-buff">
                             <h2>Import/Export Data</h2>
                             <p style={{ marginBottom: '1rem' }}>
-                                Export or import character build data to or from local storage.
+                                Export or import build data to or from local storage.
                             </p>
 
                             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                                <button className="btn-primary" onClick={downloadCharacterState}>
-                                    Export Character Data
+                                <button
+                                    className="btn-primary"
+                                    onClick={() => {
+                                        setModalContentType("backup");
+                                        setModalOpen(true);
+                                    }}
+                                >
+                                    Export Data
                                 </button>
 
                                 <label htmlFor="import-character" className="btn-primary" style={{ cursor: 'pointer' }}>
-                                    Import Character Data
+                                    Import Data
                                 </label>
                                 <input
                                     type="file"
                                     id="import-character"
                                     accept="application/json"
                                     style={{ display: 'none' }}
-                                    onChange={importCharacterState}
+                                    onChange={importDataFromFile}
                                 />
                             </div>
                             {importSuccess && (
@@ -799,7 +925,10 @@ export default function Setting(props) {
                             <p style={{ fontSize: '0.8rem', opacity: 0.6 }}>
                                 Background themes may reduce performance on some systems and browsers. <span
                                     className={`dropzone-click-text`}
-                                    onClick={() => setModalOpen(true)}
+                                    onClick={() => {
+                                        setModalContentType("backgroundModalGuide");
+                                        setModalOpen(true);
+                                    }}
                                 >
                                     See more.
                                 </span>
@@ -817,7 +946,7 @@ export default function Setting(props) {
                             {theme === 'background' && (
                                 <>
                                     <p style={{ margin: '1rem 0 0.5rem 0' }}>
-                                        𓂃˖˳·˖ ִֶָ ⋆ Upload a picture you want as a background (⸝⸝> ᴗ•⸝⸝)  ͙⋆ ִֶָ˖·˳˖𓂃 ִֶָ
+                                        Upload a picture you want as a background (*ᴗ͈ˬᴗ͈)ꕤ*.ﾟ
                                     </p>
                                     <div
                                         className="modal-dropzone"
@@ -980,83 +1109,25 @@ export default function Setting(props) {
                     onClose={() => setShowConfirm(false)}
                 />
             )}
+
             <PlainModal modalOpen={modalOpen} setModalOpen={setModalOpen} width="800px">
-                <h2 style={{ margin: 'unset' }}>About Background Themes</h2>
-                <p style={{ lineHeight: 1.6, margin: 'unset' }}>
-                    Background themes use Frosted or blurred elements for most things on
-                    here which in turn use a real-time effect called
-                    <strong> BACKDROP FILTERING</strong>. It looks smooth and glassy but can
-                    be demanding on your GPU, especially when large images or multiple
-                    translucent layers are involved.
-                </p>
-
-                <p style={{ lineHeight: 1.6, margin: 'unset' }}>
-                    If your device feels slow, turn off blur or try switching to a simpler theme in
-                    the Appearance settings. You’ll get much faster animations and
-                    reduced memory usage with almost the same visual quality (just
-                    no custom background).
-                </p>
-
-                <p style={{ lineHeight: 1.6, opacity: 0.7, margin: 'unset' }}>
-                    *Technical note:* Each time the screen updates, the browser must
-                    re-render and blur everything behind your frosted layer. On some
-                    systems, this can cause frame drops or increased fan noise.
-                </p>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', gap: '1rem' }}>
-                        <span className="highlight">
-                            ❯❯❯❯ To turn <span style={{ color: 'red' }}>{blurMode === "on" ? "OFF" : "ON"}</span> blur effect on some surfaces and elements click "THE Button"
-                        </span>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
-                        {clickCounter <= 8 && (
-                            <button
-                                className="clear-button"
-                                onClick={() => {
-                                    aLittleTrolling({
-                                        clickCounter,
-                                        setClickCounter,
-                                        setShowToast,
-                                        toggleBlurMode,
-                                        setPopupMessage,
-                                        showToast
-                                    })
-                                }}
-                                style={{ margin: 'unset' }}
-                            >
-                                a button
-                            </button>
-                        )}
-                        <button
-                            className="clear-button"
-                            onClick={() => {
-                                toggleBlurMode();
-                                if (clickCounter > 8) {
-                                    setPopupMessage({
-                                        message: `ok you get get the funny button back`,
-                                        icon: '',
-                                        color: {light: 'green', dark: 'limegreen'},
-                                        duration: 10000,
-                                    });
-                                    setShowToast(true);
-                                    setTimeout(() => {
-                                        setClickCounter(0);
-                                    }, 2000);
-                                }
-                            }}
-                            style={{ margin: 'unset' }}
-                        >
-                            THE Button
-                        </button>
-                    </div>
-                </div>
-
-                {/*<button
-                    className="btn-primary"
-                    onClick={() => setModalOpen(false)}
-                    style={{ margin: 'unset', marginTop: 'auto' }}
-                >
-                    Got it
-                </button>*/}
+                {modalContentType === "backup" ? (
+                    <DataBackupSelector
+                        dataBackUpOption={dataBackUpOption}
+                        setDataBackUpOption={setDataBackUpOption}
+                        downloadSelectedBackups={downloadSelectedBackups}
+                    />
+                ) : (
+                    <BackgroundModalGuide
+                        blurMode={blurMode}
+                        clickCounter={clickCounter}
+                        setClickCounter={setClickCounter}
+                        setShowToast={setShowToast}
+                        toggleBlurMode={toggleBlurMode}
+                        setPopupMessage={setPopupMessage}
+                        showToast={showToast}
+                    />
+                )}
             </PlainModal>
         </div>
     );
@@ -1226,6 +1297,99 @@ export const themeMap = (backgroundImage) => ({
     },
 });
 
+function BackgroundModalGuide({
+                                  blurMode,
+                                  clickCounter,
+                                  setClickCounter,
+                                  setShowToast,
+                                  toggleBlurMode,
+                                  setPopupMessage,
+                                  showToast
+                              }) {
+    return (
+        <>
+            <h2 style={{ margin: 'unset' }}>About Background Themes</h2>
+            <p style={{ lineHeight: 1.6, margin: 'unset' }}>
+                Background themes use Frosted or blurred elements for most things on
+                here which in turn use a real-time effect called
+                <strong> BACKDROP FILTERING</strong>. It looks smooth and glassy but can
+                be demanding on your GPU, especially when large images or multiple
+                translucent layers are involved.
+            </p>
+
+            <p style={{ lineHeight: 1.6, margin: 'unset' }}>
+                If your device feels slow, turn off blur or try switching to a simpler theme in
+                the Appearance settings. You’ll get much faster animations and
+                reduced memory usage with almost the same visual quality (just
+                no custom background).
+            </p>
+
+            <p style={{ lineHeight: 1.6, opacity: 0.7, margin: 'unset' }}>
+                *Technical note:* Each time the screen updates, the browser must
+                re-render and blur everything behind your frosted layer. On some
+                systems, this can cause frame drops or increased fan noise.
+            </p>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column', gap: '1rem' }}>
+                        <span className="highlight">
+                            ❯❯❯❯ To turn <span style={{ color: 'red' }}>{blurMode === "on" ? "OFF" : "ON"}</span> blur effect on some surfaces and elements click "THE Button"
+                        </span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
+                    {clickCounter <= 8 && (
+                        <button
+                            className="clear-button"
+                            onClick={() => {
+                                aLittleTrolling({
+                                    clickCounter,
+                                    setClickCounter,
+                                    setShowToast,
+                                    toggleBlurMode,
+                                    setPopupMessage,
+                                    showToast
+                                })
+                            }}
+                            style={{ margin: 'unset' }}
+                        >
+                            a button
+                        </button>
+                    )}
+                    <button
+                        className="clear-button"
+                        onClick={() => {
+                            toggleBlurMode();
+                            if (clickCounter > 8) {
+                                setPopupMessage({
+                                    message: `ok you get get the funny button back`,
+                                    icon: '',
+                                    color: {light: 'green', dark: 'limegreen'},
+                                    duration: 10000,
+                                });
+                                setShowToast(true);
+                                setTimeout(() => {
+                                    setClickCounter(0);
+                                }, 2000);
+                            }
+                        }}
+                        style={{ margin: 'unset' }}
+                    >
+                        THE Button
+                    </button>
+                </div>
+            </div>
+
+{/*
+            <button
+                className="btn-primary"
+                onClick={() => setModalOpen(false)}
+                style={{ margin: 'unset', marginTop: 'auto' }}
+            >
+                Got it
+            </button>
+*/}
+        </>
+    )
+}
+
 function aLittleTrolling ({clickCounter, setClickCounter, setShowToast, toggleBlurMode, setPopupMessage, showToast}) {
     if (showToast) setShowToast(false);
     setTimeout(() => {
@@ -1336,4 +1500,92 @@ function aLittleTrolling ({clickCounter, setClickCounter, setShowToast, toggleBl
             }, 2000);
         }
     }, showToast ? 500 : 0);
+}
+
+export function DataBackupSelector({ dataBackUpOption = new Set(), setDataBackUpOption, onChange, downloadSelectedBackups }) {
+    const toggleOption = (label) => {
+        const newSet = new Set(dataBackUpOption);
+        if (newSet.has(label)) newSet.delete(label);
+        else newSet.add(label);
+        setDataBackUpOption(newSet);
+        onChange?.([...newSet]);
+    };
+
+    return (
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+                padding: "1rem 1rem 0 1rem",
+                maxHeight: "400px",
+                overflowY: "auto",
+            }}
+        >
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <h2 style={{ margin: 0, fontSize: "1.25rem" }}>Select Data to Back Up</h2>
+                {(dataBackUpOption.size > 0) && (
+                    <button
+                        className="btn-primary"
+                        onClick={() => downloadSelectedBackups([...dataBackUpOption])}
+                    >
+                        Export Selected
+                    </button>
+                )}
+            </div>
+
+            <div
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+                    gap: "0.75rem",
+                }}
+            >
+                {Object.keys(localStorageDataMap).map((label) => {
+                    const isChecked = dataBackUpOption.has(label);
+                    return (
+                        <label
+                            key={label}
+                            className="modern-checkbox echo-buff"
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.5rem",
+                                border: `1px solid ${isChecked ? "rgba(32,191,185,0.89)" : "#555"}`,
+                                cursor: "pointer",
+                                borderRadius: "0.5rem",
+                                background: isChecked
+                                    ? "rgba(102, 204, 255, 0.15)"
+                                    : "transparent",
+                                transition: "background 0.3s ease, border 0.3s ease",
+                                padding: "0.6rem 1rem",
+                            }}
+                        >
+                            <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={() => toggleOption(label)}
+                            />
+                            <span>{label}</span>
+                        </label>
+                    );
+                })}
+            </div>
+
+            <div
+                className="highlight"
+                style={{
+                    marginTop: "0.5rem",
+                    fontSize: "0.9rem",
+                    opacity: 0.7,
+                    textAlign: "center",
+                }}
+            >
+                Selected:{" "}
+                {dataBackUpOption.size > 0
+                    ? [...dataBackUpOption].join(", ")
+                    : "None"}
+            </div>
+        </div>
+    );
 }

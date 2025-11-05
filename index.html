@@ -61,7 +61,8 @@
       if (!document.documentElement.dataset.themeLoaded) return;
       const root = document.documentElement;
       if (!root.className.includes("frosted-aurora")) return;
-      const activeKey = localStorage.getItem("activeBgKey");
+      const controls = localStorage.getItem("__controls__");
+      const activeKey = controls?.activeBgKey;
       if (!activeKey) return;
       try {
         const request = indexedDB.open("WuWaImageCache", 1);

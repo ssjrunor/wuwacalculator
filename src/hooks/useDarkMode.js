@@ -177,7 +177,7 @@ export default function useDarkMode() {
                 return;
             }
 
-            const activeKey = localStorage.getItem('activeBgKey');
+            const activeKey = getPersistentValue('activeBgKey');
             let url = backgroundImageUrl; // default background fallback
 
             if (activeKey) {
@@ -275,7 +275,7 @@ export default function useDarkMode() {
             const blob = file instanceof Blob ? file : await (await fetch(file)).blob();
             const cacheKey = `user-upload-bg:${file.name || "custom"}`;
             await saveImage(cacheKey, blob);
-            localStorage.setItem("activeBgKey", cacheKey);
+            setPersistentValue("activeBgKey", cacheKey);
 
             const url = URL.createObjectURL(blob);
             setBackgroundImageState(url);
@@ -330,7 +330,7 @@ export default function useDarkMode() {
     };
 
     useEffect(() => {
-        const activeKey = localStorage.getItem('activeBgKey');
+        const activeKey = getPersistentValue('activeBgKey');
         if (activeKey && activeKey.startsWith('user-upload-bg:')) {
             (async () => {
                 const blob = await loadImage(activeKey);
