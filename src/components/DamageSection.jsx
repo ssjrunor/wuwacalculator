@@ -163,8 +163,6 @@ export default function DamageSection({
         .filter(entry => entry.type !== 'block')
         .every(entry => entry.disabled === true);
 
-    console.log(allDisabled);
-
     return (
         <div className="damage-box">
             <h2 className="panel-title">
