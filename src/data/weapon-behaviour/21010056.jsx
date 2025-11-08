@@ -49,7 +49,7 @@ export function WeaponUI({
                         Stacks
                     </label>
                     <p>
-                        {highlightKeywordsInText(`At max stacks, when Resonators in the team inflict Negative Status or deal Negative Status DMG, grants ${currentParamValues[4]}
+                        {highlightKeywordsInText(`At max stacks, when Resonators in the team inflict Negative Status, grants ${currentParamValues[4]}
                         All-Attribute DMG Bonus for 15s. Effects of the same name cannot be stacked.`, keywords)}
                     </p>
                     <label className="modern-checkbox">

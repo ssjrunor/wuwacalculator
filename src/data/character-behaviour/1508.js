@@ -103,7 +103,7 @@ export function applyChisaLogic({
     if(isActiveSequence(5) && tab === 'resonanceLiberation') skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 100;
 
     if (isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__chisaS6) {
-        mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 30;
+        mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 40;
         mergedBuffs.negativeStatus.dmgReduction = (mergedBuffs.negativeStatus?.dmgReduction ?? 0) + 30;
         mergedBuffs.__chisaS6 = true;
     }

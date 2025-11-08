@@ -1252,22 +1252,22 @@ export const themeMap = (backgroundImage) => ({
     },
     "pastel-pink": {
         name: "Pastel Pink",
-        newStatus: true,
+        newStatus: false,
         preview: "#ffd8e0",
     },
     "pastel-blue": {
         name: "Pastel Blue",
-        newStatus: true,
+        newStatus: false,
         preview: "#d8ebff",
     },
     "vibrant-citrus": {
         name: "Vibrant Citrus",
-        newStatus: true,
+        newStatus: false,
         preview: "#fff2d7",
     },
     "glassy-rainbow": {
         name: "Glassy Rainbow",
-        newStatus: true,
+        newStatus: false,
         preview: "linear-gradient(135deg, #ffebf8, #e6faff, #fff9e6)",
     },
     "dark": {
@@ -1282,17 +1282,17 @@ export const themeMap = (backgroundImage) => ({
     },
     "cosmic-rainbow": {
         name: "Cosmic Rainbow",
-        newStatus: true,
+        newStatus: false,
         preview: "linear-gradient(145deg, rgb(25 10 69), rgb(57 37 80))",
     },
     "scarlet-nebula": {
         name: "Scarlet Nebula",
-        newStatus: true,
+        newStatus: false,
         preview: "linear-gradient(135deg, rgb(53, 0, 0), rgb(85, 0, 0))",
     },
     "frosted-aurora": {
         name: "Image",
-        newStatus: true,
+        newStatus: false,
         preview: async () => await getFrostedAuroraPreview(backgroundImage),
     },
 });

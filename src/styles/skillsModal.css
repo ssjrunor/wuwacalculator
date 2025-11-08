@@ -40,10 +40,6 @@
     color: #ddd;
 }
 
-.skills-modal-content.closing {
-    animation: fadeOutScale 0.3s ease forwards;
-}
-
 .skills-modal-overlay.closing,
 .skills-modal-overlay.hiding {
     animation: fadeOutOverlay 0.3s ease forwards;
@@ -52,6 +48,16 @@
 .skills-modal-overlay:not(.closing),
 .skills-modal-overlay:not(.hiding) {
     animation: fadeInOverlay 0.3s ease;
+}
+
+.skills-modal-overlay.closing,
+.skills-modal-overlay.hiding {
+    animation: fadeOutOverlay 0.3s ease forwards;
+}
+
+.skills-modal-content.closing,
+.skills-modal-content.hiding {
+    animation: fadeOutScale 0.3s ease forwards;
 }
 
 @media (max-width: 700px) {

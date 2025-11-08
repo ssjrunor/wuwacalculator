@@ -25,7 +25,7 @@ import {fetchWeapons} from '../json-data-scripts/fetchWeapons';
 import {getWeaponOverride} from '../data/weapon-behaviour';
 import {applyEchoLogic} from '../data/buffs/applyEchoLogic';
 import {applyWeaponBuffLogic} from "../data/buffs/weaponBuffs.js";
-import RotationsPane, {buildRotation} from "../components/RotationsPane.jsx";
+import RotationsPane from "../components/RotationsPane.jsx";
 import EchoesPane from '../components/EchoesPane';
 import {echoes} from "../json-data-scripts/getEchoes.js";
 import {applyEchoSetBuffLogic, applyMainEchoBuffLogic, applySetEffect} from "../data/buffs/setEffect.js";
@@ -41,7 +41,7 @@ import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
 import {getCuteMessage} from "../components/cuteMessages.jsx";
 import {getSkillData} from "../utils/computeSkillDamage.js";
 import {getAllSkillLevelsWithEcho, getEffectiveSkillLevels, prepareDamageData} from "../utils/prepareDamageData.js";
-import {getSkillDamageCache} from "../utils/skillDamageCache.js";
+import {buildRotation, getSkillDamageCache} from "../utils/skillDamageCache.js";
 import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
 
 export default function Calculator(props) {
@@ -60,7 +60,7 @@ export default function Calculator(props) {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-10-30 04:35';
+    const LATEST_CHANGELOG_VERSION = '2025-11-08 04:26';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
@@ -984,6 +984,8 @@ export default function Calculator(props) {
                 newChar.rotationEntries = rotationEntries;
                 newChar._rotationInitialized = true;
                 changed = true;
+            } else if (!hasNoRotation && hasPreset) {
+                newChar._rotationInitialized = true;
             }
 
             if (!changed) return prev;
@@ -996,7 +998,7 @@ export default function Calculator(props) {
 
     }, [charId, skillTabs, allSkillLevels, skillResults]);
 
-    //console.log(characterRuntimeStates[charId].SkillLevels.sequence);
+    // console.log(characterRuntimeStates[charId]);
 
     return (
         <>

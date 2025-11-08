@@ -100,10 +100,9 @@
 
 /* Dropdown + rows */
 .frosted-aurora .character-row-item {
-    background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+    background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 .frosted-aurora .character-row-item:hover,
 .frosted-aurora .dropdown-item:hover {

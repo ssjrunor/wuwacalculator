@@ -77,7 +77,7 @@
 
 .rotation-values {
     display: flex;
-    gap: 10px;
+    gap: 0.7rem;
     flex-wrap: wrap;
 }
 
@@ -134,8 +134,10 @@
     font-size: 14px;
 }
 
+.rotation-block-wrapper,
 .rotation-item-wrapper {
     display: flex;
+    transition: opacity 3s ease 0.05s, transform 0.3s ease ;
     align-items: stretch;
     justify-content: space-between;
     margin-bottom: 12px;
@@ -152,6 +154,7 @@
     gap: 6px;
     flex-grow: 1;
     min-width: 0;
+    cursor: grab;
 }
 
 .dark .rotation-item,
@@ -396,7 +399,7 @@ select:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 1001;
 }
 
 .dark .skill-menu-panel {
@@ -591,4 +594,191 @@ select:focus {
 
 .custom-select__single-value {
     color: unset !important;
+}
+
+.rotation-block {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.external-actions .rotation-button {
+    height: 100%;
+}
+
+.rotation-block h4 {
+    margin: unset;
+}
+
+.rotation-block .block-body {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    min-height: 4rem;
+    padding: 5px;
+    gap: 5px;
+    overflow: hidden;
+    transition:
+            max-height 0.4s ease,
+            opacity 0.3s ease,
+            transform 0.4s ease;
+}
+
+.rotation-block .block-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rotation-block .rotation-item {
+    box-shadow: unset !important;
+    opacity: 0.6;
+    padding: 5px;
+    transition: opacity ease 0.3s !important;
+}
+
+.rotation-block .rotation-item:hover {
+    opacity: 1;
+}
+
+.rotation-block .rotation-header {
+    padding: unset;
+    justify-content: space-between;
+}
+
+.rotation-block .block-mini-value {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.block-body.expanded {
+    max-height: 1000px;
+    opacity: 1;
+    transform: scaleY(1);
+    overflow: hidden;
+}
+
+.block-body.collapsed {
+    min-height: unset;
+    transform: scaleY(0.95);
+}
+
+.rotation-block-wrapper .block-body.drag-over {
+    outline: 1px dashed var(--accent-color, rgba(32, 191, 185, 0.89));
+    background-color: rgba(100, 150, 255, 0.08);
+    transition: outline-color 0.3s ease, background-color 0.3s ease;
+}
+
+.rotation-block-wrapper.hovered .block-body {
+    max-height: 9999px;
+}
+
+.rotation-block-wrapper {
+    transition: transform 180ms ease, box-shadow 200ms ease;
+}
+.rotation-block-wrapper.hovered {
+    transform: scale(1.03);
+    box-shadow: 0 0.5rem 1.25rem rgba(0,0,0,0.15);
+}
+
+.dragging .rotation-item {
+    opacity: 0.3;
+    transform: scale(1.05);
+    z-index: 999;
+}
+
+.block-drop-placeholder .rotation-item {
+    opacity: 0;
+    transform: scale(0.9);
+    animation: ghostFadeIn 250ms ease forwards;
+}
+
+@keyframes ghostFadeIn {
+    to {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+}
+
+.block-entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    max-height: 400px;
+    min-height: 100px;
+    overflow-y: auto;
+}
+
+.block-entries-list .rotation-item-wrapper {
+    margin: unset;
+}
+
+.block-icon-button {
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+.block-icon-button:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.block-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.block-icon.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.block-icon.hidden {
+    opacity: 0;
+    transform: scale(0.85);
+}
+
+.rotation-item-wrapper.disabled,
+.rotation-block-wrapper.disabled {
+    opacity: 0.4 !important;
+    filter: grayscale(1);
+    transition: opacity 0.3s ease, filter 0.3s ease;
+    pointer-events: none;
+}
+
+.rotation-item-wrapper.disabled .power,
+.rotation-block-wrapper.disabled .power {
+    pointer-events: auto;
+}
+
+.block-icon-button.power:hover {
+    color: red;
+}
+
+.rotation-values .value-cell {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2rem;
+}
+
+.empty-message {
+    font-style: italic;
+    opacity: 0.6;
 }

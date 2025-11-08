@@ -15,20 +15,17 @@ let rand = Math.random;
 export function addEchoArrayToBuffs(baseBuffs, echoes) {
     if (!baseBuffs || !Array.isArray(echoes)) return baseBuffs ?? {};
 
-    // Clone once to avoid mutating the original buffs
     const buffs = { ...baseBuffs };
 
     for (let i = 0; i < echoes.length; i++) {
         const echo = echoes[i];
         if (!echo) continue;
 
-        // Fast path: prefer using precomputed _totalStats if available
         const stats = echo._totalStats || {
             ...echo.mainStats,
             ...echo.subStats
         };
 
-        // Merge all stats efficiently
         for (const key in stats) {
             const val = stats[key];
             if (val == null || val === 0) continue;
@@ -143,7 +140,6 @@ export async function findBestEchoSetFromArray(
     let temperature = 1.0;
     let noImprovement = 0;
 
-    // --- 4️⃣ Preprocess valid echoes ---
     const validEchoes = filteredEchoes
         .map(e => {
             if (!e) return null;
@@ -155,7 +151,6 @@ export async function findBestEchoSetFromArray(
         })
         .filter(e => e && e.cost && Object.keys(e._totalStats).length);
 
-    // --- Strict multi-set validator ---
     function isValidMultiSetComposition(echoes, plan) {
         if (!isMultiSet || !Array.isArray(plan)) return true;
 

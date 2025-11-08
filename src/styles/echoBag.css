@@ -12,11 +12,6 @@
     }
 }
 
-.edit-substats-modal.echo-bag-modal.show {
-    opacity: 1 !important;
-    transform: scale(1)!important;
-}
-
 .echo-bag-modal.hiding {
     transform: scale(0.9);
     opacity: 0;

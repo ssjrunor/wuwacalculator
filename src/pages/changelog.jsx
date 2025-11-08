@@ -634,7 +634,7 @@ export const changelog = [
             {
                 type: 'paragraph',
                 content: `
-            Introduced a brand-new <strong>Themes</strong>~!  
+            Introduced brand-new <strong>Themes</strong>~!  
             Enjoy the elegant the playful <strong>Pastel Pink</strong>, cool <strong>Pastel Blue</strong>, and vibrant <strong>Vibrant Citrus</strong> light modes... PLUS the shimmering <strong>Glassy Rainbow</strong> and <strong>Scarlet Nebula</strong> (a deep crimson semi-gloss dark theme with ember glows) dark mode themes.  
             `
             },
@@ -645,8 +645,23 @@ export const changelog = [
             `
             }
         ],
-        shortDesc: `New <strong>Themesssss</strong>. CHECK THEM OUTTT T-T~!`,
-        navigate: "/settings#theme-variants",
-        actionMessage: "DO IT! DO IT! DO IT! DO IT! DO IT!"
-    }
+    },
+    {
+        date: '08/11/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `
+                Added <strong>Blocks</strong> in rotations~!  
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `
+                Tbh i'm not sure yet how useful this will be for most, but hey, it's here now.
+            `
+            }
+        ],
+        shortDesc: `Added <strong>Blocks</strong> in rotations~! (〜^∇^)〜`
+    },
 ];

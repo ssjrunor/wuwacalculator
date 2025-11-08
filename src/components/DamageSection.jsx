@@ -2,6 +2,7 @@ import React from "react";
 import Rotations, { TeamRotation } from "./Rotations.jsx";
 import { attributeColors } from "../utils/attributeHelpers.js";
 import {getSkillData} from "../utils/computeSkillDamage.js";
+import {i} from "framer-motion/m";
 
 export default function DamageSection({
                                           charId,
@@ -158,6 +159,12 @@ export default function DamageSection({
         ? hasValidTeamRotation
         : computedHasValidTeamRotation;
 
+    const allDisabled = rotationEntries
+        .filter(entry => entry.type !== 'block')
+        .every(entry => entry.disabled === true);
+
+    console.log(allDisabled);
+
     return (
         <div className="damage-box">
             <h2 className="panel-title">
@@ -174,7 +181,7 @@ export default function DamageSection({
 
             <div className="damage-section">
                 {skillSections}
-                {rotationEntries?.length > 0 && (
+                {(rotationEntries?.length > 0 && !allDisabled) && (
                     <div className="box-wrapper">
                         <div className="damage-inner-box">
                             <Rotations

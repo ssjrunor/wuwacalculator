@@ -105,13 +105,6 @@
     border: 1px dashed rgba(0, 0, 0, 0.16);
 }
 
-.preset-echo-grid {
-    display: flex;
-    gap: 0.5rem;
-    flex-direction: row;
-    position: relative;
-}
-
 .preset-echo-slot {
     position: relative;
 }
@@ -236,7 +229,7 @@
     justify-content: center;
     height: 12rem;
     gap: 1rem;
-    animation: fadeIn 0.2s ease-in;
+    animation: fadeInScale 0.3s ease-in;
 }
 
 .fancy-loader {
@@ -267,7 +260,7 @@
     50% { box-shadow: 0 0 12px 3px rgba(102, 204, 255, 0.25); }
 }*/
 
-@keyframes fadeIn {
+@keyframes fadeInScale {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
 }

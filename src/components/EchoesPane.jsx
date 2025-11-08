@@ -390,7 +390,7 @@ export default function EchoesPane({
         setShowToast(true);
     }
 
-   /* const tab = skillTabs[2];
+    /*const tab = skillTabs[2];
     const level = allSkillLevels[tab][0];
 
     const entry= {
@@ -402,15 +402,13 @@ export default function EchoesPane({
     const skill = skillResults
         ?.find(skill => skill.name === level?.label) ?? {};
 
-    //console.log(allLevels)
-
     useEffect(() => {
         (async () => {
             console.time("BestEchoSearch");
             const result = await findBestEchoSetFromArray(
                 { characterRuntimeStates, charId, activeCharacter, entry, levelData: level },
                 echoBag,
-                600_000,
+                100_000,
                 0,
                 baseCharacterState,
                 mergedBuffs,
@@ -418,7 +416,7 @@ export default function EchoesPane({
                 skill.statWeight,
                 Date.now(),
                 true,
-                null, 6000090
+                null, 6000104
             );
             console.timeEnd("BestEchoSearch");
             console.log("Best Echo Set:", result);
@@ -428,14 +426,14 @@ export default function EchoesPane({
                     ...prev,
                     [charId]: {
                         ...prevChar,
-                        equippedEchoes: result.best?.echoes?.map(e => (e ? { ...e } : null)) ?? [],
+                        equippedEchoes: result?.best?.echoes?.map(e => (e ? { ...e } : null)) ?? [],
                     },
                 };
             });
         })();
-    }, []);*/
+    }, []);
 
-    /*console.log(
+    console.log(
         getTopEchoesByStatWeight(
             echoBag,
             skill.statWeight,

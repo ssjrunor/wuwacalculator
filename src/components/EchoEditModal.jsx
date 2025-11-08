@@ -178,7 +178,7 @@ export default function EditSubstatsModal({
                 <div className="modal-header">
                     <img src={echo.icon} className="modal-echo-icon" alt="" loading="lazy" />
                     <div>
-                        <div className="modal-echo-name">{echo.name}</div>
+                        <div className="modal-echo-name highlight">{echo.name}</div>
                         <div className="echo-slot-cost-badge">Cost {echo.cost}</div>
                         <div className="set-icon-toggle-group">
                             {echo.originalSets?.map(setId => (

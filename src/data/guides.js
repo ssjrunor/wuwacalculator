@@ -13,19 +13,24 @@ export const guides = [
                 <p>Click <strong>+ Skill</strong> to open a categorized menu showing all your character’s attacks, skills, and effects. Each group (Normal Attack, Resonance Skill, Liberation, etc.) can be expanded or collapsed. Selecting a skill adds it to your current rotation list with its name, icon, and damage preview.</p>
                 <p>You can also <strong>edit existing entries</strong> by clicking the pencil icon next to them — this reopens the skill menu so you can swap that entry for another ability while keeping its multiplier.</p>
 
-                <h4>2. Reordering Skills</h4>
+                <h4>2. Adding Blocks</h4>
+                <p>Click <strong>+ Block</strong> to add an empty block. Skills can be dragged and dropped into the body of a block to add the skill to that block, dragging a skill out of a block will remove it from the block. Grass is green, sky is blue.</p>
+                <p>You can click the Eye icon to collapse and expand a block. Click the pencil icon to open up the block's preview and properly inspect it's skill entries.</p>
+
+                <h4>3. Reordering Skills and Blocks</h4>
                 <p>Click and drag skills in the list to change their order. The order doesn't impact the skill entry or rotation totals.</p>
 
-                <h4>3. Multipliers</h4>
+                <h4>4. Multipliers</h4>
                 <p>Each skill has a small numeric field labeled <strong>×</strong>. This acts as a multiplier — for example, entering 3 simulates using that skill three times in a row. The total rotation damage reflects all multipliers instantly.</p>
 
-                <h4>4. Locking Skills</h4>
-                <p>Click any skill entry to toggle its <strong>locked</strong> state. When locked, the skill snapshot is frozen: its damage will no longer update when buffs, weapon stats, or character levels change. This is useful for snapshot mechanics or comparing damage before and after specific buffs. Locked items show a highlighted border for clarity.</p>
+                <h4>5. Skill and Block Action Buttons</h4>
+                <p>Click on the lock icon on a skill or block entry to toggle its <strong>locked</strong> state. When locked on skill, the skill snapshot is frozen: its damage will no longer update when buffs, weapon stats, or character levels change. When locked on block, all skill entries in the block will be locked.</p>
+                <p>Click on the Power icon on a skill or block entry to toggle its <strong>disabled</strong> state. When disabled on skill, the skill's calculated damage, healing or shield effect will not be factored into the total rotation calculation. When locked on block, all skill entries in the block will be disabled.</p>
 
-                <h4>5. Clearing and Editing</h4>
+                <h4>6. Clearing and Editing</h4>
                 <p>Use the <span style="color: red; font-weight: bold;">Clear</span> button to remove all entries and start fresh. Each entry also includes delete and edit buttons for precise management.</p>
                 
-                <h4>6. Team Rotations</h4>
+                <h4>7. Team Rotations</h4>
                 <p>The <strong>Team Rotation</strong> system lets you combine multiple characters’ saved rotations into one synchronized total. This feature appears in the <strong>Team Buffs</strong> section once your active character has at least one teammate added to the team and those teammates have their own recorded or saved rotations.</p>
                 
                 <p>Each teammate will appear inside an expandable <strong>Rotations</strong> section, showing a dropdown selector and a summary of their damage totals — <strong>Normal</strong>, <strong>Crit</strong>, and <strong>Average</strong>.</p>
@@ -43,14 +48,14 @@ export const guides = [
                 
                 <p>When you <strong>save a Team Rotation</strong>, the system stores just your main character's state and the linked teammate rotations.</p>
                 
-                <h4>7. Saving and Loading Rotations</h4>
+                <h4>8. Saving and Loading Rotations</h4>
                 <p>When you’re satisfied with a sequence, click the large <strong>＋</strong> button to save it. For team rotations, you'll find this save button in the <strong>Team</strong> tab, to save a team rotation you'll need to have at least <span style="font-weight: bold" >ONE</span> teammate's rotation enabled.</p>
                 <p>Saved rotations are stored globally and can be accessed later from the <strong>Saved</strong> tab. You can rename them inline, sort by date, total damage, or name, and delete old ones anytime.</p>
                 
                 <p>You can also <strong>export</strong> or <strong>import</strong> rotations as <code>.json</code> files, making it easy to share builds with other players. Importing a file from a different character <span style="font-weight: bold">WILL NOT WORK</span>. Mismatched data from being applied so rotations always stay consistent with their intended character.</p>
                 <p>Keep in mind that loading a saved personal or team rotation will <code style="color: red; font-weight: bold;">OVERWRITE</code> your current character’s state with the saved one.</p>
 
-                <h4>8. Sorting and Filtering Saved Rotations</h4>
+                <h4>9. Sorting and Filtering Saved Rotations</h4>
                 <p>In the <strong>Saved</strong>/<strong>Team</strong> tab, you can:</p>
                 <ul>
                     <li>Sort by <em>Date</em>, <em>Name</em>, or <em>Total Damage</em>.</li>
@@ -63,18 +68,18 @@ export const guides = [
                 
                 <p><strong>Smart Filter</strong> is remembered between sessions, so your preference persists even after reloading the page.</p>
 
-                <h4>9. Total Damage Summaries</h4>
+                <h4>10. Total Damage Summaries</h4>
                 <p>At the bottom of the Damage section, a <strong>Rotation Summary</strong> shows the total Normal, Crit, and Average values for your sequence. It also breaks down damage contribution by type (e.g., Basic, Skill, Liberation). If any healing or shielding abilities were used, these appear in separate totals in <span style="color: limegreen; font-weight: bold;">green</span> and <span style="color: #838383; font-weight: bold;">gray</span> respectively.</p>
                 <p>When a valid team rotation is active, you’ll see a <strong>Team Damage Summary</strong> below, showing each character’s percentage contribution to the total output.</p>
                 
-                <h4>10. Basic Rotations (<a href="https://www.prydwen.gg/wuthering-waves" target="_blank" rel="noopener noreferrer">Prydwen</a>)</h4>
+                <h4>11. Basic Rotations (<a href="https://www.prydwen.gg/wuthering-waves" target="_blank" rel="noopener noreferrer">Prydwen</a>)</h4>
                 <p>The <strong>Basic</strong> button in the <strong>Rotations</strong> section automatically loads a preset rotation sourced from <strong>Prydwen</strong>. These are curated “baseline” combos for each character, designed to help you get started or compare against your own builds.</p>
                 
                 <p>If a character has a rotation available in the database, clicking the <strong>Basic</strong> button will instantly apply it. Additionally, if a character has no existing rotation, their <strong>Prydwen</strong> rotation will load in automatically once.</p>
                 
                 <p>Note that <strong>beta characters</strong> will not have a Prydwen rotation until they are officially released in the game and receive one from <strong>Prydwen</strong>.</p>
 
-                <h4>11. Advanced Tips</h4>
+                <h4>12. Advanced Tips</h4>
                 <ul>
                     <li><strong>Snapshot Behavior:</strong> Locking skills allows testing “snapshot” buffs — like when a skill’s damage is fixed at activation even if later buffs expire.</li>
                     <li><strong>Skill Visibility:</strong> Hidden or disabled skills (like passive or auto-applied damage types) won’t appear in the menu or totals to prevent clutter.</li>

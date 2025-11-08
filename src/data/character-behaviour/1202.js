@@ -54,7 +54,6 @@ export function applyChixiaLogic({
 
     if(isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__chixiaSeq6) {
         mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 25;
-        console.log(mergedBuffs);
         mergedBuffs.__chixiaSeq6 = true;
     }
 

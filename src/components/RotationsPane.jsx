@@ -1,10 +1,20 @@
 import React, {useEffect, useMemo, useReducer, useState} from 'react';
 import {ArrowDownToLine, ArrowUpToLine, Pencil, Trash2} from 'lucide-react';
-import {closestCenter, DndContext, PointerSensor, useSensor, useSensors} from '@dnd-kit/core';
+import {
+    closestCenter,
+    DndContext,
+    DragOverlay,
+    PointerSensor,
+    pointerWithin,
+    useDndMonitor,
+    useDroppable,
+    useSensor,
+    useSensors
+} from '@dnd-kit/core';
 import {arrayMove, SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable';
 import {restrictToFirstScrollableAncestor} from '@dnd-kit/modifiers';
-import RotationItem from "./RotationItem.jsx";
-import {getSkillDamageCache} from '../utils/skillDamageCache';
+import RotationItem, {BlockSubItem} from "./RotationItem.jsx";
+import {buildRotation, getSkillDamageCache, makeEntry} from '../utils/skillDamageCache';
 import {getPersistentValue, setPersistentValue, usePersistentState} from "../hooks/usePersistentState.js";
 import {calculateRotationTotals} from "./Rotations.jsx";
 import NotificationToast from "./NotificationToast.jsx";
@@ -12,8 +22,8 @@ import {isEqual} from "lodash";
 import GuidesModal from "./GuideModal.jsx";
 import ConfirmationModal from "./ConfirmationModal.jsx";
 import Select from 'react-select';
-import SkillMenu, {skillTypeIconMap, skillTypeLabelMap, tabDisplayOrder} from "./SkillMenu.jsx";
-import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
+import SkillMenu, {tabDisplayOrder} from "./SkillMenu.jsx";
+import PlainModal from "./PlainModal.jsx";
 
 const errorMessages = [
     "Pro Tip: Try using this on {character} instead, unless you enjoy seeing these alerts.",
@@ -158,29 +168,41 @@ export default function RotationsPane({
     const toggleTab = (key) => {
         setExpandedTabs(prev => ({ ...prev, [key]: !prev[key] }));
     };
-    const [editIndex, setEditIndex] = useState(null);
+    const [editingEntry, setEditingEntry] = useState(null);
     function handleAddSkill(skill, entry) {
         const newEntryBase = makeEntry(skill);
 
         setRotationEntries(prev => {
             const copy = [...prev];
+            if (editingEntry && editingEntry.id) {
+                const targetIndex = copy.findIndex(e => e.id === editingEntry.id);
 
-            if (editIndex !== null && copy[editIndex]) {
-                const prevMultiplier = copy[editIndex].multiplier ?? 1;
-                const prevSnapshot = copy[editIndex].snapshot ?? undefined;
-                copy[editIndex] = {
-                    ...newEntryBase,
-                    multiplier: prevMultiplier,
-                    locked: copy[editIndex].locked ?? false,
-                    snapshot: prevSnapshot ? {
-                            avg: prevSnapshot.avg,
-                            crit: prevSnapshot.crit,
-                            normal: prevSnapshot.normal,
-                            tab: skill.tab,
-                            label: skill.label,
-                            element: skill.element ?? null
-                    } : undefined
-                };
+                if (targetIndex !== -1) {
+                    const prevItem = copy[targetIndex];
+                    const prevMultiplier = prevItem.multiplier ?? 1;
+                    const prevSnapshot = prevItem.snapshot ?? undefined;
+                    const prevBlockId = prevItem.blockId ?? null;
+
+                    copy[targetIndex] = {
+                        ...newEntryBase,
+                        id: prevItem.id,
+                        multiplier: prevMultiplier,
+                        locked: prevItem.locked ?? false,
+                        blockId: prevBlockId,
+                        snapshot: prevSnapshot
+                            ? {
+                                avg: prevSnapshot.avg,
+                                crit: prevSnapshot.crit,
+                                normal: prevSnapshot.normal,
+                                tab: skill.tab,
+                                label: skill.label,
+                                element: skill.element ?? null,
+                            }
+                            : undefined,
+                    };
+                } else {
+                    copy.push(newEntryBase);
+                }
             } else {
                 copy.push(newEntryBase);
             }
@@ -188,7 +210,7 @@ export default function RotationsPane({
             return copy;
         });
 
-        setEditIndex(null);
+        setEditingEntry(null);
         setShowSkillOptions(false);
     }
 
@@ -513,7 +535,6 @@ export default function RotationsPane({
                     message: `This will load in <a href="${defaultRotationData?.link}" target="_blank" rel="noopener noreferrer">Prydwen's</a> standard rotation for this character.`,
                     onConfirm: () => {
                         if (viewMode !== 'new') setViewMode('new');
-                        console.log(viewMode);
                         setRotationEntries(rotations);
                         setPopupMessage({
                             message: 'Loaded~! (〜^∇^)〜',
@@ -527,6 +548,92 @@ export default function RotationsPane({
             setShowConfirm(true);
         }
     }
+
+    function handleAddEntryToBlock(blockId, skill) {
+        setRotationEntries(prev => {
+            return prev.map(item => {
+                if (item.id === skill.id) {
+                    return { ...item, blockId };
+                }
+                return item;
+            });
+        });
+    }
+
+    function handleBlockMultiplierChange(blockId, newBlockMultiplier) {
+        setRotationEntries(prev => {
+            const block = prev.find(e => e.id === blockId);
+            if (!block) return prev;
+
+            const subIds = (block.entries ?? []).map(ref => ref.id);
+
+            return prev.map(entry => {
+                if (entry.id === blockId) {
+                    return {
+                        ...entry,
+                        multiplier: newBlockMultiplier,
+                    };
+                }
+
+                if (subIds.includes(entry.id)) {
+                    const originalMultiplier = entry.originalMultiplier ?? entry.multiplier ?? 1;
+                    return {
+                        ...entry,
+                        originalMultiplier,
+                        multiplier: originalMultiplier * newBlockMultiplier,
+                    };
+                }
+
+                return entry;
+            });
+        });
+    }
+
+    function removeEntryFromBlock(entryId, fromBlockId) {
+        setRotationEntries(prev => {
+            if (!entryId || !fromBlockId) return prev;
+            return prev.map(entry => {
+                if (entry.id === entryId) {
+                    const parentBlock = prev.find(b => b.id === fromBlockId);
+                    const blockMultiplier = parentBlock?.multiplier ?? 1;
+                    const newMultiplier = entry.blockId
+                        ? (entry.multiplier ?? 1) / blockMultiplier
+                        : entry.multiplier;
+                    return {
+                        ...entry,
+                        blockId: null,
+                        multiplier: newMultiplier,
+                    };
+                }
+                if (entry.id === fromBlockId) {
+                    const filteredEntries = entry.entries?.filter(ref => ref.id !== entryId) ?? [];
+                    return {
+                        ...entry,
+                        entries: filteredEntries,
+                    };
+                }
+                return entry;
+            });
+        });
+    }
+
+    const { setNodeRef: setTopDropRef } = useDroppable({
+        id: 'rotation-top-zone',
+        data: { type: 'top' }
+    });
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [editingBlockId, setEditingBlockId] = useState(null);
+    const [isEditingBlockName, setIsEditingBlockName] = useState(false);
+
+    const editingBlock = useMemo(
+        () => rotationEntries.find(e => e.id === editingBlockId),
+        [rotationEntries, editingBlockId]
+    );
+    const [editedBlockName, setEditedBlockName] = useState(editingBlock?.label ?? "New Block");
+
+    // console.log(editingBlock);
+    // console.log(rotationEntries)
 
     return (
         <div className="rotation-pane">
@@ -584,6 +691,22 @@ export default function RotationsPane({
                     <div className="rotation-controls">
                         <div className="rotation-buttons-left">
                             <button className="rotation-button" onClick={() => setShowSkillOptions(true)}>+ Skill</button>
+                            <button
+                                className="rotation-button"
+                                onClick={() => {
+                                    const newBlock = {
+                                        id: crypto.randomUUID(),
+                                        createdAt: Date.now(),
+                                        label: 'New Block',
+                                        multiplier: 1,
+                                        entries: [],
+                                        type: 'block'
+                                    };
+                                    setRotationEntries(prev => [...prev, newBlock]);
+                                }}
+                            >
+                                + Block
+                            </button>
                             <button className="rotation-button clear"
                                     onClick={() => {
                                         if (!rotationEntries || rotationEntries?.length === 0) {
@@ -672,55 +795,22 @@ export default function RotationsPane({
                         </button>
                     </div>
 
-                    <div className="rotation-list-container">
-                        <DndContext
+                    <div ref={setTopDropRef} className="rotation-list-container">
+                        <RotationDndWrapper
                             sensors={sensors}
-                            collisionDetection={closestCenter}
-                            modifiers={[restrictToFirstScrollableAncestor]}
-                            onDragEnd={({ active, over }) => {
-                                if (active.id !== over?.id) {
-                                    const oldIndex = normalizedEntries.findIndex(e => e.id === active.id);
-                                    const newIndex = normalizedEntries.findIndex(e => e.id === over.id);
-                                    setRotationEntries((items) => arrayMove(items, oldIndex, newIndex));
-                                }
-                            }}
-                        >
-                            <SortableContext
-                                items={normalizedEntries.map(e => e.id)}
-                                strategy={verticalListSortingStrategy}
-                            >
-                                {normalizedEntries
-                                    .filter(entry => {
-                                        const match = allSkillResults.find(
-                                            s => s.name === entry.label && s.tab === entry.tab
-                                        );
-                                        return match?.visible !== false;
-                                    })
-                                    .map((entry, idx) => (
-                                        <RotationItem
-                                            key={entry.id}
-                                            id={entry.id}
-                                            index={idx}
-                                            entry={entry}
-                                            onEdit={(i) => {
-                                                setEditIndex(i);
-                                                setShowSkillOptions(true);
-                                            }}
-                                            onDelete={(i) =>
-                                                setRotationEntries((prev) => prev.filter((_, j) => j !== i))
-                                            }
-                                            onMultiplierChange={(i, val) => {
-                                                const updated = [...rotationEntries];
-                                                updated[i].multiplier = val;
-                                                setRotationEntries(updated);
-                                            }}
-                                            setRotationEntries={setRotationEntries}
-                                            allSkillResults={allSkillResults}
-                                            currentSliderColor={currentSliderColor}
-                                        />
-                                    ))}
-                            </SortableContext>
-                        </DndContext>
+                            rotationEntries={rotationEntries}
+                            setRotationEntries={setRotationEntries}
+                            normalizedEntries={normalizedEntries}
+                            allSkillResults={allSkillResults}
+                            currentSliderColor={currentSliderColor}
+                            handleAddEntryToBlock={handleAddEntryToBlock}
+                            handleBlockMultiplierChange={handleBlockMultiplierChange}
+                            setShowSkillOptions={setShowSkillOptions}
+                            setEditingEntry={setEditingEntry}
+                            setModalOpen={setModalOpen}
+                            setEditingBlockId={setEditingBlockId}
+                            removeEntryFromBlock={removeEntryFromBlock}
+                        />
                     </div>
 
                     <SkillMenu
@@ -1211,66 +1301,432 @@ export default function RotationsPane({
                     currentSliderColor={currentSliderColor}
                 />
             )}
+
+            <PlainModal
+                modalOpen={modalOpen}
+                setModalOpen={setModalOpen}
+                width="700px"
+                className="rotation-block-preview"
+            >
+                <div className="block-preview-header" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: '0.5rem' }}>
+                    {isEditingBlockName ? (
+                        <input
+                            type="text"
+                            value={editedBlockName}
+                            onChange={(e) => setEditedBlockName(e.target.value)}
+                            onBlur={() => {
+                                setRotationEntries(prev =>
+                                    prev.map(e =>
+                                        e.id === editingBlock.id
+                                            ? { ...e, label: editedBlockName || "New Block" }
+                                            : e
+                                    )
+                                );
+                                setIsEditingBlockName(false);
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    setRotationEntries(prev =>
+                                        prev.map(b =>
+                                            b.id === editingBlock.id
+                                                ? { ...b, label: editedBlockName || 'New Block' }
+                                                : b
+                                        )
+                                    );
+                                    setIsEditingBlockName(false);
+                                } else if (e.key === 'Escape') {
+                                    setEditedName(editingBlock.label ?? 'New Block');
+                                    setIsEditingBlockName(false);
+                                }
+                            }}
+                            autoFocus
+                            className="entry-name-edit preset-name-edit"
+                        />
+                    ) : (
+                        <h2
+                            onClick={() => setIsEditingBlockName(true)}
+                            style={{
+                                cursor: "text",
+                                fontWeight: "bold",
+                                margin: 'unset'
+                            }}
+                        >
+                            {editingBlock?.label || "New Block"}
+                        </h2>
+                    )}
+                    <div
+                        style={{ marginLeft: 'auto', marginBottom: 'unset', display: 'flex', flexDirection: 'row', gap: '0.75rem' }}
+                    >
+                        <div className="rotation-multiplier-inline">
+                            <label style={{ fontSize: '1rem' }}>×</label>
+                            <input
+                                type="number"
+                                min="1"
+                                max="99"
+                                className="character-level-input"
+                                value={editingBlock?.multiplier}
+                                onChange={(e) => handleBlockMultiplierChange(editingBlock.id, parseFloat(e.target.value) || 1)}
+                                style={{ width: '4rem', fontSize: '1rem', marginLeft: '0.25rem', textAlign: 'right' }}
+                            />
+                        </div>
+                        <button
+                            className="btn-primary echoes"
+                            onClick={() => {
+                                setEditedBlockName(editingBlock.label ?? "New Block");
+                                setIsEditingBlockName(true);
+                            }}
+                        >
+                            Edit Name
+                        </button>
+                        <button
+                            className="rotation-button clear echoes"
+                            onClick={() => {
+                                setRotationEntries(prev => {
+                                    if (Array.isArray(editingBlock.entries)) {
+                                        const subIds = new Set(editingBlock.entries.map(e => e.id));
+                                        return prev.filter(e => !subIds.has(e.id) && e.id !== editingBlock.id);
+                                    }
+                                });
+                                setModalOpen(false);
+                            }}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </div>
+                {(() => {
+                    let entriesToShow = normalizedEntries;
+
+                    if (editingBlock && Array.isArray(editingBlock.entries)) {
+                        entriesToShow = editingBlock.entries
+                            .map(ref => rotationEntries.find(e => e.id === ref.id))
+                            .filter(Boolean);
+                    }
+                    return (
+                        <div className="block-entries-list echo-buff">
+                            {entriesToShow.length > 0 ? (
+                                <>
+                                    {entriesToShow
+                                        .filter(entry => {
+                                            const match = allSkillResults.find(
+                                                s => s.name === entry.label && s.tab === entry.tab
+                                            );
+                                            return match?.visible !== false && entry.blockId;
+                                        })
+                                        .map((entry, idx) => (
+                                            <RotationItem
+                                                key={entry.id}
+                                                id={entry.id}
+                                                index={idx}
+                                                entry={entry}
+                                                setRotationEntries={setRotationEntries}
+                                                allSkillResults={allSkillResults}
+                                                currentSliderColor={currentSliderColor}
+                                                onAddEntryToBlock={handleAddEntryToBlock}
+                                                handleBlockMultiplierChange={handleBlockMultiplierChange}
+                                                rotationEntries={rotationEntries}
+                                                onDelete={(entry) => {
+                                                    setRotationEntries(prev => {
+                                                        if (!entry) return prev;
+                                                        let updated = prev.filter(e => e.id !== entry.id);
+                                                        updated = updated.map(block => {
+                                                            if (block.id === entry.blockId && Array.isArray(block.entries)) {
+                                                                return {
+                                                                    ...block,
+                                                                    entries: block.entries.filter(sub => sub.id !== entry.id),
+                                                                };
+                                                            }
+                                                            return block;
+                                                        });
+                                                        return updated;
+                                                    });
+                                                }}
+                                                onEdit={(entry) => {
+                                                    setEditingEntry(entry);
+                                                    setShowSkillOptions(true);
+                                                }}
+                                                onHideEntries={(entry) => {
+                                                    setRotationEntries(prev =>
+                                                        prev.map(e =>
+                                                            e.id === entry.id
+                                                                ? { ...e, hideEntries: !Boolean(e.hideEntries) }
+                                                                : e
+                                                        )
+                                                    );
+                                                }}
+                                                onMultiplierChange={(i, val) => {
+                                                    const updated = [...rotationEntries];
+                                                    updated[i].multiplier = val;
+                                                    setRotationEntries(updated);
+                                                }}
+                                                setModalOpen={setModalOpen}
+                                                blockPreviewMode={true}
+                                                removeEntryFromBlock={() => removeEntryFromBlock(entry.id, editingBlockId)}
+                                            />
+                                        ))}
+                                </>
+                            ) : (
+                                <span className="empty-message" style={{ alignSelf: 'center', justifySelf: 'center' }}>Empty...</span>
+                            )}
+
+                        </div>
+                    );
+                })()}
+            </PlainModal>
         </div>
     );
 }
 
-export function buildRotation(charId, groupedSkillOptions) {
-    const builtRotations = [];
-    const rotationData = getDefaultRotationEntries(charId);
-    const entries = rotationData?.entries;
+function RotationDndWrapper({
+                                sensors,
+                                rotationEntries,
+                                setRotationEntries,
+                                normalizedEntries,
+                                allSkillResults,
+                                currentSliderColor,
+                                handleAddEntryToBlock,
+                                handleBlockMultiplierChange,
+                                setShowSkillOptions,
+                                setEditingEntry,
+                                setModalOpen,
+                                setEditingBlockId,
+                                removeEntryFromBlock
+                            }) {
+    const [draggedId, setDraggedId] = useState(null);
+    const [draggedItem, setDraggedItem] = useState(null);
+    const [overBlockId, setOverBlockId] = useState(null);
+    const isBlockDragged = draggedItem?.type === "block";
 
-    if (!Array.isArray(entries) || entries.length === 0) return null;
+    return (
+        <DndContext
+            sensors={sensors}
+            collisionDetection={iosLikeCollision}
+            modifiers={[restrictToFirstScrollableAncestor]}
+            onDragEnd={({ active, over }) => {
+                if (!over) return;
+                const activeId = active.id;
+                const overId = over.id || over.data?.current?.blockId;
+                const fromBlockId = active.data?.current?.fromBlockId;
+                if (activeId === overId) return;
+                setRotationEntries(prev => {
+                    const draggedItem = prev.find(i => i.id === activeId);
+                    const overBlock = over?.data?.current?.type === "block"
+                        ? prev.find(b => b.id === over.data.current.blockId)
+                        : null;
+                    if (draggedItem?.type === "block" && overBlock) return prev;
+                    let updated = [...prev];
+                    if (overBlock) {
+                        const blockId = overBlock.id;
+                        const blockMultiplier = overBlock.multiplier ?? 1;
+                        if (fromBlockId && fromBlockId !== blockId) {
+                            updated = updated.map(item =>
+                                item.id === fromBlockId
+                                    ? { ...item, entries: item.entries?.filter(ref => ref.id !== activeId) ?? [] }
+                                    : item
+                            );
+                        }
+                        updated = updated.map(item => {
+                            if (item.id === activeId) {
+                                const oldBlock = prev.find(b => b.id === fromBlockId);
+                                const oldMult = oldBlock?.multiplier ?? 1;
+                                const baseMult =
+                                    item.blockId && fromBlockId
+                                        ? (item.multiplier ?? 1) / oldMult
+                                        : (item.multiplier ?? 1);
+                                const newMultiplier = baseMult * blockMultiplier;
+                                return {
+                                    ...item,
+                                    blockId,
+                                    multiplier: newMultiplier,
+                                };
+                            }
+                            if (item.id === blockId) {
+                                const alreadyIn = item.entries?.some(ref => ref.id === activeId);
+                                if (alreadyIn) return item;
+                                return {
+                                    ...item,
+                                    entries: [...(item.entries ?? []), { id: activeId }],
+                                };
+                            }
+                            return item;
+                        });
+                        return updated;
+                    }
+                    if (fromBlockId && (!over || over.data?.current?.type !== "block")) {
+                        const oldBlock = prev.find(b => b.id === fromBlockId);
+                        const blockMultiplier = oldBlock?.multiplier ?? 1;
+                        updated = updated.map(entry => {
+                            if (entry.id === activeId) {
+                                const newMultiplier = (entry.multiplier ?? 1) / blockMultiplier;
+                                return {
+                                    ...entry,
+                                    blockId: null,
+                                    multiplier: newMultiplier,
+                                };
+                            }
+                            if (entry.id === fromBlockId) {
+                                return {
+                                    ...entry,
+                                    entries: entry.entries?.filter(ref => ref.id !== activeId) ?? [],
+                                };
+                            }
+                            return entry;
+                        });
+                        return updated;
+                    }
+                    const oldIndex = normalizedEntries.findIndex(e => e.id === activeId);
+                    const newIndex = normalizedEntries.findIndex(e => e.id === over.id);
+                    if (oldIndex !== -1 && newIndex !== -1) {
+                        updated = arrayMove(updated, oldIndex, newIndex);
+                    }
+                    return updated;
+                });
+            }}
+        >
+            <InnerDndMonitor
+                setDraggedId={setDraggedId}
+                setDraggedItem={setDraggedItem}
+                setOverBlockId={setOverBlockId}
+                rotationEntries={rotationEntries}
+            />
 
-    function findSkillInGroups(entryName, entryTab = null) {
-        const nameLower = entryName.toLowerCase();
-
-        if (entryTab && groupedSkillOptions[entryTab]) {
-            const foundInTab = groupedSkillOptions[entryTab].find(skill =>
-                skill.name.toLowerCase().includes(nameLower)
-            );
-            if (foundInTab) return foundInTab;
-        }
-
-        for (const tab in groupedSkillOptions) {
-            const found = groupedSkillOptions[tab].find(skill =>
-                skill.name.toLowerCase().includes(nameLower)
-            );
-            if (found) return found;
-        }
-
-        return null;
-    }
-
-    for (const entry of entries) {
-        const entryName = entry.name.toLowerCase();
-        const entryTab = entry.tab ?? null;
-        const skill = findSkillInGroups(entryName, entryTab);
-        if (skill) {
-            builtRotations.push(makeEntry(skill, entry));
-        }
-    }
-
-    return { builtRotations, link: rotationData.link };
+            <SortableContext
+                items={normalizedEntries.map(e => e.id)}
+                strategy={verticalListSortingStrategy}
+            >
+                {normalizedEntries
+                    .filter(entry => {
+                        const match = allSkillResults.find(
+                            s => s.name === entry.label && s.tab === entry.tab
+                        );
+                        return match?.visible !== false && !entry.blockId;
+                    })
+                    .map((entry, idx) => (
+                        <RotationItem
+                            key={entry.id}
+                            id={entry.id}
+                            index={idx}
+                            entry={entry}
+                            setRotationEntries={setRotationEntries}
+                            allSkillResults={allSkillResults}
+                            currentSliderColor={currentSliderColor}
+                            onAddEntryToBlock={handleAddEntryToBlock}
+                            handleBlockMultiplierChange={handleBlockMultiplierChange}
+                            rotationEntries={rotationEntries}
+                            draggedId={draggedId}
+                            overBlockId={overBlockId}
+                            onDelete={(entry) => {
+                                setRotationEntries(prev => {
+                                    if (!entry) return prev;
+                                    if (entry.type === 'block' && Array.isArray(entry.entries)) {
+                                        const subIds = new Set(entry.entries.map(e => e.id));
+                                        return prev.filter(e => !subIds.has(e.id) && e.id !== entry.id);
+                                    }
+                                    return prev.filter(e => e.id !== entry.id);
+                                });
+                            }}
+                            onEdit={(entry) => {
+                                if (entry.type === 'block') {
+                                    setEditingBlockId(entry.id);
+                                    setModalOpen(true);
+                                    return;
+                                }
+                                setEditingEntry(entry);
+                                setShowSkillOptions(true);
+                            }}
+                            onHideEntries={(entry) => {
+                                setRotationEntries(prev =>
+                                    prev.map(e =>
+                                        e.id === entry.id
+                                            ? { ...e, hideEntries: !Boolean(e.hideEntries) }
+                                            : e
+                                    )
+                                );
+                            }}
+                            onMultiplierChange={(entry, val) => {
+                                setRotationEntries(prev =>
+                                    prev.map(e =>
+                                        e.id === entry.id
+                                            ? { ...e, multiplier: val }
+                                            : e
+                                    )
+                                );
+                            }}
+                        />
+                    ))}
+            </SortableContext>
+            {!isBlockDragged && (
+                <DragOverlay>
+                    {draggedItem ? (
+                        <div
+                            className={`rotation-item-overlay ${overBlockId ? "over-block" : ""}`}
+                            style={{
+                                opacity: overBlockId ? 0.4 : 1,
+                                transform: `scale(${overBlockId ? 0.75 : 1})`,
+                                filter: overBlockId ? "blur(1px)" : "none",
+                                transition: "transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease",
+                                zIndex: 9999,
+                            }}
+                        >
+                            <BlockSubItem
+                                key={`ghost-${draggedId}`}
+                                subRef={{ id: draggedId }}
+                                entryId={draggedItem.id}
+                                rotationEntries={rotationEntries}
+                                allSkillResults={allSkillResults}
+                                currentSliderColor={currentSliderColor}
+                                entry={draggedItem}
+                                isGhostPreview={true}
+                                overBlockId={overBlockId}
+                            />
+                        </div>
+                    ) : null}
+                </DragOverlay>
+            )}
+            <GlobalDragCursor />
+        </DndContext>
+    );
 }
 
+function InnerDndMonitor({ setDraggedId, setDraggedItem, setOverBlockId, rotationEntries }) {
+    useDndMonitor({
+        onDragStart: ({ active }) => {
+            setDraggedId(active.id);
+            setDraggedItem(rotationEntries.find(e => e.id === active.id) || null);
+        },
+        onDragOver: ({ over }) => {
+            if (over?.data?.current?.type === 'block') {
+                setOverBlockId(over.data.current.blockId);
+            } else {
+                setOverBlockId(null);
+            }
+        },
+        onDragEnd: () => {
+            setDraggedId(null);
+            setDraggedItem(null);
+            setOverBlockId(null);
+        },
+    });
+    return null;
+}
 
-function makeEntry (skill, entry = null) {
-    const type = Array.isArray(skill.type) ? skill.type[0] : skill.type;
-    const iconPath = type && typeof type === 'string' && skillTypeIconMap[type.toLowerCase?.()]
-        ? skillTypeIconMap[type.toLowerCase()]
-        : null;
-    return {
-        id: crypto.randomUUID(),
-        label: skill.name,
-        detail: skillTypeLabelMap[type] ?? type,
-        tab: skill.tab,
-        iconPath,
-        visible: skill.visible,
-        multiplier: entry?.multiplier ?? 1,
-        locked: false,
-        snapshot: undefined,
-        createdAt: Date.now(),
-        element: skill.element ?? null
-    };
+function iosLikeCollision(args) {
+    const pointer = pointerWithin(args);
+    if (pointer.length > 0) return pointer;
+    return closestCenter(args);
+}
+
+function GlobalDragCursor() {
+    useDndMonitor({
+        onDragStart: () => {
+            document.body.style.cursor = 'grabbing';
+        },
+        onDragEnd: () => {
+            document.body.style.cursor = '';
+        },
+        onDragCancel: () => {
+            document.body.style.cursor = '';
+        },
+    });
+    return null;
 }

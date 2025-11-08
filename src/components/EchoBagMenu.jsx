@@ -1,13 +1,8 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import EditSubstatsModal from './EchoEditModal';
 import {setIconMap} from "../constants/echoSetData";
-import { isEqual } from 'lodash';
-import {
-    getEchoBag,
-    subscribeEchoBag,
-    updateEchoInBag,
-    clearEchoBag
-} from '../state/echoBagStore';
+import {isEqual} from 'lodash';
+import {clearEchoBag, getEchoBag, subscribeEchoBag, updateEchoInBag} from '../state/echoBagStore';
 import {getValidMainStats} from "../utils/echoHelper.js";
 import {imageCache} from "../pages/calculator.jsx";
 import {
@@ -85,14 +80,12 @@ export default function EchoBagMenu({
         .sort((a, b) => a.name.localeCompare(b.name));
 
     useEffect(() => {
-        const unsubscribe = subscribeEchoBag(setEchoBag);
-        return unsubscribe;
+        return subscribeEchoBag(setEchoBag);
     }, []);
 
     const [echoPresets, setEchoPresets] = useState(getEchoPresets());
     useEffect(() => {
-        const unsubscribe = subscribeEchoPresets(setEchoPresets);
-        return unsubscribe;
+        return subscribeEchoPresets(setEchoPresets);
     }, []);
 
     useEffect(() => {

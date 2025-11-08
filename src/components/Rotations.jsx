@@ -164,6 +164,7 @@ export function calculateRotationTotals(skillCache, rotationEntries) {
     if (!Array.isArray(rotationEntries) || !skillCache) return { total, supportTotals, breakdownMap };
 
     for (const entry of rotationEntries) {
+        if (entry?.type === 'block' || entry?.disabled) continue;
         const multiplier = entry.multiplier ?? 1;
 
         const source = entry.locked ? entry.snapshot : skillCache?.find(
