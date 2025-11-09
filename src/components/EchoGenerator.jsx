@@ -275,196 +275,194 @@ export function EchoGenerator({
                     }`}
                     style={{marginBottom: "1rem"}}
                 >
-                    {!isLoading ? (
-                        editConfig ? (
-                            <div className="edit-config">
-                                <div className="config-selector-group">
-                                    <h4>Main Echo:</h4>
-                                    <div
-                                        className="config-selector btn-primary echoes"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setMenuOpen((prev) => !prev);
+                    {editConfig ? (
+                        <div className="edit-config">
+                            <div className="config-selector-group">
+                                <h4>Main Echo:</h4>
+                                <div
+                                    className="config-selector btn-primary echoes"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setMenuOpen((prev) => !prev);
+                                    }}
+                                >
+                                    {randGen?.mainEcho?.name ?? "Select Echo"}
+                                </div>
+
+                                <h4>Target Skill:</h4>
+                                <div
+                                    className="config-selector btn-primary echoes"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowSkillOptions(true);
+                                    }}
+                                >
+                                    {skill?.name ?? "Target Skill"}
+                                </div>
+
+                                <div style={{display: "flex", gap: "1rem", alignItems: "center"}}>
+                                    <h4>Target Energy Regen:</h4>
+                                    <input
+                                        type="number"
+                                        style={{marginTop: "4px"}}
+                                        min="0"
+                                        max="200"
+                                        step="100"
+                                        value={randGen.targetEnergyRegen}
+                                        onChange={(e) => {
+                                            const val = Number(e.target.value);
+                                            const clamped = Math.max(0, Math.min(val, 200));
+                                            updateRandGenSettings({targetEnergyRegen: clamped});
                                         }}
-                                    >
-                                        {randGen?.mainEcho?.name ?? "Select Echo"}
-                                    </div>
-
-                                    <h4>Target Skill:</h4>
-                                    <div
-                                        className="config-selector btn-primary echoes"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setShowSkillOptions(true);
-                                        }}
-                                    >
-                                        {skill?.name ?? "Target Skill"}
-                                    </div>
-
-                                    <div style={{display: "flex", gap: "1rem", alignItems: "center"}}>
-                                        <h4>Target Energy Regen:</h4>
-                                        <input
-                                            type="number"
-                                            style={{marginTop: "4px"}}
-                                            min="0"
-                                            max="200"
-                                            step="100"
-                                            value={randGen.targetEnergyRegen}
-                                            onChange={(e) => {
-                                                const val = Number(e.target.value);
-                                                const clamped = Math.max(0, Math.min(val, 200));
-                                                updateRandGenSettings({targetEnergyRegen: clamped});
-                                            }}
-                                            className="character-level-input"
-                                        />
-                                    </div>
-
-                                    <SonataSetPlanner
-                                        selectedSets={randGen.setId}
-                                        updateRandGenSettings={updateRandGenSettings}
+                                        className="character-level-input"
                                     />
                                 </div>
 
-                                {/* ---- Sliders ---- */}
-                                <div className="config-sliders">
-                                    {/* Iterations */}
-                                    <div className="slider-group">
-                                        <div className="slider-item">
-                                            <label>Iterations:</label>
-                                            <input
-                                                type="number"
-                                                min="100"
-                                                max="150000"
-                                                step="100"
-                                                value={randGen.iterations}
-                                                onChange={(e) =>
-                                                    updateRandGenSettings({
-                                                        iterations: Math.max(
-                                                            100,
-                                                            Math.min(Number(e.target.value), 150000)
-                                                        ),
-                                                    })
-                                                }
-                                                className="character-level-input"
-                                            />
-                                        </div>
-                                        <div className="slider-row">
-                                            <input
-                                                type="range"
-                                                min="100"
-                                                max="150000"
-                                                step="100"
-                                                value={randGen.iterations}
-                                                onChange={(e) =>
-                                                    updateRandGenSettings({
-                                                        iterations: Number(e.target.value),
-                                                    })
-                                                }
-                                                className="slider iterations"
-                                            />
-                                        </div>
-                                    </div>
+                                <SonataSetPlanner
+                                    selectedSets={randGen.setId}
+                                    updateRandGenSettings={updateRandGenSettings}
+                                />
+                            </div>
 
-                                    {/* Bias */}
-                                    <div className="slider-group">
-                                        <div className="slider-item">
-                                            <label>Bias:</label>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                max="1"
-                                                step="0.1"
-                                                value={randGen.bias}
-                                                onChange={(e) =>
-                                                    updateRandGenSettings({
-                                                        bias: Math.max(
-                                                            0,
-                                                            Math.min(Number(e.target.value), 1)
-                                                        ),
-                                                    })
-                                                }
-                                                className="character-level-input"
-                                            />
-                                        </div>
-                                        <div className="slider-row">
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="1"
-                                                step="0.1"
-                                                value={randGen.bias}
-                                                onChange={(e) =>
-                                                    updateRandGenSettings({
-                                                        bias: Number(e.target.value),
-                                                    })
-                                                }
-                                                className="slider bias"
-                                            />
-                                        </div>
+                            {/* ---- Sliders ---- */}
+                            <div className="config-sliders">
+                                {/* Iterations */}
+                                <div className="slider-group">
+                                    <div className="slider-item">
+                                        <label>Iterations:</label>
+                                        <input
+                                            type="number"
+                                            min="100"
+                                            max="150000"
+                                            step="100"
+                                            value={randGen.iterations}
+                                            onChange={(e) =>
+                                                updateRandGenSettings({
+                                                    iterations: Math.max(
+                                                        100,
+                                                        Math.min(Number(e.target.value), 150000)
+                                                    ),
+                                                })
+                                            }
+                                            className="character-level-input"
+                                        />
                                     </div>
+                                    <div className="slider-row">
+                                        <input
+                                            type="range"
+                                            min="100"
+                                            max="150000"
+                                            step="100"
+                                            value={randGen.iterations}
+                                            onChange={(e) =>
+                                                updateRandGenSettings({
+                                                    iterations: Number(e.target.value),
+                                                })
+                                            }
+                                            className="slider iterations"
+                                        />
+                                    </div>
+                                </div>
 
-                                    {/* Roll Quality */}
-                                    <div className="slider-group">
-                                        <div className="slider-item">
-                                            <label>Roll Quality:</label>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                max="1"
-                                                step="0.1"
-                                                value={randGen.rollQuality}
-                                                onChange={(e) =>
-                                                    updateRandGenSettings({
-                                                        rollQuality: Math.max(
-                                                            0,
-                                                            Math.min(Number(e.target.value), 1)
-                                                        ),
-                                                    })
-                                                }
-                                                className="character-level-input"
-                                            />
-                                        </div>
-                                        <div className="slider-row">
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="1"
-                                                step="0.1"
-                                                value={randGen.rollQuality}
-                                                onChange={(e) =>
-                                                    updateRandGenSettings({
-                                                        rollQuality: Number(e.target.value),
-                                                    })
-                                                }
-                                                className="slider quality"
-                                            />
-                                        </div>
+                                {/* Bias */}
+                                <div className="slider-group">
+                                    <div className="slider-item">
+                                        <label>Bias:</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            max="1"
+                                            step="0.1"
+                                            value={randGen.bias}
+                                            onChange={(e) =>
+                                                updateRandGenSettings({
+                                                    bias: Math.max(
+                                                        0,
+                                                        Math.min(Number(e.target.value), 1)
+                                                    ),
+                                                })
+                                            }
+                                            className="character-level-input"
+                                        />
+                                    </div>
+                                    <div className="slider-row">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="1"
+                                            step="0.1"
+                                            value={randGen.bias}
+                                            onChange={(e) =>
+                                                updateRandGenSettings({
+                                                    bias: Number(e.target.value),
+                                                })
+                                            }
+                                            className="slider bias"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Roll Quality */}
+                                <div className="slider-group">
+                                    <div className="slider-item">
+                                        <label>Roll Quality:</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            max="1"
+                                            step="0.1"
+                                            value={randGen.rollQuality}
+                                            onChange={(e) =>
+                                                updateRandGenSettings({
+                                                    rollQuality: Math.max(
+                                                        0,
+                                                        Math.min(Number(e.target.value), 1)
+                                                    ),
+                                                })
+                                            }
+                                            className="character-level-input"
+                                        />
+                                    </div>
+                                    <div className="slider-row">
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="1"
+                                            step="0.1"
+                                            value={randGen.rollQuality}
+                                            onChange={(e) =>
+                                                updateRandGenSettings({
+                                                    rollQuality: Number(e.target.value),
+                                                })
+                                            }
+                                            className="slider quality"
+                                        />
                                     </div>
                                 </div>
                             </div>
-                        ) : (
-                            [...Array(5)].map((_, i) => {
-                                const echo = echoes[i];
-                                const score = echo
-                                    ? (getEchoScores(charId, echo).totalScore / maxScore) * 100
-                                    : 0;
-                                return (
-                                    <div
-                                        key={i}
-                                        className="echo-tile overview inherent-skills-box echo-parser-preview"
-                                        style={{margin: "unset"}}
-                                    >
-                                        <EchoGridPreview
-                                            echo={echo}
-                                            getImageSrc={getImageSrc}
-                                            score={score}
-                                            setIconMap={setIconMap}
-                                            className="echo-parser-preview preset-preview"
-                                        />
-                                    </div>
-                                );
-                            })
-                        )
+                        </div>
+                    ) : !isLoading ? (
+                        [...Array(5)].map((_, i) => {
+                            const echo = echoes[i];
+                            const score = echo
+                                ? (getEchoScores(charId, echo).totalScore / maxScore) * 100
+                                : 0;
+                            return (
+                                <div
+                                    key={i}
+                                    className="echo-tile overview inherent-skills-box echo-parser-preview"
+                                    style={{margin: "unset"}}
+                                >
+                                    <EchoGridPreview
+                                        echo={echo}
+                                        getImageSrc={getImageSrc}
+                                        score={score}
+                                        setIconMap={setIconMap}
+                                        className="echo-parser-preview preset-preview"
+                                    />
+                                </div>
+                            );
+                        })
                     ) : (
                         <div className="fancy-loader-container">
                             <div
@@ -491,7 +489,7 @@ export function EchoGenerator({
                     )}
                 </div>
                 <span className="preset-date overview-weapon-details" style={{ position: 'unset'}}>
-                    {`✿ Still in it's infancy... if you find something weird do 
+                    {`✿ If you find something weird do 
                     drop by the discord server to slime me out~! ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧`}
                 </span>
             </div>

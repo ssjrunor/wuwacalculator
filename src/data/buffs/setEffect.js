@@ -228,7 +228,6 @@ export function removeSetEffectsFromBuffs(mergedBuffs, sets, runtime) {
         }
     };
 
-    // 1️⃣ Remove 2pc / 5pc bonuses
     for (const entry of setArray) {
         const id = entry?.setId ?? entry;
         const count = entry?.count ?? 0;
@@ -238,7 +237,6 @@ export function removeSetEffectsFromBuffs(mergedBuffs, sets, runtime) {
         if (count >= 5 && setData.fivePiece) subtractBuffs(setData.fivePiece);
     }
 
-    // 2️⃣ Remove state-based buffs using their max values
     const activeStates = runtime?.activeStates ?? {};
     for (const entry of setArray) {
         const id = entry?.setId ?? entry;

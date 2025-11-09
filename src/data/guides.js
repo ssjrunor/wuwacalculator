@@ -502,8 +502,6 @@ export const guides = [
                 type: 'article',
                 shortDesc: 'Understand what happens when you save, reset, sync, or interact with features throughout the calculator.',
                 content: `
-                <p>The calculator isn’t just a static tool — it’s a living workspace that reacts instantly to what you do. Every button, switch, and action triggers updates across the app in real time. Here’s a complete overview of what each major action does and how it fits into your workflow.</p>
-
                 <h4>1. Saving & Persistence</h4>
                 <p>Almost everything you do in the app — selecting characters, changing buffs, editing Echoes, setting up rotations — is saved automatically. This is handled through local storage, so your configuration stays exactly how you left it, even after refreshing or closing the browser.</p>
                 <ul>
@@ -546,12 +544,11 @@ export const guides = [
                 </ul>
                 <p>This feature is especially helpful for users who want stronger accessibility or simply a personalized aesthetic to match their workflow.</p>
 
-                <h4>5. Exporting & Syncing</h4>
+                <h4>5. Exporting & Google Drive Sync</h4>
                 <p>The app supports exporting and syncing data, especially for advanced users who use multiple devices or want backups:</p>
                 <ul>
-                    <li><strong>Google Drive Sync:</strong> When enabled, your app state and configurations (Echoes, Rotations, etc.) sync securely to your Google Drive in the hidden “AppData” folder.</li>
-                    <li><strong>Auto-Restore:</strong> When you log in again, the app checks for Drive data and restores it automatically.</li>
-                    <li><strong>Export / Import:</strong> You can export rotations or entire setups as <code>.json</code> files and import them later, or share with other users.</li>
+                    <li><strong>Google Drive Sync:</strong> When enabled, your app state and configurations (Echoes, Rotations, etc.) save securely to your Google Drive in the hidden “AppData” folder.</li>
+                    <li><strong>Export / Import:</strong> You can export app data as <code>.json</code> files and import them later, or share with other users.</li>
                 </ul>
 
                 <h4>6. Interactive Activities</h4>
@@ -562,17 +559,6 @@ export const guides = [
                     <li><strong>Expandable Sections:</strong> Each pane uses collapsible sections (like Buffs, Totals, and Rotations) so you can keep your workspace tidy while focusing on specific areas.</li>
                     <li><strong>Dynamic Tooltips:</strong> Hovering over stats or icons reveals detailed tooltips showing what each number represents, including calculated roll values or set bonuses.</li>
                 </ul>
-
-                <h4>7. Data Integrity & Overwrites</h4>
-                <p>To prevent confusion, the app uses explicit overwrite logic when importing or loading:</p>
-                <ul>
-                    <li><strong>Rotation Imports:</strong> If a rotation file belongs to another character, you’ll get a warning and the app will block the overwrite to protect your current state.</li>
-                    <li><strong>Team Rotations:</strong> Loading a full team rotation replaces each teammate’s state exactly as it was saved — a warning label appears in red to emphasize this behavior.</li>
-                    <li><strong>Reset Confirmation:</strong> The Reset Settings button can’t be triggered accidentally — it always asks for confirmation before clearing your stored data.</li>
-                </ul>
-
-                <h4>9. Safety & Recovery</h4>
-                <p>If anything goes wrong — from a failed import to a parsing error — the app isolates that event instead of crashing the whole session. Toasts will explain what happened, and your last stable state remains untouched. For critical resets, a confirmation or reload ensures you never lose progress unintentionally.</p>
             `
             }
         ]
