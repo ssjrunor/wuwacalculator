@@ -1,5 +1,4 @@
 import rawEchoes from '../data/echoes.json';
-import echoSets from '../constants/echoSetData.jsx';
 
 function formatEchoIconName(name = '') {
     return name

@@ -1,9 +1,19 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react({
+      exclude: [/workers\/.+\.js$/],
+    }),
+  ],
+
+  worker: {
+    format: 'es',
+    plugins: () => [],
+  },
+
   server: {
     host: true,
     proxy: {
@@ -11,15 +21,16 @@ export default defineConfig({
         target: 'http://localhost:3000',
         changeOrigin: true,
         secure: false,
-      }
-    }
+      },
+    },
   },
+
   build: {
     outDir: 'dist',
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html')
-      }
-    }
-  }
-})
+        main: resolve(__dirname, 'index.html'),
+      },
+    },
+  },
+});

@@ -1,23 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Wrench } from "lucide-react";
 import {
-    applyFixedSecondMainStat,
     getEchoScores,
     getTop5SubstatScoreDetails,
 } from "../utils/echoHelper.js";
-import {
-    buildMultipleRandomEchoes,
-    getEquippedEchoesScoreDetails,
-} from "./EchoesPane.jsx";
-import { findBestFullEchoSetMonteCarlo } from "../utils/echoGenerator.js";
+import { getEquippedEchoesScoreDetails } from "./EchoesPane.jsx";
 import { attributeColors, elementToAttribute } from "../utils/attributeHelpers.js";
 import echoSets, { setIconMap } from "../constants/echoSetData.jsx";
 import { echoes as allEchoes } from "../json-data-scripts/getEchoes.js";
 import EchoMenu from "./EchoMenu.jsx";
-import SkillMenu, { tabDisplayOrder } from "./SkillMenu.jsx";
+import SkillMenu, {tabDisplayOrder} from "./SkillMenu.jsx";
 import { EchoGridPreview } from "./OverviewDetailPane.jsx";
-import {sameDate} from "./EchoPresets.jsx";
 
 export function EchoGenerator({
                                   open,
@@ -28,22 +22,19 @@ export function EchoGenerator({
                                   characterRuntimeStates,
                                   setCharacterRuntimeStates,
                                   onEquipGenerated,
-                                  allSkillLevels,
                                   skillResults,
                                   activeCharacter,
                                   baseCharacterState,
                                   mergedBuffs,
                                   setGuideClose,
                                   setIsGeneratorOpen,
-                                  openGuide
+                                  openGuide,
+                                  allSkillLevels
                               }) {
     if (!open) return null;
-
-    // --- helper to update randGenSettings globally ---
-    function updateRandGenSettings(patch) {
+    const updateRandGenSettings = (patch) => {
         if (!activeCharacter) return;
         const charId = activeCharacter.Id ?? activeCharacter.id ?? activeCharacter.link;
-
         setCharacterRuntimeStates((prev) => {
             const prevChar = prev[charId] ?? {};
             return {
@@ -57,21 +48,21 @@ export function EchoGenerator({
                 },
             };
         });
-    }
+    };
 
-    // pull current global values or defaults
-    const randGen = characterRuntimeStates?.[charId]?.randGenSettings
-
-    const level = randGen?.level ?? null;
-    const tab = randGen?.tab ?? '';
+    const randGen = characterRuntimeStates?.[charId]?.randGenSettings;
     const [editConfig, setEditConfig] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isClosing, setIsClosing] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [showSkillOptions, setShowSkillOptions] = useState(false);
     const [isClosingSkillMenu, setIsClosingSkillMenu] = useState(false);
-    const [builtEchoes, setBuiltEchoes] = useState([null, null, null, null, null]);
     const menuRef = useRef(null);
+    const level = randGen?.level ?? null;
+    const tab = randGen?.tab ?? "";
+    const [isLoading, setIsLoading] = useState(true);
+    const [isClosing, setIsClosing] = useState(false);
+    const [builtEchoes, setBuiltEchoes] = useState([null, null, null, null, null]);
+    const workerRef = useRef(null);
+    const [progress, setProgress] = useState(0);
 
     const groupedSkillOptions = React.useMemo(() => {
         const allSkills = skillResults.filter(
@@ -97,7 +88,6 @@ export function EchoGenerator({
     );
     const toggleTab = (key) =>
         setExpandedTabs((prev) => ({...prev, [key]: !prev[key]}));
-
     const handleAddSkill = (skill) => {
         const newTab = skill?.tab;
         updateRandGenSettings({ tab: newTab });
@@ -108,66 +98,83 @@ export function EchoGenerator({
         if (match) updateRandGenSettings({ level: match });
         setShowSkillOptions(false);
     };
-
     const entry = {
         label: level?.Name,
         detail: level?.Type ?? tab,
         tab,
     };
-
     const skill =
         skillResults?.find(
             (s) => s.name === level?.label || s.name === level?.Name
         ) ?? {};
 
-    // --- main randomizer ---
-    const runRandomizer = useCallback(async () => {
-        try {
-            setIsLoading(true);
-            await new Promise((r) => setTimeout(r, 300));
+    useEffect(() => {
+        const worker = new Worker(
+            new URL("../workers/echoWorker.js", import.meta.url),
+            { type: "module" }
+        );
+        workerRef.current = worker;
 
-            const result = await findBestFullEchoSetMonteCarlo(
-                {
-                    characterRuntimeStates,
-                    charId,
-                    activeCharacter,
-                    entry,
-                    levelData: level,
-                },
-                randGen.iterations,
-                randGen.bias,
-                randGen.targetEnergyRegen,
-                baseCharacterState,
-                randGen.rollQuality,
-                mergedBuffs,
-                echoData,
-                skill.statWeight ?? skill.custSkillMeta.statWeight ?? [],
-                Date.now(),
-                randGen.mainEcho?.cost
-            );
+        worker.onmessage = (e) => {
+            const data = e.data;
+            if (data.type === 'progress') {
+                setProgress(data.progress);
+            } else if (data.type === 'result') {
+                setBuiltEchoes(data.builtEchoes);
+                setIsLoading(false);
+                setProgress(100);
+            } else if (data.type === 'error') {
+                console.error('Worker error:', data.message);
+                setIsLoading(false);
+            }
+        };
 
-            const newEchoes = buildMultipleRandomEchoes(
-                result.echoes.map((e) => ({
-                    cost: e.cost,
-                    mainStats: e.mainStats,
-                    subStats: e.subStats,
-                })),
-                randGen.setId,
-                randGen.mainEcho?.id
-            );
-
-            setBuiltEchoes(newEchoes);
-        } catch (err) {
-            console.error("Optimizer error:", err);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [open, randGen, level, mergedBuffs, baseCharacterState, characterRuntimeStates]);
+        return () => {
+            worker.terminate();
+            workerRef.current = null;
+        };
+    }, []);
 
     useEffect(() => {
-        const timer = setTimeout(runRandomizer, 0);
-        return () => clearTimeout(timer);
-    }, []);
+        if (!open || !workerRef.current) return;
+        setIsLoading(true);
+
+        const payload = {
+            characterRuntimeStates,
+            charId,
+            activeCharacter,
+            entry,
+            levelData: level,
+            randGen,
+            baseCharacterState,
+            mergedBuffs,
+            echoData,
+            skill,
+        };
+
+        workerRef.current.postMessage({ payload });
+    }, [open]);
+
+    function runRandomizer() {
+        if (!workerRef.current) return;
+        setIsLoading(true);
+        setProgress(0);
+
+        const payload = {
+            characterRuntimeStates,
+            charId,
+            activeCharacter,
+            entry,
+            levelData: randGen?.level ?? null,
+            randGen,
+            baseCharacterState,
+            mergedBuffs,
+            echoData,
+            skill,
+        };
+
+        workerRef.current.postMessage({ payload });
+    }
 
     const handleClose = () => {
         setIsClosing(true);
@@ -189,10 +196,9 @@ export function EchoGenerator({
 
     const maxScore = getTop5SubstatScoreDetails(activeId).total;
     const buildScoreCur = getEquippedEchoesScoreDetails(charId, {
-        [charId]: {...characterRuntimeStates[charId], equippedEchoes: echoes},
+        [charId]: { ...characterRuntimeStates[charId], equippedEchoes: echoes },
     });
-    const percentScoreCur =
-        (buildScoreCur.total / (maxScore * 5)) * 100 || 0;
+    const percentScoreCur = (buildScoreCur.total / (maxScore * 5)) * 100 || 0;
 
     if (!randGen) return null;
 
@@ -470,10 +476,17 @@ export function EchoGenerator({
                                 }}
                             ></div>
                             <span className="loader-text">
-                                {randGen.iterations > 99999
-                                    ? "this is gonna take a while..."
-                                    : "hang tight..."}
-                              </span>
+                                {(() => {
+                                    if (randGen.iterations > 99999) {
+                                        if (progress < 40) return "um... so how has your day been~?";
+                                        else if (progress < 80) return "hope it's been amazing~";
+                                        else return "it's almost done~";
+                                    } else return "hang on...";
+                                })()}
+                            </span>
+                            <span className="loader-text">
+                                {progress}%
+                            </span>
                         </div>
                     )}
                 </div>

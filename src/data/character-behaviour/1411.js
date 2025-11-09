@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyQYLogic({
                                mergedBuffs,
                                combatState,

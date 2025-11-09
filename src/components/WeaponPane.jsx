@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import WeaponMenu from './WeaponMenu';
-import { getWeaponUIComponent } from '../data/weapon-behaviour/index';
+import { getWeaponUIComponent } from '../data/weapon-ui/index';
 import {preloadImages} from "../pages/calculator.jsx";
 import {highlightKeywordsInText, statKeywords} from "../constants/echoSetData.jsx";
 

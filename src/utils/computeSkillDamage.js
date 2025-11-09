@@ -1,12 +1,12 @@
-import {getBuffsLogic, getCharacterOverride, skillMetaBuffsLogic} from "../data/character-behaviour/index.js";
+import {getCharacterOverride, skillMetaBuffsLogic} from "../data/character-behaviour/index.js";
 import {getWeaponOverride} from "../data/weapon-behaviour/index.js";
 import {calculateSupportEffect} from "./supportCalculator.js";
 import {calculateDamage} from "./damageCalculator.js";
-import { elementToAttribute } from './attributeHelpers';
+import {elementToAttribute } from './attributeHelpers.js';
 import {echoScalingRatios} from "../data/echoes/echoMultipliers.js";
 import {mainEchoBuffs} from "../data/buffs/setEffect.js";
 import {getSetCounts} from "./echoHelper.js";
-import {getEchoSetSkillMeta} from "../data/set-ui/index.js";
+import {getEchoSetSkillMeta} from "../data/set-behaviour/index.js";
 import {applyWeaponSkillMetaBuffLogic} from "../data/buffs/weaponBuffs.js";
 
 export function computeSkillDamage({

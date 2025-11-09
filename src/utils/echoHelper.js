@@ -1,4 +1,5 @@
 import {getWeight, getWeightObj} from "../constants/charStatWeights.js";
+import {echoes} from "../json-data-scripts/getEchoes.js";
 
 export const formatStatKey = (key) => {
     const labelMap = {
@@ -387,3 +388,129 @@ export const validSubstatRanges = {
     resonanceSkill:          { min: 6.4,  max: 11.6, divisions: 7 },
     resonanceLiberation:     { min: 6.4,  max: 11.6, divisions: 7 }
 };
+
+export function buildMultipleRandomEchoes(recipes = [], setId = null, mainEchoId = null) {
+    if (!Array.isArray(echoes) || echoes.length === 0) {
+        console.warn("⚠️ No echo templates available to build from.");
+        return [];
+    }
+
+    const results = [];
+    const usedIds = new Set();
+    let mainEchoBuilt = null;
+
+    const isMultiSet = Array.isArray(setId);
+    const remaining = new Map();
+    if (isMultiSet) {
+        let total = 0;
+        for (const s of setId) {
+            const c = Math.max(0, Number(s.count ?? 0));
+            if (c > 0) {
+                remaining.set(s.setId, c);
+                total += c;
+            }
+        }
+        if (total <= 0 || total > 5) {
+            console.warn("⚠️ Invalid multi-set configuration. Using random sets instead.");
+            remaining.clear();
+        }
+    }
+
+    function chooseBestSetForEcho(echo) {
+        const sets = echo.sets ?? [];
+        const candidates = sets.filter(sid => remaining.get(sid) > 0);
+
+        if (candidates.length === 0) {
+            return sets[0] ?? null;
+        }
+
+        candidates.sort((a, b) => (remaining.get(b) ?? 0) - (remaining.get(a) ?? 0));
+        return candidates[0];
+    }
+
+    function pickEcho(candidates, cost) {
+        if (candidates.length === 1) return structuredClone(candidates[0]);
+
+        const scored = candidates.map(e => {
+            const sets = e.sets ?? [];
+            const coverage = sets.reduce((acc, sid) => acc + (remaining.get(sid) > 0 ? 1 : 0), 0);
+            const quality = Number(e._score ?? 0.1);
+            return { e, score: coverage * 10 + quality }; // coverage dominates
+        });
+
+        // Weighted random by score (favor higher coverage)
+        const total = scored.reduce((a, b) => a + b.score, 0);
+        let roll = Math.random() * total;
+        for (const item of scored) {
+            roll -= item.score;
+            if (roll <= 0) return structuredClone(item.e);
+        }
+        return structuredClone(scored[scored.length - 1].e);
+    }
+
+    for (const recipe of recipes) {
+        const { cost, mainStats = {}, subStats = {} } = recipe;
+
+        let candidates = [];
+
+        if (mainEchoId != null) {
+            candidates = echoes.filter(
+                e => e.cost === cost && e.id === String(mainEchoId) && !usedIds.has(e.id)
+            );
+        }
+
+        if (candidates.length === 0 && remaining.size > 0) {
+            const needSetIds = new Set([...remaining.keys()].filter(sid => remaining.get(sid) > 0));
+            candidates = echoes.filter(
+                e => e.cost === cost
+                    && !usedIds.has(e.id)
+                    && (e.sets ?? []).some(sid => needSetIds.has(sid))
+            );
+        }
+
+        if (candidates.length === 0) {
+            candidates = echoes.filter(
+                e => e.cost === cost && !usedIds.has(e.id)
+            );
+        }
+
+        if (candidates.length === 0) {
+            console.warn(`⚠️ No unused echoes found for cost ${cost}.`);
+            continue;
+        }
+
+        const base = pickEcho(candidates, cost);
+
+        base.originalSets = base.sets ? [...base.sets] : [];
+        let chosenSet = chooseBestSetForEcho(base);
+
+        if (chosenSet != null && remaining.get(chosenSet) > 0) {
+            remaining.set(chosenSet, remaining.get(chosenSet) - 1);
+        }
+
+        base.selectedSet = chosenSet;
+
+        base.mainStats = structuredClone(mainStats);
+        base.subStats  = structuredClone(subStats);
+
+        base.uid = crypto.randomUUID?.() ?? Date.now().toString();
+        base.generated = true;
+
+        usedIds.add(base.id);
+        results.push(base);
+
+        if (mainEchoId && base.id === String(mainEchoId)) {
+            mainEchoBuilt = base;
+        }
+    }
+
+    if (mainEchoBuilt) {
+        const idx = results.findIndex(e => e.id === String(mainEchoId));
+        if (idx > 0) {
+            const [main] = results.splice(idx, 1);
+            results.unshift(main);
+        }
+    }
+
+    return results;
+}

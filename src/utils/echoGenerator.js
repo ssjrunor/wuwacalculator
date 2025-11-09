@@ -1,7 +1,5 @@
-import {validSubstatRanges} from "./echoHelper.js";
-import {applyFixedSecondMainStat, getValidMainStats} from "./echoHelper.js";
+import {applyFixedSecondMainStat, getValidMainStats, validSubstatRanges, snapToNearestSubstatValue} from "./echoHelper.js";
 import {computeSkillDamage, getSkillData} from "./computeSkillDamage.js";
-import {snapToNearestSubstatValue} from "./echoHelper.js";
 import {getFinalStats} from "./getStatsForLevel.js";
 
 let rand = Math.random;
@@ -368,7 +366,8 @@ export async function findBestFullEchoSetMonteCarlo(
     equippedEchoes = [],
     statWeight,
     seed = null,
-    requiredCost = null
+    requiredCost = null,
+    onProgress
 ) {
     if (seed != null) useFastRNG(seed);
     else useDefaultRNG();
@@ -515,7 +514,13 @@ export async function findBestFullEchoSetMonteCarlo(
             noImprovement = 0;
             elitePool.splice(Math.floor(elitePool.length / 2));
         }
+
+        if (onProgress && i % Math.ceil(iterations / 100) === 0) {
+            onProgress(Math.round((i / iterations) * 100));
+        }
     }
+
+    if (onProgress) onProgress(100);
 
     if (best.damage === -Infinity || best.achievedER < targetEnergyRegen - 1) {
         return {
