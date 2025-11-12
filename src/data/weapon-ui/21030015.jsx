@@ -1,5 +1,4 @@
 import React from 'react';
-import DropdownSelect from "../../components/DropdownSelect.jsx";
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 
 export function WeaponUI({
@@ -23,17 +22,4 @@ export function WeaponUI({
             </div>
         </div>
     );
-}
-
-
-export function applyWeaponLogic({
-                                     mergedBuffs,
-                                     combatState,
-                                     skillMeta = {},
-                                     currentParamValues = []
-                                 }) {
-    const energy = parseFloat(currentParamValues[0]);
-    mergedBuffs.energyRegen = (mergedBuffs.energyRegen ?? 0) + energy;
-
-    return { mergedBuffs, combatState, skillMeta };
 }

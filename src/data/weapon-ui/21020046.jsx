@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import DropdownSelect from "../../components/DropdownSelect.jsx";
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 
 export function WeaponUI({
@@ -58,7 +57,7 @@ export function WeaponUI({
                         />
                         Enable
                         {!(charId === '1406' || charId === '1408') && (
-                            <p style={{ fontSize: '12px', color: 'gray' }}>
+                            <p style={{fontSize: '12px', color: 'gray'}}>
                                 This effect only applies to Rover: Aero.
                             </p>
                         )}
@@ -67,27 +66,4 @@ export function WeaponUI({
             </div>
         </div>
     );
-}
-
-
-export function applyWeaponLogic({
-                                     mergedBuffs,
-                                     combatState,
-                                     characterState,
-                                     skillMeta = {},
-                                     currentParamValues = []
-                                 }) {
-    const skill = parseFloat(currentParamValues[0]);
-    const amp = parseFloat(currentParamValues[2]);
-
-
-    if (characterState?.activeStates?.firstP) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + skill;
-    }
-
-    if (characterState?.activeStates?.secondP) {
-        mergedBuffs.elementDmgAmplify.aero = (mergedBuffs.elementDmgAmplify.aero ?? 0) + amp;
-    }
-
-    return { mergedBuffs, combatState, skillMeta };
 }

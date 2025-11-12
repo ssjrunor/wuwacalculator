@@ -1,5 +1,4 @@
 import React from 'react';
-import DropdownSelect from "../../components/DropdownSelect.jsx";
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 
 export function WeaponUI({
@@ -25,20 +24,4 @@ export function WeaponUI({
             </div>
         </div>
     );
-}
-
-
-export function applyWeaponLogic({
-                                     mergedBuffs,
-                                     combatState,
-                                     characterState,
-                                     skillMeta = {},
-                                     currentParamValues = []
-                                 }) {
-    const skill = parseFloat(currentParamValues[0]);
-    if (characterState?.activeStates?.firstP) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + skill;
-    }
-
-    return { mergedBuffs, combatState, skillMeta };
 }

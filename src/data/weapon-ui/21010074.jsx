@@ -46,21 +46,3 @@ export function WeaponUI({
         </div>
     );
 }
-
-
-export function applyWeaponLogic({
-                                     mergedBuffs,
-                                     combatState,
-                                     characterState,
-                                     skillMeta = {},
-                                     isToggleActive = () => false,
-                                     currentParamValues = []
-                                 }) {
-    const stacks = characterState?.activeStates?.stacks ?? 0;
-    const atk = parseFloat(currentParamValues[0]) * stacks;
-
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
-
-
-    return { mergedBuffs, combatState, skillMeta };
-}

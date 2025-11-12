@@ -3,10 +3,6 @@ import DropdownSelect from "../../components/DropdownSelect.jsx";
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 
 export function WeaponUI({
-                                 combatState,
-                                 setCombatState,
-                                 activeStates,
-                                 toggleState,
                                  currentParamValues = [],
                                  characterRuntimeStates, setCharacterRuntimeStates, charId, keywords
                              }) {
@@ -49,21 +45,4 @@ export function WeaponUI({
             </div>
         </div>
     );
-}
-
-export function applyWeaponLogic({
-                                     mergedBuffs,
-                                     combatState,
-                                     characterState,
-                                     skillMeta = {},
-                                     isToggleActive = () => false,
-                                     currentParamValues = []
-                                 }) {
-    const stacks = characterState?.activeStates?.stacks ?? 0;
-    const atk = parseFloat(currentParamValues[2]) * stacks;
-
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
-
-
-    return { mergedBuffs, combatState, skillMeta };
 }
