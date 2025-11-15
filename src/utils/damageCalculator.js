@@ -34,7 +34,8 @@ export function calculateDamage({
                                     skillCritDmg = 0,
                                     skillCritRate = 0,
                                     fixedDmg = null,
-                                    skillDmgTaken = 0
+                                    skillDmgTaken = 0,
+                                    returnContextOnly = false
 }) {
     if (fixedDmg) {
         const normal = Math.max(1, Math.floor(fixedDmg));
@@ -83,7 +84,7 @@ export function calculateDamage({
 
     const dmgReductionTotal = 1 + (
         (mergedBuffs.dmgReduction ?? 0) + skillDmgTaken +
-        isNegativeStatus(skillType) ? (mergedBuffs?.negativeStatus?.dmgReduction ?? 0) : 0)/100;
+        (isNegativeStatus(skillType) ? (mergedBuffs?.negativeStatus?.dmgReduction ?? 0) : 0))/100;
 
     const elementReductionTotal = 1 + (mergedBuffs.elementDmgReduction ?? 0)/100;
 
@@ -119,18 +120,49 @@ export function calculateDamage({
 
     const critRate = Math.min(((finalStats.critRate ?? 0) / 100) + ((critRateBonus + skillCritRate) / 100), 1);
     const critDmg = ((finalStats.critDmg ?? 0) / 100) + ((critDmgBonus + skillCritDmg) / 100);
-    const crit = normal * (critDmg);
+
+    const crit = normal * critDmg;
 
     const avg = critRate >= 1
         ? crit
         : (crit * critRate) + (normal * (1 - critRate));
 
+    if (returnContextOnly) {
+        return {
+            baseAtk: finalStats.atk,
+            baseHp: finalStats.hp,
+            baseDef: finalStats.def,
+            baseER: finalStats.energyRegen ?? 0,
+            scalingAtk: scaling?.atk ?? 0,
+            scalingHp: scaling?.hp ?? 0,
+            scalingDef: scaling?.def ?? 0,
+            scalingER: scaling?.energyRegen ?? 0,
+            multiplier,
+            flatDmg: flat ?? 0,
+            resMult,
+            defMult,
+            dmgReductionTotal: dmgReductionTotal * elementReductionTotal,
+            dmgBonus,
+            dmgAmplify,
+            critRate,
+            critDmg,
+            normalBase: baseDmg,
+            avg
+        };
+    }
+
     return {
+        normal,
+        crit,
+        avg
+    };
+}
+
+/*return {
         normal: Math.max(1, Math.floor(normal)),
         crit: Math.max(1, Math.floor(crit)),
         avg: Math.max(1, Math.floor(avg))
-    };
-}
+    };*/
 
 export function calculateSpectroFrazzleDamage(combatState, mergedBuffs, characterLevel) {
     const stacks = combatState?.spectroFrazzle ?? 0;
