@@ -1,5 +1,5 @@
 import React from 'react';
-import DropdownSelect from "../../components/DropdownSelect.jsx";
+import DropdownSelect from "../../components/utils-ui/DropdownSelect.jsx";
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 
 export function WeaponUI({
@@ -46,7 +46,7 @@ export function WeaponUI({
                         Stacks
                     </label>
                     <p>
-                        {highlightKeywordsInText(`Casting Intro Skill grants ${currentParamValues[5]} Echo Skill DMG
+                        {highlightKeywordsInText(`Casting Intro Skill grants ${currentParamValues[4]}% Echo Skill DMG
                         Bonus to all Resonators in the team for 30s. Effects of the same name cannot be stacked.`, keywords)}
                     </p>
                     <label className="modern-checkbox">
