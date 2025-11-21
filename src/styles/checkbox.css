@@ -20,6 +20,10 @@
     flex-shrink: 0;
 }
 
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
 .modern-checkbox input[type="checkbox"]::after {
     position: absolute;
     left: 6px;

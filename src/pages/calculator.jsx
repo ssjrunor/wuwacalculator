@@ -3,46 +3,61 @@ import Split from 'split.js';
 import {fetchCharacters} from '../json-data-scripts/wutheringFetch';
 import characterStatesRaw from '../data/characterStates.json';
 import '../styles';
-import SkillsModal from '../components/SkillsModal';
-import CharacterSelector, {traceIcons} from '../components/CharacterSelector';
+import SkillsModal from '../components/character-ui/SkillsModal.jsx';
+import CharacterSelector, {traceIcons} from '../components/character-ui/CharacterSelector.jsx';
 import CharacterStats from '../components/CharacterStats';
 import DamageSection from '../components/DamageSection';
-import WeaponPane, {mapExtraStatToCombat} from '../components/WeaponPane';
-import EnemyPane from '../components/EnemyPane';
-import BuffsPane, {getResolvedTeamRotations} from "../components/BuffsPane.jsx";
-import CustomBuffsPane from '../components/CustomBuffsPane';
-import ToolbarIconButton, {ToolbarSidebarButton} from '../components/ToolbarIconButton';
+import WeaponPane, {mapExtraStatToCombat} from '../components/weapon-pane/WeaponPane.jsx';
+import EnemyPane from '../components/enemy-ui/EnemyPane.jsx';
+import BuffsPane, {getResolvedTeamRotations} from "../components/buffs-ui/BuffsPane.jsx";
+import CustomBuffsPane from '../components/custom-buffs-ui/CustomBuffsPane.jsx';
+import ToolbarIconButton, {ToolbarSidebarButton} from '../components/utils-ui/ToolbarIconButton.jsx';
 import {attributeColors, attributeIcons, elementToAttribute} from '../utils/attributeHelpers';
 import {getFinalStats} from '../utils/getStatsForLevel';
 import {getUnifiedStatPool} from '../utils/getUnifiedStatPool';
 import {getPersistentValue, setPersistentValue, usePersistentState} from '../hooks/usePersistentState';
-import useDarkMode from '../hooks/useDarkMode';
 import {getBuffsLogic, getCharacterOverride} from '../data/character-behaviour';
-import ChangelogModal from '../components/GuideModal.jsx';
-import {HelpCircle, History, Info, Moon, RotateCcw, Settings, Sparkle, Sun, UserRound, ScanHeart} from 'lucide-react';
+import ChangelogModal from '../components/utils-ui/GuideModal.jsx';
+import {
+    HelpCircle,
+    History,
+    Info,
+    Moon,
+    RotateCcw,
+    Settings,
+    Sparkle,
+    Sun,
+    UserRound,
+    ScanHeart,
+    Backpack,
+    ChartColumn
+} from 'lucide-react';
 import {useNavigate} from 'react-router-dom';
 import {fetchWeapons} from '../json-data-scripts/fetchWeapons';
 import {getWeaponOverride} from '../data/weapon-behaviour';
 import {applyEchoLogic} from '../data/buffs/applyEchoLogic';
 import {applyWeaponBuffLogic} from "../data/buffs/weaponBuffs.js";
-import RotationsPane from "../components/RotationsPane.jsx";
-import EchoesPane from '../components/EchoesPane';
+import RotationsPane from "../components/rotations-ui/RotationsPane.jsx";
+import EchoesPane from '../components/echoes-pane-ui/EchoesPane.jsx';
 import {echoes} from "../json-data-scripts/getEchoes.js";
 import {applyEchoSetBuffLogic, applyMainEchoBuffLogic, applySetEffect} from "../data/buffs/setEffect.js";
 import {getEchoStatsFromEquippedEchoes, getSetCounts} from "../utils/echoHelper.js";
-import CharacterOverviewPane from "../components/CharacterOverview.jsx";
+import CharacterOverviewPane from "../components/overview-ui/CharacterOverview.jsx";
 import {isEqual} from "lodash";
-import {getMainRotationTotals, getTeamRotationTotal} from "../components/Rotations.jsx";
-import NotificationToast from "../components/NotificationToast.jsx";
+import {getMainRotationTotals, getTeamRotationTotal} from "../components/rotations-ui/Rotations.jsx";
+import NotificationToast from "../components/utils-ui/NotificationToast.jsx";
 import {changelog} from "./changelog.jsx";
-import ConfirmationModal from "../components/ConfirmationModal.jsx";
-import {syncAllPresetsForRuntime} from "../state/echoPresetStore.js";
+import ConfirmationModal from "../components/utils-ui/ConfirmationModal.jsx";
+import {deepCompareEchoArrays, getEchoPresetById, syncAllPresetsForRuntime} from "../state/echoPresetStore.js";
 import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
-import {getCuteMessage} from "../components/cuteMessages.jsx";
+import {getCuteMessage} from "../components/utils-ui/cuteMessages.jsx";
 import {getSkillData} from "../utils/computeSkillDamage.js";
 import {getAllSkillLevelsWithEcho, getEffectiveSkillLevels, prepareDamageData} from "../utils/prepareDamageData.js";
 import {buildRotation, getSkillDamageCache} from "../utils/skillDamageCache.js";
 import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
+import EchoBagMenu from "../components/echo-bag-ui/EchoBagMenu.jsx";
+import {getEchoBag} from "../state/echoBagStore.js";
+import Optimizer from "../components/optimizer-ui/Optimizer.jsx";
 
 export default function Calculator(props) {
     const [characters, setCharacters] = useState([]);
@@ -115,10 +130,12 @@ export default function Calculator(props) {
     const [showSubHits, setShowSubHits] = usePersistentState('showSubHits', false);
     const splitInstance = useRef(null);
     const [showCharacterOverview, setShowCharacterOverview] = usePersistentState('showCharacterOverview',false);
+    const [showOptimizer, setShowOptimizer] = usePersistentState('showOptimizer',false);
     const [savedRotations, setSavedRotations] = usePersistentState('globalSavedRotations', []);
     const teamRotation = getResolvedTeamRotations(characterRuntimeStates[charId], characterRuntimeStates, savedRotations);
     const [savedTeamRotations, setSavedTeamRotations] = usePersistentState('globalSavedTeamRotations', []);
     const [smartFilter, setSmartFilter] = usePersistentState('smartFilter', true);
+    const [generalOptimizerSettings, setGeneralOptimizerSettings] = usePersistentState('generalOptimizerSettings', {});
 
     useEffect(() => {
         Promise.all([fetchCharacters(), fetchWeapons()]).then(([charData, weaponData]) => {
@@ -293,7 +310,7 @@ export default function Calculator(props) {
 
             requestAnimationFrame(setupSplit);
         }
-    }, [showCharacterOverview]);
+    }, [showCharacterOverview, showOptimizer]);
 
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -316,7 +333,7 @@ export default function Calculator(props) {
         window.addEventListener('resize', handleResize);
         handleResize();
         return () => window.removeEventListener('resize', handleResize);
-    }, [showCharacterOverview]);
+    }, [showCharacterOverview, showOptimizer]);
 
     useEffect(() => {
         if (!charId) return;
@@ -743,7 +760,7 @@ export default function Calculator(props) {
         if (isMobile) {
             setHamburgerOpen(false);
         }
-    }, [isMobile, leftPaneView, showCharacterOverview]);
+    }, [isMobile, leftPaneView, showCharacterOverview, showOptimizer]);
 
     useEffect(() => {
         if (hamburgerOpen) {
@@ -766,6 +783,7 @@ export default function Calculator(props) {
 
     const switchLeftPane = (paneName) => {
         setShowCharacterOverview(false);
+        setShowOptimizer(false);
         setLeftPaneView(paneName);
     };
 
@@ -933,6 +951,11 @@ export default function Calculator(props) {
             tab,
         };
 
+        const defaultOptimizer = {
+            level: currentLevels[0],
+            tab
+        }
+
         const allSkillResults =
             skillResults ??
             characterRuntimeStates[charId]?.allSkillResults ??
@@ -970,6 +993,11 @@ export default function Calculator(props) {
                 changed = true;
             }
 
+            if (!newChar.optimizerSettings?.level) {
+                newChar.optimizerSettings = defaultOptimizer;
+                changed = true;
+            }
+
             if (JSON.stringify(newChar.groupedSkillOptions) !== JSON.stringify(groupedSkillOptions)) {
                 newChar.groupedSkillOptions = groupedSkillOptions;
                 changed = true;
@@ -998,7 +1026,77 @@ export default function Calculator(props) {
 
     }, [charId, skillTabs, allSkillLevels, skillResults]);
 
-    // console.log(characterRuntimeStates[charId]);
+    const [selectedSet, setSelectedSet] = useState(null);
+    const [selectedCost, setSelectedCost] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [bagOpen, setBagOpen] = useState(false);
+    const [editingEcho, setEditingEcho] = useState(null);
+    const getImageSrc = (icon) => imageCache[icon]?.src || icon;
+    const [viewMode, setViewMode] = useState('echoes');
+
+    function onEquipPreset(presetOrId) {
+        if (!charId || !setCharacterRuntimeStates) return;
+        const preset =
+            typeof presetOrId === 'string' || typeof presetOrId === 'number'
+                ? getEchoPresetById(presetOrId)
+                : presetOrId;
+        if (!preset || !Array.isArray(preset.echoes)) return;
+        if (deepCompareEchoArrays(characterRuntimeStates[charId].equippedEchoes, preset.echoes)) {
+            setPopupMessage({
+                message: `OH... seems like you've got this on already... (゜。゜)`,
+                icon: '✔',
+                color: { light: 'green', dark: 'limegreen' },
+            });
+            setShowToast(true);
+            return;
+        }
+        setCharacterRuntimeStates(prev => {
+            const prevChar = prev[charId] ?? {};
+            return {
+                ...prev,
+                [charId]: {
+                    ...prevChar,
+                    equippedEchoes: preset.echoes.map(e => (e ? { ...e } : null)),
+                },
+            };
+        });
+        setPopupMessage({
+            message: 'Equipped~! (〜^∇^)〜',
+            icon: '✔',
+            color: { light: 'green', dark: 'limegreen' },
+        });
+        setShowToast(true);
+    }
+
+    function onEquipBag(echo, slotIndex) {
+        const currentEchoes = characterRuntimeStates[charId]?.equippedEchoes ?? [];
+        const currentTotalCost = currentEchoes.reduce((sum, e, i) => {
+            return i === slotIndex ? sum : sum + (e?.cost ?? 0);
+        }, 0);
+        const newTotalCost = currentTotalCost + (echo.cost ?? 0);
+        if (newTotalCost > 12) {
+            setPopupMessage({
+                message: 'Nice Try! But... Cost (' + newTotalCost + ') > 12 (￣￢￣ヾ)',
+                icon: '✘',
+                color: 'red'
+            });
+            setShowToast(true);
+            return;
+        }
+        const prevEchoes = characterRuntimeStates[charId]?.equippedEchoes ?? [null, null, null, null, null];
+        const updatedEchoes = [...prevEchoes];
+        updatedEchoes[slotIndex] = echo;
+        setCharacterRuntimeStates(prev => ({
+            ...prev,
+            [charId]: {
+                ...(prev[charId] ?? {}),
+                equippedEchoes: updatedEchoes
+            }
+        }));
+        //setBagOpen(false);
+    }
+
+    const [optimizerResults, setOptimizerResults] = useState([]);
 
     return (
         <>
@@ -1013,6 +1111,36 @@ export default function Calculator(props) {
                 keywords={keywords}
                 isDark={isDark}
             />
+
+            {bagOpen && (
+                <EchoBagMenu
+                    runtime={characterRuntimeStates[charId]}
+                    characterRuntimeStates={characterRuntimeStates}
+                    getImageSrc={getImageSrc}
+                    characters={characters}
+                    onEquipPreset={onEquipPreset}
+                    viewMode={viewMode}
+                    setViewMode={setViewMode}
+                    setConfirmMessage={setConfirmMessage}
+                    setShowToast={setShowToast}
+                    setShowConfirm={setShowConfirm}
+                    setPopupMessage={setPopupMessage}
+                    editingEcho={editingEcho}
+                    setEditingEcho={setEditingEcho}
+                    selectedSet={selectedSet}
+                    setSelectedSet={setSelectedSet}
+                    selectedCost={selectedCost}
+                    setSelectedCost={setSelectedCost}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    charId={charId}
+                    onClose={() => {
+                        setEditingEcho(null);
+                        setBagOpen(false);
+                    }}
+                    onEquip={onEquipBag}
+                />
+            )}
 
             <div className={`layout ${isDark ? 'dark-text' : 'light-text'} `}>
                 <div className="toolbar">
@@ -1186,6 +1314,29 @@ export default function Calculator(props) {
                                 </div>
                             )}
 
+                            <button className="sidebar-button" onClick={() => setBagOpen(true)}>
+                                <div className="icon-slot">
+                                    <Backpack />
+                                </div>
+                                <div className="label-slot">
+                                    <span className="label-text">
+                                        Bag
+                                    </span>
+                                </div>
+                            </button>
+
+
+                           {/* <button className="sidebar-button" onClick={() => setShowOptimizer(!showOptimizer)}>
+                                <div className="icon-slot">
+                                    <ChartColumn />
+                                </div>
+                                <div className="label-slot">
+                                    <span className="label-text">
+                                        Optimizer
+                                    </span>
+                                </div>
+                            </button>*/}
+
                             <button className="sidebar-button" onClick={() => setShowCharacterOverview(!showCharacterOverview)}>
                                 <div className="icon-slot">
                                     <UserRound />
@@ -1294,156 +1445,193 @@ export default function Calculator(props) {
                                     allRotations={allRotations}
                                     theme={theme}
                                 />
-                                ) : (
-                            <div className="split">
-                                <div id="left-pane" className={`partition ${leftPaneView}-mode`}>
-                                    {leftPaneView === 'characters' && (
-                                        characters?.length > 0 ? (
-                                            <CharacterSelector
-                                                characters={characters}
+                            ) : showOptimizer ? (
+                                    <Optimizer
+                                        echoId={echoes}
+                                        charId={charId}
+                                        characterState={characterState}
+                                        setCharacterState={setCharacterState}
+                                        characterRuntimeStates={characterRuntimeStates}
+                                        setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                        characters={characters}
+                                        activeCharacter={activeCharacter}
+                                        getAllSkillLevels={getAllSkillLevels}
+                                        skillTabs={skillTabs}
+                                        baseCharacterState={baseCharacterState}
+                                        mergedBuffs={mergedBuffs}
+                                        allSkillLevels={allSkillLevels}
+                                        skillResults={skillResults}
+                                        onEquipPreset={onEquipPreset}
+                                        onEquipBag={onEquipBag}
+                                        getImageSrc={getImageSrc}
+                                        optimizerResults={optimizerResults}
+                                        setOptimizerResults={setOptimizerResults}
+                                        rarityMap={rarityMap}
+                                        triggerRef={triggerRef}
+                                        menuOpen={menuOpen}
+                                        setMenuOpen={setMenuOpen}
+                                        menuRef={menuRef}
+                                        handleCharacterSelect={handleCharacterSelect}
+                                        generalOptimizerSettings={generalOptimizerSettings}
+                                        setGeneralOptimizerSettings={setGeneralOptimizerSettings}
+                                        switchLeftPane={switchLeftPane}
+                                        weapons={weapons}
+                                        setCombatState={setCombatState}
+                                        finalStats={finalStats}
+                                    />
+                            ) : (
+                                <div className="split">
+                                    <div id="left-pane" className={`partition ${leftPaneView}-mode`}>
+                                        {leftPaneView === 'characters' && (
+                                            characters?.length > 0 ? (
+                                                <CharacterSelector
+                                                    characters={characters}
+                                                    activeCharacter={activeCharacter}
+                                                    handleCharacterSelect={handleCharacterSelect}
+                                                    menuOpen={menuOpen}
+                                                    setMenuOpen={setMenuOpen}
+                                                    menuRef={menuRef}
+                                                    attributeIconPath={attributeIconPath}
+                                                    currentSliderColor={currentSliderColor}
+                                                    sliderValues={sliderValues}
+                                                    setSliderValues={setSliderValues}
+                                                    characterLevel={characterLevel}
+                                                    setCharacterLevel={setCharacterLevel}
+                                                    setSkillsModalOpen={setSkillsModalOpen}
+                                                    traceNodeBuffs={traceNodeBuffs}
+                                                    setTraceNodeBuffs={setTraceNodeBuffs}
+                                                    characterRuntimeStates={characterRuntimeStates}
+                                                    setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                                    triggerRef={triggerRef}
+                                                    characterStates={characterStates}
+                                                    attributeMap={attributeMap}
+                                                    weaponMap={weaponMap}
+                                                    keywords={keywords}
+                                                    rarityMap={rarityMap}
+                                                    isDark={isDark}
+                                                />
+                                            ) : (
+                                                <div className="loading">Loading characters...</div>
+                                            )
+                                        )}
+                                        {leftPaneView === 'weapon' && (
+                                            <WeaponPane
                                                 activeCharacter={activeCharacter}
-                                                handleCharacterSelect={handleCharacterSelect}
-                                                menuOpen={menuOpen}
-                                                setMenuOpen={setMenuOpen}
-                                                menuRef={menuRef}
-                                                attributeIconPath={attributeIconPath}
-                                                currentSliderColor={currentSliderColor}
-                                                sliderValues={sliderValues}
-                                                setSliderValues={setSliderValues}
-                                                characterLevel={characterLevel}
-                                                setCharacterLevel={setCharacterLevel}
-                                                setSkillsModalOpen={setSkillsModalOpen}
-                                                traceNodeBuffs={traceNodeBuffs}
-                                                setTraceNodeBuffs={setTraceNodeBuffs}
+                                                combatState={combatState}
+                                                setCombatState={setCombatState}
+                                                weapons={weapons}
                                                 characterRuntimeStates={characterRuntimeStates}
                                                 setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                                triggerRef={triggerRef}
-                                                characterStates={characterStates}
-                                                attributeMap={attributeMap}
-                                                weaponMap={weaponMap}
-                                                keywords={keywords}
-                                                rarityMap={rarityMap}
-                                                isDark={isDark}
                                             />
-                                        ) : (
-                                            <div className="loading">Loading characters...</div>
-                                        )
-                                    )}
-                                    {leftPaneView === 'weapon' && (
-                                        <WeaponPane
+                                        )}
+                                        {leftPaneView === 'enemy' && (
+                                            <EnemyPane enemyLevel={enemyLevel} setEnemyLevel={setEnemyLevel} enemyRes={enemyRes} setEnemyRes={setEnemyRes} combatState={combatState} setCombatState={setCombatState} />
+                                        )}
+                                        {leftPaneView === 'buffs' && (
+                                            <CustomBuffsPane customBuffs={customBuffs} setCustomBuffs={setCustomBuffs} />
+                                        )}
+                                        {leftPaneView === 'teams' && (
+                                            <BuffsPane
+                                                characters={characters}
+                                                team={team}
+                                                setTeam={setTeam}
+                                                setActiveCharacterId={setActiveCharacterId}
+                                                combatState={combatState}
+                                                setCombatState={setCombatState}
+                                                characterRuntimeStates={characterRuntimeStates}
+                                                activeCharacter={activeCharacter}
+                                                setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                                characterStates={characterStates}
+                                                rarityMap={rarityMap}
+                                                savedRotations={savedRotations}
+                                            />
+                                        )}
+                                        {leftPaneView === 'rotation' && (
+                                            <RotationsPane
+                                                activeCharacter={activeCharacter}
+                                                characterRuntimeStates={characterRuntimeStates}
+                                                characters={characters}
+                                                setActiveCharacter={setActiveCharacter}
+                                                setActiveCharacterId={setActiveCharacterId}
+                                                setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                                setTeam={setTeam}
+                                                setSliderValues={setSliderValues}
+                                                setCharacterLevel={setCharacterLevel}
+                                                setTraceNodeBuffs={setTraceNodeBuffs}
+                                                setCustomBuffs={setCustomBuffs}
+                                                setCombatState={setCombatState}
+                                                setBaseCharacterState={setBaseCharacterState}
+                                                characterStates={characterStates}
+                                                finalStats={finalStats}
+                                                combatState={combatState}
+                                                mergedBuffs={mergedBuffs}
+                                                sliderValues={sliderValues}
+                                                characterLevel={characterLevel}
+                                                rotationEntries={rotationEntries}
+                                                setRotationEntries={setRotationEntries}
+                                                currentSliderColor={currentSliderColor}
+                                                setLeftPaneView={setLeftPaneView}
+                                                savedRotations={savedRotations}
+                                                setSavedRotations={setSavedRotations}
+                                                charId={charId}
+                                                setSavedTeamRotations={setSavedTeamRotations}
+                                                savedTeamRotations={savedTeamRotations}
+                                                smartFilter={smartFilter}
+                                                setSmartFilter={setSmartFilter}
+                                                skillResults={skillResults}
+                                            />
+                                        )}
+                                        {leftPaneView === 'echoes' && (
+                                            <EchoesPane
+                                                echoId={echoes}
+                                                charId={charId}
+                                                characterState={characterState}
+                                                setCharacterState={setCharacterState}
+                                                characterRuntimeStates={characterRuntimeStates}
+                                                setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                                characters={characters}
+                                                activeCharacter={activeCharacter}
+                                                getAllSkillLevels={getAllSkillLevels}
+                                                skillTabs={skillTabs}
+                                                baseCharacterState={baseCharacterState}
+                                                mergedBuffs={mergedBuffs}
+                                                allSkillLevels={allSkillLevels}
+                                                skillResults={skillResults}
+                                                onEquipPreset={onEquipPreset}
+                                                onEquipBag={onEquipBag}
+                                                getImageSrc={getImageSrc}
+                                            />
+                                        )}
+                                    </div>
+
+                                    <div id="right-pane" className="partition">
+                                        <CharacterStats
                                             activeCharacter={activeCharacter}
-                                            combatState={combatState}
-                                            setCombatState={setCombatState}
-                                            weapons={weapons}
-                                            characterRuntimeStates={characterRuntimeStates}
-                                            setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                        />
-                                    )}
-                                    {leftPaneView === 'enemy' && (
-                                        <EnemyPane enemyLevel={enemyLevel} setEnemyLevel={setEnemyLevel} enemyRes={enemyRes} setEnemyRes={setEnemyRes} combatState={combatState} setCombatState={setCombatState} />
-                                    )}
-                                    {leftPaneView === 'buffs' && (
-                                        <CustomBuffsPane customBuffs={customBuffs} setCustomBuffs={setCustomBuffs} />
-                                    )}
-                                    {leftPaneView === 'teams' && (
-                                        <BuffsPane
-                                            characters={characters}
-                                            team={team}
-                                            setTeam={setTeam}
-                                            setActiveCharacterId={setActiveCharacterId}
-                                            combatState={combatState}
-                                            setCombatState={setCombatState}
-                                            characterRuntimeStates={characterRuntimeStates}
-                                            activeCharacter={activeCharacter}
-                                            setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                            characterStates={characterStates}
-                                            rarityMap={rarityMap}
-                                            savedRotations={savedRotations}
-                                        />
-                                    )}
-                                    {leftPaneView === 'rotation' && (
-                                        <RotationsPane
-                                            activeCharacter={activeCharacter}
-                                            characterRuntimeStates={characterRuntimeStates}
-                                            characters={characters}
-                                            setActiveCharacter={setActiveCharacter}
-                                            setActiveCharacterId={setActiveCharacterId}
-                                            setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                            setTeam={setTeam}
-                                            setSliderValues={setSliderValues}
-                                            setCharacterLevel={setCharacterLevel}
-                                            setTraceNodeBuffs={setTraceNodeBuffs}
-                                            setCustomBuffs={setCustomBuffs}
-                                            setCombatState={setCombatState}
-                                            setBaseCharacterState={setBaseCharacterState}
-                                            characterStates={characterStates}
+                                            baseCharacterState={baseCharacterState}
+                                            characterLevel={characterLevel}
+                                            traceNodeBuffs={traceNodeBuffs}
                                             finalStats={finalStats}
                                             combatState={combatState}
                                             mergedBuffs={mergedBuffs}
-                                            sliderValues={sliderValues}
-                                            characterLevel={characterLevel}
-                                            rotationEntries={rotationEntries}
-                                            setRotationEntries={setRotationEntries}
-                                            currentSliderColor={currentSliderColor}
-                                            setLeftPaneView={setLeftPaneView}
-                                            savedRotations={savedRotations}
-                                            setSavedRotations={setSavedRotations}
-                                            charId={charId}
-                                            setSavedTeamRotations={setSavedTeamRotations}
-                                            savedTeamRotations={savedTeamRotations}
-                                            smartFilter={smartFilter}
-                                            setSmartFilter={setSmartFilter}
-                                            skillResults={skillResults}
                                         />
-                                    )}
-                                    {leftPaneView === 'echoes' && (
-                                        <EchoesPane
-                                            echoId={echoes}
+                                        <DamageSection
                                             charId={charId}
-                                            characterState={characterState}
-                                            setCharacterState={setCharacterState}
-                                            characterRuntimeStates={characterRuntimeStates}
-                                            setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                            characters={characters}
                                             activeCharacter={activeCharacter}
-                                            getAllSkillLevels={getAllSkillLevels}
-                                            skillTabs={skillTabs}
-                                            baseCharacterState={baseCharacterState}
-                                            mergedBuffs={mergedBuffs}
-                                            allSkillLevels={allSkillLevels}
                                             skillResults={skillResults}
+                                            echoSkillResults={echoSkillResults}
+                                            negativeEffects={negativeEffects}
+                                            rotationEntries={rotationEntries}
+                                            setShowSubHits={setShowSubHits}
+                                            showSubHits={showSubHits}
+                                            teamRotationDmg={teamRotationDmg}
+                                            characterRuntimeStates={characterRuntimeStates}
+                                            characterStates={characterStates}
+                                            setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                            isDark={isDark}
                                         />
-                                    )}
+                                    </div>
                                 </div>
-
-                                <div id="right-pane" className="partition">
-                                    <CharacterStats
-                                        activeCharacter={activeCharacter}
-                                        baseCharacterState={baseCharacterState}
-                                        characterLevel={characterLevel}
-                                        traceNodeBuffs={traceNodeBuffs}
-                                        finalStats={finalStats}
-                                        combatState={combatState}
-                                        mergedBuffs={mergedBuffs}
-                                    />
-                                    <DamageSection
-                                        charId={charId}
-                                        activeCharacter={activeCharacter}
-                                        skillResults={skillResults}
-                                        echoSkillResults={echoSkillResults}
-                                        negativeEffects={negativeEffects}
-                                        rotationEntries={rotationEntries}
-                                        setShowSubHits={setShowSubHits}
-                                        showSubHits={showSubHits}
-                                        teamRotationDmg={teamRotationDmg}
-                                        characterRuntimeStates={characterRuntimeStates}
-                                        characterStates={characterStates}
-                                        setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                        isDark={isDark}
-                                    />
-                                </div>
-                            </div>
-                                )}
+                            )}
                         </div>
                     </div>
 

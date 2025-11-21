@@ -209,6 +209,15 @@ const echoSets = [
     }
 ];
 
+export const setPieceTypeMap = {};
+echoSets.forEach(set => {
+    const validPieces = [];
+    if (set.twoPiece) validPieces.push(2);
+    if (set.threePiece) validPieces.push(3);
+    if (set.fivePiece) validPieces.push(5);
+    setPieceTypeMap[set.id] = validPieces;
+});
+
 export const setIconMap = {
     1: '/assets/echo-icons/freezingFrost.webp',
     2: '/assets/echo-icons/moltenRift.webp',

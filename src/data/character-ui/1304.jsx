@@ -1,4 +1,4 @@
-import DropdownSelect from "../../components/DropdownSelect.jsx";
+import DropdownSelect from "../../components/utils-ui/DropdownSelect.jsx";
 import React from "react";
 
 export default function JinhsiUI({ characterRuntimeStates, setCharacterRuntimeStates, charId }) {

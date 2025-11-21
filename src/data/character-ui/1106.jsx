@@ -1,6 +1,6 @@
 import {formatDescription} from "../../utils/formatDescription.js";
 import React from "react";
-import DropdownSelect from "../../components/DropdownSelect.jsx";
+import DropdownSelect from "../../components/utils-ui/DropdownSelect.jsx";
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 
 export default function YouhuUI({ activeStates, toggleState }) {

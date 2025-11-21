@@ -649,7 +649,7 @@
 }
 .scarlet-nebula .custom-select__control,
 .scarlet-nebula .custom-select__menu {
-    background: linear-gradient(145deg, rgba(255, 145, 255, 0.18), rgba(255, 138, 103, 0.18)) !important;
+    background: linear-gradient(160deg, rgb(32, 0, 0), rgb(48, 8, 8)) !important;
     color: #e8eaff !important;
 }
 .scarlet-nebula .custom-select__multi-value {

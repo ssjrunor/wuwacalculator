@@ -1,5 +1,5 @@
 import React from "react";
-import Rotations, { TeamRotation } from "./Rotations.jsx";
+import Rotations, { TeamRotation } from "./rotations-ui/Rotations.jsx";
 import { attributeColors } from "../utils/attributeHelpers.js";
 import {getSkillData} from "../utils/computeSkillDamage.js";
 import {i} from "framer-motion/m";

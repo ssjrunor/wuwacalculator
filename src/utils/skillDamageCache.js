@@ -1,6 +1,6 @@
 import {isEqual} from "lodash";
 import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
-import {skillTypeIconMap, skillTypeLabelMap} from "../components/SkillMenu.jsx";
+import {skillTypeIconMap, skillTypeLabelMap} from "../components/utils-ui/SkillMenu.jsx";
 
 let cachedSkillDamage = [];
 

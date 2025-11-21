@@ -1,6 +1,6 @@
 import {highlightKeywordsInText, setIconMap} from "../../constants/echoSetData.jsx";
 import React from "react";
-import DropdownSelect from "../../components/DropdownSelect.jsx";
+import DropdownSelect from "../../components/utils-ui/DropdownSelect.jsx";
 
 export default function three19 ({ setInfo, activeStates, charId, setCharacterRuntimeStates }) {
     const lawOfHarmony = activeStates?.lawOfHarmony3p ?? 0;

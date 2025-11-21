@@ -2,12 +2,13 @@ import {getCharacterOverride, skillMetaBuffsLogic} from "../data/character-behav
 import {getWeaponOverride} from "../data/weapon-behaviour/index.js";
 import {calculateSupportEffect} from "./supportCalculator.js";
 import {calculateDamage} from "./damageCalculator.js";
-import {elementToAttribute } from './attributeHelpers.js';
+import {elementToAttribute} from './attributeHelpers.js';
 import {echoScalingRatios} from "../data/echoes/echoMultipliers.js";
 import {mainEchoBuffs} from "../data/buffs/setEffect.js";
 import {getSetCounts} from "./echoHelper.js";
 import {getEchoSetSkillMeta} from "../data/set-behaviour/index.js";
 import {applyWeaponSkillMetaBuffLogic} from "../data/buffs/weaponBuffs.js";
+import {typeMap} from "../constants/skillTabs.js";
 
 export function computeSkillDamage({
                                        entry,
@@ -20,8 +21,8 @@ export function computeSkillDamage({
                                        sliderValues,
                                        characterLevel,
                                        echoElement,
-                                       getSkillData = () => null,
-    custSkillMeta
+                                       returnContextOnly = false
+
                                    }) {
     const charId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
     const element = elementToAttribute[activeCharacter?.attribute] ?? echoElement ?? '';
@@ -217,6 +218,37 @@ export function computeSkillDamage({
 
     const tag = skillMeta.tags?.[0];
     const isSupportSkill = tag === 'healing' || tag === 'shielding';
+
+
+    if (returnContextOnly) {
+        const ctx = calculateDamage({
+            finalStats,
+            combatState,
+            scaling,
+            multiplier: skillMeta.multiplier,
+            element: skillMeta.element,
+            skillType: skillMeta.skillType,
+            characterLevel,
+            mergedBuffs: localMergedBuffs,
+            amplify: skillMeta.amplify,
+            skillDmgBonus: skillMeta.skillDmgBonus,
+            critDmgBonus: skillMeta.critDmgBonus,
+            critRateBonus: skillMeta.critRateBonus,
+            skillDefIgnore: skillMeta.skillDefIgnore,
+            skillResIgnore: skillMeta.skillResIgnore,
+            skillCritDmg: skillMeta.skillCritDmg,
+            skillCritRate: skillMeta.skillCritRate,
+            fixedDmg: skillMeta.fixedDmg,
+            skillDmgTaken: skillMeta.skillDmgTaken,
+
+            returnContextOnly: true
+        });
+
+        return {
+            ...ctx,
+            skillMeta
+        };
+    }
 
     if (isSupportSkill) {
         const avg = skillMeta.flatOverride ?? calculateSupportEffect({
@@ -445,25 +477,18 @@ export function buildSkillStatWeight(skillMeta) {
 
     // --- 3️⃣ Map skillType(s) ---
     const typeList = Array.isArray(skillType) ? skillType : [skillType];
-    const typeMap = {
-        ultimate: "resonanceLiberation",
-        skill: "resonanceSkill",
-        basic: "basicAtk",
-        heavy: "heavyAtk",
-    };
 
     let isSpecialSkill = false;
 
     for (const type of typeList) {
         if (!type || typeof type !== "string") continue;
         const normalized = type.trim();
+        const mapped = typeMap[normalized];
 
         if (normalized === "echoSkill" || normalized === "outro" || normalized === "intro") {
             isSpecialSkill = true;
-            continue;
         }
 
-        const mapped = typeMap[normalized];
         if (mapped) {
             statWeight[mapped] = 1;
         }

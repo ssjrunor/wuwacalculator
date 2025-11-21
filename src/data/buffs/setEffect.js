@@ -70,46 +70,19 @@ export function applySetEffect({ mergedBuffs, characterState, activeCharacter, c
         mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 30;
     }
 
-    if (effect.molten5) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 30;
-    }
-
-    if (effect.sierra5) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 30;
-    }
-
-    if (effect.celestial5) {
-        mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 30;
-    }
-
-    if (effect.rejuvenating5) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
-    }
-
-    if (effect.radiance5p1) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
-    }
-
-    if (effect.radiance5p2 && combatState.spectroFrazzle >= 10) {
-        mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 15;
-    }
-
-    if (effect.welkin5 ) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 30;
-    }
-
+    if (effect.molten5) mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 30;
+    if (effect.sierra5) mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 30;
+    if (effect.celestial5) mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 30;
+    if (effect.rejuvenating5) mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
+    if (effect.radiance5p1) mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
+    if (effect.radiance5p2 && combatState.spectroFrazzle >= 10) mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 15;
+    if (effect.welkin5 ) mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 30;
     if (effect.clawprint5 ) {
         mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 15;
         mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 20;
     }
-
-    if (effect.empyrean5 ) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
-    }
-
-    if (effect.frosty5p1 ) {
-        mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + 22.5;
-    }
+    if (effect.empyrean5 ) mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+    if (effect.frosty5p1 ) mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + 22.5;
 
     const frostStacks = effect.frost5pc ?? 0;
     const frostBonus = Math.min(frostStacks * 10, 30);
@@ -214,17 +187,29 @@ export const setEffectBuffMap = {
     23:{setMax:3,threadOfSeveredFate3pc:{atkPercent:20,havoc:30,max:{atkPercent:20,havoc:30}}},
 };
 
-export function removeSetEffectsFromBuffs(mergedBuffs, sets, runtime) {
+const statMirrors = {
+    resonanceSkill: ["skillAtk"],
+    resonanceLiberation: ["ultimateAtk"]
+};
+
+export function removeSetEffectsFromBuffs(mergedBuffs, sets, runtime, skillType = null) {
     if (!mergedBuffs) return {};
     const newBuffs = { ...mergedBuffs };
-    const setArray = Array.isArray(sets) ? sets : [sets];
-
+    const setArray = Array.isArray(sets) ? sets : [{setId: sets, count: 5}];
     const subtractBuffs = (buffObj) => {
         if (!buffObj) return;
-        for (const [key, value] of Object.entries(buffObj)) {
-            const result = (Number(newBuffs[key] ?? 0)) - Number(value ?? 0);
-            if (Math.abs(result) < 1e-6) delete newBuffs[key];
-            else newBuffs[key] = result;
+        for (const [stat, val] of Object.entries(buffObj)) {
+            if (val == null) continue;
+            const targets = [stat, ...(statMirrors[stat] ?? [])];
+            for (const target of targets) {
+                const current = Number(newBuffs[target] ?? 0);
+                const result = current - Number(val);
+                if (Math.abs(result) < 1e-6) {
+                    delete newBuffs[target];
+                } else {
+                    newBuffs[target] = result;
+                }
+            }
         }
     };
 
@@ -238,14 +223,24 @@ export function removeSetEffectsFromBuffs(mergedBuffs, sets, runtime) {
     }
 
     const activeStates = runtime?.activeStates ?? {};
+    if (activeStates?.flamewingsShadow2pcP2 && skillType?.includes("echoSkill")) subtractBuffs({critRate: 20});
+    if (activeStates?.flamewingsShadow2pcP1 && skillType?.includes("heavy")) subtractBuffs({critRate: 20});
+
     for (const entry of setArray) {
         const id = entry?.setId ?? entry;
+        if (id === 22) {
+            const p1 = activeStates?.flamewingsShadow2pcP1;
+            const p2 = activeStates?.flamewingsShadow2pcP2;
+            if (p1 && p2) {
+                subtractBuffs({ fusion: 16 });
+            }
+            continue;
+        }
         const setEffects = setEffectBuffMap[id];
         if (!setEffects) continue;
-
         for (const [stateKey, buffs] of Object.entries(setEffects)) {
             if (!activeStates[stateKey]) continue;
-            const buffData = buffs.max ?? buffs; // prefer max if available
+            const buffData = buffs.max ?? buffs;
             subtractBuffs(buffData);
         }
     }
@@ -303,14 +298,6 @@ export function getSetPlanFromEchoes(equippedEchoes = []) {
     }));
 
     if (entries.length === 0) return null;
-
-    if (entries.length === 1 && equippedEchoes.length === 5) {
-        const setId = entries[0].setId;
-        const setMax = setEffectBuffMap?.[setId]?.setMax ?? 5;
-        if (setMax >= 5) return setId;
-    }
-
-    // Otherwise return the multi-set plan
     return entries.sort((a, b) => a.setId - b.setId);
 }
 
@@ -627,7 +614,7 @@ export const mainEchoBuffs = {
     },
 };
 
-export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterState, activeCharacter, combatState, charId }) {
+export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterState, charId }) {
     const activeStates = characterState?.activeStates ?? {};
     const mainEcho = equippedEchoes?.[0];
     if (!mainEcho) return mergedBuffs;
@@ -667,6 +654,63 @@ export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterS
 
     if (mainEcho.id === '6000106' && (charId === '1409' || charId === '1406' || charId === '1408')) {
         mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 10;
+    }
+
+    return mergedBuffs;
+}
+
+export function removeMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterState, charId }) {
+    const activeStates = characterState?.activeStates ?? {};
+    const mainEcho = equippedEchoes?.[0];
+    if (!mainEcho) return mergedBuffs;
+
+    const buffs = mainEchoBuffs?.[mainEcho.id];
+    if (!buffs) return mergedBuffs;
+
+    const { always, toggleable, stackable } = buffs;
+
+    const remove = (stat, val) => {
+        mergedBuffs[stat] = (mergedBuffs[stat] ?? 0) - val;
+        if (stat === 'resonanceLiberation') {
+            mergedBuffs.ultimateAtk = (mergedBuffs.ultimateAtk ?? 0) - val;
+        }
+        if (stat === 'resonanceSkill') {
+            mergedBuffs.skillAtk = (mergedBuffs.skillAtk ?? 0) - val;
+        }
+    }
+
+    if (always) {
+        for (const [stat, val] of Object.entries(always)) {
+            remove(stat, val);
+        }
+    }
+
+    if (toggleable && activeStates?.mainEchoToggle && toggleable.buffs) {
+        for (const [stat, val] of Object.entries(toggleable.buffs)) {
+            if (stat === 'element') {
+                for (const elem of Object.values(elementMap ?? {})) {
+                    mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) - val;
+                }
+            } else {
+                remove(stat, val);
+
+            }
+        }
+    }
+
+    if (stackable) {
+        const stackKey = stackable.key ?? 'mainEchoStacks';
+        const currentStacks = Math.min(activeStates?.[stackKey] ?? 0, stackable.max ?? 1);
+
+        for (const [stat, perStackVal] of Object.entries(stackable.buffsPerStack)) {
+            const total = perStackVal * currentStacks;
+            remove(stat, total);
+
+        }
+    }
+
+    if (mainEcho.id === '6000106' && (charId === '1409' || charId === '1406' || charId === '1408')) {
+        mergedBuffs.aero = (mergedBuffs.aero ?? 0) - 10;
     }
 
     return mergedBuffs;

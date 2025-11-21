@@ -1,0 +1,38 @@
+.set-option {
+    padding: 6px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+.set-option.active {
+    background: var(--accent-color);
+    opacity: 1;
+    color: black;
+}
+
+.set-row:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.set-popover {
+    padding: 1rem !important;
+    width: unset !important;
+    max-width: unset !important;
+}
+
+.ant-popover-arrow {
+    display: none !important;
+}
+
+.set-popover .set-menu-item {
+    padding: 4px !important;
+}
+
+.set-popover .modern-checkbox input[type="checkbox"] {
+    margin: unset;
+}
+
+:where(.css-dev-only-do-not-override-1rocbtd).ant-popover .ant-popover-inner {
+    background: unset;
+    padding: unset;
+}

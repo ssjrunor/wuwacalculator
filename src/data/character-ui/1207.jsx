@@ -1,6 +1,6 @@
 import {formatDescription} from "../../utils/formatDescription.js";
 import React, {useEffect} from 'react';
-import DropdownSelect from '../../components/DropdownSelect';
+import DropdownSelect from '../../components/utils-ui/DropdownSelect.jsx';
 import {attributeColors} from "../../utils/attributeHelpers.js";
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 

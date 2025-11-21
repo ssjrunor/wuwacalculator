@@ -599,7 +599,17 @@
 }
 .glassy-rainbow .custom-select__control,
 .glassy-rainbow .custom-select__menu {
-    background: rgba(255,255,255,0.7) !important;
+    background: linear-gradient(
+            145deg,
+            #ffffff 0%,
+            #fff2f4 20%,
+            #e9fff7 45%,
+            #fff4ed 70%,
+            #efe3ff 100%
+    ) !important;
+    color: #003350 !important;
+}
+.glossy-rainbow .custom-select__menu span {
     color: #003350 !important;
 }
 .glassy-rainbow .custom-select__multi-value {

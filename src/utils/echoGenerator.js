@@ -553,8 +553,15 @@ export function removeEchoArrayFromBuffs(mergedBuffs, echoes) {
 
         for (const [key, value] of Object.entries(echo.subStats ?? {})) {
             totalEchoStats[key] = (totalEchoStats[key] ?? 0) + value;
+            if (key === 'resonanceLiberation') {
+                totalEchoStats.ultimateAtk = (totalEchoStats.ultimateAtk ?? 0) + value;
+            }
+            if (key === 'resonanceSkill') {
+                totalEchoStats.skillAtk = (totalEchoStats.skillAtk ?? 0) + value;
+            }
         }
     }
+
 
     for (const [key, value] of Object.entries(totalEchoStats)) {
         const current = Number(newBuffs[key] ?? 0);

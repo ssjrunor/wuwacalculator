@@ -3,7 +3,7 @@ const SEO_CONFIG = {
     "/": {
         title: "Wuthering Waves Damage Calculator & Build Optimizer",
         description:
-            "Plan your best Wuthering Waves builds with our free damage calculator, optimizer, and team planner. Maximize DPS and theorycraft with accurate tools.",
+            "Plan your best Wuthering Waves builds with our free damage calculator, optimizer-ui, and team planner. Maximize DPS and theorycraft with accurate tools.",
     },
     "/info": {
         title: "About Wuthering Waves Calculator",

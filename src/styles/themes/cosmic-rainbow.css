@@ -504,7 +504,12 @@
 
 /* Skill menu & type icons */
 .cosmic-rainbow .skill-menu-panel {
-    background: linear-gradient(160deg, rgba(15, 15, 35, 0.85), rgba(30, 30, 55, 0.9));
+    background: radial-gradient(
+            circle at 25% 25%,
+            #130027 0%,
+            #0c0724 50%,
+            #030a20 100%
+    );
     border: 1px solid rgba(150, 200, 255, 0.12);
 }
 .cosmic-rainbow .skill-option:hover {
@@ -564,11 +569,15 @@
 .cosmic-rainbow .icon-menu-vertical,
 .cosmic-rainbow .skills-modal-content,
 .cosmic-rainbow .notification-toast {
-    background: linear-gradient(160deg, rgba(10, 10, 25, 0.9), rgba(25, 25, 45, 0.95));
+    background: radial-gradient(
+            circle at 25% 25%,
+            #130027 0%,
+            #0c0724 50%,
+            #030a20 100%
+    );
     border: 0.01rem solid rgba(150, 200, 255, 0.15);
     color: #f5f6ff;
     box-shadow: 0 0 18px rgba(120, 60, 255, 0.12);
-    backdrop-filter: blur(10px);
 }
 
 /* Skills modal */
@@ -682,7 +691,12 @@
 }
 .cosmic-rainbow .custom-select__control,
 .cosmic-rainbow .custom-select__menu {
-    background: rgba(40, 40, 80, 0.4) !important;
+    background: radial-gradient(
+            circle at 25% 25%,
+            #130027 0%,
+            #0c0724 50%,
+            #030a20 100%
+    ) !important;
     color: #e8eaff !important;
 }
 .cosmic-rainbow .custom-select__multi-value {

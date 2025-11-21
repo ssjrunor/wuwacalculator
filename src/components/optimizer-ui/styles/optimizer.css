@@ -1,0 +1,208 @@
+.optimizer-pane {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    padding: 0 40px;
+    overflow: auto !important;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+}
+
+.results-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    overflow: auto;
+    gap: 2px;
+    font-size: 0.8rem;
+}
+
+.optimizer-results {
+    display: flex;
+    gap: 6px;
+    flex-direction: column;
+    max-height: 300px;
+    height: 300px;
+}
+
+.fixed-header {
+    position: sticky;
+    top: 0;
+    z-index: 9;
+    padding: 0.5rem 0.25rem;
+}
+
+.optimizer-pane .rotation-item {
+    cursor: pointer;
+}
+
+
+.optimizer-result-item {
+    max-height: fit-content;
+    display: flex;
+    flex-direction: row;
+    padding: 0.2rem;
+}
+
+.optimizer-result-item.header {
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.optimizer-result-item .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+    flex: 1;
+}
+
+.optimizer-result-item .set-badge {
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3px;
+}
+
+.optimizer-result-item .set-icon {
+    height: 0.8rem;
+    width: 0.8rem;
+}
+
+.optimizer-result-item .sets {
+    display: flex;
+    flex-direction: row;
+    gap: 0.4rem;
+}
+
+.optimizer-result-item .header-icon,
+.toggle.custom-select.small .header-icon {
+    height: 1rem;
+    width: 1rem;
+}
+
+.optimizer-pane .echo-grid {
+    margin: unset !important;
+}
+
+.optimizer-search-results,
+.optimizer-character-settings {
+    width: 1200px;
+    min-width: 1200px;
+    margin: unset;
+}
+
+.optimizer-search-results .expandable-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sticky-controls {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-self: center;
+    height: fit-content;
+    width: 260px;
+    font-size: 0.8rem;
+    min-width: 260px;
+}
+
+.sticky-wrapper {
+    position: sticky;
+    top: 0;
+    display: flex;
+}
+
+.sticky-controls label {
+    font-size: 0.7rem;
+}
+
+.section-title {
+    font-weight: 600;
+    display: block;
+}
+
+.section-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.icon-help {
+    opacity: 0.5;
+}
+
+.perm-row {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+}
+
+.progress-bar {
+    height: 6px;
+    background: rgba(50, 58, 76, 0.48);
+    border-radius: 3px;
+    margin-top: 6px;
+}
+
+.progress-bar-inner {
+    height: 6px;
+    background: #4e7cff;
+    border-radius: 3px;
+}
+
+.progress-text {
+    margin-top: 4px;
+}
+
+.sticky-controls .btn-primary {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.sticky-controls .btn-primary:hover {
+    transform: unset;
+}
+
+.sticky-controls .btn-primary.wide {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.row-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.optimizer-configurations {
+    border-radius: 5px;
+}
+
+.optimizer-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.optimizer-character-settings .echo-buff {
+    min-height: 200px;
+}
+
+.optimizer-configurations .slider-item {
+    align-items: center;
+}

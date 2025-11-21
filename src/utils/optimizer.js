@@ -176,13 +176,13 @@ export async function findBestEchoSetFromArray(
 
 
 
-    // --- 5️⃣ Weighted seeding ---
-    const { echoes: topEchoes, bestPlans } = getTopEchoesByStatWeight(
+    const { combos, bestPlans } = getTopEchoesByStatWeight(
         validEchoes,
         statWeight,
         MAX_COST,
         5
     );
+    const topEchoes = combos[0].echoes;
     const bestScore = Array.isArray(topEchoes)
         ? topEchoes.reduce((sum, e) => sum + (e._score ?? 0), 0)
         : 0;
@@ -190,7 +190,6 @@ export async function findBestEchoSetFromArray(
         e => e._score >= 0.9 * Math.max(...validEchoes.map(v => v._score ?? 0))
     );
 
-    // --- 6️⃣ Random generator ---
     function randomEchoSet(bestPlans) {
         const chosenPlan =
             bestPlans[Math.floor(rand() * bestPlans.length)] ?? null;
@@ -201,7 +200,6 @@ export async function findBestEchoSetFromArray(
         const usedIds = new Set();
         let totalCost = 0;
 
-        // --- handle forced main echo
         if (mainEcho && mainEcho.cost <= MAX_COST) {
             result.push(mainEcho);
             usedIds.add(mainEcho.id);
@@ -215,7 +213,6 @@ export async function findBestEchoSetFromArray(
         }
 
         while (result.length < 5 && totalCost < MAX_COST && pool.length) {
-            // --- base candidates under cost
             let validCandidates = pool.filter(
                 e => !usedIds.has(e.id) && totalCost + e.cost <= MAX_COST
             );
@@ -230,24 +227,19 @@ export async function findBestEchoSetFromArray(
 
             if (validCandidates.length === 0) break;
 
-            // --- calculate bias weights based on desired set priority
             const weights = validCandidates.map(e => {
                 const sid = e.selectedSet ?? e.setId;
                 const existing = result.filter(x => (x.selectedSet ?? x.setId) === sid).length;
 
-                // --- baseline score from item quality
                 let base = e._score ?? 0.1;
                 let bias = 1.0;
 
-                // --- if this set is part of the chosen plan, give a big priority boost
                 const targetPlan = plan.find(p => p.setId === sid);
                 if (targetPlan) {
-                    // higher remaining count → stronger bias
                     const remaining = Math.max(targetPlan.count, 0);
-                    bias *= 3.5 + remaining * 2; // strong push toward finishing planned sets
+                    bias *= 1.5 + remaining * 0.6;
                 } else {
-                    // penalize sets not in the plan
-                    bias *= 0.035;
+                    bias *= 0.8;
                 }
 
                 // --- within-plan, also reward completing near-full sets
@@ -528,13 +520,14 @@ export async function findBestEchoSetFromArray(
 }
 
 const MAINSTAT_MAX = 44;
-const MAX_COMBOS = 50;
+const MAX_COMBOS = 200;
 
 export function getTopEchoesByStatWeight(
     availableEchoes = [],
     statWeight = {},
     maxCost = 12,
-    maxCount = 5
+    maxCount = 5,
+    numSets = 1,
 ) {
     if (!Array.isArray(availableEchoes) || availableEchoes.length === 0) {
         console.warn("⚠️ No echoes available for ranking.");
@@ -680,7 +673,7 @@ export function getTopEchoesByStatWeight(
 
     const bestPlans = getBestSetPlans();
 
-    console.groupCollapsed("🎯 Best Set Plans (Ranked)");
+    /*console.groupCollapsed("🎯 Best Set Plans (Ranked)");
     for (const p of bestPlans) {
         const label = p.sets
             .map(s => `${s.setId}×${s.count}`)
@@ -689,7 +682,7 @@ export function getTopEchoesByStatWeight(
             `[${p.type}] → ${label} | score=${p.score.toFixed(2)}`
         );
     }
-    console.groupEnd();
+    console.groupEnd();*/
 
     // --- Score each echo individually ---
     const scored = availableEchoes
@@ -718,7 +711,7 @@ export function getTopEchoesByStatWeight(
 
             return {
                 ...e,
-                _baseScore: base,
+                _baseScore: base * 10,
                 _potentialSetScore: potential,
                 _rankingScore: base + potential,
             };
@@ -797,26 +790,35 @@ export function getTopEchoesByStatWeight(
         return { echoes, baseSum, setScore, totalScore: baseSum + setScore };
     }
 
-    // --- Monte Carlo search for best combo ---
-    let best = null;
+    const combos = [];
+
     for (let i = 0; i < MAX_COMBOS; i++) {
         const combo = pickRandomCombo();
         if (!combo) continue;
         const res = evaluateCombo(combo);
-        if (!best || res.totalScore > best.totalScore) best = res;
+
+        const comboKey = res.echoes.map(e => e.id).sort().join("-");
+        if (!combos.some(c => c.key === comboKey)) {
+            combos.push({ ...res, key: comboKey });
+        }
     }
 
-    return best
-        ? {
-            echoes: best.echoes.map(e => ({
-                ...e,
-                _baseScore: e._baseScore,
-                _potentialSetScore: e._potentialSetScore,
-                _rankingScore: e._rankingScore,
-                _activeSetScore: best.setScore,
-                _totalScore: best.totalScore,
-            })),
-            bestPlans,
-        }
-        : { echoes: [], bestPlans };
+    const sortedCombos = combos.sort((a, b) => b.totalScore - a.totalScore);
+
+    const topCombos = sortedCombos.slice(0, Math.min(numSets, sortedCombos.length));
+
+    const formatted = topCombos.map(res => ({
+        echoes: res.echoes.map(e => ({
+            ...e,
+            _baseScore: e._baseScore,
+            _potentialSetScore: e._potentialSetScore,
+            _rankingScore: e._rankingScore,
+            _activeSetScore: res.setScore,
+            _totalScore: res.totalScore,
+        })),
+        totalScore: res.totalScore,
+        setScore: res.setScore,
+    }));
+
+    return { combos: formatted, bestPlans };
 }

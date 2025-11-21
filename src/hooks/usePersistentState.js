@@ -47,10 +47,9 @@ const namespaceMap = {
     controls: [
         'filterOption', 'guideToastShown', 'leftPaneView', 'seenChangelogVersion',
         'showCharacterOverview', 'showSubHits', 'smartFilter', 'sortKey', 'sortOrder',
-        'userBodyFontName', 'userBodyFontURL', 'cookieNoticeDismissed', 'googleTokens',
-        'user-light-variant', 'user-dark-variant', 'user-background-variant', 'isDark',
-        'user-has-selected-theme', 'user-previous-theme', 'user-theme', 'user-bg-main-color',
-        'user-blur-mode', 'activeBgKey'
+        'userBodyFontName', 'userBodyFontURL', 'user-light-variant', 'user-dark-variant',
+        'user-background-variant', 'isDark', 'user-has-selected-theme', 'user-previous-theme',
+        'user-theme', 'user-bg-main-color', 'user-blur-mode', 'activeBgKey', 'showOptimizer'
     ],
     stores: [
         'echoBag', 'echoPresets', 'globalSavedRotations',
@@ -59,6 +58,12 @@ const namespaceMap = {
     charInfo: [
         'activeCharacterId', 'enemyLevel', 'enemyRes', 'team', 'characterRuntimeStates'
     ],
+    optimizerSettings: [
+        'generalOptimizerSettings'
+    ],
+    misc: [
+        'googleTokens', 'cookieNoticeDismissed'
+    ]
     /*charStates: [
         'characterRuntimeStates'
     ]*/

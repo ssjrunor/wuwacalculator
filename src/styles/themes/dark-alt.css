@@ -302,7 +302,7 @@
 
 .dark-alt .rotation-item,
 .dark-alt .saved-rotation-item {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(11, 11, 11, 0.97);
     border: 0.01rem solid rgba(255, 255, 255, 0.1);
     color: lightgray;
 }
@@ -523,7 +523,11 @@
 
 .dark-alt .custom-select__control,
 .dark-alt .custom-select__menu {
-    background: rgba(100, 100, 100, 0.3) !important;
+    background: black !important;
+    color: #ddd !important;
+}
+
+.dark-alt .custom-select__menu span {
     color: #ddd !important;
 }
 

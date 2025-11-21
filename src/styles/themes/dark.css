@@ -239,7 +239,11 @@
 .scarlet-nebula .set-menu-item:hover,
 .cosmic-rainbow .set-menu-item:hover,
 .dark .set-menu-item:hover,
-.dark-alt .set-menu-item:hover {
+.dark-alt .set-menu-item:hover,
+.scarlet-nebula .set-menu-item.active,
+.cosmic-rainbow .set-menu-item.active,
+.dark .set-menu-item.active,
+.dark-alt .set-menu-item.active {
     background: rgba(255, 255, 255, 0.25);
 }
 
