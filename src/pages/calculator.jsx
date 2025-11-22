@@ -578,6 +578,7 @@ export default function Calculator(props) {
         charId
     })
 
+    mergedBuffs.enemyDefShred = (mergedBuffs.enemyDefShred ?? 0) +  2 * combatState.havocBane;
 
     if (overrideLogic && typeof overrideLogic === 'function') {
         const charId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
