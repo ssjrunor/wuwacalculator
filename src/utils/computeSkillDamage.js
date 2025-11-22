@@ -190,7 +190,7 @@ export function computeSkillDamage({
     } else if (entry.echoId) {
         scaling = { atk: 1, hp: 0, def: 0, energyRegen: 0 };
     } else if (levelData.scaling) {
-        skillMeta.scaling = levelData.scaling;
+        scaling = levelData.scaling;
     } else {
         scaling = skillMeta.scaling ?? (
             characterRuntimeStates?.[charId]?.CalculationData?.skillScalingRatios?.[tab] ?? {
