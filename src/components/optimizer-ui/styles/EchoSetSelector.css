@@ -39,5 +39,5 @@
 
 .ant-popover-inner {
     padding: unset !important;
-    background: transparent;
+    background-color: unset !important;
 }
