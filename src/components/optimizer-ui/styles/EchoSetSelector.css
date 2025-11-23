@@ -36,3 +36,8 @@
     background: unset;
     padding: unset;
 }
+
+.ant-popover-inner {
+    padding: unset !important;
+    background: transparent;
+}
