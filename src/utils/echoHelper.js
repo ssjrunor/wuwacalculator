@@ -2,20 +2,7 @@ import {getWeight, getWeightObj} from "../constants/charStatWeights.js";
 import {echoes} from "../json-data-scripts/getEchoes.js";
 
 export const formatStatKey = (key) => {
-    const labelMap = {
-        atkPercent: 'ATK', atkFlat: 'ATK',
-        hpPercent: 'HP', hpFlat: 'HP',
-        defPercent: 'DEF', defFlat: 'DEF',
-        critRate: 'Crit Rate', critDmg: 'Crit DMG',
-        energyRegen: 'Energy Regen', healingBonus: 'Healing Bonus',
-        basicAtk: 'Basic Attack DMG Bonus',
-        heavyAtk: 'Heavy Attack DMG Bonus', resonanceSkill: 'Resonance Skill DMG Bonus',
-        resonanceLiberation: 'Resonance Liberation DMG Bonus',
-        aero: 'Aero DMG Bonus', spectro: 'Spectro DMG Bonus', fusion: 'Fusion DMG Bonus',
-        glacio: 'Glacio DMG Bonus', havoc: 'Havoc DMG Bonus', electro: 'Electro DMG Bonus',
-        critValue: 'Crit Value', percentScore: 'Build Score'
-    };
-    return labelMap[key] ?? key;
+    return statLabelMap[key] ?? key;
 };
 
 export const statIconMap = {

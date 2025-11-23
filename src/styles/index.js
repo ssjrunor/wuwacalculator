@@ -47,3 +47,4 @@ import './themes/blur-off.css';
 import '../components/optimizer-ui/styles/optimizer.css';
 import '../components/optimizer-ui/styles/CharacterOptionsPanel.css';
 import '../components/optimizer-ui/styles/EchoSetSelector.css';
+import '../components/optimizer-ui/styles/OptimizerAnalyticsPanel.css';

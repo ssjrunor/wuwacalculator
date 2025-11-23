@@ -1,7 +1,3 @@
-// =======================================
-// GpuWorkerPool.js — Option A Clean
-// =======================================
-
 const WORKER_COUNT = 2
 
 let workers = [];
@@ -44,11 +40,11 @@ export function initWorkerPool(encoded, echoes, charId) {
     return initPromise;
 }
 
-export function runGpuWorkerOnBatch({ combosBatch, packedContext, charId, resultsLimit }) {
+export function runGpuWorkerOnBatch({ combosBatch, packedContext, charId, resultsLimit, encodedConstraints }) {
     if (CANCEL) return Promise.resolve({ cancelled: true });
 
     return new Promise(resolve => {
-        queue.push({ combosBatch, packedContext, charId, resolve, resultsLimit });
+        queue.push({ combosBatch, packedContext, charId, resolve, resultsLimit, encodedConstraints });
         schedule();
     });
 }
@@ -106,7 +102,8 @@ function schedule() {
             combos: job.combosBatch,
             packedContext: job.packedContext,
             charId: job.charId,
-            resultsLimit: job.resultsLimit
+            resultsLimit: job.resultsLimit,
+            encodedConstraints: job.encodedConstraints
         });
     }
 }

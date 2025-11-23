@@ -1,6 +1,19 @@
 import { ECHO_STAT_ORDER } from "./optimizerUtils.js";
 import {mainEchoBuffs} from "../data/buffs/setEffect.js";
 
+export const STAT_LABELS = {
+    atk: "Total ATK",
+    hp: "Total HP",
+    def: "Total DEF",
+    critRate: "CRIT Rate",
+    critDmg: "CRIT DMG",
+    energyRegen: "Energy Regen",
+    dmgBonus: "DMG Bonus",
+    damage: "Damage",
+};
+
+export const STAT_LIST = Object.entries(STAT_LABELS);
+
 export function encodeEchoStats(echoes) {
     const count = echoes.length;
     const statCount = ECHO_STAT_ORDER.length;
@@ -93,4 +106,23 @@ export function buildMainEchoBuffsArray(reverseIds, echoes, charId) {
     }
 
     return out;
+}
+
+export function buildStatConstraintArray(constraints) {
+    const STAT_COUNT = STAT_LIST.length;
+    const arr = new Float32Array(STAT_COUNT * 2);
+
+    for (let i = 0; i < STAT_LIST.length; i++) {
+        const [key] = STAT_LIST[i];
+        const c = constraints[key] ?? {};
+
+        const min = Number.isFinite(c.minTotal) ? c.minTotal : -Infinity;
+        const max = Number.isFinite(c.maxTotal) ? c.maxTotal : +Infinity;
+
+        const offset = i * 2;
+        arr[offset] = min;
+        arr[offset + 1] = max;
+    }
+
+    return arr;
 }

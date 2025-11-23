@@ -5,6 +5,7 @@ export async function createGpuBuffers({
                                            combos,
                                            gpuContexts,
                                            mainEchoBuffs,
+                                           statConstraints,
                                            deviceOverride
                                        }) {
     const device = deviceOverride;
@@ -50,13 +51,21 @@ export async function createGpuBuffers({
     });
     device.queue.writeBuffer(mainEchoBuffsBuffer, 0, mainEchoBuffs);
 
+    const statConstraintsBuffer = device.createBuffer({
+        size: statConstraints.byteLength,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(statConstraintsBuffer, 0, statConstraints);
+
+
     return {
         echoStats: echoStatsBuffer,
         echoCosts: echoCostsBuffer,
         echoSets: echoSetsBuffer,
         combos: combosBuffer,
-        contexts: contextBuffer,
+        context: contextBuffer,
         outputBuffer,
         mainEchoBuffs: mainEchoBuffsBuffer,
+        statConstraints: statConstraintsBuffer,
     };
 }

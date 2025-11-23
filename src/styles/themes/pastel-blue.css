@@ -25,7 +25,8 @@
 }
 
 .pastel-blue .custom-select__control,
-.pastel-blue .custom-select__menu {
+.pastel-blue .custom-select__menu,
+.pastel-blue .ant-tooltip-inner {
     border: 1px solid saddlebrown !important;
     background-color: rgb(235, 245, 255) !important;
 }
@@ -34,7 +35,8 @@
 .pastel-blue .skills-modal-content,
 .pastel-blue .skill-menu-panel,
 .pastel-blue .icon-menu-vertical {
-    background: rgba(228, 241, 255, 0.93);
+    background: rgb(235, 245, 255);
+    border: 1px solid saddlebrown;
 }
 
 .pastel-blue .dropdown-item {

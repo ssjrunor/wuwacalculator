@@ -34,6 +34,7 @@
 .frosted-aurora.blur-off select,
 .frosted-aurora.blur-off .custom-select__control,
 .frosted-aurora.blur-off .custom-select__menu,
+.frosted-aurora.blur-off .ant-tooltip-inner,
 .frosted-aurora.blur-off .echo-details {
     border: 1px solid floralwhite !important;
 }

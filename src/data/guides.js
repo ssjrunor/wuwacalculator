@@ -309,8 +309,104 @@ export const guides = [
             }
         ]
     },
+    {
+        category: 'Optimizer',
+        guides: [
+            {
+                title: 'Using the Echo Optimizer',
+                type: 'article',
+                shortDesc: 'Configure filters, run the optimizer, and interpret the best echo combinations for your character.',
+                content: `
+                <p>The <strong>Echo Optimizer</strong> searches through your available echoes and finds the most efficient combinations for your current character. It respects cost limits, set effects, and your chosen stat priorities to rank the strongest options first.</p>
 
+                <h4>1. Overview</h4>
+                <p>The optimizer works on top of your existing <strong>Echo Bag</strong> and filter settings. It takes the echoes that pass your filters, generates all valid 5-piece (cost ≤ 12) combinations, and evaluates their total damage using the same calculation logic as the main Damage Section.</p>
+                <p>The result is a sorted list of candidate builds, each showing its sets, total stats, and expected output compared to your current build.</p>
 
+                <h4>2. Echo Source & Filters</h4>
+                <p>The optimizer never invents new gear — it only uses echoes you have in your <strong>Echo Bag</strong>. Before running it, make sure your bag is correct and up to date.</p>
+                <p>Echoes are filtered using the same options as the main Echo Filters:</p>
+                <ul>
+                    <li><strong>Filter Strength</strong> – Keeps only the top slice of your bag, based on your selected <em>stat weights</em>. For example, 30% filters out the least preferable 30% of echoes by weighted score.</li>
+                    <li><strong>Allowed Sets</strong> – Lets you prioritize or restrict specific sets. These rules constrain which combinations are considered.</li>
+                    <li><strong>Main Stat Filter</strong> – Limits which main stats are allowed on certain slots, so you don’t get weird or unusable rolls for your target build.</li>
+                </ul>
+                <p>Whenever you adjust these filters, the optimizer automatically recalculates how many valid combinations exist and shows this number in the control panel.</p>
+
+                <h4>3. Main Echo Slot</h4>
+                <p>The <strong>Main Echo</strong> selector lets you pin a specific echo to the main slot. When set, the optimizer only considers combinations that include that echo in slot 1. This is useful when you want to keep a prized 4-cost echo and just optimize the remaining pieces around it.</p>
+                <p>Clearing the main echo returns the search to “fully free” mode, allowing any echo to occupy the main slot.</p>
+                
+                <h4>4. Stat Range Limits</h4>
+                <p>The <strong>Stat Range Limits</strong> panel lets you set <em>hard constraints</em> on the final stats that a build is allowed to have. Instead of just “preferring” certain stats with weights, these limits decide which echo combinations are valid at all.</p>
+                
+                <p>For each tracked stat, you’ll see a row like this:</p>
+                
+                <ul>
+                    <li><strong>Label</strong> – The stat name (e.g., ATK%, Crit Rate, Energy Regen).</li>
+                    <li><strong>Min</strong> – The minimum allowed total for that stat across the full echo set.</li>
+                    <li><strong>Max</strong> – The maximum allowed total for that stat across the full echo set.</li>
+                </ul>
+                
+                <p>When you type a value in <strong>Min</strong> or <strong>Max</strong>, the optimizer will <strong>discard any combination</strong> whose final total for that stat falls outside the specified range. Combos that fail even one of these checks are never evaluated or shown in the results table.</p>
+                
+                <p>This is especially useful when you need to:</p>
+                <ul>
+                    <li>Guarantee a minimum <strong>Energy Regen</strong> so your rotations stay functional.</li>
+                    <li>Enforce a target <strong>Crit Rate</strong> window (e.g., at least 60%, but not more than 80%).</li>
+                    <li>Cap certain stats (like ATK% or Crit DMG) to avoid over-investing past a useful point.</li>
+                </ul>
+                
+                <p>Leave a field blank to ignore that side of the constraint (for example, setting only a minimum but no maximum). If all fields for a stat are empty, that stat places no limits on the optimizer.</p>
+
+                <h4>5. Running the Optimizer</h4>
+                <p>Once your filters are ready, click the main <strong>Run</strong> button. The optimizer will:</p>
+                <ul>
+                    <li>Generate the combinations in batches.</li>
+                    <li>Evaluate each batch using the current character, echo stats, and buffs.</li>
+                    <li>Keep only the top-scoring results in memory, based on damage or target metric.</li>
+                </ul>
+                <p>A progress bar and statistics panel show <strong>how many combos have been processed</strong>, the current speed (combos per second), and an estimated remaining time. You can stop the run early using the <strong>HALT</strong> button, keeping the best results found so far.</p>
+
+                <h4>6. Reading the Results Table</h4>
+                <p>The optimizer outputs a ranked table of builds. Typical columns include:</p>
+                <ul>
+                    <li><strong>Sets</strong> – Shows the 2-piece and 5-piece sets active in that combination.</li>
+                    <li><strong>Main</strong> – The echo equipped in the main slot (often your 3- or 4-cost echo).</li>
+                    <li><strong>∑ Cost</strong> – Total echo cost, which must be ≤ 12 for a valid build.</li>
+                    <li><strong>∑ ATK / HP / DEF / ER / CR / CD</strong> – Summed stats from all five echoes.</li>
+                    <li><strong>∑ BNS% / AMP%</strong> – Total relevant damage bonuses and amplifications contributed by echo sets and substats.</li>
+                    <li><strong>DMG</strong> – The optimizer’s estimated damage (or healing/shielding) for this build.</li>
+                    <li><strong>DIFF</strong> – The upgrade (or downgrade) as compared to your original build, helping you see how much stronger it is at a glance.</li>
+                </ul>
+
+                <h4>7. Inspecting & Equipping Results</h4>
+                <p>When you click on a result, you can:</p>
+                <ul>
+                    <li>Inspect which specific echoes it uses in each slot.</li>
+                    <li>Check the exact main and substats contributing to the totals.</li>
+                    <li>Optionally <strong>apply</strong> that build to your character, updating the main calculator to use that combination.</li>
+                </ul>
+                <p>This lets you bounce between “theory” (optimizer results) and “practice” (full damage breakdown in the Damage Section) without manually reassigning echoes one by one.</p>
+
+                <h4>8. Performance Tips</h4>
+                <ul>
+                    <li><strong>Tighten filters</strong> if the combination count is extremely high. Increasing the filter strength or narrowing allowed sets can dramatically speed things up.</li>
+                    <li><strong>Use a main echo lock</strong> when you already know which echo you want in the primary slot, rather than letting the optimizer search every possibility.</li>
+                </ul>
+
+                <h4>9. Troubleshooting Results</h4>
+                <ul>
+                    <li>If you get <strong>no valid combinations</strong>, your filters may be too strict. Loosen set restrictions or reduce filter strength.</li>
+                    <li>If results look “worse” than your current build, verify that your <strong>Echo Bag</strong> and equipped echoes are in sync with what you actually want to optimize.</li>
+                    <li>If you change your character’s build (weapons, buffs, or level), rerun the optimizer to update damage estimates.</li>
+                </ul>
+
+                <p>The optimizer is meant to feel like an automated theorycrafter: you can tell it which stats and sets you care about, and it sifts through the combinatorial chaos to surface the most promising builds.</p>
+            `
+            }
+        ]
+    },
     {
         category: 'Custom Buffs',
         guides: [

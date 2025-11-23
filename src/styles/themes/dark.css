@@ -103,7 +103,7 @@
 .cosmic-rainbow .custom-select__indicator-separator,
 .dark .custom-select__indicator-separator,
 .dark-alt .custom-select__indicator-separator {
-    opacity: 0.4;
+    opacity: 0.15;
 }
 
 .scarlet-nebula .custom-select__input,

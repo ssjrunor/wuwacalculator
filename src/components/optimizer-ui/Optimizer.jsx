@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {ctxObj, EchoOptimizer} from "../../optimizer/EchoOptimizer.js";
 import {getEchoBag} from "../../state/echoBagStore.js";
 import {getSetPlanFromEchoes} from "../../data/buffs/setEffect.js";
@@ -15,9 +15,17 @@ import {CharacterOptionsPanel} from "./CharacterOptionsPanel.jsx";
 import {EchoOptimizerControlBox} from "./EchoOptimizerControlBox.jsx";
 import {groupEchoSetsByPiece} from "../../optimizer/setSolver.js";
 import EchoOptimizerRow from "./EchoOptimizerRow.jsx";
-import {computeEchoStatsFromIds, resolveEchoesFromIds} from "../../optimizer/optimizerUtils.js";
+import {
+    computeEchoStatsFromIds,
+    getDefaultMainStatFilter,
+    resolveEchoesFromIds
+} from "../../optimizer/optimizerUtils.js";
 import {echoes as allEchoes} from "../../json-data-scripts/getEchoes.js";
 import EchoMenu from "../echoes-pane-ui/EchoMenu.jsx";
+import {useComboCounter} from "./useComboCounter.js";
+import GuidesModal from "../utils-ui/GuideModal.jsx";
+import PlainModal from "../utils-ui/PlainModal.jsx";
+import {modalContent} from "./modalContent.jsx";
 
 const HEADER_TITLES = [
     "Set",
@@ -63,7 +71,7 @@ export default function Optimizer({
                                       finalStats
                                   }) {
     const resultLength = optimizerResults?.length ?? 0;
-    const optimizer = characterRuntimeStates?.[charId]?.optimizerSettings;
+    const optimizer = characterRuntimeStates?.[charId]?.optimizerSettings ?? {};
     const updateOptimizerSettings = (patch) => {
         const charId = activeCharacter.Id ?? activeCharacter.id ?? activeCharacter.link;
         setCharacterRuntimeStates((prev) => {
@@ -88,6 +96,7 @@ export default function Optimizer({
     };
 
     const setOptions = optimizer.setOptions ?? groupEchoSetsByPiece();
+    const statLimits = optimizer.statLimits ?? {};
 
     const level = optimizer?.level ?? null;
     const tab = optimizer?.tab ?? "";
@@ -99,6 +108,9 @@ export default function Optimizer({
     };
     const skill = skillResults
         ?.find(skill => skill.name === level?.label || skill.name === level?.Name) ?? {};
+    const statWeight = skill.statWeight ?? skill.custSkillMeta?.statWeight ?? {};
+
+    const mainStatFilter = optimizer.mainStatFilter ?? getDefaultMainStatFilter(statWeight);
 
     const mainEcho = optimizer?.mainEcho ?? null;
     const mainEchoId = mainEcho?.id ?? null;
@@ -170,10 +182,11 @@ export default function Optimizer({
     const [combinations, setCombinations] = useState(0);
     const keepPercent = generalOptimizerSettings.keepPercent ?? 0.6;
     const [filtered, setFiltered] = useState(EchoFilters.getFilteredEchoes({
-        statWeight: skill.statWeight ?? skill.custSkillMeta?.statWeight,
+        statWeight,
         echoBag,
         keepPercent,
-        setOptions
+        setOptions,
+        mainStatFilter
     }));
     const [currentBag, setCurrentBag] = useState([...filtered]);
     const [currentContext, setCurrentContext] = useState({...ctxObj});
@@ -190,17 +203,18 @@ export default function Optimizer({
             echoBag,
             keepPercent,
             equippedEchoes: echoData,
-            statWeight: skill.statWeight ?? skill.custSkillMeta?.statWeight,
+            statWeight,
             resultsLimit,
             baseDmg: skill?.avg ?? 1,
             skillType: skill.skillType,
             lockedEchoId: mainEchoId
         });
         const filtered = EchoFilters.getFilteredEchoes({
-            statWeight: skill.statWeight ?? skill.custSkillMeta?.statWeight,
+            statWeight,
             echoBag,
             keepPercent,
-            setOptions
+            setOptions,
+            mainStatFilter
         });
         setFiltered(filtered);
         setPendingCombinations(true);
@@ -216,86 +230,47 @@ export default function Optimizer({
         })();
     }, [activeCharacter, level]);
 
+    useEffect(() => {
+        setOptimizerResults([]);
+    }, [activeCharacter]);
+
     const [pendingCombinations, setPendingCombinations] = useState(false);
-    const comboTimer = useRef(null);
     const [batchSize, setBatchSize] = useState(null);
+    const comboTimer = useRef(null);
 
-    async function handleFilteredChange(newPercent) {
-        updateGeneralOptimizerSettings({ keepPercent: newPercent });
-        setPendingCombinations(true);
-        const freshForm = {
-            statWeight: skill.statWeight ?? skill.custSkillMeta?.statWeight,
-            echoBag,
-            keepPercent: newPercent,
-            setOptions
-        };
-        const updatedFiltered = EchoFilters.getFilteredEchoes(freshForm);
-        setFiltered(updatedFiltered);
-        if (comboTimer.current) clearTimeout(comboTimer.current);
-        const runId = Date.now();
-        handleFilteredChange.currentRun = runId;
+    const ComboCounter = useComboCounter({
+        countEchoCombos,
+        comboTimerRef: comboTimer,
+        statWeight,
+        echoBag,
+        keepPercent,
+        setOptions,
+        mainStatFilter,
+        mainEcho,
+        filtered,
+        setFiltered,
+        setPendingCombinations,
+        setCombinations,
+        updateGeneralOptimizerSettings,
+        updateOptimizerSettings,
+    });
 
-        comboTimer.current = setTimeout(async () => {
-            if (handleFilteredChange.currentRun !== runId) return;
-            const total = await countEchoCombos({
-                echoes: updatedFiltered,
-                maxCost: 12,
-                maxSize: 5,
-            });
-            if (handleFilteredChange.currentRun !== runId) return;
+    function handleStatLimitChange(statKey, field, valueStr) {
+        const value =
+            valueStr === "" ? undefined : Number(valueStr);
 
-            setCombinations(total);
-            setPendingCombinations(false);
-        }, 300);
-    }
+        const currentLimits = statLimits ?? {};
+        const currentForKey = currentLimits[statKey] ?? {};
 
-    function handleSetOptionChange(newSetOptions) {
-        updateOptimizerSettings({ setOptions: newSetOptions });
-        setPendingCombinations(true);
-        const freshForm = {
-            statWeight: skill.statWeight ?? skill.custSkillMeta?.statWeight,
-            echoBag,
-            keepPercent,
-            setOptions: newSetOptions
-        };
-        const updatedFiltered = EchoFilters.getFilteredEchoes(freshForm);
-        setFiltered(updatedFiltered);
-        if (comboTimer.current) clearTimeout(comboTimer.current);
-        const runId = Date.now();
-        handleSetOptionChange.currentRun = runId;
-
-        comboTimer.current = setTimeout(async () => {
-            if (handleSetOptionChange.currentRun !== runId) return;
-            const total = await countEchoCombos({
-                echoes: updatedFiltered,
-                maxCost: 12,
-                maxSize: 5,
-            });
-            if (handleSetOptionChange.currentRun !== runId) return;
-
-            setCombinations(total);
-            setPendingCombinations(false);
-        }, 300)
-    }
-
-    function handleMainEchoChange(mainEcho) {
-        updateOptimizerSettings({ mainEcho });
-        setPendingCombinations(true);
-        if (comboTimer.current) clearTimeout(comboTimer.current);
-        const runId = Date.now();
-        handleMainEchoChange.currentRun = runId;
-        comboTimer.current = setTimeout(async () => {
-            if (handleMainEchoChange.currentRun !== runId) return;
-            const total = await countEchoCombos({
-                echoes: filtered,
-                maxCost: 12,
-                maxSize: 5,
-                lockedEchoId: mainEcho?.id ?? null
-            });
-            if (handleMainEchoChange.currentRun !== runId) return;
-            setCombinations(total);
-            setPendingCombinations(false);
-        }, 300)
+        updateOptimizerSettings({
+            statLimits: {
+                ...currentLimits,
+                [statKey]: {
+                    ...currentForKey,
+                    [field]: value,
+                },
+            },
+        });
     }
 
     function handleReset() {
@@ -314,12 +289,22 @@ export default function Optimizer({
         setCancelled(false);
         if (keepPercent === 0) return;
         Promise.resolve().then(() => {
-            handleFilteredChange(0.6);
+            ComboCounter.handleFilteredChange(0.6);
         });
     }
 
     async function runOptimizer () {
-        if (!form || combinations === 0) return;
+        if (echoBag.length === 0) {
+            setUiModalContent(modalContent.emptyEchoBag);
+            setModalOpen(true);
+            return;
+        }
+        if (combinations === 0) {
+            setUiModalContent(modalContent.noValidCombos);
+            setModalOpen(true);
+            return;
+        }
+        if (!form) return;
         setIsLoading(true);
         setProgress({
             progress: 0,
@@ -334,7 +319,9 @@ export default function Optimizer({
             ...form,
             filtered,
             combinations,
+            resultsLimit,
             lockedEchoId: mainEchoId,
+            constraints: statLimits,
             onProgress: ({ progress, elapsedMs, remainingMs, processed, speed }) =>
                 setProgress(prev => ({
                     ...prev,
@@ -351,6 +338,12 @@ export default function Optimizer({
         if (!results || results.cancelled) {
             setIsLoading(false);
             setSuccess(false);
+            return;
+        }
+        if (results.length === 0) {
+            setIsLoading(false);
+            setUiModalContent(modalContent.rangeLimitsTooStrict);
+            setModalOpen(true);
             return;
         }
         setOptimizerResults(results);
@@ -372,10 +365,58 @@ export default function Optimizer({
         });
     }
 
+    const [showGuide, setShowGuide] = useState(false);
+    const [onGuideClose, setGuideClose] = useState(null);
+    const [guideCategory, setGuideCategory] = useState(null);
+    const openGuide = React.useCallback((category) => {
+        setGuideCategory(category);
+        setShowGuide(true);
+    }, []);
+
+    useEffect(() => {
+        if (echoBag.length === 0) {
+            setUiModalContent(modalContent.emptyEchoBag);
+            setModalOpen(true);
+        }
+    }, [])
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [uiModalContent, setUiModalContent] = useState(null);
+
+    const [isWide, setIsWide] = useState(() => {
+        if (typeof window === "undefined") return true;
+        return window.innerWidth >= 1600;
+    });
+
+    useLayoutEffect(() => {
+        function handleResize() {
+            setIsWide(window.innerWidth >= 1600);
+        }
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+
     if (!activeCharacter || !form) return null;
 
     return (
-        <div className="optimizer-pane">
+        <div className={`optimizer-pane ${isWide ? '' : 'compact'}`}>
+
+            <PlainModal modalOpen={modalOpen} setModalOpen={setModalOpen} width="800px">
+                {uiModalContent}
+            </PlainModal>
+
+            <GuidesModal
+                open={showGuide}
+                category={guideCategory}
+                onClose={() => {
+                    setShowGuide(false);
+                    onGuideClose?.();
+                }}
+            />
+
             <CharacterMenu
                 characters={characters}
                 handleCharacterSelect={handleCharacterSelect}
@@ -388,7 +429,7 @@ export default function Optimizer({
             <EchoMenu
                 echoes={allEchoes}
                 handleEchoSelect={(sel) => {
-                    handleMainEchoChange(sel);
+                    ComboCounter.handleMainEchoChange(sel);
                     setEchoMenuOpen(false);
                 }}
                 menuRef={menuRef}
@@ -414,14 +455,14 @@ export default function Optimizer({
                 }}
             />
 
-            <div className="sticky-wrapper">
+            {isWide && (
                 <EchoOptimizerControlBox
                     runOptimizer={runOptimizer}
                     resultsLimit={resultsLimit}
                     searchLength={filtered.length}
                     combinations={combinations}
                     keepPercent={keepPercent}
-                    handleFilteredChange={handleFilteredChange}
+                    handleFilteredChange={ComboCounter.handleFilteredChange}
                     progress={progress}
                     updateGeneralOptimizerSettings={updateGeneralOptimizerSettings}
                     pendingCombinations={pendingCombinations}
@@ -434,12 +475,15 @@ export default function Optimizer({
                     success={success}
                     setSuccess={setSuccess}
                     cancelled={cancelled}
+                    openGuide={openGuide}
                 />
-            </div>
+            )}
                 <div className="optimizer-details">
                     <ExpandableSection title="Character Settings" defaultOpen={true} className="optimizer-character-settings">
                         <div className="echo-buff character-options-container">
                             <CharacterOptionsPanel
+                                statLimits={statLimits}
+                                handleStatLimitChange={handleStatLimitChange}
                                 activeCharacter={activeCharacter}
                                 rarityMap={rarityMap}
                                 charId={charId}
@@ -452,14 +496,25 @@ export default function Optimizer({
                                 useSplash={useSplash}
                                 updateGeneralOptimizerSettings={updateGeneralOptimizerSettings}
                                 characters={characters}
-                                handleSetOptionChange={handleSetOptionChange}
+                                handleSetOptionChange={ComboCounter.handleSetOptionChange}
                                 weapons={weapons}
                                 switchLeftPane={switchLeftPane}
                                 setOptions={setOptions}
                                 getImageSrc={getImageSrc}
                                 mainEcho={mainEcho}
                                 setEchoMenuOpen={setEchoMenuOpen}
-                                handleMainEchoChange={handleMainEchoChange}
+                                handleMainEchoChange={ComboCounter.handleMainEchoChange}
+                                mainStatFilter={mainStatFilter}
+                                handleMainStatFilterChange={ComboCounter.handleMainStatFilterChange}
+                                resEchoes={resEchoes}
+                                currentBag={currentBag}
+                                currentContext={currentContext}
+                                charIdForm={form.charId}
+                                echoData={echoData}
+                                mergedBuffs={mergedBuffs}
+                                finalStats={runtime?.finalStats ?? finalStats}
+                                skillMeta={skill?.custSkillMeta ?? {}}
+                                isLoading={isLoading}
                             />
                         </div>
                     </ExpandableSection>
@@ -555,7 +610,39 @@ export default function Optimizer({
                             </div>
                         </div>
                     </ExpandableSection>
+                    {/*<ExpandableSection
+                        title="Analytics"
+                        defaultOpen={false}
+                        className="optimizer-analytics-section"
+                    >
+                        <OptimizerAnalyticsPanel />
+                    </ExpandableSection>*/}
                 </div>
+
+            {!isWide && (
+                <EchoOptimizerControlBox
+                    runOptimizer={runOptimizer}
+                    resultsLimit={resultsLimit}
+                    searchLength={filtered.length}
+                    combinations={combinations}
+                    keepPercent={keepPercent}
+                    handleFilteredChange={ComboCounter.handleFilteredChange}
+                    progress={progress}
+                    updateGeneralOptimizerSettings={updateGeneralOptimizerSettings}
+                    pendingCombinations={pendingCombinations}
+                    batchSize={batchSize}
+                    handleReset={handleReset}
+                    isLoading={isLoading}
+                    resultLength={resultLength}
+                    onEquipOptimizerResult={onEquipOptimizerResult}
+                    setOptimizerResults={setOptimizerResults}
+                    success={success}
+                    setSuccess={setSuccess}
+                    cancelled={cancelled}
+                    openGuide={openGuide}
+                    isWide={isWide}
+                />
+            )}
             </div>
     )
 }

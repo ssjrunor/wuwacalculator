@@ -47,8 +47,17 @@ export const EchoFilters = {
     },
 
     applyMainStatFilter(form, echoes) {
-        // placeholder for future (e.g., require HP%, require Aero DMG Bonus)
-        return echoes;
+        const { mainStatFilter } = form;
+        if (!mainStatFilter) return echoes;
+        const activeKeys = Object.entries(mainStatFilter)
+            .filter(([, enabled]) => enabled)
+            .map(([key]) => key);
+        if (activeKeys.length === 0) return echoes;
+        const allowed = new Set(activeKeys);
+        return echoes.filter(echo => {
+            const stats = echo.mainStats || {};
+            return Object.keys(stats).some(key => allowed.has(key));
+        });
     },
 
     applyExcludeFilter(form, echoes) {

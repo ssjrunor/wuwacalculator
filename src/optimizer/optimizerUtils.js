@@ -1,4 +1,4 @@
-import {getEchoStatsFromEquippedEchoes} from "../utils/echoHelper.js";
+import {getEchoStatsFromEquippedEchoes, statLabelMap} from "../utils/echoHelper.js";
 import {extractMainEchoBuffs} from "./EchoFilters.js";
 import {getSetPlanFromEchoes} from "../data/buffs/setEffect.js";
 
@@ -148,6 +148,21 @@ export function resolveEchoesFromIds(ids, echoes) {
     return ids.map(i => i >= 0 ? echoes[i] : null);
 }
 
+export function resolveIdsFromEchoes(echoObjs, echoes) {
+    const idToIndex = new Map();
+    for (let i = 0; i < echoes.length; i++) {
+        const e = echoes[i];
+        if (!e || e.id == null) continue;
+        idToIndex.set(e.id, i);
+    }
+
+    return echoObjs.map(echo => {
+        if (!echo || echo.id == null) return -1;
+        const idx = idToIndex.get(echo.id);
+        return typeof idx === "number" ? idx : -1;
+    });
+}
+
 export function computeEchoStatsFromIds(ids, echoes, ctxObj, charId) {
     const echoObjs = ids.filter(i => i >= 0).map(i => echoes[i]);
 
@@ -192,4 +207,31 @@ export function computeEchoStatsFromIds(ids, echoes, ctxObj, charId) {
             ...totals
         }
     };
+}
+
+export const mainStatsFilters = {
+    hpPercent: 'HP%',
+    atkPercent: 'ATK%',
+    defPercent: 'DEF%',
+    aero: statLabelMap.aero,
+    glacio: statLabelMap.glacio,
+    electro: statLabelMap.electro,
+    fusion: statLabelMap.fusion,
+    havoc: statLabelMap.havoc,
+    spectro: statLabelMap.spectro,
+    energyRegen: statLabelMap.energyRegen,
+    critRate: statLabelMap.critRate,
+    critDmg: statLabelMap.critDmg
+}
+
+ export function getDefaultMainStatFilter(statWeight = {}) {
+    const result = {};
+
+    for (const key of Object.keys(mainStatsFilters)) {
+        if (Object.prototype.hasOwnProperty.call(statWeight, key)) {
+            result[key] = true;
+        }
+    }
+
+    return result;
 }

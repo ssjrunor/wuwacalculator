@@ -26,6 +26,6 @@
 
 .dark .skills-modal-content,
 .dark .notification-toast {
-    background: linear-gradient(145deg, #1f2937, rgba(33, 48, 58, 0.69));
+    background-color: #131922;
     color: #f9fafb;
 }

@@ -1,20 +1,13 @@
 import {imageCache} from "../../pages/calculator.jsx";
-import {formatStatValue} from "../weapon-pane/WeaponPane.jsx";
-import React from "react";
+import React, {useMemo} from "react";
 import AllowedSetDropdown from "./EchoSetSelector.jsx";
-import {X} from "lucide-react";
-
-const STAT_LABELS = {
-    hp: "Total HP",
-    atk: "Total ATK",
-    def: "Total DEF",
-    critRate: "CRIT Rate",
-    critDmg: "CRIT DMG",
-    energyRegen: "Energy Regen",
-    healingBonus: "Healing Bonus",
-    dmgBonus: "DMG Bonus",
-    damage: "Damage",
-};
+import {Info, X} from "lucide-react";
+import Select from 'react-select';
+import {statLabelMap} from "../../utils/echoHelper.js";
+import StatProfileCard from "./StatProfileCard.jsx";
+import {STAT_LIST} from "../../optimizer/encodeEchoStats.js";
+import {Tooltip} from "antd";
+import {mainStatsFilters} from "../../optimizer/optimizerUtils.js";
 
 export function CharacterOptionsPanel({
                                           activeCharacter,
@@ -33,7 +26,18 @@ export function CharacterOptionsPanel({
                                           handleSetOptionChange,
                                           mainEcho,
                                           setEchoMenuOpen,
-                                          handleMainEchoChange
+                                          handleMainEchoChange,
+                                          mainStatFilter,
+                                          handleMainStatFilterChange,
+                                          currentBag,
+                                          resEchoes,
+                                          charIdForm,
+                                          currentContext,
+                                          skillMeta,
+                                          finalStats,
+                                          mergedBuffs,
+                                          handleStatLimitChange,
+                                          statLimits
                                       }) {
     const rarity = rarityMap[charId];
     const displayName = activeCharacter.displayName.toUpperCase();
@@ -41,7 +45,10 @@ export function CharacterOptionsPanel({
     const sequence = runtime?.SkillLevels?.sequence ?? 1;
     const src = useSplash ? `/assets/sprite/${charId}.webp` :
         (imageCache[activeCharacter.icon]?.src || activeCharacter.icon);
-    const STAT_LIST = Object.entries(STAT_LABELS);
+    const mainStatOptions = Object.entries(mainStatsFilters).map(([value, label]) => ({
+        value,
+        label
+    }));
 
     return (
         <div className="compact-root">
@@ -81,11 +88,42 @@ export function CharacterOptionsPanel({
             <div className="compact-right">
                 <div className="compact-grid">
                     <div className="compact-card buffs-box">
-                        <div className="card-title">Optimizer</div>
+                        <div className="section-title-row">
+                            <div className="card-title">Optimizer Target</div>
+                            <Tooltip
+                                title={
+                                    <div className="tool-tip-content">
+                                        <div className="tool-tip-section">
+                                            <span className="highlight">Target Skill</span>
+                                            <p>
+                                                Choose which skill the optimizer should maximize. Damage is
+                                                calculated for this skill when ranking echo builds.
+                                            </p>
+                                        </div>
+                                        <div className="tool-tip-section">
+                                            <span className="highlight">Filters</span>
+                                            <p>
+                                                Limit the search to certain sets, a main echo, and specific
+                                                main stats. Tighter filters mean fewer, more focused builds.
+                                            </p>
+                                        </div>
+                                    </div>
+                                }
+                                placement="rightTop"
+                                mouseEnterDelay={0.1}
+                            >
+                                <span className="icon-help" style={{ cursor: "pointer" }}>
+                                    <Info size={16} />
+                                </span>
+                            </Tooltip>
+                        </div>
+
                         <div className="dial-row">Target Skill</div>
                         <div className="toggle custom-select small"
                              onClick={() => setShowSkillOptions(true)}
                         >{skill?.name ? ' ◉ ' + skill?.name : "Target Skill"}</div>
+
+                        <div className="card-title">Filters</div>
                         <AllowedSetDropdown
                             setOptions={setOptions}
                             handleSetOptionChange={handleSetOptionChange}
@@ -121,6 +159,25 @@ export function CharacterOptionsPanel({
                                 <span> ◉ Main Echo</span>
                             )}
                         </div>
+
+                        <div className="dial-row">Main Stat Filters</div>
+                        <Select
+                            isMulti
+                            value={mainStatOptions.filter(o => mainStatFilter?.[o.value])}
+                            onChange={(selected) => {
+                                const nextFilter = {};
+                                (selected || []).forEach(s => {
+                                    nextFilter[s.value] = true;
+                                });
+                                handleMainStatFilterChange(nextFilter);
+                            }}
+                            options={mainStatOptions}
+                            placeholder="Main stats"
+                            className="select"
+                            classNamePrefix="custom-select"
+                            menuPortalTarget={document.body}
+                            menuPosition="fixed"
+                        />
                         {/*<div className="mini-pill-row">
                             <label>ATK</label>
                             <div className="mini-pill custom-select small">Min</div>
@@ -148,17 +205,51 @@ export function CharacterOptionsPanel({
                         </div>*/}
                     </div>
                     <div className="compact-card buffs-box stats">
-                        <div className="card-title">Stat Range Limits</div>
-                        {STAT_LIST.map(([statKey, label]) => (
-                            <div className="mini-pill-row" key={statKey}>
-                                <label>{label}</label>
+                        <div className="card-title">Range Limits</div>
+                        {STAT_LIST.map(([statKey, label]) => {
+                            const c = statLimits[statKey] ?? {};
+                            return (
+                                <div className="mini-pill-row" key={statKey}>
+                                    <label>{label}</label>
 
-                                <input className="mini-pill custom-select small" placeholder="Min" type="number"/>
-                                <input className="mini-pill custom-select small" placeholder="Max" type="number"/>
-                            </div>
-                        ))}
+                                    <input
+                                        className="mini-pill custom-select small"
+                                        placeholder="Min"
+                                        type="number"
+                                        value={c.minTotal ?? ""}
+                                        onChange={e =>
+                                            handleStatLimitChange(statKey, "minTotal", e.target.value)
+                                        }
+                                    />
+                                    <input
+                                        className="mini-pill custom-select small"
+                                        placeholder="Max"
+                                        type="number"
+                                        value={c.maxTotal ?? ""}
+                                        onChange={e =>
+                                            handleStatLimitChange(statKey, "maxTotal", e.target.value)
+                                        }
+                                    />
+                                </div>
+                            );
+                        })}
+                        <p className="analytics-note" style={{ margin: 'unset'}}>
+                            Set minimum and/or maximum values for each stat (or damage).
+                            The optimizer will ignore any echo sets whose final stats fall outside these ranges,
+                            and leaving a field blank means “no limit” for that stat.
+                        </p>
                     </div>
                     <div className="compact-card buffs-box stats">
+                        <StatProfileCard
+                            resEchoes={resEchoes}
+                            currentBag={currentBag}
+                            currentContext={currentContext}
+                            charIdForm={charIdForm}
+                            skill={skill}
+                            skillMeta={skillMeta}
+                            mergedBuffs={mergedBuffs}
+                            finalStats={finalStats}
+                        />
                     </div>
                 </div>
             </div>

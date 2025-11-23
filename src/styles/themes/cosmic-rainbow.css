@@ -690,7 +690,8 @@
     background: transparent;
 }
 .cosmic-rainbow .custom-select__control,
-.cosmic-rainbow .custom-select__menu {
+.cosmic-rainbow .custom-select__menu,
+.cosmic-rainbow .ant-tooltip-inner {
     background: radial-gradient(
             circle at 25% 25%,
             #130027 0%,

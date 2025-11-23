@@ -278,7 +278,7 @@
 .dark-alt .skills-modal-content,
 .dark-alt .skills-modal-content,
 .dark-alt .notification-toast {
-    background: rgba(4, 4, 4, 0.77);
+    background-color: black;
     border: 0.01rem solid rgba(255, 255, 255, 0.1);
     color: #f9fafb;
 }
@@ -522,7 +522,9 @@
 }
 
 .dark-alt .custom-select__control,
-.dark-alt .custom-select__menu {
+.dark-alt .custom-select__menu,
+.dark-alt .ant-tooltip-inner {
+    border: 1px solid rgba(85, 85, 85, 0.3) !important;
     background: black !important;
     color: #ddd !important;
 }

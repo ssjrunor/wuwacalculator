@@ -1,20 +1,22 @@
 // Instant Echo Combo Counter Worker
-// Computes EXACT same count as your DFS but in milliseconds.
+// Counts COMBINATIONS of size maxSize, respecting cost & optional locked echo.
+// Also derives how many *rows* generateEchoPermutationBatches2() will emit:
+// - no lock  → each combo produces maxSize rows (each echo main once)
+// - with lock → each combo produces 1 row (locked echo as main)
 
 self.onmessage = e => {
-    const { echoes, maxCost, maxSize, lockedEchoId } = e.data;
+    const {
+        echoes,
+        maxCost = 12,
+        maxSize = 5,
+        lockedEchoId = null
+    } = e.data;
 
     const n = echoes.length;
     const costs = echoes.map(e => e.cost || 0);
 
-    // Precompute factorials up to maxSize (K!) for permutations.
-    const fact = [1];
-    for (let i = 1; i <= maxSize; i++) {
-        fact[i] = fact[i - 1] * i;
-    }
-
-    // Find locked echo index
-    let lockedIndex = null;
+    // Find locked echo index (if any). -1 = no lock.
+    let lockedIndex = -1;
     if (lockedEchoId != null) {
         for (let i = 0; i < n; i++) {
             if (echoes[i].id === lockedEchoId) {
@@ -24,42 +26,42 @@ self.onmessage = e => {
         }
     }
 
-    // If locked but not found — zero
-    if (lockedEchoId != null && lockedIndex === null) {
-        self.postMessage({ total: 0 });
+    // If lock was requested but not found → 0 combos
+    if (lockedEchoId != null && lockedIndex === -1) {
+        self.postMessage({ total: 0, combos: 0 });
         return;
     }
 
-    // If locked and cost too high
-    if (lockedIndex !== null && costs[lockedIndex] > maxCost) {
-        self.postMessage({ total: 0 });
+    // If locked exists but alone already violates cost → 0 combos
+    if (lockedIndex !== -1 && costs[lockedIndex] > maxCost) {
+        self.postMessage({ total: 0, combos: 0 });
         return;
     }
 
-    // ----------------------------------------------------------
-    // DP SUBSET COUNTING
-    // dp[k][c] = number of ways to choose k echoes with total cost exactly c
-    // ----------------------------------------------------------
+    // maxK = size of subset we DP over:
+    //   - no lock: picking maxSize echoes from all
+    //   - lock:    picking (maxSize - 1) from "others"
+    const maxK = lockedIndex === -1 ? maxSize : maxSize - 1;
 
-    // We need sizes up to maxSize or (maxSize-1) if locked.
-    const maxK = lockedIndex === null ? maxSize : maxSize - 1;
-
-    // dp array: (maxK+1) x (maxCost+1)
+    // dp[k][c] = number of ways to pick k echoes (combinations)
+    //            from the available pool with total cost exactly c.
     const dp = Array.from({ length: maxK + 1 }, () =>
         new Int32Array(maxCost + 1)
     );
     dp[0][0] = 1; // one way to pick 0 items with cost 0
 
-    // Build DP from all echoes except the locked one
+    // Build DP from all echoes EXCEPT the locked one (if any)
     for (let i = 0; i < n; i++) {
-        if (i === lockedIndex) continue; // skip locked echo
+        if (i === lockedIndex) continue;
 
         const cost = costs[i];
 
-        // Update from high k to low k to avoid reuse in same iteration
+        // standard combinatorial DP: iterate k downward
         for (let k = maxK - 1; k >= 0; k--) {
-            const dpNext = dp[k + 1];
             const dpCur = dp[k];
+            const dpNext = dp[k + 1];
+
+            // iterate cost upward
             for (let c = 0; c + cost <= maxCost; c++) {
                 const ways = dpCur[c];
                 if (ways !== 0) {
@@ -69,34 +71,43 @@ self.onmessage = e => {
         }
     }
 
-    let subsetCount = 0;
+    let comboCount = 0; // number of unique 5-echo sets
 
-    if (lockedIndex === null) {
-        // ------------------------------------------------------
-        // Case A: no locked echo — use dp[maxSize][cost <= maxCost]
-        // ------------------------------------------------------
-        const row = dp[maxSize];
+    if (lockedIndex === -1) {
+        // -------- Case A: NO locked echo --------
+        const row = dp[maxSize]; // choose exactly maxSize echoes
         for (let c = 0; c <= maxCost; c++) {
-            subsetCount += row[c];
+            comboCount += row[c];
         }
     } else {
-        // ------------------------------------------------------
-        // Case B: locked echo fixed in slot 0
-        // Remaining cost allowed:
-        //   maxCost - cost(locked echo)
-        // We need dp[maxSize-1][c <= remainingCost]
-        // ------------------------------------------------------
+        // -------- Case B: locked echo must be included --------
         const lockedCost = costs[lockedIndex];
-        const remain = maxCost - lockedCost;
-        const row = dp[maxSize - 1];
-        for (let c = 0; c <= remain; c++) {
-            subsetCount += row[c];
+        const remaining = maxCost - lockedCost;
+
+        if (remaining < 0) {
+            self.postMessage({ total: 0, combos: 0 });
+            return;
+        }
+
+        const row = dp[maxSize - 1]; // we pick (maxSize - 1) from others
+        for (let c = 0; c <= remaining; c++) {
+            comboCount += row[c];
         }
     }
 
-    // Convert subset count → permutation count
-    const k = maxSize;
-    const total = subsetCount * fact[k];
+    // Now map "unique sets" → "rows emitted by the generator".
+    //
+    // generateEchoPermutationBatches2 does:
+    //   - no lock  → for each set, emit maxSize permutations (each echo as main)
+    //   - with lock → for each set, emit exactly 1 permutation (locked main)
+    let totalRows;
+    if (lockedIndex === -1) {
+        totalRows = comboCount * maxSize;
+    } else {
+        totalRows = comboCount; // one row per set
+    }
 
-    self.postMessage({ total });
+    // total    = rows the GPU will actually evaluate
+    // combos   = number of distinct echo sets (combinatorial count)
+    self.postMessage({ total: totalRows });
 };

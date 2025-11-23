@@ -1,4 +1,4 @@
-import shaderCode from "../shaders/echoOptimizer.wgsl?raw";
+import {shaderCode} from "../shaders/index.js";
 
 export function createPipeline(device, layout) {
     const shaderModule = device.createShaderModule({ code: shaderCode });
@@ -24,7 +24,8 @@ export function createBindGroup(device, layout, buffers) {
             { binding: 3, resource: { buffer: buffers.combos } },
             { binding: 4, resource: { buffer: buffers.context } },
             { binding: 5, resource: { buffer: buffers.outputBuffer } },
-            { binding: 6, resource: { buffer: buffers.mainEchoBuffs } }
+            { binding: 6, resource: { buffer: buffers.mainEchoBuffs } },
+            { binding: 7, resource: { buffer: buffers.statConstraints } },
         ]
     });
 }
@@ -52,6 +53,9 @@ export function createBindGroupLayout(device) {
 
             { binding: 6, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "read-only-storage" } },
+
+            { binding: 7, visibility: GPUShaderStage.COMPUTE,
+                buffer: { type: "uniform" } },
         ]
     });
 }

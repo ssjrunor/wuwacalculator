@@ -2,6 +2,19 @@ import React from "react";
 import {setIconMap, setPieceTypeMap} from "../../constants/echoSetData.jsx";
 import {typeMap} from "../../constants/skillTabs.js";
 
+export function accumulateSkillStatBonus(skillType, stats, skillMetaBonus = 0) {
+    const typeList = Array.isArray(skillType) ? skillType : [skillType];
+    let sum = 0;
+    for (const type of typeList) {
+        if (!type || typeof type !== "string") continue;
+        const normalized = type.trim();
+        const mapped = typeMap[normalized];
+
+        if (mapped) sum += stats[mapped] ?? stats[normalized] ?? 0;
+    }
+    return sum + skillMetaBonus;
+}
+
 export default function EchoOptimizerRow({
                                              echoData,
                                              setPlan,
@@ -14,18 +27,7 @@ export default function EchoOptimizerRow({
                                              finalStats,
                                              skillMeta = {}
                                          }) {
-    function accumulateSkillStatBonus(skillType, stats, skillMetaBonus = 0) {
-        const typeList = Array.isArray(skillType) ? skillType : [skillType];
-        let sum = 0;
-        for (const type of typeList) {
-            if (!type || typeof type !== "string") continue;
-            const normalized = type.trim();
-            const mapped = typeMap[normalized];
 
-            if (mapped) sum += stats[mapped] ?? stats[normalized] ?? 0;
-        }
-        return sum + skillMetaBonus;
-    }
 
     const entries = setPlan.flatMap(s => {
         const validPieces = setPieceTypeMap[s.setId] || [];

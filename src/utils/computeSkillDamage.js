@@ -457,7 +457,6 @@ export function buildSkillStatWeight(skillMeta) {
     const { scaling = {}, skillType, element } = skillMeta;
     const statWeight = {};
 
-    // --- 1️⃣ Add scaling-based weights (atk/hp/def) ---
     for (const [key, value] of Object.entries(scaling)) {
         const normalized = key.toLowerCase();
 
@@ -470,12 +469,10 @@ export function buildSkillStatWeight(skillMeta) {
         }
     }
 
-    // --- 2️⃣ Add element weight ---
     if (typeof element === "string" && element.trim()) {
         statWeight[element.toLowerCase()] = 1;
     }
 
-    // --- 3️⃣ Map skillType(s) ---
     const typeList = Array.isArray(skillType) ? skillType : [skillType];
 
     let isSpecialSkill = false;
@@ -494,7 +491,6 @@ export function buildSkillStatWeight(skillMeta) {
         }
     }
 
-    // --- 4️⃣ Apply special special handling ---
     if (isSpecialSkill) {
         for (const key of Object.keys(statWeight)) {
             if (key.endsWith("Flat")) {
@@ -504,7 +500,6 @@ export function buildSkillStatWeight(skillMeta) {
         }
     }
 
-    // --- 5️⃣ Clean up: remove any zero or NaN entries ---
     for (const key of Object.keys(statWeight)) {
         if (!statWeight[key] || statWeight[key] === 0 || isNaN(statWeight[key])) {
             delete statWeight[key];

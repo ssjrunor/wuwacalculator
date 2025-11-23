@@ -1,8 +1,12 @@
 import {runGpuEchoOptimizer} from "./GpuEchoOptimizer.js";
 import {generateEchoContext} from "./echoOptimizerContext.js";
 import {cancelGpuWorkers, initWorkerPool, resetGpuCancel, resetWorkerPool,} from "./gpu/GpuWorkerPool.js";
-import {generateEchoComboBatches, generateEchoPermutationBatches} from "./generateEchoCombos.js";
-import {encodeEchoStats} from "./encodeEchoStats.js";
+import {
+    generateEchoComboBatches,
+    generateEchoPermutationBatches,
+    generateEchoPermutationBatches2
+} from "./generateEchoCombos.js";
+import {buildStatConstraintArray, encodeEchoStats} from "./encodeEchoStats.js";
 import {prepareGpuContext} from "./prepareGpuContext.js";
 
 let CANCEL = false;
@@ -38,7 +42,9 @@ export const EchoOptimizer = {
             form.onContext(ctxObj);
         }
 
-        const batchGen = generateEchoPermutationBatches({
+        const encodedConstraints = buildStatConstraintArray(form.constraints);
+
+        const batchGen = generateEchoPermutationBatches2({
             echoes: filtered,
             maxCost: 12,
             maxSize: 5,
@@ -55,6 +61,7 @@ export const EchoOptimizer = {
             encoded,
             ctxObj,
             charId: form.charId,
+            encodedConstraints
         });
     }
 };

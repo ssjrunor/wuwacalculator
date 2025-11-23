@@ -25,15 +25,17 @@
 }
 
 .vibrant-citrus .custom-select__control,
-.vibrant-citrus .custom-select__menu {
+.vibrant-citrus .custom-select__menu,
+.vibrant-citrus .ant-tooltip-inner {
     border: 1px solid #ff8400 !important;
-    background-color: rgba(205, 237, 218, 0.96) !important;
+    background-color: #fff6ea !important;
 }
 
 .vibrant-citrus .skills-modal-content,
 .vibrant-citrus .skill-menu-panel,
 .vibrant-citrus .icon-menu-vertical {
-    background: rgba(255, 242, 222, 0.93);
+    border: 1px solid #ff8400;
+    background-color: #fff6ea;
 }
 
 .vibrant-citrus .dropdown-item {

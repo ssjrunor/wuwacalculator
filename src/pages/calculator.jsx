@@ -58,6 +58,7 @@ import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
 import EchoBagMenu from "../components/echo-bag-ui/EchoBagMenu.jsx";
 import {getEchoBag} from "../state/echoBagStore.js";
 import Optimizer from "../components/optimizer-ui/Optimizer.jsx";
+import {Tooltip} from "antd";
 
 export default function Calculator(props) {
     const [characters, setCharacters] = useState([]);
@@ -1327,7 +1328,7 @@ export default function Calculator(props) {
                             </button>
 
 
-                           {/* <button className="sidebar-button" onClick={() => setShowOptimizer(!showOptimizer)}>
+                            {/*<button className="sidebar-button" onClick={() => setShowOptimizer(!showOptimizer)}>
                                 <div className="icon-slot">
                                     <ChartColumn />
                                 </div>
@@ -1337,6 +1338,28 @@ export default function Calculator(props) {
                                     </span>
                                 </div>
                             </button>*/}
+
+                            <Tooltip
+                                title={
+                                    <span style={{ maxWidth: 260 }}>
+                                        Coming soon...
+                                    </span>
+                                }
+                                placement="right"
+                                mouseEnterDelay={0.1}
+                            >
+                                <button className="sidebar-button"
+                                style={{ opacity: 0.5, cursor: 'default' }}>
+                                    <div className="icon-slot">
+                                        <ChartColumn />
+                                    </div>
+                                    <div className="label-slot">
+                                    <span className="label-text">
+                                        Optimizer
+                                    </span>
+                                    </div>
+                                </button>
+                            </Tooltip>
 
                             <button className="sidebar-button" onClick={() => setShowCharacterOverview(!showCharacterOverview)}>
                                 <div className="icon-slot">
@@ -1526,7 +1549,14 @@ export default function Calculator(props) {
                                             />
                                         )}
                                         {leftPaneView === 'enemy' && (
-                                            <EnemyPane enemyLevel={enemyLevel} setEnemyLevel={setEnemyLevel} enemyRes={enemyRes} setEnemyRes={setEnemyRes} combatState={combatState} setCombatState={setCombatState} />
+                                            <EnemyPane
+                                                enemyLevel={enemyLevel}
+                                                setEnemyLevel={setEnemyLevel}
+                                                enemyRes={enemyRes}
+                                                setEnemyRes={setEnemyRes}
+                                                combatState={combatState}
+                                                setCombatState={setCombatState}
+                                            />
                                         )}
                                         {leftPaneView === 'buffs' && (
                                             <CustomBuffsPane customBuffs={customBuffs} setCustomBuffs={setCustomBuffs} />

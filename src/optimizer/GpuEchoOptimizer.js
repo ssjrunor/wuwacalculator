@@ -9,6 +9,7 @@ export async function runGpuEchoOptimizer({
                                               combinations,
                                               ctxObj,
                                               charId,
+                                              encodedConstraints
                                           }) {
     let totalProcessed = 0;
     const topResults = new TopKHeap(resultsLimit);
@@ -32,7 +33,8 @@ export async function runGpuEchoOptimizer({
             combosBatch: batch,
             packedContext,
             charId,
-            resultsLimit
+            resultsLimit,
+            encodedConstraints
         });
 
         if (!r || r.cancelled) {
@@ -47,7 +49,7 @@ export async function runGpuEchoOptimizer({
 
         if (r.topK) {
             for (const { dmg, ids } of r.topK) {
-
+                if (dmg <= 0) continue;
                 // canonical form of the set (sorted echo IDs)
                 const key = ids.slice().sort((a,b)=>a-b).join(',');
 
@@ -90,7 +92,7 @@ export async function runGpuEchoOptimizer({
                 elapsedMs: now - startTime,
                 remainingMs,
                 processed: totalProcessed,
-                speed: avgSpeed,
+                speed: avgSpeed * 1000,
             });
         }
     }

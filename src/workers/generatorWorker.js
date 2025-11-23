@@ -33,7 +33,7 @@ self.onmessage = async (event) => {
             randGen.rollQuality,
             mergedBuffs,
             echoData,
-            skill.statWeight ?? skill.custSkillMeta?.statWeight ?? [],
+            skill.statWeight ?? skill.custSkillMeta?.statWeight ?? {},
             Date.now(),
             randGen.mainEcho?.cost,
             (progress) => {

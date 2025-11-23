@@ -4,8 +4,17 @@ export async function runEchoGpuPipeline({
                                              bindGroup,
                                              comboCount
                                          }) {
-    const workgroupSize = 64;
-    const totalWorkgroups = Math.ceil(comboCount / workgroupSize);
+    // Must match WGSL:
+    // @workgroup_size(512)
+    // const CYCLES_PER_INVOCATION : u32 = 8u;
+    const WORKGROUP_SIZE = 512;
+    const CYCLES_PER_INVOCATION = 8;
+
+    // How many shader invocations do we need total?
+    const invocationsNeeded = Math.ceil(comboCount / CYCLES_PER_INVOCATION);
+
+    // How many workgroups of size 512 to cover those invocations?
+    const totalWorkgroups = Math.ceil(invocationsNeeded / WORKGROUP_SIZE);
 
     const MAX_WG = 65535;
 
@@ -29,7 +38,6 @@ export async function runEchoGpuPipeline({
         offset += thisBatch;
         remaining -= thisBatch;
 
-        // wait so we don’t overload the submission queue
         await device.queue.onSubmittedWorkDone();
     }
 }

@@ -345,24 +345,27 @@ export default function EchoesPane({
 
     return (
         <div className="echoes-pane" ref={echoesPaneRef}>
-            <EchoGenerator
-                open={isGeneratorOpen}
-                onClose={() => setIsGeneratorOpen(false)}
-                echoData={echoData}
-                charId={charId}
-                getImageSrc={getImageSrc}
-                characterRuntimeStates={characterRuntimeStates}
-                allSkillLevels={allSkillLevels}
-                skillResults={skillResults}
-                activeCharacter={activeCharacter}
-                baseCharacterState={baseCharacterState}
-                mergedBuffs={mergedBuffs}
-                onEquipGenerated={onEquipGenerated}
-                setCharacterRuntimeStates={setCharacterRuntimeStates}
-                setGuideClose={setGuideClose}
-                setIsGeneratorOpen={setIsGeneratorOpen}
-                openGuide={openGuide}
-            />
+            {isGeneratorOpen && (
+                <EchoGenerator
+                    open={isGeneratorOpen}
+                    onClose={() => setIsGeneratorOpen(false)}
+                    echoData={echoData}
+                    charId={charId}
+                    getImageSrc={getImageSrc}
+                    characterRuntimeStates={characterRuntimeStates}
+                    allSkillLevels={allSkillLevels}
+                    skillResults={skillResults}
+                    activeCharacter={activeCharacter}
+                    baseCharacterState={baseCharacterState}
+                    mergedBuffs={mergedBuffs}
+                    onEquipGenerated={onEquipGenerated}
+                    setCharacterRuntimeStates={setCharacterRuntimeStates}
+                    setGuideClose={setGuideClose}
+                    setIsGeneratorOpen={setIsGeneratorOpen}
+                    openGuide={openGuide}
+                />
+            )}
+
             <EchoParser
                 charId={charId}
                 characterRuntimeStates={characterRuntimeStates}

@@ -102,23 +102,13 @@
 .dropdown-item:hover {
     background-color: #e0e0e0;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
 
 .dark .icon-menu-vertical {
-    background-color: rgb(23, 30, 41);
+    background-color: #131922;
     border-color: rgba(255, 255, 255, 0.05);
 }
-
-.dark .dropdown-item {
-    background-color: rgba(19, 20, 23, 0.38);
-    color: #ddd;
-}
-
-.dark .dropdown-item:hover {
-    background-color: rgba(19, 20, 23, 0.62);
-}
-
 
 .buff-icon-wrapper {
     position: relative;

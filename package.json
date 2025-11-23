@@ -34,6 +34,7 @@
     "react-router-dom": "^7.6.0",
     "react-select": "^5.10.1",
     "react-transition-group": "^4.4.5",
+    "recharts": "^3.4.1",
     "split.js": "^1.6.5",
     "styled-components": "^6.1.19",
     "tesseract.js": "^6.0.1",

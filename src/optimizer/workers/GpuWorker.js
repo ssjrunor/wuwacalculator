@@ -1,7 +1,3 @@
-// =======================================
-// GpuWorker.js — Final Clean Version
-// =======================================
-
 import { createBindGroup, createPipeline, createBindGroupLayout } from "../gpu/createPipeline.js";
 import { runEchoGpuPipeline, readResults } from "../gpu/runPipeline.js";
 import { getGpuDevice } from "../gpu/getDevice.js";
@@ -15,9 +11,48 @@ let statsBuf = null;
 let costsBuf = null;
 let setsBuf = null;
 let mainBuffsBuf = null;
+let defaultConstraintBuf = null;
+
+// Reused per-run buffers
+let combosBuf = null;
+let combosBufSize = 0;
+
+let ctxBuf = null;
+let ctxBufSize = 0;
+
+let outBuf = null;
+let outBufSize = 0;
+
+let constraintBuf = null;
+let constraintBufSize = 0;
 
 let CANCEL = false;
 
+const defaultConstraints = new Float32Array([
+    1, 0,  // atk
+    1, 0,  // hp
+    1, 0,  // def
+    1, 0,  // critRate
+    1, 0,  // critDmg
+    1, 0,  // ER
+    1, 0,  // dmgBonus
+    1, 0,  // damage
+]);
+
+// Small helpers to ensure capacity
+function ensureStorageBuffer(existing, existingSize, neededSize, usage) {
+    if (!existing || existingSize < neededSize) {
+        if (existing) {
+            existing.destroy();
+        }
+        const buf = device.createBuffer({
+            size: neededSize,
+            usage
+        });
+        return { buffer: buf, size: neededSize };
+    }
+    return { buffer: existing, size: existingSize };
+}
 
 async function initStatic(encoded, echoes, charId) {
     try {
@@ -59,13 +94,18 @@ async function initStatic(encoded, echoes, charId) {
         });
         device.queue.writeBuffer(mainBuffsBuf, 0, mainArr);
 
+        defaultConstraintBuf = device.createBuffer({
+            size: defaultConstraints.byteLength,
+            usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+        device.queue.writeBuffer(defaultConstraintBuf, 0, defaultConstraints);
+
         self.postMessage({ type: "ready" });
 
     } catch (err) {
         self.postMessage({ type: "workerError", error: err.message });
     }
 }
-
 
 self.onmessage = async e => {
     const msg = e.data;
@@ -91,26 +131,68 @@ self.onmessage = async e => {
             const combos = msg.combos;  // Int32Array
             const packed = msg.packedContext;
             const comboCount = combos.length / 5;
+            const constraints = msg.encodedConstraints; // Float32Array
 
-            // GPU buffer for combos
-            const combosBuf = device.createBuffer({
-                size: combos.byteLength,
-                usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-            });
-            device.queue.writeBuffer(combosBuf, 0, combos);
 
-            // GPU uniform buffer for context
-            const ctxBuf = device.createBuffer({
-                size: packed.byteLength,
-                usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
-            });
-            device.queue.writeBuffer(ctxBuf, 0, packed);
+            // Combos buffer (STORAGE)
+            {
+                const neededSize = combos.byteLength;
+                const res = ensureStorageBuffer(
+                    combosBuf,
+                    combosBufSize,
+                    neededSize,
+                    GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
+                );
+                combosBuf = res.buffer;
+                combosBufSize = res.size;
 
-            const padded = Math.ceil(comboCount / 64) * 64;
-            const outBuf = device.createBuffer({
-                size: padded * 4,
-                usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
-            });
+                device.queue.writeBuffer(combosBuf, 0, combos);
+            }
+
+            // Context buffer (UNIFORM)
+            {
+                const neededSize = packed.byteLength;
+                const res = ensureStorageBuffer(
+                    ctxBuf,
+                    ctxBufSize,
+                    neededSize,
+                    GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
+                );
+                ctxBuf = res.buffer;
+                ctxBufSize = res.size;
+
+                device.queue.writeBuffer(ctxBuf, 0, packed);
+            }
+
+            // Output buffer (STORAGE | COPY_SRC)
+            {
+                const neededSize = comboCount * 4; // 1 float (4 bytes) per combo
+                const res = ensureStorageBuffer(
+                    outBuf,
+                    outBufSize,
+                    neededSize,
+                    GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
+                );
+                outBuf = res.buffer;
+                outBufSize = res.size;
+            }
+
+            // Constraints buffer (UNIFORM)
+            if (constraints) {
+                const neededSize = constraints.byteLength;
+                const res = ensureStorageBuffer(
+                    constraintBuf,
+                    constraintBufSize,
+                    neededSize,
+                    GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
+                );
+                constraintBuf = res.buffer;
+                constraintBufSize = res.size;
+
+                device.queue.writeBuffer(constraintBuf, 0, constraints);
+            } else {
+                constraintBuf = defaultConstraintBuf;
+            }
 
             const group = createBindGroup(device, layout, {
                 echoStats: statsBuf,
@@ -119,7 +201,8 @@ self.onmessage = async e => {
                 combos: combosBuf,
                 context: ctxBuf,
                 outputBuffer: outBuf,
-                mainEchoBuffs: mainBuffsBuf
+                mainEchoBuffs: mainBuffsBuf,
+                statConstraints: constraintBuf
             });
 
             await runEchoGpuPipeline({
@@ -131,12 +214,18 @@ self.onmessage = async e => {
 
             let results = await readResults(device, outBuf, comboCount);
 
+            // -------------------------------------------------------
+            // Local top-K selection as before
+            // -------------------------------------------------------
             if (comboCount <= msg.resultsLimit) {
                 const topCombos = [];
                 for (let i = 0; i < comboCount; i++) {
+                    const dmg = results[i];
+                    if (dmg <= 0) continue;
+
                     const base = i * 5;
                     topCombos.push({
-                        dmg: results[i],
+                        dmg,
                         ids: [
                             combos[base],
                             combos[base + 1],
@@ -202,10 +291,6 @@ self.onmessage = async e => {
             });
 
             localTop.length = 0;
-
-            combosBuf.destroy();
-            ctxBuf.destroy();
-            outBuf.destroy();
 
             await device.queue.onSubmittedWorkDone();
 

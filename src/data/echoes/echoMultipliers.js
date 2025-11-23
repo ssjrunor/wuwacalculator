@@ -336,5 +336,4 @@ export const echoScalingRatios = {
     '6000061': { atk: 0, hp: 1, def: 0, energyRegen: 0 },
     '6000068': { atk: 0, hp: 1, def: 0, energyRegen: 0 },
     '6000094': { atk: 0, hp: 1, def: 0, energyRegen: 0 },
-
 };

@@ -33,7 +33,6 @@ export function applyChisaLogic({
     const name = skillMeta.name?.toLowerCase();
     const tab = skillMeta.tab ?? '';
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
-    //const havocBane = combatState.havocBane ?? 0;
 
     if (tab === 'forteCircuit') skillMeta.skillType = 'ultimate';
     if (name.includes('death snip')) skillMeta.skillType = 'ultimate';
@@ -52,7 +51,6 @@ export function applyChisaLogic({
     }
 
     if (!mergedBuffs.__threadOfBane && characterState.activeStates.threadOfBane) {
-        //const bonusDefIgnore = Math.min(havocBane * 3, 18);
         mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 18;
         mergedBuffs.__threadOfBane = true
     }
