@@ -18,6 +18,14 @@
     backdrop-filter: unset; -webkit-backdrop-filter: unset;
 }
 
+.frosted-aurora.blur-off .inherent-skills-box,
+.frosted-aurora.blur-off .skills-settings,
+.frosted-aurora.blur-off .buffs-box,
+.frosted-aurora.blur-off .damage-inner-box,
+.frosted-aurora.blur-off .character-settings {
+    background-color: rgba(255, 255, 255, 0.09);
+}
+
 .blur-off.frosted-aurora .character-settings,
 .blur-off.frosted-aurora .skills-settings,
 .blur-off.frosted-aurora .inherent-skills-box,

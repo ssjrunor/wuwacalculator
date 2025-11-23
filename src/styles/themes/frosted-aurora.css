@@ -51,6 +51,10 @@
     background-color: #001f37;
 }
 
+.frosted-aurora .toggle {
+    background: none;
+}
+
 .frosted-aurora body,
 .frosted-aurora #root {
     background: unset;
@@ -597,9 +601,12 @@ rgba(235, 245, 255, 0.24)
 .frosted-aurora .import-echo-grid .echo-tile {
     backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: transparent;
 }
-.frosted-aurora .custom-select__control,
 .frosted-aurora .custom-select__menu {
     background: rgba(255,255,255,0.7) !important;
+    color: #003350 !important;
+}
+.frosted-aurora .custom-select__control {
+    background: none !important;
     color: #003350 !important;
 }
 .frosted-aurora .dark-text .custom-select__control,
@@ -607,6 +614,7 @@ rgba(235, 245, 255, 0.24)
     background: rgba(255, 255, 255, 0.31) !important;
 }
 .frosted-aurora .custom-select__multi-value {
+    background: rgba(255,255,255,0.7) !important;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
 }
 

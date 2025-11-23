@@ -186,7 +186,7 @@ export default function AllowedSetDropdown({
                 </div>
             }
         >
-            <button className="custom-select small"> ◉ Allowed Sets</button>
+            <button className="toggle custom-select small"> ◉ Allowed Sets</button>
         </Popover>
     );
 }

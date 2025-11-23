@@ -26,6 +26,7 @@ import {useComboCounter} from "./useComboCounter.js";
 import GuidesModal from "../utils-ui/GuideModal.jsx";
 import PlainModal from "../utils-ui/PlainModal.jsx";
 import {modalContent} from "./modalContent.jsx";
+import {getGroupedSkillOptions} from "../../utils/prepareDamageData.js";
 
 const HEADER_TITLES = [
     "Set",
@@ -128,23 +129,9 @@ export default function Optimizer({
     );
     const toggleTab = (key) =>
         setExpandedTabs((prev) => ({...prev, [key]: !prev[key]}));
+
     const groupedSkillOptions = React.useMemo(() => {
-        const allSkills = skillResults.filter(
-            (s) => s.visible !== false && s.tab !== "negativeEffect" && s.tab !== "echoAttacks"
-        );
-        const groups = {};
-        for (const skill of allSkills) {
-            const tab = skill.tab ?? "unknown";
-            if (!groups[tab]) groups[tab] = [];
-            groups[tab].push({
-                name: skill.name,
-                type: skill.skillType,
-                tab,
-                visible: skill.visible,
-                element: skill.element ?? null,
-            });
-        }
-        return groups;
+        return getGroupedSkillOptions({ skillResults });
     }, [skillResults]);
 
     const handleAddSkill = (skill) => {

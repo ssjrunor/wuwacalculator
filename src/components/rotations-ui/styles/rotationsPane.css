@@ -470,7 +470,6 @@ select:focus {
     padding: 0 5px;
     font-weight: bold;
     border-radius: 10px !important;
-    border: none !important;
     background-color: #f9f9f9 !important;
     color: #333 !important;
     box-shadow: none !important;

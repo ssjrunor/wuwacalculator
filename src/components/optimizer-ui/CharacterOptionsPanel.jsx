@@ -69,7 +69,7 @@ export function CharacterOptionsPanel({
                 </div>
                 <div className="preset-section">
                     <label>Image Art</label>
-                    <div className="mode-switch custom-select small">
+                    <div className="toggle mode-switch custom-select small">
                         <div className={`optimizer-toggle ${useSplash ? 'active btn-primary' : ''}`}
                              onClick={() => updateGeneralOptimizerSettings({useSplash: true})}
                         >
@@ -174,35 +174,10 @@ export function CharacterOptionsPanel({
                             options={mainStatOptions}
                             placeholder="Main stats"
                             className="select"
-                            classNamePrefix="custom-select"
+                            classNamePrefix="toggle custom-select"
                             menuPortalTarget={document.body}
                             menuPosition="fixed"
                         />
-                        {/*<div className="mini-pill-row">
-                            <label>ATK</label>
-                            <div className="mini-pill custom-select small">Min</div>
-                            <div className="mini-pill custom-select small">Max</div>
-                        </div>
-                        <div className="mini-pill-row">
-                            <label>Exclude</label>
-                            <div className="mini-pill custom-select small off">None</div>
-                        </div>
-                        <div className="mini-pill-row">
-                            <label>Enhance</label>
-                            <div className="mini-pill custom-select small">+9</div>
-                        </div>
-                        <div className="mini-pill-row">
-                            <label>Rarity</label>
-                            <div className="mini-pill custom-select small">5★</div>
-                        </div>
-                        <div className="mini-pill-row">
-                            <label>Mainstat</label>
-                            <div className="mini-pill custom-select small">+15</div>
-                        </div>
-                        <div className="mode-switch custom-select small">
-                            <div className="optimizer-toggle btn-primary active">Main</div>
-                            <div className="optimizer-toggle">Sub</div>
-                        </div>*/}
                     </div>
                     <div className="compact-card buffs-box stats">
                         <div className="card-title">Range Limits</div>

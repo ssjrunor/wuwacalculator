@@ -4,6 +4,29 @@ import { calculateAeroErosionDamage, calculateSpectroFrazzleDamage } from "./dam
 import { elementToAttribute } from "./attributeHelpers.js";
 import { echoAttackMultipliers, echoElements } from "../data/echoes/echoMultipliers";
 
+export function getGroupedSkillOptions ({ skillResults }) {
+    const allSkills = skillResults.filter(
+        (s) =>
+            s.visible !== false &&
+            s.tab !== "negativeEffect" &&
+            s.tab !== "echoAttacks" &&
+            !s.isSupportSkill
+    );
+    const groups = {};
+    for (const skill of allSkills) {
+        const tab = skill.tab ?? "unknown";
+        if (!groups[tab]) groups[tab] = [];
+        groups[tab].push({
+            name: skill.name,
+            type: skill.skillType,
+            tab,
+            visible: skill.visible,
+            element: skill.element ?? null,
+        });
+    }
+    return groups;
+}
+
 export function prepareDamageData({
                                       activeCharacter,
                                       charId,
