@@ -12,6 +12,7 @@ import { echoes as allEchoes } from "../../json-data-scripts/getEchoes.js";
 import EchoMenu from "../echoes-pane-ui/EchoMenu.jsx";
 import SkillMenu, {tabDisplayOrder} from "../utils-ui/SkillMenu.jsx";
 import { EchoGridPreview } from "../overview-ui/OverviewDetailPane.jsx";
+import {getGroupedSkillOptions} from "../../utils/prepareDamageData.js";
 
 export function EchoGenerator({
                                   open,
@@ -26,12 +27,8 @@ export function EchoGenerator({
                                   activeCharacter,
                                   baseCharacterState,
                                   mergedBuffs,
-                                  setGuideClose,
-                                  setIsGeneratorOpen,
-                                  openGuide,
                                   allSkillLevels
                               }) {
-    if (!open) return null;
     const updateRandGenSettings = (patch) => {
         if (!activeCharacter) return;
         const charId = activeCharacter.Id ?? activeCharacter.id ?? activeCharacter.link;
@@ -65,22 +62,7 @@ export function EchoGenerator({
     const [progress, setProgress] = useState(0);
 
     const groupedSkillOptions = React.useMemo(() => {
-        const allSkills = skillResults.filter(
-            (s) => s.visible !== false && s.tab !== "negativeEffect" && s.tab !== "echoAttacks"
-        );
-        const groups = {};
-        for (const skill of allSkills) {
-            const tab = skill.tab ?? "unknown";
-            if (!groups[tab]) groups[tab] = [];
-            groups[tab].push({
-                name: skill.name,
-                type: skill.skillType,
-                tab,
-                visible: skill.visible,
-                element: skill.element ?? null,
-            });
-        }
-        return groups;
+        return getGroupedSkillOptions({ skillResults });
     }, [skillResults]);
 
     const [expandedTabs, setExpandedTabs] = useState(() =>
@@ -193,13 +175,6 @@ export function EchoGenerator({
 
     const activeId = charId;
     const echoes = builtEchoes;
-    const runtimes = {
-        ...characterRuntimeStates,
-        [activeId]: {
-            ...characterRuntimeStates[activeId],
-            equippedEchoes: echoes,
-        },
-    };
 
     const maxScore = getTop5SubstatScoreDetails(activeId).total;
     const buildScoreCur = getEquippedEchoesScoreDetails(charId, {

@@ -943,7 +943,7 @@ export default function Calculator(props) {
         if (!currentLevels) return;
 
         const defaultRandGen = {
-            iterations: 10000,
+            poolSize: 50,
             bias: 0.5,
             rollQuality: 0.3,
             targetEnergyRegen: 0,
@@ -1328,7 +1328,7 @@ export default function Calculator(props) {
                             </button>
 
 
-                            {/*<button className="sidebar-button" onClick={() => setShowOptimizer(!showOptimizer)}>
+                            <button className="sidebar-button" onClick={() => setShowOptimizer(!showOptimizer)}>
                                 <div className="icon-slot">
                                     <ChartColumn />
                                 </div>
@@ -1337,9 +1337,9 @@ export default function Calculator(props) {
                                         Optimizer
                                     </span>
                                 </div>
-                            </button>*/}
+                            </button>
 
-                            <Tooltip
+                            {/*<Tooltip
                                 title={
                                     <span style={{ maxWidth: 260 }}>
                                         Coming soon...
@@ -1359,7 +1359,7 @@ export default function Calculator(props) {
                                     </span>
                                     </div>
                                 </button>
-                            </Tooltip>
+                            </Tooltip>*/}
 
                             <button className="sidebar-button" onClick={() => setShowCharacterOverview(!showCharacterOverview)}>
                                 <div className="icon-slot">

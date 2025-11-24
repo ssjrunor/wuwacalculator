@@ -47,6 +47,11 @@
     color: #001f37;
 }
 
+.frosted-aurora .custom-select__single-value__label,
+.frosted-aurora .custom-select__multi-value__label {
+    color: #001f37 !important;
+}
+
 .frosted-aurora .light-text .hamburger-button span {
     background-color: #001f37;
 }
