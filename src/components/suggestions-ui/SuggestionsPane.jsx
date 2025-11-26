@@ -157,7 +157,7 @@ export default function SuggestionsPane({
         setBestSetPlan(setSuggestions?.results[selectedPlanIndex]);
     }, [setSuggestions?.results?.length, selectedPlanIndex])
 
-    useEffect(() => {
+    /*useEffect(() => {
         console.log('[SuggestionsPane] creating worker from', SuggestionsWorker);
         const worker = new Worker(SuggestionsWorker, { type: 'module' });
         workerRef.current = worker;
@@ -202,28 +202,13 @@ export default function SuggestionsPane({
             Object.values(timers).forEach((id) => id && clearTimeout(id));
             worker.terminate();
         };
-    }, []);
+    }, []);*/
 
     function run(type = 'mainStats') {
-        console.log('[SuggestionsPane] run called', { type, noEchoes });
+        if (noEchoes) return;
+        if (!skill) return;
 
-        if (type === 'mainStats' && noEchoes) {
-            console.log('[SuggestionsPane] abort mainStats: noEchoes');
-            return;
-        }
-
-        const worker = workerRef.current;
-        console.log('[SuggestionsPane] workerRef.current:', worker);
-        if (!worker) {
-            console.warn('[SuggestionsPane] no worker, aborting run');
-            return;
-        }
-        setIsRunning(true);
-        const timers = workerTimersRef.current;
-        if (timers[type]) {
-            clearTimeout(timers[type]);
-        }
-
+        // Same payload you were sending to the worker
         const payload = {
             charId,
             activeCharacter,
@@ -237,33 +222,30 @@ export default function SuggestionsPane({
             skillType: skill.skillType,
         };
 
-        const delay = 400;
         const nonNullCount = echoData.reduce(
             (count, e) => (e != null ? count + 1 : count),
             0
         );
-        console.log('[SuggestionsPane] posting to worker', {
-            type,
-            nonNullCount,
-            hasSkill: !!skill,
-        });
 
-        timers[type] = setTimeout(() => {
-            if (!workerRef.current) return;
+        const optionsMain = { minSlots: nonNullCount, maxSlots: nonNullCount };
+        const optionsSet  = {};
+
+        setIsRunning(true);
+        try {
             if (type === 'mainStats') {
-                workerRef.current.postMessage({
-                    type: 'mainStats',
-                    payload,
-                    options: { minSlots: nonNullCount, maxSlots: nonNullCount },
-                });
-            } else {
-                workerRef.current.postMessage({
-                    type: 'setPlans',
-                    payload,
-                    options: {},
-                });
+                const suggestions = runMainStatSuggestor(payload, optionsMain) || [];
+                setMainStatResults(suggestions);
+                setSelectedMainStatIndex(0);
+            } else if (type === 'setPlans') {
+                const suggestions = runSetSuggestor(payload, optionsSet) || null;
+                setSetSuggestions(suggestions);
+                setSelectedPlanIndex(0);
             }
-        }, delay);
+        } catch (err) {
+            console.error('[SuggestionsPane] non-worker suggestor error:', err);
+        } finally {
+            setIsRunning(false);
+        }
     }
 
     useEffect(() => {
