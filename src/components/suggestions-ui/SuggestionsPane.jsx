@@ -182,7 +182,9 @@ export default function SuggestionsPane({
     }, []);
 
     function run(type = 'mainStats') {
+/*
         if (noEchoes) return;
+*/
         const worker = workerRef.current;
         if (!worker) return;
         setIsRunning(true);
