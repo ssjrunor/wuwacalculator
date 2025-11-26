@@ -167,8 +167,13 @@ export default function SuggestionsPane({
             const { type, suggestions, error } = event.data;
             setIsRunning(false);
 
+            if (type === 'workerFatalError') {
+                console.error('[SuggestionsPane] worker reported fatal error:', error);
+                return;
+            }
+
             if (error) {
-                console.error('Suggestions worker error:', error);
+                console.error('[SuggestionsPane] worker error payload:', error);
                 return;
             }
 
@@ -182,7 +187,14 @@ export default function SuggestionsPane({
         };
 
         worker.onerror = (err) => {
-            console.error('[SuggestionsPane] worker.onerror', err);
+            console.error(
+                '[SuggestionsPane] worker.onerror',
+                'message:', err.message,
+                'filename:', err.filename,
+                'lineno:', err.lineno,
+                'colno:', err.colno,
+                'event:', err
+            );
         };
 
         return () => {
