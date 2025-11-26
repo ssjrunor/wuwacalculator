@@ -16,6 +16,8 @@ import EchoMenu from "../echoes-pane-ui/EchoMenu.jsx";
 import {echoes as allEchoes} from "../../json-data-scripts/getEchoes.js";
 import {SonataSetPlanner} from "../echo-generator-ui/EchoGenerator.jsx";
 import {applySetPlanToEchoes} from "../../suggestions/setPlain-suggestion/utils.js";
+import {runMainStatSuggestor} from "../../suggestions/mainStat-suggestion/suggestMainStat.js";
+import {runSetSuggestor} from "../../suggestions/setPlain-suggestion/suggestSetPlan.js";
 
 const SuggestionsWorker = new URL('../../workers/suggestionsWorker.js', import.meta.url);
 
