@@ -344,7 +344,7 @@ export default function SuggestionsPane({
                                 ></div>
                             </div>
                         )}*/}
-                        {noEchoes ? (
+                        {!noEchoes ? (
                             <span className="empty-state">
                                 No main stat suggestions yet. Make sure you have echoes equipped!
                             </span>
@@ -501,7 +501,7 @@ export default function SuggestionsPane({
                             </div>
                         )}
 */}
-                        {noEchoes || !setSuggestions?.results || setSuggestions?.results?.length === 0 ? (
+                        {!(noEchoes || !setSuggestions?.results || setSuggestions?.results?.length === 0) ? (
                             <span className="empty-state">
                                 No set plans yet. Make sure you have enough echoes equipped!
                             </span>
