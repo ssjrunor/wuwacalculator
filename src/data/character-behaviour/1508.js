@@ -14,8 +14,6 @@ export function applyChisaLogic({
                                    characterState,
                                    isActiveSequence = () => false,
                                       isToggleActive = () => false,
-                                      characterLevel = 1,
-                                      finalStats
 }) {
     skillMeta = {
         ...skillMeta,
@@ -37,7 +35,7 @@ export function applyChisaLogic({
     if (tab === 'forteCircuit') skillMeta.skillType = 'ultimate';
     if (name.includes('death snip')) skillMeta.skillType = 'ultimate';
 
-    if (name === 'additional multiplier from ring of chainsaw per point') {
+    if (name === 'bonus dmg multiplier per ring of chainsaw') {
         characterState.activeStates.__ringOfChainsaw = skillMeta.multiplier;
         skillMeta.visible = false;
     }

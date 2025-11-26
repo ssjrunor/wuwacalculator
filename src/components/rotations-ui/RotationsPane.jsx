@@ -106,7 +106,7 @@ export default function RotationsPane({
     const [expandedTabs, setExpandedTabs] = useState(() =>
         Object.fromEntries(tabDisplayOrder.map(key => [key, true]))
     );
-    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    const [forceUpdate] = useReducer(x => x + 1, 0);
     const sensors = useSensors(useSensor(PointerSensor, {
         activationConstraint: { distance: 5 }
     }));

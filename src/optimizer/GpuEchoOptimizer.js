@@ -9,13 +9,13 @@ export async function runGpuEchoOptimizer({
                                               combinations,
                                               ctxObj,
                                               charId,
-                                              encodedConstraints
+                                              encodedConstraints,
+                                              echoes,              // <-- add this
                                           }) {
     let totalProcessed = 0;
     const topResults = new TopKHeap(resultsLimit);
     const globalBestBySet = new Map();
 
-    // Timing
     const startTime = performance.now();
     let lastUpdateTime = startTime;
     let avgSpeed = 0;
@@ -26,7 +26,8 @@ export async function runGpuEchoOptimizer({
 
         const packedContext = packGpuContext({
             ...ctxObj,
-            comboCount
+            comboCount,
+            charId
         });
 
         const r = await runGpuWorkerOnBatch({
@@ -40,25 +41,17 @@ export async function runGpuEchoOptimizer({
         if (!r || r.cancelled) {
             return {
                 cancelled: true,
-                results: topResults.sorted().map(({ dmg, ids }) => ({
-                    ids,
-                    damage: dmg
-                }))
+                results: []
             };
         }
 
         if (r.topK) {
             for (const { dmg, ids } of r.topK) {
                 if (dmg <= 0) continue;
-                // canonical form of the set (sorted echo IDs)
-                const key = ids.slice().sort((a,b)=>a-b).join(',');
-
+                const key = ids.slice().sort((a, b) => a - b).join(",");
                 const prev = globalBestBySet.get(key);
-
                 if (!prev || dmg > prev.dmg) {
                     globalBestBySet.set(key, { dmg, ids });
-
-                    // push into global Top-K
                     topResults.push({ dmg, ids });
                 }
             }
@@ -71,21 +64,17 @@ export async function runGpuEchoOptimizer({
 
         if (elapsedSinceLast > 0) {
             const speed = comboCount / elapsedSinceLast;
-
             avgSpeed = (avgSpeed * speedSamples + speed) / (speedSamples + 1);
             speedSamples++;
-
             lastUpdateTime = now;
         }
 
         let remainingMs = Infinity;
-
         if (avgSpeed > 0) {
             const combosLeft = combinations - totalProcessed;
             remainingMs = combosLeft / avgSpeed;
         }
 
-        // --- CALLBACKS ---
         if (onProgress) {
             onProgress({
                 progress: totalProcessed / combinations,
@@ -97,8 +86,17 @@ export async function runGpuEchoOptimizer({
         }
     }
 
-    return topResults.sorted().map(({ dmg, ids }) => ({
-        ids,
-        damage: dmg
-    }));
+    return topResults.sorted().map(({ dmg, ids }) => {
+        const uids = ids.map(idx => {
+            if (idx < 0) return null;
+            const echo = echoes[idx];
+            return echo?.uid ?? null;
+        });
+
+        return {
+            ids,
+            uids,
+            damage: dmg
+        };
+    });
 }

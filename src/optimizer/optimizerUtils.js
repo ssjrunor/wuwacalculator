@@ -1,6 +1,6 @@
 import {getEchoStatsFromEquippedEchoes, statLabelMap} from "../utils/echoHelper.js";
 import {extractMainEchoBuffs} from "./EchoFilters.js";
-import {getSetPlanFromEchoes} from "../data/buffs/setEffect.js";
+import {elementMap, getSetPlanFromEchoes} from "../data/buffs/setEffect.js";
 
 export const ECHO_STAT_ORDER = [
     "atkPercent", "atkFlat",
@@ -28,7 +28,7 @@ export const SET_EFFECT_TABLE = {
     7: { maxPieces:5, two:{ healingBonus:10 }, five:{ atkPercent:15 }},
     8: { maxPieces:5, two:{ energyRegen:10 }},
     9: { maxPieces:5, two:{ atkPercent:10 }, five:{ atkPercent:20 }},
-    10:{ maxPieces:5, two:{ resonaceSkill:12 }, five:{ glacio:22.5, resonanceSkill:36 }},
+    10:{ maxPieces:5, two:{ resonanceSkill:12 }, five:{ glacio:22.5, resonanceSkill:36 }},
     11:{ maxPieces:5, two:{ spectro:10 }, five:{ critRate:20, spectro:15 }},
     12:{ maxPieces:5, two:{ havoc:10 }},
     13:{ maxPieces:5, two:{ energyRegen:10 }, five:{ atkPercent:20 }},
@@ -54,7 +54,7 @@ function getSetPieceCounts(echoObjs) {
     return counts;
 }
 
-export function getActiveSetEffects(echoObjs) {
+export function getActiveSetEffects(echoObjs, stats) {
     const counts = getSetPieceCounts(echoObjs);
     const total = {};
 
@@ -79,6 +79,16 @@ export function getActiveSetEffects(echoObjs) {
         if (count >= 5 && cfg.five) {
             for (const [stat, val] of Object.entries(cfg.five)) {
                 total[stat] = (total[stat] || 0) + val;
+            }
+        }
+
+        if (count >= 5 && Number(setId) === 14) {
+            const er =
+                (total.energyRegen ?? 0) + (stats.baseER ?? 0) + (stats.energyRegen ?? 0);
+            if (er < 250) continue;
+            const allElements = Object.values(elementMap);
+            for (const key of allElements) {
+                total[key] = (total[key] ?? 0) + 30;
             }
         }
     }
@@ -144,36 +154,44 @@ export class TopKHeap {
     }
 }
 
-export function resolveEchoesFromIds(ids, echoes) {
-    return ids.map(i => i >= 0 ? echoes[i] : null);
-}
+export function resolveEchoesFromIds(uids, echoes) {
+    const keyToEcho = new Map();
 
-export function resolveIdsFromEchoes(echoObjs, echoes) {
-    const idToIndex = new Map();
-    for (let i = 0; i < echoes.length; i++) {
-        const e = echoes[i];
-        if (!e || e.id == null) continue;
-        idToIndex.set(e.id, i);
+    for (const e of echoes) {
+        if (!e) continue;
+        const key = e.uid;
+        if (key == null) continue;
+        if (!keyToEcho.has(key)) {
+            keyToEcho.set(key, e);
+        }
     }
 
-    return echoObjs.map(echo => {
-        if (!echo || echo.id == null) return -1;
-        const idx = idToIndex.get(echo.id);
-        return typeof idx === "number" ? idx : -1;
+    return uids.map(uid => {
+        if (uid == null) return null;
+        return keyToEcho.get(uid) ?? null;
     });
 }
 
-export function computeEchoStatsFromIds(ids, echoes, ctxObj, charId) {
-    const echoObjs = ids.filter(i => i >= 0).map(i => echoes[i]);
+export function resolveIdsFromEchoes(echoObjs) {
+    return echoObjs.map(echo => {
+        if (!echo) return null;
+        return echo.uid ?? null;
+    });
+}
+
+export function computeEchoStatsFromIds(uids, echoes, ctxObj, charId) {
+    const echoByUid = new Map(
+        echoes.map(e => [e.uid, e])
+    );
+
+    const echoObjs = uids
+        .filter(uid => uid != null)
+        .map(uid => echoByUid.get(uid))
+        .filter(Boolean);
 
     const cost = echoObjs.reduce((sum, e) => sum + e.cost, 0);
 
     let totals = getEchoStatsFromEquippedEchoes(echoObjs);
-
-    const setStats = getActiveSetEffects(echoObjs);
-    for (const [k, v] of Object.entries(setStats)) {
-        totals[k] = (totals[k] || 0) + v;
-    }
 
     const main = echoObjs[0];
     if (main) {
@@ -181,6 +199,11 @@ export function computeEchoStatsFromIds(ids, echoes, ctxObj, charId) {
         for (const [k, v] of Object.entries(mainBuffs)) {
             totals[k] = (totals[k] || 0) + v;
         }
+    }
+
+    const setStats = getActiveSetEffects(echoObjs, {...ctxObj, ...totals});
+    for (const [k, v] of Object.entries(setStats)) {
+        totals[k] = (totals[k] || 0) + v;
     }
 
     const def = ctxObj.baseDef * (totals.defPercent || 0) / 100
@@ -224,7 +247,7 @@ export const mainStatsFilters = {
     critDmg: statLabelMap.critDmg
 }
 
- export function getDefaultMainStatFilter(statWeight = {}) {
+export function getDefaultMainStatFilter(statWeight = {}, charId = null) {
     const result = {};
 
     for (const key of Object.keys(mainStatsFilters)) {
@@ -232,6 +255,8 @@ export const mainStatsFilters = {
             result[key] = true;
         }
     }
+
+    if (Number(charId) === 1206) result.energyRegen = true;
 
     return result;
 }

@@ -586,5 +586,20 @@ const defaultRotationEntries = {
             { name: "Strike Before Ready DMG", multiplier: 1 },
         ],
         link: 'https://www.prydwen.gg/wuthering-waves/characters/qiuyuan'
+    },
+    '1508': {
+        entries: [
+            { name: "Reverberance - Return DMG", multiplier: 1 },
+            { name: "Stage 2 DMG", multiplier: 1 },
+            { name: "Rending Lunge DMG", multiplier: 1 },
+            { name: "Death Snip DMG", multiplier: 1 },
+            { name: "Death Snip Additional DMG", multiplier: 1 },
+            { name: "Moment of Nihility DMG", multiplier: 1 },
+            { name: "Serrated Loop DMG", multiplier: 1 },
+            { name: "Sawring - Blitz Stage 2 DMG", multiplier: 1 },
+            { name: "Sawring - Blitz Stage 3 DMG", multiplier: 1 },
+            { name: "Sawring - Eradication DMG", multiplier: 1 },
+        ],
+        link: 'https://www.prydwen.gg/wuthering-waves/characters/chisa'
     }
 };

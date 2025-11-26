@@ -13,7 +13,7 @@
 .cosmic-rainbow h3,
 .cosmic-rainbow h4,
 .cosmic-rainbow h5 {
-    color: #eaeaff;
+    color: #eaeaff !important;
 }
 
 .cosmic-rainbow p,
@@ -593,7 +593,7 @@
 .cosmic-rainbow .custom-select__control,
 .cosmic-rainbow .custom-select__menu,
 .cosmic-rainbow .ant-tooltip-inner {
-    background-color: rgb(9, 14, 28) !important;
+    background-color: rgb(18, 18, 39) !important;
     border: 1px solid rgba(140, 180, 255, 0.25) !important;
     color: #e8eaff !important;
 }

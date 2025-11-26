@@ -2,7 +2,7 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {ctxObj, EchoOptimizer} from "../../optimizer/EchoOptimizer.js";
 import {getEchoBag} from "../../state/echoBagStore.js";
 import {getSetPlanFromEchoes} from "../../data/buffs/setEffect.js";
-import {setIconMap} from "../../constants/echoSetData.jsx";
+import echoSetData, {setIconMap} from "../../constants/echoSetData.jsx";
 import {getEchoScores, getTop5SubstatScoreDetails} from "../../utils/echoHelper.js";
 import {EchoGridPreview} from "../overview-ui/OverviewDetailPane.jsx";
 import {attributeColors, elementToAttribute} from "../../utils/attributeHelpers.js";
@@ -27,6 +27,12 @@ import GuidesModal from "../utils-ui/GuideModal.jsx";
 import PlainModal from "../utils-ui/PlainModal.jsx";
 import {modalContent} from "./modalContent.jsx";
 import {getGroupedSkillOptions} from "../../utils/prepareDamageData.js";
+import {
+    buildMainStatPoolForSuggestor,
+    generateMainStatsContext
+} from "../../suggestions/mainStat-suggestion/ctx-builder.js";
+import {runMainStatSuggestor} from "../../suggestions/mainStat-suggestion/suggestMainStat.js";
+import {runSetSuggestor} from "../../suggestions/setPlain-suggestion/suggestSetPlan.js";
 
 const HEADER_TITLES = [
     "Set",
@@ -41,7 +47,7 @@ const HEADER_TITLES = [
     "∑ BNS%",
     "∑ AMP%",
     "DMG",
-    "DIFF"
+    "EFF"
 ];
 
 export default function Optimizer({
@@ -50,10 +56,8 @@ export default function Optimizer({
                                       characterRuntimeStates,
                                       characters,
                                       activeCharacter,
-                                      skillTabs,
                                       baseCharacterState,
                                       mergedBuffs,
-                                      getAllSkillLevels,
                                       allSkillLevels,
                                       skillResults,
                                       getImageSrc,
@@ -68,11 +72,12 @@ export default function Optimizer({
                                       generalOptimizerSettings,
                                       setGeneralOptimizerSettings,
                                       switchLeftPane,
-                                      weapons,
+                                      keywords,
                                       finalStats
                                   }) {
     const resultLength = optimizerResults?.length ?? 0;
-    const optimizer = characterRuntimeStates?.[charId]?.optimizerSettings ?? {};
+    const runtime = characterRuntimeStates[charId] ?? {};
+    const optimizer = runtime?.optimizerSettings ?? {};
     const updateOptimizerSettings = (patch) => {
         const charId = activeCharacter.Id ?? activeCharacter.id ?? activeCharacter.link;
         setCharacterRuntimeStates((prev) => {
@@ -111,13 +116,12 @@ export default function Optimizer({
         ?.find(skill => skill.name === level?.label || skill.name === level?.Name) ?? {};
     const statWeight = skill.statWeight ?? skill.custSkillMeta?.statWeight ?? {};
 
-    const mainStatFilter = optimizer.mainStatFilter ?? getDefaultMainStatFilter(statWeight);
+    const mainStatFilter = optimizer.mainStatFilter ?? getDefaultMainStatFilter(statWeight, charId);
 
     const mainEcho = optimizer?.mainEcho ?? null;
     const mainEchoId = mainEcho?.id ?? null;
 
     const maxScore = getTop5SubstatScoreDetails(charId).total;
-    const runtime = characterRuntimeStates[charId] ?? {};
     const echoData = runtime?.equippedEchoes ?? [];
     const [resEchoes, setResEchoes] = useState(echoData);
 
@@ -167,7 +171,7 @@ export default function Optimizer({
     const [cancelled, setCancelled] = useState(false);
     const [form, setForm] = useState(null);
     const [combinations, setCombinations] = useState(0);
-    const keepPercent = generalOptimizerSettings.keepPercent ?? 0.6;
+    const keepPercent = generalOptimizerSettings.keepPercent ?? 0;
     const [filtered, setFiltered] = useState(EchoFilters.getFilteredEchoes({
         statWeight,
         echoBag,
@@ -276,7 +280,7 @@ export default function Optimizer({
         setCancelled(false);
         if (keepPercent === 0) return;
         Promise.resolve().then(() => {
-            ComboCounter.handleFilteredChange(0.6);
+            ComboCounter.handleFilteredChange(0);
         });
     }
 
@@ -460,7 +464,6 @@ export default function Optimizer({
                     onEquipOptimizerResult={onEquipOptimizerResult}
                     setOptimizerResults={setOptimizerResults}
                     success={success}
-                    setSuccess={setSuccess}
                     cancelled={cancelled}
                     openGuide={openGuide}
                 />
@@ -482,26 +485,21 @@ export default function Optimizer({
                                 setShowSkillOptions={setShowSkillOptions}
                                 useSplash={useSplash}
                                 updateGeneralOptimizerSettings={updateGeneralOptimizerSettings}
-                                characters={characters}
                                 handleSetOptionChange={ComboCounter.handleSetOptionChange}
-                                weapons={weapons}
                                 switchLeftPane={switchLeftPane}
                                 setOptions={setOptions}
-                                getImageSrc={getImageSrc}
                                 mainEcho={mainEcho}
                                 setEchoMenuOpen={setEchoMenuOpen}
                                 handleMainEchoChange={ComboCounter.handleMainEchoChange}
                                 mainStatFilter={mainStatFilter}
                                 handleMainStatFilterChange={ComboCounter.handleMainStatFilterChange}
                                 resEchoes={resEchoes}
-                                currentBag={currentBag}
                                 currentContext={currentContext}
                                 charIdForm={form.charId}
-                                echoData={echoData}
                                 mergedBuffs={mergedBuffs}
                                 finalStats={runtime?.finalStats ?? finalStats}
                                 skillMeta={skill?.custSkillMeta ?? {}}
-                                isLoading={isLoading}
+                                echoBag={echoBag}
                             />
                         </div>
                     </ExpandableSection>
@@ -526,6 +524,8 @@ export default function Optimizer({
                                     damage={skill.avg}
                                     base={true}
                                     skillMeta={skill?.custSkillMeta ?? {}}
+                                    charId={charId}
+                                    keywords={keywords}
                                 />
                             </div>
 
@@ -533,8 +533,8 @@ export default function Optimizer({
                                 {!isLoading ? (
                                     <>
                                         {optimizerResults.map((res, i) => {
-                                            const echoObjs = resolveEchoesFromIds(res.ids, currentBag);
-                                            const { setPlan, statTotals } = computeEchoStatsFromIds(res.ids, currentBag, currentContext, form.charId);
+                                            const echoObjs = resolveEchoesFromIds(res.uids, echoBag);
+                                            const { setPlan, statTotals } = computeEchoStatsFromIds(res.uids, echoBag, currentContext, form.charId);
 
                                             return (
                                                 <EchoOptimizerRow
@@ -546,6 +546,8 @@ export default function Optimizer({
                                                     skill={skill}
                                                     damage={res.damage}
                                                     onClick={() => setResEchoes(echoObjs)}
+                                                    charId={form.charId}
+                                                    keywords={keywords}
                                                 />
                                             );
                                         })}

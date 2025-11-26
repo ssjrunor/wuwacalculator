@@ -110,7 +110,7 @@ export function CustomInherentSkills({
                                          currentSliderColor,
                                          characterRuntimeStates,
                                          setCharacterRuntimeStates,
-    keywords
+                                         keywords
                                      }) {
     const charId = character?.Id ?? character?.id ?? character?.link;
     const activeStates = characterRuntimeStates?.[charId]?.activeStates ?? {};

@@ -3,7 +3,6 @@ import React, {useMemo} from "react";
 import AllowedSetDropdown from "./EchoSetSelector.jsx";
 import {Info, X} from "lucide-react";
 import Select from 'react-select';
-import {statLabelMap} from "../../utils/echoHelper.js";
 import StatProfileCard from "./StatProfileCard.jsx";
 import {STAT_LIST} from "../../optimizer/encodeEchoStats.js";
 import {Tooltip} from "antd";
@@ -29,7 +28,6 @@ export function CharacterOptionsPanel({
                                           handleMainEchoChange,
                                           mainStatFilter,
                                           handleMainStatFilterChange,
-                                          currentBag,
                                           resEchoes,
                                           charIdForm,
                                           currentContext,
@@ -37,7 +35,8 @@ export function CharacterOptionsPanel({
                                           finalStats,
                                           mergedBuffs,
                                           handleStatLimitChange,
-                                          statLimits
+                                          statLimits,
+                                          echoBag
                                       }) {
     const rarity = rarityMap[charId];
     const displayName = activeCharacter.displayName.toUpperCase();
@@ -217,13 +216,13 @@ export function CharacterOptionsPanel({
                     <div className="compact-card buffs-box stats">
                         <StatProfileCard
                             resEchoes={resEchoes}
-                            currentBag={currentBag}
                             currentContext={currentContext}
                             charIdForm={charIdForm}
                             skill={skill}
                             skillMeta={skillMeta}
                             mergedBuffs={mergedBuffs}
                             finalStats={finalStats}
+                            echoBag={echoBag}
                         />
                     </div>
                 </div>

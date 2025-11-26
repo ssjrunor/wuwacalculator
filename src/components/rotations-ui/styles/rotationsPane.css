@@ -481,7 +481,7 @@ select:focus {
 }
 
 .custom-select__control {
-    max-height: 5.5rem;
+    max-height: 120px;
     overflow: auto;
     min-height: 2rem !important;
 }
@@ -586,14 +586,15 @@ select:focus {
 }
 
 .dark .custom-select__control,
-.dark .custom-select__menu,
-.dark .ant-tooltip-inner {
+.dark .custom-select__menu {
     border: 1px solid rgba(85, 85, 85, 0.6) !important;
     background-color: rgba(0, 0, 0, 0.34) !important;
     color: #ddd !important;
 }
 
-.dark .custom-select__menu {
+.dark .custom-select__menu,
+.dark .ant-tooltip-inner {
+    color: #ddd !important;
     background-color: #131922 !important;
 }
 

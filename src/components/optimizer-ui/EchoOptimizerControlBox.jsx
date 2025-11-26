@@ -22,7 +22,7 @@ export function EchoOptimizerControlBox({
                                             success,
                                             cancelled,
                                             openGuide,
-                                            isWide = true
+                                            isWide = true,
                                         }) {
     return (
         <>
@@ -154,9 +154,9 @@ export function EchoOptimizerControlBox({
                                 placement="right"
                                 mouseEnterDelay={0.1}
                             >
-                    <span className="icon-help" style={{ cursor: "pointer" }}>
-                        <Info size={16} />
-                    </span>
+                                <span className="icon-help" style={{ cursor: "pointer" }}>
+                                    <Info size={16} />
+                                </span>
                             </Tooltip>
                         </div>
 
@@ -217,12 +217,11 @@ export function EchoOptimizerControlBox({
 
                         <div className="row-buttons">
                             <button className="btn-primary" onClick={onEquipOptimizerResult}>Equip</button>
-                            <button className="btn-primary" onClick={() => setOptimizerResults([])}>Clear</button>
-                        </div>
-                        <div className="row-buttons">
                             <button className="btn-primary" onClick={() => openGuide('Optimizer')}>See Guide</button>
                         </div>
-
+                        <div className="row-buttons">
+                            <button className="btn-primary" onClick={() => setOptimizerResults([])}>Clear</button>
+                        </div>
                     </div>
                 </div>
             ) : (

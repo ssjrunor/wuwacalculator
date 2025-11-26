@@ -310,6 +310,128 @@ export const guides = [
         ]
     },
     {
+        category: 'Suggestions',
+        guides: [
+            {
+                title: 'Using Main Stat & Sonata Suggestions',
+                type: 'article',
+                shortDesc: 'Let the calculator propose main stats and Sonata set plans for your current target skill.',
+                content: `
+        <p>The <strong>Echo Suggestions</strong> panel is split into two modes:
+        <strong>Main Stats</strong> and <strong>Sonata Sets</strong>. 
+        Both are built on top of the same damage engine as the main calculator and 
+        use your selected <strong>Target Skill</strong> to rank options.</p>
+
+        <h4>1. Picking a Target Skill</h4>
+        <p>At the top of the panel, you’ll see a <strong>Target Skill</strong> selector. 
+        This controls what the suggester is trying to optimize around.</p>
+        <ul>
+          <li>Click the <strong>Target Skill</strong> box to open the skill menu.</li>
+          <li>Skills are grouped by tab (Basic, Heavy, Skill, Liberation, etc.).</li>
+          <li>Once you pick a skill, the suggester re-runs in the background using that skill’s damage weights.</li>
+        </ul>
+        <p>The same target skill is used for both <strong>Main Stats</strong> and <strong>Sonata Sets</strong>.</p>
+
+        <h4>2. Main Stats View</h4>
+        <p>The <strong>Main Stats</strong> tab suggests main stat layouts for each Echo slot 
+        (HP%, ATK%, Crit Rate, Energy Regen, etc.) and estimates how much damage that layout would do 
+        compared to your current setup.</p>
+
+        <h5>What you’re seeing</h5>
+        <ul>
+          <li><strong>Rank #</strong> – The ordering from best to worse, based on average damage.</li>
+          <li><strong>Cost signature</strong> – The Echo cost pattern (e.g. <code>4 • 4 • 1 • 1 • 1</code>).</li>
+          <li><strong>avg: X dmg</strong> – Estimated average damage for the suggested layout on the target skill.</li>
+          <li><strong>Current / % change</strong> – Shows how much higher or lower this layout is vs your current build.</li>
+          <li><strong>Rows per Echo</strong> – Each row shows one Echo slot:
+            <ul>
+              <li><strong>Cost N</strong> – That Echo’s cost.</li>
+              <li><strong>Pills</strong> – The chosen main stats, e.g. <code>ATK%</code>, <code>Crit DMG</code>, <code>Energy Regen</code>, with their suggested values.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h5>Buttons</h5>
+        <ul>
+          <li><strong>Target Skill</strong> – Changes which skill the suggestions are optimized for.</li>
+          <li><strong>Inspect</strong> – Opens a preview modal that shows a full Echo grid using the suggested main stats, 
+          so you can visually compare it with your current build before applying.</li>
+          <li><strong>Reset Selection</strong> – Jumps back to the top-ranked main stat layout.</li>
+        </ul>
+
+        <h5>How it works (simplified)</h5>
+        <ul>
+          <li>The worker builds candidate main-stat recipes for each slot.</li>
+          <li>For each recipe, it simulates a full set of Echoes using your current character, buffs, and weights.</li>
+          <li>The damage of the target skill is computed using the same formula as the main Damage page.</li>
+          <li>Results are sorted by damage, and only the top few are shown.</li>
+        </ul>
+
+        <h4>3. Sonata Sets View</h4>
+        <p>The <strong>Sonata Sets</strong> tab suggests 2-piece, 3-piece, and 5-piece Sonata combinations 
+        that play nicely with your chosen skill and character. It doesn’t change your substats or main stat types; 
+        it only changes <strong>which sets</strong> you’re wearing on each Echo.</p>
+
+        <h5>What you’re seeing</h5>
+        <ul>
+          <li><strong>Rank #</strong> – Best to worst, sorted by average damage on the target skill.</li>
+          <li><strong>Set badges</strong> – Each badge shows something like <code>2pc Freezing Frost</code> 
+          with its icon. Hover to see what that set’s 2pc / 3pc / 5pc bonus actually does.</li>
+          <li><strong>avg: X dmg</strong> – Estimated damage using that exact Sonata combination.</li>
+          <li><strong>Current / % change</strong> – How much better or worse this Sonata setup is than your current one.</li>
+        </ul>
+
+        <h5>Buttons</h5>
+        <ul>
+          <li><strong>Target Skill</strong> – Same as in the Main Stats view; controls what is being optimized.</li>
+          <li><strong>Inspect</strong> – Builds a preview Echo grid using the suggested Sonata set plan:
+            <ul>
+              <li>Your main stat values and substats are preserved where possible.</li>
+              <li>Only the <strong>selected set</strong> on each Echo is changed to match the suggested plan.</li>
+              <li>The preview also respects Echo cost and avoids duplicate template Echo IDs where it can.</li>
+            </ul>
+          </li>
+          <li><strong>Reset Selection</strong> – Returns to the highest-ranked Sonata set plan.</li>
+        </ul>
+
+        <h5>How Sonata suggestions behave</h5>
+        <ul>
+          <li>The suggester tries all legal 2pc, 3pc, and 5pc Sonata combinations from the enabled set list.</li>
+          <li>Each combination is scored by recomputing damage with that set plan applied.</li>
+          <li>Plans that don’t change damage compared to “no sets” are ignored.</li>
+          <li>If a multi-set combo behaves the same as a single 2pc/3pc baseline (no extra benefit), 
+          only the standalone version is kept to avoid clutter.</li>
+          <li>Before a suggestion is shown, a feasibility check makes sure it’s actually possible with:
+            <ul>
+              <li>Your current Echo <strong>cost pattern</strong>, and</li>
+              <li>The available Echo templates (unique IDs) in the database.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h4>4. How Apply / Preview Works</h4>
+        <p>When you click <strong>Inspect</strong> in either mode, a preview modal appears with a 5-Echo grid:</p>
+        <ul>
+          <li>Each Echo is shown with its icon, cost, selected set, and a relative score bar.</li>
+          <li>This view does not immediately overwrite your current build.</li>
+          <li>Click <strong>Apply</strong> to save the suggested Echo layout as your new 
+          <strong>equipped Echoes</strong> for that character.</li>
+        </ul>
+
+        <h4>5. Tips & Use Cases</h4>
+        <ul>
+          <li>Use <strong>Main Stats</strong> to answer questions like 
+          “Should I run Crit Rate / Crit DMG or ATK% / Crit DMG on this character?”</li>
+          <li>Use <strong>Sonata Sets</strong> to test whether chasing a 5pc is actually worth it over 
+          mixed 2pc / 3pc setups.</li>
+          <li>If results look weird, make sure you’ve selected the right target skill and that your buffs / 
+          character level match what you actually play.</li>
+        </ul>
+      `
+            }
+        ]
+    },
+    {
         category: 'Optimizer',
         guides: [
             {

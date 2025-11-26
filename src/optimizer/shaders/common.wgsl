@@ -54,7 +54,7 @@ struct Params {
     skillTypeId:  f32,
 
     comboCount:   f32,
-    pad0:         f32,
+    charId:       f32,
     pad1:         f32,
     pad2:         f32,
     pad3:         f32,

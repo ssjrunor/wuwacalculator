@@ -17,7 +17,8 @@ export function generateEchoContext(form) {
             activeStates: runtime?.activeStates ?? {}
         },
     })
-    const mergedBuffsWithoutEchoes = removeEchoArrayFromBuffs(withoutMainEchoes, form.equippedEchoes);
+    const withoutSpecialCharacterBuffs = removeSpecialBuffs(form.mergedBuffs, withoutMainEchoes, charId, runtime.activeStates);
+    const mergedBuffsWithoutEchoes = removeEchoArrayFromBuffs(withoutSpecialCharacterBuffs, form.equippedEchoes);
     return {
         charId,
 
@@ -41,4 +42,42 @@ export function generateEchoContext(form) {
         // Buffs BEFORE applying echoes
         mergedBuffsWithoutEchoes
     };
+}
+
+export function removeSpecialBuffs( original, buffs, charId, activeStates ) {
+    const idn = Number(charId);
+
+    switch (idn) {
+        case 1206:
+            if (original.energyRegen > 50) {
+                const excess = original.energyRegen - 50;
+                if (activeStates?.myMoment) {
+                    const atkBuff = Math.min(excess * 20, 2600);
+                    buffs.atkFlat = (buffs.atkFlat ?? 0) - atkBuff;
+                } else {
+                    const atkBuff = Math.min(excess * 12, 1560);
+                    buffs.atkFlat = (buffs.atkFlat ?? 0) - atkBuff;
+                }
+            }
+            break;
+    }
+    return buffs;
+}
+
+export function applySpecialBuffs( original, buffs, charId, key ) {
+    if (!charId) return buffs;
+    const idn = Number(charId);
+
+    switch (idn) {
+        case 1206:
+            if (original.energyRegen > 150 && key === 'atk') {
+                const excess = original.energyRegen - 150;
+                const atkBuff = Math.min(excess * 20, 2600);
+                buffs[key] = (buffs[key] ?? 0) + atkBuff;
+            } else return {[key]: 0};
+            break;
+        default:
+            buffs[key] = (buffs[key] ?? 0);
+    }
+    return buffs;
 }

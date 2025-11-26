@@ -165,6 +165,18 @@ function getSkillType(entry) {
     return 'Other';
 }
 
+export const normalizedSkillTypeNames = {
+    basic: 'Basic Attack',
+    heavy: 'Heavy Attack',
+    ultimate: 'Resonance Liberation',
+    skill: 'Resonance Skill',
+    spectroFrazzle: 'Spectro Frazzle',
+    echoSkill: 'Echo Skill',
+    aeroErosion: 'Aero Erosion',
+    outroSkill: 'Outro Skill',
+    introSkill: 'Intro Skill',
+}
+
 export function calculateRotationTotals(skillCache, rotationEntries) {
     const total = { normal: 0, crit: 0, avg: 0 };
     const supportTotals = { healing: 0, shielding: 0 };

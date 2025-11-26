@@ -22,6 +22,17 @@ export const setStateMap = {
     flamewingsShadow2pcP2: 'flamewingsShadow'
 };
 
+export const elementMap = {
+    1: 'glacio',
+    2: 'fusion',
+    3: 'electro',
+    4: 'aero',
+    5: 'spectro',
+    6: 'havoc',
+    7: 'physical'
+};
+
+
 export function applySetEffect({ mergedBuffs, characterState, activeCharacter, combatState, setCounts = 5 }) {
     const effect = characterState?.activeStates ?? {};
 
@@ -226,6 +237,13 @@ export function removeSetEffectsFromBuffs(mergedBuffs, sets, runtime, skillType 
     if (activeStates?.flamewingsShadow2pcP2 && skillType?.includes("echoSkill")) subtractBuffs({critRate: 20});
     if (activeStates?.flamewingsShadow2pcP1 && skillType?.includes("heavy")) subtractBuffs({critRate: 20});
 
+    if (setArray[0].setId === 14 && setArray[0].count === 5 && mergedBuffs.energyRegen >= 150) {
+        const e = Object.values(elementMap);
+        const b = {};
+        for (const k of e) { b[k] = 30; }
+        subtractBuffs(b);
+    }
+
     for (const entry of setArray) {
         const id = entry?.setId ?? entry;
         if (id === 22) {
@@ -302,16 +320,6 @@ export function getSetPlanFromEchoes(equippedEchoes = []) {
 }
 
 export function applyEchoSetBuffLogic({ mergedBuffs, equippedEchoes, activeCharacter }) {
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
-
     const setCounts = {};
     for (const echo of equippedEchoes) {
         const setId = Number(echo?.selectedSet);

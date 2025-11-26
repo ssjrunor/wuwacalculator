@@ -124,6 +124,9 @@ fn computeDamageForCombo(index: u32) {
     // -------------------------
     // Apply set effects
     // -------------------------
+    var bonus: f32 = 0.0;
+    var finalER =
+        params.baseER + erEcho;
 
     // SET 1 — Glacio 2/5
     if (setCount[1u] >= 2u) { glacio += 10.0; }
@@ -154,7 +157,7 @@ fn computeDamageForCombo(index: u32) {
     if (setCount[7u] >= 5u) { atkP += 15.0; }
 
     // SET 8 — Energy Regen 2pc
-    if (setCount[8u] >= 2u) { erEcho += 10.0; }
+    if (setCount[8u] >= 2u) { finalER += 10.0; }
 
     // SET 9 — ATK% 2/5
     if (setCount[9u] >= 2u) { atkP += 10.0; }
@@ -180,12 +183,17 @@ fn computeDamageForCombo(index: u32) {
     if (setCount[12u] >= 2u) { havoc += 10.0; }
 
     // SET 13 — ER → ATK%
-    if (setCount[13u] >= 2u) { erEcho += 10.0; }
+    if (setCount[13u] >= 2u) { finalER += 10.0; }
     if (setCount[13u] >= 5u) { atkP += 20.0; }
 
     // SET 14 — ER 2pc, ATK% 5pc
-    if (setCount[14u] >= 2u) { erEcho += 10.0; }
-    if (setCount[14u] >= 5u) { atkP += 10.0; }
+    if (setCount[14u] >= 2u) { finalER += 10.0; }
+    if (setCount[14u] >= 5u) {
+        atkP += 10.0;
+        if (finalER >= 250) {
+            bonus += 30;
+        }
+    }
 
     // SET 16 — Aero (duplicate of 4)
     if (setCount[16u] >= 2u) { aero += 10.0; }
@@ -244,7 +252,6 @@ fn computeDamageForCombo(index: u32) {
     // -------------------------
     // Pick element bonuses
     // -------------------------
-    var bonus: f32 = 0.0;
 
     if (elementId == 0.0) { bonus += aero;    }
     if (elementId == 1.0) { bonus += glacio;  }
@@ -266,7 +273,7 @@ fn computeDamageForCombo(index: u32) {
     // -------------------------
     // Final stats with echoes
     // -------------------------
-    let finalAtk =
+    var finalAtk =
         params.baseAtk * (atkP / 100.0) + atkF + params.finalAtk;
 
     let finalHp =
@@ -275,8 +282,20 @@ fn computeDamageForCombo(index: u32) {
     let finalDef =
         params.baseDef * (defP / 100.0) + defF + params.finalDef;
 
-    let finalER =
-        params.baseER + erEcho;
+    // Brant ER → ATK conversion
+    if (params.charId == 1206) {
+        // How much ER is above 150%?
+        let erOver: f32 = max(0.0, finalER - 150.0);
+
+        // 20 ATK per 1% over 150%
+        var extraAtk: f32 = erOver * 20.0;
+
+        // Cap at 2600
+        extraAtk = min(extraAtk, 2600.0);
+
+        // Add to final ATK
+        finalAtk = finalAtk + extraAtk;
+    }
 
     let critRateTotal = params.critRate + critRateEcho / 100.0;
     let critDmgTotal  = params.critDmg  + critDmgEcho  / 100.0;

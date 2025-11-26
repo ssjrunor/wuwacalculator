@@ -209,6 +209,11 @@ const echoSets = [
     }
 ];
 
+export const echoSetMap = echoSets.reduce((acc, set) => {
+    acc[set.id] = set;
+    return acc;
+}, {});
+
 export const setPieceTypeMap = {};
 echoSets.forEach(set => {
     const validPieces = [];
@@ -242,5 +247,8 @@ export const setIconMap = {
     22: '/assets/echo-icons/flamewing\'sShadow.webp',
     23: '/assets/echo-icons/threadOfSeveredFate.webp',
 };
+
+export const DEFAULT_FIVE_PIECE_SETS = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,17,18];
+export const DEFAULT_THREE_PIECE_SETS = [19,20,21,22,23];
 
 export default echoSets;

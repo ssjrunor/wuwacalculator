@@ -664,4 +664,46 @@ export const changelog = [
         ],
         shortDesc: `Added <strong>Blocks</strong> in rotations~! (〜^∇^)〜`
     },
+    {
+        date: '26/11/2025',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `
+                Big update~! The <strong>Echo Optimizer</strong> and the new 
+                <strong>Suggestions</strong> panel (Main Stats + Sonata Sets) are finally live.  
+                This one’s been cooking in the background for a while, so it’s a bit chunky~. (｡•̀ᴗ-)✧
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `
+                <strong>Optimizer:</strong><br/>
+                - Automatically searches your Echo bag for high-damage builds based on your chosen skill.<br/>
+                - Lets you lock a main Echo, filter by main stats and cost patterns, and cap how many results you see.<br/>
+                - Shows ranked results with damage comparisons so you can quickly spot upgrades over your current set.
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `
+                <strong>New Suggestions panel:</strong><br/>
+                - <strong>Main Stat</strong> suggester that proposes full main-stat layouts per Echo slot, 
+                  ranked by damage on your selected target skill.<br/>
+                - <strong>Sonata Set</strong> suggester that tests valid 2pc / 3pc / 5pc plans against your 
+                  current Echo setup and only shows combos that actually change damage.<br/>
+                - Preview + Apply flow so you can inspect suggested builds before committing them to your character.
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `
+                There are probably still some edge cases lurking around (especially with weird cost patterns or 
+                echo templates), but the core loop for "let the app think really hard for you" is now in place.  
+                More polish and knobs will come later once this settles in.
+            `
+            }
+        ],
+        shortDesc: `BIG update: Optimizer + Suggestions ( · ❛ ֊ ❛)`
+    }
 ];

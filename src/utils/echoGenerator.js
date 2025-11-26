@@ -1,6 +1,12 @@
 import {applyFixedSecondMainStat, getValidMainStats, validSubstatRanges, snapToNearestSubstatValue} from "./echoHelper.js";
 import {computeSkillDamage, getSkillData} from "./computeSkillDamage.js";
 import {getFinalStats} from "./getStatsForLevel.js";
+import {initWorkerPool} from "../optimizer/gpu/GpuWorkerPool.js";
+import {encodeEchoStats} from "../optimizer/encodeEchoStats.js";
+import {countEchoCombos, generateEchoPermutationBatches2} from "../optimizer/generateEchoCombos.js";
+import {runGpuEchoOptimizer} from "../optimizer/GpuEchoOptimizer.js";
+import {prepareGpuContext} from "../optimizer/prepareGpuContext.js";
+import {generateEchoContext} from "../optimizer/echoOptimizerContext.js";
 
 let rand = Math.random;
 
@@ -153,16 +159,14 @@ export function getRandomSubstat(charId, bias = 0.5, includeEnergyRegen = false,
     }
 
     const baseChance = 0.6;
-    const scaledChance = baseChance * (0.5 + bias); // ranges roughly 0.3 → 0.9
+    const scaledChance = baseChance * (0.5 + bias);
     const pickNonZero = Math.random() < scaledChance;
 
     let chosenPool;
     if (pickNonZero && nonZeroKeys.length) {
         chosenPool = nonZeroKeys;
-    } else if (zeroKeys.length) {
-        chosenPool = zeroKeys;
     } else {
-        chosenPool = filteredKeys; // fallback if somehow all empty
+        chosenPool = filteredKeys;
     }
 
     let total = 0, count = 0;
@@ -178,8 +182,7 @@ export function getRandomSubstat(charId, bias = 0.5, includeEnergyRegen = false,
     for (let i = 0; i < chosenPool.length; i++) {
         const k = chosenPool[i];
         const base = weights[k] ?? 0;
-        // bias influences how strongly we pull toward high-weight stats
-        const w = avg + (base - avg) * bias + 0.5;
+        const w = avg + (base - avg) * bias + 0.001;
         adjusted[i] = [k, Math.max(w, 0.001)];
         totalWeight += adjusted[i][1];
     }
@@ -575,4 +578,121 @@ export function removeEchoArrayFromBuffs(mergedBuffs, echoes) {
     }
 
     return newBuffs;
+}
+
+export let ctxObj = {};
+
+export function buildVirtualEchoPool({
+                                         charId,
+                                         poolSize = 50,
+                                         bias = 0.5,
+                                         rollQuality = 0.5,
+                                         statWeight,
+                                         allowedCosts = [1, 3, 4],
+                                     }) {
+    const echoes = [];
+    const kinds = allowedCosts.length;
+    if (kinds === 0) return echoes;
+
+    const basePerCost = Math.floor(poolSize / kinds);
+    let remainder = poolSize % kinds;
+
+    const perCostCounts = allowedCosts.map(() => basePerCost);
+
+    for (let i = 0; i < perCostCounts.length && remainder > 0; i++, remainder--) {
+        perCostCounts[i]++;
+    }
+
+    let idCounter = 0;
+
+    for (let idx = 0; idx < allowedCosts.length; idx++) {
+        const cost = allowedCosts[idx];
+        const countForThisCost = perCostCounts[idx];
+
+        for (let j = 0; j < countForThisCost; j++) {
+            const echo = generateRandomEcho(
+                charId,
+                cost,
+                bias,
+                null,
+                rollQuality,
+                false,
+                statWeight
+            );
+
+            echoes.push({
+                id: idCounter++,
+                cost,
+                mainStats: echo.mainStats,
+                subStats: echo.subStats,
+                _totalStats: echo._totalStats,
+            });
+        }
+    }
+
+/*
+    for (let i = echoes.length - 1; i > 0; i--) {
+        const r = Math.floor(Math.random() * (i + 1));
+        const tmp = echoes[i];
+        echoes[i] = echoes[r];
+        echoes[r] = tmp;
+    }
+*/
+
+    return echoes;
+}
+
+export async function runVirtualEchoOptimizer({
+                                                  form,
+                                                  poolSize = 70,
+                                                  resultsLimit = 5,
+                                                  onProgress,
+                                                  bias,
+                                                  rollQuality,
+                                                  targetEnergyRegen= 0
+                                              }) {
+    const virtualEchoes = buildVirtualEchoPool({
+        charId: form.charId,
+        poolSize,
+        bias: bias,
+        rollQuality: rollQuality,
+        statWeight: form.statWeight,
+    });
+
+    ctxObj = prepareGpuContext(generateEchoContext(form));
+
+    const combinations = await countEchoCombos({
+        echoes: virtualEchoes,
+        maxCost: 12,
+        maxSize: 5,
+    });
+
+    const batchSize = Math.min(Number(combinations), 120000);
+
+    const encoded = encodeEchoStats(virtualEchoes, form.charId);
+
+    await initWorkerPool(encoded, virtualEchoes, form.charId);
+
+    const comboBatchGenerator = generateEchoPermutationBatches2({
+        echoes: virtualEchoes,
+        maxCost: 12,
+        maxSize: 5,
+        batchSize,
+        lockedEchoId: null,
+    });
+
+    const results = await runGpuEchoOptimizer({
+        comboBatchGenerator,
+        resultsLimit,
+        onProgress,
+        combinations,
+        ctxObj,
+        charId: form.charId,
+        encodedConstraints: null,
+    });
+
+    return {
+        echoes: virtualEchoes,
+        results,
+    };
 }

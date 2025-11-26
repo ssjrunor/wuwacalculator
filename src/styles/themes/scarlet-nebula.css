@@ -402,7 +402,7 @@
 
 /* Skill menu & type icons */
 .scarlet-nebula .skill-menu-panel {
-    background: linear-gradient(160deg, rgba(15, 0, 0, 0.76), rgba(34, 6, 6, 0.48));
+    background-color: rgb(15, 0, 0);
     border: 1px solid rgba(200, 100, 80, 0.12);
 }
 .scarlet-nebula .skill-option:hover {
@@ -454,7 +454,7 @@
 .scarlet-nebula .icon-menu-vertical,
 .scarlet-nebula .skills-modal-content,
 .scarlet-nebula .notification-toast {
-    background: rgb(15, 0, 0);
+    background-color: rgb(15, 0, 0);
     border: 0.01rem solid rgba(200, 100, 80, 0.15);
     color: #f5f6ff;
     box-shadow: 0 0 18px rgba(150, 40, 40, 0.12);

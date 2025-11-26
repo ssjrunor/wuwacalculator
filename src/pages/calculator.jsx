@@ -59,6 +59,7 @@ import EchoBagMenu from "../components/echo-bag-ui/EchoBagMenu.jsx";
 import {getEchoBag} from "../state/echoBagStore.js";
 import Optimizer from "../components/optimizer-ui/Optimizer.jsx";
 import {Tooltip} from "antd";
+import SuggestionsPane from "../components/suggestions-ui/SuggestionsPane.jsx";
 
 export default function Calculator(props) {
     const [characters, setCharacters] = useState([]);
@@ -76,7 +77,7 @@ export default function Calculator(props) {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-11-08 04:26';
+    const LATEST_CHANGELOG_VERSION = '2025-11-26 18:26';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
@@ -130,8 +131,7 @@ export default function Calculator(props) {
     const echoStats = getEchoStatsFromEquippedEchoes(equippedEchoes);
     const [showSubHits, setShowSubHits] = usePersistentState('showSubHits', false);
     const splitInstance = useRef(null);
-    const [showCharacterOverview, setShowCharacterOverview] = usePersistentState('showCharacterOverview',false);
-    const [showOptimizer, setShowOptimizer] = usePersistentState('showOptimizer',false);
+    const [mainMode, setMainMode] = usePersistentState('mainMode', 'default');
     const [savedRotations, setSavedRotations] = usePersistentState('globalSavedRotations', []);
     const teamRotation = getResolvedTeamRotations(characterRuntimeStates[charId], characterRuntimeStates, savedRotations);
     const [savedTeamRotations, setSavedTeamRotations] = usePersistentState('globalSavedTeamRotations', []);
@@ -294,7 +294,7 @@ export default function Calculator(props) {
     }, [menuOpen]);
 
     useEffect(() => {
-        if (!showCharacterOverview) {
+        if (mainMode === 'default') {
             const setupSplit = () => {
                 const left = document.querySelector('#left-pane');
                 const right = document.querySelector('#right-pane');
@@ -311,7 +311,7 @@ export default function Calculator(props) {
 
             requestAnimationFrame(setupSplit);
         }
-    }, [showCharacterOverview, showOptimizer]);
+    }, [mainMode]);
 
     useLayoutEffect(() => {
         const handleResize = () => {
@@ -334,7 +334,7 @@ export default function Calculator(props) {
         window.addEventListener('resize', handleResize);
         handleResize();
         return () => window.removeEventListener('resize', handleResize);
-    }, [showCharacterOverview, showOptimizer]);
+    }, [mainMode]);
 
     useEffect(() => {
         if (!charId) return;
@@ -762,7 +762,7 @@ export default function Calculator(props) {
         if (isMobile) {
             setHamburgerOpen(false);
         }
-    }, [isMobile, leftPaneView, showCharacterOverview, showOptimizer]);
+    }, [isMobile, leftPaneView, mainMode]);
 
     useEffect(() => {
         if (hamburgerOpen) {
@@ -784,8 +784,7 @@ export default function Calculator(props) {
     }, [leftPaneView]);
 
     const switchLeftPane = (paneName) => {
-        setShowCharacterOverview(false);
-        setShowOptimizer(false);
+        setMainMode('default');
         setLeftPaneView(paneName);
     };
 
@@ -958,6 +957,8 @@ export default function Calculator(props) {
             tab
         }
 
+        const defaultSuggestion = defaultRandGen;
+
         const allSkillResults =
             skillResults ??
             characterRuntimeStates[charId]?.allSkillResults ??
@@ -997,6 +998,11 @@ export default function Calculator(props) {
 
             if (!newChar.optimizerSettings?.level) {
                 newChar.optimizerSettings = defaultOptimizer;
+                changed = true;
+            }
+
+            if (!newChar.suggestionSettings?.level) {
+                newChar.suggestionSettings = defaultSuggestion;
                 changed = true;
             }
 
@@ -1100,6 +1106,8 @@ export default function Calculator(props) {
 
     const [optimizerResults, setOptimizerResults] = useState([]);
 
+    const [suggestionsPaneSettings, setSuggestionsPaneSettings] = usePersistentState('suggestionsPaneSettings', {});
+
     return (
         <>
             <SkillsModal
@@ -1164,6 +1172,12 @@ export default function Calculator(props) {
                                 iconName="echoes"
                                 altText="Echoes"
                                 onClick={() => switchLeftPane('echoes')}
+                                isDark={isDark}
+                            />
+                            <ToolbarIconButton
+                                iconName="suggestions"
+                                altText="Suggestions"
+                                onClick={() => switchLeftPane('suggestions-ui')}
                                 isDark={isDark}
                             />
                             <ToolbarIconButton
@@ -1286,6 +1300,13 @@ export default function Calculator(props) {
                                         isDark={isDark}
                                     />
                                     <ToolbarSidebarButton
+                                        iconName="suggestions"
+                                        label="Suggestions"
+                                        onClick={() => switchLeftPane('suggestions-ui')}
+                                        selected={leftPaneView === 'suggestions-ui'}
+                                        isDark={isDark}
+                                    />
+                                    <ToolbarSidebarButton
                                         iconName="teams"
                                         label="Team Buffs"
                                         onClick={() => switchLeftPane('teams')}
@@ -1328,47 +1349,31 @@ export default function Calculator(props) {
                             </button>
 
 
-                            <button className="sidebar-button" onClick={() => setShowOptimizer(!showOptimizer)}>
+                            <button
+                                className="sidebar-button"
+                                onClick={() =>
+                                    setMainMode(prev => (prev === 'optimizer' ? 'default' : 'optimizer'))
+                                }
+                            >
                                 <div className="icon-slot">
                                     <ChartColumn />
                                 </div>
                                 <div className="label-slot">
-                                    <span className="label-text">
-                                        Optimizer
-                                    </span>
+                                    <span className="label-text">Optimizer</span>
                                 </div>
                             </button>
 
-                            {/*<Tooltip
-                                title={
-                                    <span style={{ maxWidth: 260 }}>
-                                        Coming soon...
-                                    </span>
+                            <button
+                                className="sidebar-button"
+                                onClick={() =>
+                                    setMainMode(prev => (prev === 'overview' ? 'default' : 'overview'))
                                 }
-                                placement="right"
-                                mouseEnterDelay={0.1}
                             >
-                                <button className="sidebar-button"
-                                style={{ opacity: 0.5, cursor: 'default' }}>
-                                    <div className="icon-slot">
-                                        <ChartColumn />
-                                    </div>
-                                    <div className="label-slot">
-                                    <span className="label-text">
-                                        Optimizer
-                                    </span>
-                                    </div>
-                                </button>
-                            </Tooltip>*/}
-
-                            <button className="sidebar-button" onClick={() => setShowCharacterOverview(!showCharacterOverview)}>
                                 <div className="icon-slot">
                                     <UserRound />
                                 </div>
                                 <div className="label-slot">
-                                    <span className="label-text">
-                                        Overview
-                                    </span>
+                                    <span className="label-text">Overview</span>
                                 </div>
                             </button>
 
@@ -1452,13 +1457,13 @@ export default function Calculator(props) {
 
                     <div className="main-content">
                         <div className={`layout ${isCollapsedMode ? 'collapsed-mode' : ''}`} ref={layoutRef}>
-                            {showCharacterOverview ? (
+                            {mainMode === 'overview' ? (
                                 <CharacterOverviewPane
                                     characters={characters}
                                     keywords={keywords}
                                     activeCharacterId={activeCharacterId}
                                     characterRuntimeStates={characterRuntimeStates}
-                                    onClose={() => setShowCharacterOverview(false)}
+                                    onClose={() => setMainMode('default')}
                                     weapons={weapons}
                                     handleCharacterSelect={handleCharacterSelect}
                                     switchLeftPane={switchLeftPane}
@@ -1469,40 +1474,41 @@ export default function Calculator(props) {
                                     allRotations={allRotations}
                                     theme={theme}
                                 />
-                            ) : showOptimizer ? (
-                                    <Optimizer
-                                        echoId={echoes}
-                                        charId={charId}
-                                        characterState={characterState}
-                                        setCharacterState={setCharacterState}
-                                        characterRuntimeStates={characterRuntimeStates}
-                                        setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                        characters={characters}
-                                        activeCharacter={activeCharacter}
-                                        getAllSkillLevels={getAllSkillLevels}
-                                        skillTabs={skillTabs}
-                                        baseCharacterState={baseCharacterState}
-                                        mergedBuffs={mergedBuffs}
-                                        allSkillLevels={allSkillLevels}
-                                        skillResults={skillResults}
-                                        onEquipPreset={onEquipPreset}
-                                        onEquipBag={onEquipBag}
-                                        getImageSrc={getImageSrc}
-                                        optimizerResults={optimizerResults}
-                                        setOptimizerResults={setOptimizerResults}
-                                        rarityMap={rarityMap}
-                                        triggerRef={triggerRef}
-                                        menuOpen={menuOpen}
-                                        setMenuOpen={setMenuOpen}
-                                        menuRef={menuRef}
-                                        handleCharacterSelect={handleCharacterSelect}
-                                        generalOptimizerSettings={generalOptimizerSettings}
-                                        setGeneralOptimizerSettings={setGeneralOptimizerSettings}
-                                        switchLeftPane={switchLeftPane}
-                                        weapons={weapons}
-                                        setCombatState={setCombatState}
-                                        finalStats={finalStats}
-                                    />
+                            ) : mainMode === 'optimizer' ? (
+                                <Optimizer
+                                    echoId={echoes}
+                                    charId={charId}
+                                    characterState={characterState}
+                                    setCharacterState={setCharacterState}
+                                    characterRuntimeStates={characterRuntimeStates}
+                                    setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                    characters={characters}
+                                    activeCharacter={activeCharacter}
+                                    getAllSkillLevels={getAllSkillLevels}
+                                    skillTabs={skillTabs}
+                                    baseCharacterState={baseCharacterState}
+                                    mergedBuffs={mergedBuffs}
+                                    allSkillLevels={allSkillLevels}
+                                    skillResults={skillResults}
+                                    onEquipPreset={onEquipPreset}
+                                    onEquipBag={onEquipBag}
+                                    getImageSrc={getImageSrc}
+                                    optimizerResults={optimizerResults}
+                                    setOptimizerResults={setOptimizerResults}
+                                    rarityMap={rarityMap}
+                                    triggerRef={triggerRef}
+                                    menuOpen={menuOpen}
+                                    setMenuOpen={setMenuOpen}
+                                    menuRef={menuRef}
+                                    handleCharacterSelect={handleCharacterSelect}
+                                    generalOptimizerSettings={generalOptimizerSettings}
+                                    setGeneralOptimizerSettings={setGeneralOptimizerSettings}
+                                    switchLeftPane={switchLeftPane}
+                                    weapons={weapons}
+                                    setCombatState={setCombatState}
+                                    finalStats={finalStats}
+                                    keywords={keywords}
+                                />
                             ) : (
                                 <div className="split">
                                     <div id="left-pane" className={`partition ${leftPaneView}-mode`}>
@@ -1631,6 +1637,42 @@ export default function Calculator(props) {
                                                 onEquipPreset={onEquipPreset}
                                                 onEquipBag={onEquipBag}
                                                 getImageSrc={getImageSrc}
+                                            />
+                                        )}
+                                        {leftPaneView === 'suggestions-ui' && (
+                                            <SuggestionsPane
+                                                currentSliderColor={currentSliderColor}
+                                                echoId={echoes}
+                                                charId={charId}
+                                                characterState={characterState}
+                                                setCharacterState={setCharacterState}
+                                                characterRuntimeStates={characterRuntimeStates}
+                                                setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                                characters={characters}
+                                                activeCharacter={activeCharacter}
+                                                getAllSkillLevels={getAllSkillLevels}
+                                                skillTabs={skillTabs}
+                                                baseCharacterState={baseCharacterState}
+                                                mergedBuffs={mergedBuffs}
+                                                allSkillLevels={allSkillLevels}
+                                                skillResults={skillResults}
+                                                onEquipPreset={onEquipPreset}
+                                                onEquipBag={onEquipBag}
+                                                getImageSrc={getImageSrc}
+                                                rarityMap={rarityMap}
+                                                triggerRef={triggerRef}
+                                                menuOpen={menuOpen}
+                                                setMenuOpen={setMenuOpen}
+                                                menuRef={menuRef}
+                                                handleCharacterSelect={handleCharacterSelect}
+                                                suggestionsPaneSettings={suggestionsPaneSettings}
+                                                setSuggestionsPaneSettings={setSuggestionsPaneSettings}
+                                                switchLeftPane={switchLeftPane}
+                                                weapons={weapons}
+                                                setCombatState={setCombatState}
+                                                finalStats={finalStats}
+                                                keywords={keywords}
+
                                             />
                                         )}
                                     </div>

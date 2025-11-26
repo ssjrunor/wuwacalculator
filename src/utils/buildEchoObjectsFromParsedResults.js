@@ -1,6 +1,6 @@
 import { echoes } from '../json-data-scripts/getEchoes.js';
 import { setIconMap } from '../constants/echoSetData.jsx';
-import {getValidMainStats} from "./echoHelper.js";
+import {applyFixedSecondMainStat, getValidMainStats} from "./echoHelper.js";
 
 const labelToKey = {
     'Crit. Rate': 'critRate',
@@ -45,14 +45,6 @@ for (const [id, path] of Object.entries(setIconMap)) {
         .trim();
     setNameToId[name] = Number(id);
 }
-
-const applyFixedSecondMainStat = (mainStats, cost) => {
-    const updated = { ...mainStats };
-    if (cost === 1) updated.hpFlat = 2280;
-    if (cost === 3) updated.atkFlat = 100;
-    if (cost === 4) updated.atkFlat = 150;
-    return updated;
-};
 
 const parseSubstats = (substats = []) => {
     const result = {};

@@ -11,19 +11,20 @@ import {
     ResponsiveContainer,
     Tooltip
 } from "recharts";
+import {applySpecialBuffs} from "../../optimizer/echoOptimizerContext.js";
 
 export default function StatProfileCard({
-                                        resEchoes,
-                                        currentBag,
-                                        currentContext,
-                                        charIdForm,
-                                        skill,
-                                        skillMeta,
-                                        mergedBuffs,
-                                        finalStats
+                                            resEchoes,
+                                            echoBag,
+                                            currentContext,
+                                            charIdForm,
+                                            skill,
+                                            skillMeta,
+                                            mergedBuffs,
+                                            finalStats,
                                     }) {
-    const resIds = resolveIdsFromEchoes(resEchoes, currentBag);
-    const { statTotals } = computeEchoStatsFromIds(resIds, currentBag, currentContext, charIdForm);
+    const resIds = resolveIdsFromEchoes(resEchoes);
+    const { statTotals } = computeEchoStatsFromIds(resIds, echoBag, currentContext, charIdForm);
     const candidateBonus = (() => {
         let b = accumulateSkillStatBonus(
             skill.skillType,
@@ -43,28 +44,6 @@ export default function StatProfileCard({
         b += (mergedBuffs?.[skill.element] ?? 0);
         return b;
     })();
-
-    const candidateStats = useMemo(
-        () => ({
-            atk: statTotals.atk,
-            hp: statTotals.hp,
-            def: statTotals.def,
-            energyRegen: statTotals.er,
-            critRate: statTotals.cr,
-            critDmg: statTotals.cd,
-            bonus: (statTotals.dmgBonus ?? 0) + candidateBonus,
-        }),
-        [
-            statTotals.atk,
-            statTotals.hp,
-            statTotals.def,
-            statTotals.er,
-            statTotals.cr,
-            statTotals.cd,
-            statTotals.dmgBonus,
-            candidateBonus,
-        ]
-    );
 
     const currentStats = useMemo(
         () => ({
@@ -87,15 +66,37 @@ export default function StatProfileCard({
         ]
     );
 
+    const candidateStats = useMemo(
+        () => ({
+            atk: statTotals.atk + applySpecialBuffs({energyRegen: statTotals.er}, {}, charIdForm, 'atk').atk,
+            hp: statTotals.hp,
+            def: statTotals.def,
+            energyRegen: statTotals.er,
+            critRate: statTotals.cr,
+            critDmg: statTotals.cd,
+            bonus: (statTotals.dmgBonus ?? 0) + candidateBonus,
+        }),
+        [
+            statTotals.atk,
+            statTotals.hp,
+            statTotals.def,
+            statTotals.er,
+            statTotals.cr,
+            statTotals.cd,
+            statTotals.dmgBonus,
+            candidateBonus
+        ]
+    );
+
     const statProfileData = useMemo(
         () => [
-            { stat: "ATK", current: currentStats.atk,        candidate: candidateStats.atk },
-            { stat: "HP",  current: currentStats.hp,         candidate: candidateStats.hp },
-            { stat: "DEF", current: currentStats.def,        candidate: candidateStats.def },
-            { stat: "ER%", current: currentStats.energyRegen, candidate: candidateStats.energyRegen },
-            { stat: "CR%", current: currentStats.critRate,   candidate: candidateStats.critRate },
-            { stat: "CD%", current: currentStats.critDmg,    candidate: candidateStats.critDmg },
-            { stat: "BNS%", current: currentStats.bonus,      candidate: candidateStats.bonus },
+            { stat: "ATK", current: currentStats.atk,           candidate: candidateStats.atk         },
+            { stat: "HP",  current: currentStats.hp,            candidate: candidateStats.hp          },
+            { stat: "DEF", current: currentStats.def,           candidate: candidateStats.def         },
+            { stat: "ER%", current: currentStats.energyRegen,   candidate: candidateStats.energyRegen },
+            { stat: "CR%", current: currentStats.critRate,      candidate: candidateStats.critRate    },
+            { stat: "CD%", current: currentStats.critDmg,       candidate: candidateStats.critDmg     },
+            { stat: "BNS%", current: currentStats.bonus,        candidate: candidateStats.bonus       },
         ],
         [currentStats, candidateStats]
     );

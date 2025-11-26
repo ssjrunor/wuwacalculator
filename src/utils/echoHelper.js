@@ -29,36 +29,36 @@ export const statIconMap = {
 };
 
 export const getValidMainStats = (cost) => {
-    if (cost === 1) {
-        return { hpPercent: 22.8, atkPercent: 18, defPercent: 18 };
-    } else if (cost === 3) {
-        return {
-            hpPercent: 30, atkPercent: 30, defPercent: 38,
-            energyRegen: 32,
-            aero: 30, glacio: 30, electro: 30, fusion: 30, havoc: 30, spectro: 30
-        };
-    } else if (cost === 4) {
-        return {
-            hpPercent: 33, atkPercent: 33, defPercent: 41.5,
-            critRate: 22, critDmg: 44, healingBonus: 26
-        };
+    let stats = {};
+    switch (cost) {
+        case 1:
+            stats = { hpPercent: 22.8, atkPercent: 18, defPercent: 18 };
+            break;
+        case 3:
+            stats = {
+                hpPercent: 30, atkPercent: 30, defPercent: 38,
+                energyRegen: 32,
+                aero: 30, glacio: 30, electro: 30, fusion: 30, havoc: 30, spectro: 30
+            };
+            break;
+        case 4:
+            stats = {
+                hpPercent: 33, atkPercent: 33, defPercent: 41.5,
+                critRate: 22, critDmg: 44, healingBonus: 26
+            };
+            break;
     }
-    return {};
+
+    return stats;
 };
 
 export const applyFixedSecondMainStat = (mainStats, cost) => {
     const updated = { ...mainStats };
-
-    if (cost === 1) {
-        updated.hpFlat = 2280;
+    switch (cost) {
+        case 1: updated.hpFlat = 2280; break;
+        case 3: updated.atkFlat = 100; break;
+        case 4: updated.atkFlat = 150; break;
     }
-    if (cost === 3) {
-        updated.atkFlat = 100;
-    }
-    if (cost === 4) {
-        updated.atkFlat = 150;
-    }
-
     return updated;
 };
 

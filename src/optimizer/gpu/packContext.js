@@ -12,7 +12,7 @@ export function packGpuContext(ctx) {
     data[i++] = ctx.finalAtk     ?? 0;
     data[i++] = ctx.finalHp      ?? 0;
     data[i++] = ctx.finalDef     ?? 0;
-    data[i++] = 0; // _padStats
+    data[i++] = 0;
 
     data[i++] = ctx.scalingAtk   ?? 0;
     data[i++] = ctx.scalingHp    ?? 0;
@@ -37,15 +37,14 @@ export function packGpuContext(ctx) {
     data[i++] = ctx.elementId    ?? 0;
     data[i++] = ctx.skillTypeId  ?? 0;
 
-    // NEW: comboCount lives in the struct now
     data[i++] = ctx.comboCount   ?? 0;
 
+    data[i++] = ctx.charId       ?? 0;
+
     // pads
-    data[i++] = 0; // pad0
     data[i++] = 0; // pad1
     data[i++] = 0; // pad2
     data[i++] = 0; // pad3
 
-    // remaining entries (if any) stay 0
     return data;
 }

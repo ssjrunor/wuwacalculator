@@ -202,6 +202,11 @@
     margin-top: 1rem;
 }
 
+.section-title-row .icon-help {
+    display: flex;
+    align-self: center;
+}
+
 .icon-help {
     opacity: 0.5;
 }
@@ -296,6 +301,10 @@
     display: flex;
     gap: 1rem;
     flex-direction: column;
+}
+
+.tool-tip-content.optimizer-row {
+    gap: unset;
 }
 
 .ant-tooltip-inner b {
