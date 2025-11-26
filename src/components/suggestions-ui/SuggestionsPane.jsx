@@ -118,6 +118,11 @@ export default function SuggestionsPane({
 
     const tab = suggestionSettings?.tab ?? "";
     const level = suggestionSettings?.level ?? null;
+    console.log('[SuggestionsPane] echoData:', echoData);
+    console.log('[SuggestionsPane] noEchoes:', noEchoes);
+    console.log('[SuggestionsPane] suggestionSettings:', suggestionSettings);
+    console.log('[SuggestionsPane] activeCharacter:', activeCharacter);
+    console.log('[SuggestionsPane] level:', level);
     const entry = {
         label: level?.Name,
         detail: level?.Type ?? tab,
@@ -153,10 +158,12 @@ export default function SuggestionsPane({
     }, [setSuggestions?.results?.length, selectedPlanIndex])
 
     useEffect(() => {
+        console.log('[SuggestionsPane] creating worker from', SuggestionsWorker);
         const worker = new Worker(SuggestionsWorker, { type: 'module' });
         workerRef.current = worker;
 
         worker.onmessage = (event) => {
+            console.log('[SuggestionsPane] worker.onmessage', event.data);
             const { type, suggestions, error } = event.data;
             setIsRunning(false);
 
@@ -174,6 +181,10 @@ export default function SuggestionsPane({
             }
         };
 
+        worker.onerror = (err) => {
+            console.error('[SuggestionsPane] worker.onerror', err);
+        };
+
         return () => {
             const timers = workerTimersRef.current;
             Object.values(timers).forEach((id) => id && clearTimeout(id));
@@ -182,11 +193,19 @@ export default function SuggestionsPane({
     }, []);
 
     function run(type = 'mainStats') {
-/*
-        if (noEchoes) return;
-*/
+        console.log('[SuggestionsPane] run called', { type, noEchoes });
+
+        if (type === 'mainStats' && noEchoes) {
+            console.log('[SuggestionsPane] abort mainStats: noEchoes');
+            return;
+        }
+
         const worker = workerRef.current;
-        if (!worker) return;
+        console.log('[SuggestionsPane] workerRef.current:', worker);
+        if (!worker) {
+            console.warn('[SuggestionsPane] no worker, aborting run');
+            return;
+        }
         setIsRunning(true);
         const timers = workerTimersRef.current;
         if (timers[type]) {
@@ -211,6 +230,11 @@ export default function SuggestionsPane({
             (count, e) => (e != null ? count + 1 : count),
             0
         );
+        console.log('[SuggestionsPane] posting to worker', {
+            type,
+            nonNullCount,
+            hasSkill: !!skill,
+        });
 
         timers[type] = setTimeout(() => {
             if (!workerRef.current) return;
@@ -231,6 +255,11 @@ export default function SuggestionsPane({
     }
 
     useEffect(() => {
+        console.log('[SuggestionsPane] effect [activeCharacter, level] fired', {
+            hasActiveCharacter: !!activeCharacter,
+            hasLevel: !!level,
+        });
+
         if (!activeCharacter || !level) return;
         run('mainStats');
         run('setPlans');
@@ -270,8 +299,6 @@ export default function SuggestionsPane({
     };
 
     const [isMainStatsModalOpen, setIsMainStatsModalOpen] = useState(false);
-
-    console.log(setSuggestions, mainStatResults);
 
     return (
         <div className="suggestions-pane">
