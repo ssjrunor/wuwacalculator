@@ -334,7 +334,9 @@ fn computeDamageForCombo(index: u32) {
     // Crit average
     // -------------------------
     let critHit  = base * critDmgTotal;
-    let avg      = critRateTotal * critHit + (1.0 - critRateTotal) * base;
+    var avg      = critRateTotal * critHit + (1.0 - critRateTotal) * base;
+
+    if (critRateTotal >= 1) { avg = critHit; }
 
     if (!passes_constraints(
         finalAtk,
