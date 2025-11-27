@@ -40,9 +40,9 @@ export function packGpuContext(ctx) {
     data[i++] = ctx.comboCount   ?? 0;
 
     data[i++] = ctx.charId       ?? 0;
+    data[i++] = ctx.sequence     ?? 0;
 
     // pads
-    data[i++] = 0; // pad1
     data[i++] = 0; // pad2
     data[i++] = 0; // pad3
 

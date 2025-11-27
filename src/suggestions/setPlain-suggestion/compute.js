@@ -338,9 +338,10 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
         dmgAmplify;
 
     const critHit  = baseDamage * critDmgTotal;
-    const avgDamage =
+    let avgDamage =
         critRateTotal * critHit +
         (1 - critRateTotal) * baseDamage;
+    if (critRateTotal >= 1) avgDamage = critHit;
 
 /*
     const passed = passesConstraints({

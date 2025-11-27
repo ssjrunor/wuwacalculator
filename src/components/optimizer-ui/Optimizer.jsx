@@ -313,6 +313,7 @@ export default function Optimizer({
             resultsLimit,
             lockedEchoId: mainEchoId,
             constraints: statLimits,
+            sequence: runtime?.SkillLevels.sequence,
             onProgress: ({ progress, elapsedMs, remainingMs, processed, speed }) =>
                 setProgress(prev => ({
                     ...prev,
@@ -548,6 +549,7 @@ export default function Optimizer({
                                                     onClick={() => setResEchoes(echoObjs)}
                                                     charId={form.charId}
                                                     keywords={keywords}
+                                                    sequence={runtime?.SkillLevels.sequence}
                                                 />
                                             );
                                         })}

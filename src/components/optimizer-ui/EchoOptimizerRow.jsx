@@ -31,7 +31,8 @@ export default function EchoOptimizerRow({
                                              finalStats,
                                              skillMeta = {},
                                              charId = null,
-                                             keywords
+                                             keywords,
+                                             sequence = 0
                                          }) {
     const entries = setPlan.flatMap(s => {
         const validPieces = setPieceTypeMap[s.setId] || [];
@@ -86,12 +87,13 @@ export default function EchoOptimizerRow({
 
     const stats = {
         atk: base ? finalStats.atk : statTotals.atk +
-            applySpecialBuffs({energyRegen: statTotals.er}, {}, charId, 'atk').atk,
+            applySpecialBuffs({energyRegen: statTotals.er}, {}, charId, 'atk').atk ?? 0,
         hp: base ? finalStats.hp : statTotals.hp,
         def: base ? finalStats.def : statTotals.def,
         er: base ? finalStats.energyRegen : statTotals.er,
         cr: base ? finalStats.critRate : statTotals.cr,
-        cd: base ? finalStats.critDmg : statTotals.cd,
+        cd: base ? finalStats.critDmg : statTotals.cd +
+            applySpecialBuffs({critRate: statTotals.cr, critDmg: statTotals.cd}, {}, charId, 'critDmg', sequence).critDmg,
         bonus: (base ? bonus : (statTotals.dmgBonus ?? 0) + bonus),
         amp: (base ? amp : (statTotals.dmgAmp ?? 0))
     }

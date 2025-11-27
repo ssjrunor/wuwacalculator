@@ -118,7 +118,7 @@ export function calculateDamage({
 
     const normal = baseDmg * resMult * defMult * dmgReductionTotal * elementReductionTotal * dmgBonus * dmgAmplify * special;
 
-    const critRate = Math.min(((finalStats.critRate ?? 0) / 100) + ((critRateBonus + skillCritRate) / 100), 1);
+    const critRate = ((finalStats.critRate ?? 0) / 100) + ((critRateBonus + skillCritRate) / 100);
     const critDmg = ((finalStats.critDmg ?? 0) / 100) + ((critDmgBonus + skillCritDmg) / 100);
 
     const crit = normal * critDmg;

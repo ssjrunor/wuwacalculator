@@ -282,23 +282,28 @@ fn computeDamageForCombo(index: u32) {
     let finalDef =
         params.baseDef * (defP / 100.0) + defF + params.finalDef;
 
-    // Brant ER → ATK conversion
     if (params.charId == 1206) {
-        // How much ER is above 150%?
         let erOver: f32 = max(0.0, finalER - 150.0);
-
-        // 20 ATK per 1% over 150%
         var extraAtk: f32 = erOver * 20.0;
-
-        // Cap at 2600
         extraAtk = min(extraAtk, 2600.0);
-
-        // Add to final ATK
         finalAtk = finalAtk + extraAtk;
     }
 
     let critRateTotal = params.critRate + critRateEcho / 100.0;
-    let critDmgTotal  = params.critDmg  + critDmgEcho  / 100.0;
+    var critDmgTotal  = params.critDmg  + critDmgEcho  / 100.0;
+
+    if (params.charId == 1306) {
+        var bonusCd: f32 = 0.0;
+        if (params.sequence >= 2 && critRateTotal >= 1.0) {
+            let excess: f32 = critRateTotal - 1.0;
+            bonusCd += min(excess * 2.0, 1.0);
+        }
+        if (params.sequence >= 6 && critRateTotal >= 1.5) {
+            let excess2: f32 = critRateTotal - 1.5;
+            bonusCd += min(excess2 * 2.0, 0.5);
+        }
+        critDmgTotal += bonusCd - 0.2;
+    }
 
     // -------------------------
     // Ability scaling

@@ -17,7 +17,7 @@ export function generateEchoContext(form) {
             activeStates: runtime?.activeStates ?? {}
         },
     })
-    const withoutSpecialCharacterBuffs = removeSpecialBuffs(form.mergedBuffs, withoutMainEchoes, charId, runtime.activeStates);
+    const withoutSpecialCharacterBuffs = removeSpecialBuffs(form.mergedBuffs, withoutMainEchoes, charId, runtime.activeStates, form.sequence);
     const mergedBuffsWithoutEchoes = removeEchoArrayFromBuffs(withoutSpecialCharacterBuffs, form.equippedEchoes);
     return {
         charId,
@@ -40,11 +40,12 @@ export function generateEchoContext(form) {
         getSkillData: form.getSkillData,
 
         // Buffs BEFORE applying echoes
-        mergedBuffsWithoutEchoes
+        mergedBuffsWithoutEchoes,
+        sequence: form.sequence,
     };
 }
 
-export function removeSpecialBuffs( original, buffs, charId, activeStates ) {
+export function removeSpecialBuffs( original, buffs, charId, activeStates, sequence = 0 ) {
     const idn = Number(charId);
 
     switch (idn) {
@@ -60,11 +61,23 @@ export function removeSpecialBuffs( original, buffs, charId, activeStates ) {
                 }
             }
             break;
+        case 1306:
+            let bonusCd = 0;
+            if (sequence >= 2) {
+                const excess = original.critRate >= 95 ? (original.critRate ?? 0) - 95 : 0;
+                bonusCd += Math.min(100, excess * 2);
+            }
+            if (sequence >= 6) {
+                const excess = original.critRate >= 145 ? (original.critRate ?? 0) - 145 : 0;
+                bonusCd += Math.min(50, excess * 2);
+            }
+            buffs.critDmg = (original.critDmg ?? 0) - bonusCd;
+            break;
     }
     return buffs;
 }
 
-export function applySpecialBuffs( original, buffs, charId, key ) {
+export function applySpecialBuffs( original, buffs, charId, key, sequence = 0 ) {
     if (!charId) return buffs;
     const idn = Number(charId);
 
@@ -76,8 +89,21 @@ export function applySpecialBuffs( original, buffs, charId, key ) {
                 buffs[key] = (buffs[key] ?? 0) + atkBuff;
             } else return {[key]: 0};
             break;
+        case 1306:
+            let bonusCd = 0;
+            if (sequence >= 2) {
+                const excess = original.critRate >= 100 ? (original.critRate ?? 0) - 100 : 0;
+                bonusCd += Math.min(100, excess * 2);
+            }
+            if (sequence >= 6) {
+                const excess = original.critRate >= 150 ? (original.critRate ?? 0) - 150 : 0;
+                bonusCd += Math.min(50, excess * 2);
+            }
+            buffs[key] = bonusCd - 20;
+            break;
         default:
             buffs[key] = (buffs[key] ?? 0);
     }
+
     return buffs;
 }

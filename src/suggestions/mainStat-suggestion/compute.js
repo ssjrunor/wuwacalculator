@@ -82,6 +82,7 @@ export function computeMainStatDamage(
         skillTypeId = 0,
 
         charId = 0,
+        sequence = 0,
     } = params;
 
     const {
@@ -154,6 +155,19 @@ export function computeMainStatDamage(
     let critRateTotal = critRate + critRateFromStats / 100;
     let critDmgTotal  = critDmg  + critDmgFromStats  / 100;
 
+    if (charId === 1306) {
+        let bonusCd = 0;
+        if (sequence >= 2) {
+            const excess = critRateTotal >= 1 ? (critRateTotal - 1) : 0;
+            bonusCd += Math.min(1, excess * 2);
+        }
+        if (sequence >= 6) {
+            const excess = critRateTotal >= 1.5 ? (critRateTotal - 1.5) : 0;
+            bonusCd += Math.min(0.5, excess * 2);
+        }
+        critDmgTotal += bonusCd;
+    }
+
     // scaling
     const scaled =
         finalAtk * scalingAtk +
@@ -201,9 +215,10 @@ export function computeMainStatDamage(
         dmgAmplify;
 
     const critHit  = baseDamage * critDmgTotal;
-    const avgDamage =
+    let avgDamage =
         critRateTotal * critHit +
         (1 - critRateTotal) * baseDamage;
+    if (critRateTotal >= 1) avgDamage = critHit;
 
     const passed = passesConstraints({
         finalAtk,

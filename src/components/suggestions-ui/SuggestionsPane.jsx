@@ -36,6 +36,31 @@ const pieces = {
     5: 'fivePiece'
 }
 
+function normalizeMainStats(echo) {
+    if (!echo || !echo.mainStats) return '__NO_MAIN_STATS__';
+    const entries = Object.entries(echo.mainStats)
+        .sort(([aKey], [bKey]) => aKey.localeCompare(bKey));
+    return JSON.stringify(entries);
+}
+
+function haveSameMainStats(echoesA, echoesB) {
+    const listA = (echoesA || [])
+        .filter(e => e && e.mainStats)
+        .map(normalizeMainStats)
+        .sort();
+    const listB = (echoesB || [])
+        .filter(e => e && e.mainStats)
+        .map(normalizeMainStats)
+        .sort();
+
+    if (listA.length !== listB.length) return false;
+
+    for (let i = 0; i < listA.length; i++) {
+        if (listA[i] !== listB[i]) return false;
+    }
+    return true;
+}
+
 export default function SuggestionsPane({
                                             currentSliderColor,
                                             charId,
@@ -120,11 +145,6 @@ export default function SuggestionsPane({
 
     const tab = suggestionSettings?.tab ?? "";
     const level = suggestionSettings?.level ?? null;
-    console.log('[SuggestionsPane] echoData:', echoData);
-    console.log('[SuggestionsPane] noEchoes:', noEchoes);
-    console.log('[SuggestionsPane] suggestionSettings:', suggestionSettings);
-    console.log('[SuggestionsPane] activeCharacter:', activeCharacter);
-    console.log('[SuggestionsPane] level:', level);
     const entry = {
         label: level?.Name,
         detail: level?.Type ?? tab,
@@ -222,6 +242,7 @@ export default function SuggestionsPane({
             equippedEchoes: echoData,
             statWeight,
             skillType: skill.skillType,
+            sequence: runtime?.SkillLevels.sequence
         };
 
         const nonNullCount = echoData.reduce(
@@ -251,11 +272,6 @@ export default function SuggestionsPane({
     }
 
     useEffect(() => {
-        console.log('[SuggestionsPane] effect [activeCharacter, level] fired', {
-            hasActiveCharacter: !!activeCharacter,
-            hasLevel: !!level,
-        });
-
         if (!activeCharacter || !level) return;
         run('mainStats');
         run('setPlans');
@@ -396,6 +412,8 @@ export default function SuggestionsPane({
                                         .slice()
                                         .sort((a, b) => (b.cost ?? 0) - (a.cost ?? 0));
 
+                                    const current = haveSameMainStats(echoData, plan?.echoes || []);
+
                                     return (
                                         <div
                                             key={index}
@@ -421,9 +439,9 @@ export default function SuggestionsPane({
                                                                     className="set-plan-damage-container"
                                                                     style={{ marginLeft: 'unset' }}
                                                                 >
-                                                        <span className="set-plan-damage-main avg">
-                                                            {formatNumber(avg)} dmg
-                                                        </span>
+                                                                    <span className="set-plan-damage-main avg">
+                                                                        {formatNumber(avg)} dmg
+                                                                    </span>
                                                                 </div>
 
                                                                 {baseDamage && (
@@ -434,7 +452,7 @@ export default function SuggestionsPane({
                                                                         (diffPercent !== 0 ? diffPercent >= 0 ? 'positive' : 'negative' : 'zero')
                                                                     }
                                                                 >
-                                                                    {diffPercent !== 0 ? `${(Math.abs(diffPercent).toFixed(2))}%` : 'Current'}
+                                                                    {!current ? `${(Math.abs(diffPercent).toFixed(2))}%` : 'Current'}
                                                                     {diffPercent !== 0 ? diffPercent > 0 ? '⬆' : '⬇' : ''}
                                                                 </span>
                                                             </span>
@@ -453,9 +471,9 @@ export default function SuggestionsPane({
                                                             className="echo-buff main-stat-row"
                                                         >
                                                             <div className="main-stat-row-left">
-                                                        <span className="main-stat-row-slot">
-                                                            Cost {echo.cost}
-                                                        </span>
+                                                                <span className="main-stat-row-slot">
+                                                                    Cost {echo.cost}
+                                                                </span>
                                                             </div>
 
                                                             <div className="main-stat-row-pills">
@@ -464,13 +482,13 @@ export default function SuggestionsPane({
                                                                         key={key}
                                                                         className="echo-buff main-stat-pill"
                                                                     >
-                                                                <span className="main-stat-pill-stat">
-                                                                    {formatStatKey(key)}:
-                                                                </span>
-                                                                <span className="main-stat-pill-value highlight">
-                                                                    {value}
-                                                                </span>
-                                                            </span>
+                                                                        <span className="main-stat-pill-stat">
+                                                                            {formatStatKey(key)}:
+                                                                        </span>
+                                                                        <span className="main-stat-pill-value highlight">
+                                                                            {value}
+                                                                        </span>
+                                                                    </span>
                                                                 ))}
                                                             </div>
                                                         </div>

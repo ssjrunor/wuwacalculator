@@ -11,6 +11,7 @@ export function suggestMainStats({
                                      minSlots = 1,
                                      maxCost = 12,
                                      topK = 5,
+                                     sequence
                                  }) {
     const pool = buildMainStatPoolForSuggestor({ statWeight, charId, mainStatFilter });
     const results = [];
@@ -21,7 +22,7 @@ export function suggestMainStats({
     const currentIndices = [];
 
     function maybeInsertResult(costUsed) {
-        const avgDamage = computeMainStatDamage(ctx, currentStats, null, true);
+        const avgDamage = computeMainStatDamage({...ctx, sequence}, currentStats, null, true);
 
         const echoes = currentIndices.map(idx => {
             const opt = pool[idx];
@@ -94,5 +95,6 @@ export function runMainStatSuggestor(form, options = {}) {
         minSlots: options.minSlots ?? 1,
         maxCost: options.maxCost ?? 12,
         topK: options.topK ?? 10,
+        sequence: form.sequence,
     });
 }

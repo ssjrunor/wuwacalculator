@@ -22,6 +22,7 @@ export default function StatProfileCard({
                                             skillMeta,
                                             mergedBuffs,
                                             finalStats,
+                                            sequence
                                     }) {
     const resIds = resolveIdsFromEchoes(resEchoes);
     const { statTotals } = computeEchoStatsFromIds(resIds, echoBag, currentContext, charIdForm);
@@ -68,12 +69,14 @@ export default function StatProfileCard({
 
     const candidateStats = useMemo(
         () => ({
-            atk: statTotals.atk + applySpecialBuffs({energyRegen: statTotals.er}, {}, charIdForm, 'atk').atk,
+            atk: statTotals.atk +
+                applySpecialBuffs({energyRegen: statTotals.er}, {}, charIdForm, 'atk').atk,
             hp: statTotals.hp,
             def: statTotals.def,
             energyRegen: statTotals.er,
             critRate: statTotals.cr,
-            critDmg: statTotals.cd,
+            critDmg: statTotals.cd +
+                applySpecialBuffs({critRate: statTotals.cr, critDmg: statTotals.cd}, {}, charIdForm, 'critDmg', sequence).critDmg,
             bonus: (statTotals.dmgBonus ?? 0) + candidateBonus,
         }),
         [

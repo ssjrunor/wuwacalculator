@@ -55,7 +55,7 @@ struct Params {
 
     comboCount:   f32,
     charId:       f32,
-    pad1:         f32,
+    sequence:     f32,
     pad2:         f32,
     pad3:         f32,
 };

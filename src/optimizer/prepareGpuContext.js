@@ -11,7 +11,8 @@ export function prepareGpuContext({
                                       charId,
                                       entry,
                                       levelData,
-                                      getSkillData
+                                      getSkillData,
+                                      sequence
                                   }) {
     const finalStatsBase = getFinalStats(
         activeCharacter,
@@ -68,7 +69,8 @@ export function prepareGpuContext({
         normalBase: ctx.normalBase,
 
         elementId: mapElementToId(ctx?.skillMeta?.element),
-        skillTypeId: mapSkillTypeToId(ctx?.skillMeta?.skillType)
+        skillTypeId: mapSkillTypeToId(ctx?.skillMeta?.skillType),
+        sequence
     };
 }
 

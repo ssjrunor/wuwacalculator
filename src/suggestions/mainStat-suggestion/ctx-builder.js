@@ -7,7 +7,7 @@ export function generateMainStatsContext(form) {
     const charId = form.charId;
     const runtime = form.characterRuntimeStates[charId];
     const withoutMainStats = removeMainStatsFromBuffs(
-        removeSpecialBuffs(form.mergedBuffs, {...form.mergedBuffs}, charId, runtime.activeStates),
+        removeSpecialBuffs(form.mergedBuffs, {...form.mergedBuffs}, charId, runtime.activeStates, form.sequence),
         form.equippedEchoes
     );
 

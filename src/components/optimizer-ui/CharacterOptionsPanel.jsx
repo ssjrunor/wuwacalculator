@@ -37,7 +37,7 @@ export function CharacterOptionsPanel({
                                           handleStatLimitChange,
                                           statLimits,
                                           echoBag
-                                      }) {
+}) {
     const rarity = rarityMap[charId];
     const displayName = activeCharacter.displayName.toUpperCase();
     const level = runtime.CharacterLevel;
@@ -223,6 +223,7 @@ export function CharacterOptionsPanel({
                             mergedBuffs={mergedBuffs}
                             finalStats={finalStats}
                             echoBag={echoBag}
+                            sequence={sequence}
                         />
                     </div>
                 </div>
