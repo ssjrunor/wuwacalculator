@@ -57,21 +57,18 @@ fn computeDamageForCombo(index: u32) {
         // --------------------------------------
         if (i == 0u) {
             let b = u32(id) * BUFFS_PER_ECHO;
-
             atkP      += mainEchoBuffs[b + 0u];
             atkF      += mainEchoBuffs[b + 1u];
             basicEcho += mainEchoBuffs[b + 2u];
             heavyEcho += mainEchoBuffs[b + 3u];
             skillEcho += mainEchoBuffs[b + 4u];
             libEcho   += mainEchoBuffs[b + 5u];
-
             aero      += mainEchoBuffs[b + 6u];
             glacio    += mainEchoBuffs[b + 7u];
             fusion    += mainEchoBuffs[b + 8u];
             spectro   += mainEchoBuffs[b + 9u];
             havoc     += mainEchoBuffs[b + 10u];
             electro   += mainEchoBuffs[b + 11u];
-
             erEcho    += mainEchoBuffs[b + 12u];
             echoSkill += mainEchoBuffs[b + 13u];
             coord     += mainEchoBuffs[b + 14u];
@@ -84,16 +81,13 @@ fn computeDamageForCombo(index: u32) {
         hpF  += echoStats[o + 3u];
         defP += echoStats[o + 4u];
         defF += echoStats[o + 5u];
-
         critRateEcho += echoStats[o + 6u];
         critDmgEcho  += echoStats[o + 7u];
         erEcho       += echoStats[o + 8u];
-
         basicEcho += echoStats[o + 10u];
         heavyEcho += echoStats[o + 11u];
         skillEcho += echoStats[o + 12u];
         libEcho   += echoStats[o + 13u];
-
         aero    += echoStats[o + 14u];
         spectro += echoStats[o + 15u];
         fusion  += echoStats[o + 16u];
@@ -106,17 +100,30 @@ fn computeDamageForCombo(index: u32) {
     // Count set occurrences
     // ----------------------------------
     var setCount: array<u32, 32u>;
-    for (var i: u32 = 0u; i < 32u; i = i + 1u) {
-        setCount[i] = 0u;
+    var seenMask: array<u32, 32u>;
+
+    for (var s: u32 = 0u; s < 32u; s = s + 1u) {
+        setCount[s] = 0u;
+        seenMask[s] = 0u;
     }
 
     for (var i: u32 = 0u; i < 5u; i = i + 1u) {
-        let id = echoIds[i];
-        if (id < 0) { continue; }
+        let idx = echoIds[i];
+        if (idx < 0) { continue; }
 
-        let setIdF = echoSets[u32(id)];
-        let setId = u32(setIdF);
-        if (setId < 32u) {
+        let echoIndex: u32 = u32(idx);
+
+        let setIdF = echoSets[echoIndex];
+        let setId  = u32(setIdF);
+        if (setId >= 32u) { continue; }
+
+        let kindId: i32 = echoKindIds[echoIndex];
+
+        let bit: u32 = 1u << (u32(kindId) & 31u);
+
+        let mask = seenMask[setId];
+        if ((mask & bit) == 0u) {
+            seenMask[setId] = mask | bit;
             setCount[setId] = setCount[setId] + 1u;
         }
     }

@@ -25,6 +25,7 @@ let outBufSize = 0;
 
 let constraintBuf = null;
 let constraintBufSize = 0;
+let kindBuf = null;
 
 let CANCEL = false;
 
@@ -80,6 +81,16 @@ async function initStatic(encoded, echoes, charId) {
             usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
         });
         device.queue.writeBuffer(setsBuf, 0, encoded.sets);
+
+        const kindArr = new Int32Array(encoded.count);
+        for (let i = 0; i < encoded.count; i++) {
+            kindArr[i] = echoes[i]?.id ?? -1;
+        }
+        kindBuf = device.createBuffer({
+            size: kindArr.byteLength,
+            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
+        });
+        device.queue.writeBuffer(kindBuf, 0, kindArr);
 
         // Main echo buffs
         const mainArr = buildMainEchoBuffsArray(
@@ -202,7 +213,8 @@ self.onmessage = async e => {
                 context: ctxBuf,
                 outputBuffer: outBuf,
                 mainEchoBuffs: mainBuffsBuf,
-                statConstraints: constraintBuf
+                statConstraints: constraintBuf,
+                echoKindIds: kindBuf
             });
 
             await runEchoGpuPipeline({

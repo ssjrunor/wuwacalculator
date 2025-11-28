@@ -1,4 +1,4 @@
-const WORKER_COUNT = 2
+const WORKER_COUNT = 2;
 
 let workers = [];
 let ready = new Set();

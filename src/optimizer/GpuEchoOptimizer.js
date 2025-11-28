@@ -10,7 +10,7 @@ export async function runGpuEchoOptimizer({
                                               ctxObj,
                                               charId,
                                               encodedConstraints,
-                                              echoes,              // <-- add this
+                                              echoes,
                                           }) {
     let totalProcessed = 0;
     const topResults = new TopKHeap(resultsLimit);

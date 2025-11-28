@@ -137,7 +137,7 @@ const StatProfile = React.memo(function StatProfile({
             <div className="analytics-chart-wrapper">
                 <ResponsiveContainer
                     width="200"
-                    height="200"
+                    height="190"
                 >
                     <RadarChart data={data}>
                         <PolarGrid />
@@ -168,12 +168,6 @@ const StatProfile = React.memo(function StatProfile({
                     </RadarChart>
                 </ResponsiveContainer>
             </div>
-            <p className="analytics-note">
-                This chart compares your current build and the selected optimizer result
-                across ATK, HP, DEF, Energy Regen, Crit stats and damage bonuses. Each spoke
-                is normalized between the two builds, so the larger shape on a stat shows
-                which build is stronger there. Hover to see the exact numbers.
-            </p>
         </div>
     );
 });

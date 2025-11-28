@@ -46,11 +46,26 @@ export const SET_EFFECT_TABLE = {
 
 function getSetPieceCounts(echoObjs) {
     const counts = {};
+    const seenBySet = {};
+
     for (const e of echoObjs) {
-        const sid = e?.selectedSet;
-        if (!sid) continue;
-        counts[sid] = (counts[sid] || 0) + 1;
+        if (!e) continue;
+
+        const setId = e.selectedSet;
+        const kindId = e.id;
+
+        if (setId == null || kindId == null) continue;
+
+        if (!seenBySet[setId]) {
+            seenBySet[setId] = new Set();
+        }
+
+        if (!seenBySet[setId].has(kindId)) {
+            seenBySet[setId].add(kindId);
+            counts[setId] = (counts[setId] ?? 0) + 1;
+        }
     }
+
     return counts;
 }
 

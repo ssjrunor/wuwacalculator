@@ -115,7 +115,7 @@ export default function EchoOptimizerRow({
             className="rotation-item optimizer-result-item"
             onClick={onClick}
         >
-            <Tooltip
+            {/*<Tooltip
                 title={
                     <div className="tool-tip-content optimizer-row">
                         <span className="highlight">Sonata Set(s)</span>
@@ -127,7 +127,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col sets echo-buff">{renderSetBadges()}</div>
             </Tooltip>
 
             <Tooltip
@@ -149,23 +148,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col main-echo echo-buff">
-                    {mainEcho ? (
-                        <img
-                            src={mainEcho.icon}
-                            alt={mainEcho.name}
-                            className="header-icon"
-                            loading="lazy"
-                            onError={e => {
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.src = "/assets/echoes/default.webp";
-                                e.currentTarget.classList.add("fallback-icon");
-                            }}
-                        />
-                    ) : (
-                        <span>...</span>
-                    )}
-                </div>
             </Tooltip>
 
             <Tooltip
@@ -173,9 +155,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col cost echo-buff">
-                    {totalCost || "..."}
-                </div>
             </Tooltip>
 
             <Tooltip
@@ -195,7 +174,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col atk echo-buff">{Math.floor(stats.atk)}</div>
             </Tooltip>
 
             <Tooltip
@@ -215,7 +193,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col hp echo-buff">{Math.floor(stats.hp)}</div>
             </Tooltip>
 
             <Tooltip
@@ -235,9 +212,7 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col def echo-buff">{Math.floor(stats.def ?? 0)}</div>
             </Tooltip>
-
 
             <Tooltip
                 title={
@@ -256,7 +231,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col er echo-buff">{(stats.er ?? 0).toFixed(1)}</div>
             </Tooltip>
 
 
@@ -277,7 +251,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col cr echo-buff">{(stats.cr ?? 0).toFixed(1)}</div>
             </Tooltip>
 
             <Tooltip
@@ -297,7 +270,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col cd echo-buff">{(stats.cd ?? 0).toFixed(1)}</div>
             </Tooltip>
 
             <Tooltip
@@ -320,7 +292,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col bonus echo-buff">{stats.bonus.toFixed(1)}</div>
             </Tooltip>
 
             <Tooltip
@@ -343,7 +314,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col amp echo-buff">{stats.amp.toFixed(1)}</div>
             </Tooltip>
 
             <Tooltip
@@ -363,7 +333,6 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col dmg echo-buff avg">{Math.floor(damage)}</div>
             </Tooltip>
 
             <Tooltip
@@ -383,8 +352,51 @@ export default function EchoOptimizerRow({
                 placement="top"
                 mouseEnterDelay={1}
             >
-                <div className="col diff echo-buff">{diff}%</div>
-            </Tooltip>
+            </Tooltip>*/}
+            <div className="col sets echo-buff">{renderSetBadges()}</div>
+
+            <div className="col main-echo echo-buff">
+                {mainEcho ? (
+                    <img
+                        src={mainEcho.icon}
+                        alt={mainEcho.name}
+                        className="header-icon"
+                        loading="lazy"
+                        onError={e => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = "/assets/echoes/default.webp";
+                            e.currentTarget.classList.add("fallback-icon");
+                        }}
+                    />
+                ) : (
+                    <span>...</span>
+                )}
+            </div>
+
+            <div className="col cost echo-buff">
+                {totalCost || "..."}
+            </div>
+
+            <div className="col atk echo-buff">{Math.floor(stats.atk)}</div>
+
+            <div className="col hp echo-buff">{Math.floor(stats.hp)}</div>
+
+            <div className="col def echo-buff">{Math.floor(stats.def ?? 0)}</div>
+
+            <div className="col er echo-buff">{(stats.er ?? 0).toFixed(1)}</div>
+
+            <div className="col cr echo-buff">{(stats.cr ?? 0).toFixed(1)}</div>
+
+            <div className="col cd echo-buff">{(stats.cd ?? 0).toFixed(1)}</div>
+
+            <div className="col bonus echo-buff">{stats.bonus.toFixed(1)}</div>
+
+            <div className="col amp echo-buff">{stats.amp.toFixed(1)}</div>
+
+            <div className="col dmg echo-buff avg">{Math.floor(damage)}</div>
+
+            <div className="col diff echo-buff">{diff}%</div>
+
         </div>
     );
 }

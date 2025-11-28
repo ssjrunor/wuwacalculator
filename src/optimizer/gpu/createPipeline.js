@@ -26,6 +26,7 @@ export function createBindGroup(device, layout, buffers) {
             { binding: 5, resource: { buffer: buffers.outputBuffer } },
             { binding: 6, resource: { buffer: buffers.mainEchoBuffs } },
             { binding: 7, resource: { buffer: buffers.statConstraints } },
+            { binding: 8, resource: { buffer: buffers.echoKindIds } },
         ]
     });
 }
@@ -56,6 +57,9 @@ export function createBindGroupLayout(device) {
 
             { binding: 7, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "uniform" } },
+
+            { binding: 8, visibility: GPUShaderStage.COMPUTE,
+                buffer: { type: "read-only-storage" } },
         ]
     });
 }

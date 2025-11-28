@@ -6,6 +6,7 @@ export async function createGpuBuffers({
                                            gpuContexts,
                                            mainEchoBuffs,
                                            statConstraints,
+                                           echoKindIds,
                                            deviceOverride
                                        }) {
     const device = deviceOverride;
@@ -57,6 +58,11 @@ export async function createGpuBuffers({
     });
     device.queue.writeBuffer(statConstraintsBuffer, 0, statConstraints);
 
+    const echoKindIdsBuffer = device.createBuffer({
+        size: echoKindIds.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(echoKindIdsBuffer, 0, echoKindIds);
 
     return {
         echoStats: echoStatsBuffer,
@@ -67,5 +73,6 @@ export async function createGpuBuffers({
         outputBuffer,
         mainEchoBuffs: mainEchoBuffsBuffer,
         statConstraints: statConstraintsBuffer,
+        echoKindIds: echoKindIdsBuffer,
     };
 }

@@ -225,6 +225,12 @@ export function CharacterOptionsPanel({
                             echoBag={echoBag}
                             sequence={sequence}
                         />
+                        <p className="analytics-note" style={{ marginTop: 'auto' }}>
+                            This chart compares your current build and the selected optimizer result
+                            across ATK, HP, DEF, Energy Regen, Crit stats and damage bonuses. Each spoke
+                            is normalized between the two builds, so the larger shape on a stat shows
+                            which build is stronger there. Hover to see the exact numbers.
+                        </p>
                     </div>
                 </div>
             </div>

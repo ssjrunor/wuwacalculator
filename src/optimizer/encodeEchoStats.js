@@ -126,3 +126,11 @@ export function buildStatConstraintArray(constraints) {
 
     return arr;
 }
+
+export function buildEchoKindIdArray(echoes) {
+    const arr = new Int32Array(echoes.length);
+    for (let i = 0; i < echoes.length; i++) {
+        arr[i] = echoes[i]?.id ?? -1;
+    }
+    return arr;
+}

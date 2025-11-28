@@ -221,7 +221,7 @@ export default function EchoesPane({
 
     const hasSetEffects = Object.entries(setCounts).some(([setId, count]) => {
         const numericId = Number(setId);
-        const requiredCount = setRequirements.get(numericId) ?? 2; // fallback to 2 if unknown
+        const requiredCount = setRequirements.get(numericId) ?? 2;
         return count >= requiredCount;
     });
     const echoStatTotals = getEchoStatsFromEquippedEchoes(echoData);

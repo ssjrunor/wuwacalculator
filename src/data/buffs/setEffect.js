@@ -302,17 +302,30 @@ export function applySetEffectsToBuffs(mergedBuffs, sets) {
 export function getSetPlanFromEchoes(equippedEchoes = []) {
     if (!Array.isArray(equippedEchoes) || equippedEchoes.length === 0) return null;
 
-    // Count how many echoes belong to each set
     const counts = {};
+    const seenBySet = {};
+
     for (const echo of equippedEchoes) {
-        const sid = echo?.selectedSet ?? echo?.setId;
-        if (!sid) continue;
-        counts[sid] = (counts[sid] ?? 0) + 1;
+        if (!echo) continue;
+
+        const setId = echo.selectedSet ?? echo.setId;
+        const kindId = echo.id;
+
+        if (setId == null || kindId == null) continue;
+
+        if (!seenBySet[setId]) {
+            seenBySet[setId] = new Set();
+        }
+
+        if (!seenBySet[setId].has(kindId)) {
+            seenBySet[setId].add(kindId);
+            counts[setId] = (counts[setId] ?? 0) + 1;
+        }
     }
 
     const entries = Object.entries(counts).map(([setId, count]) => ({
         setId: Number(setId),
-        count
+        count,
     }));
 
     if (entries.length === 0) return null;

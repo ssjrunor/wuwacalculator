@@ -4,6 +4,7 @@
 @group(0) @binding(3) var<storage, read> combos: array<i32>;
 @group(0) @binding(5) var<storage, read_write> outDamage: array<f32>;
 @group(0) @binding(6) var<storage, read> mainEchoBuffs: array<f32>;
+@group(0) @binding(8) var<storage, read> echoKindIds: array<i32>;
 
 struct StatConstraints {
     atkRange      : vec2<f32>,
