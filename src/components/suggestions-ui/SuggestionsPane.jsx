@@ -18,6 +18,7 @@ import {SonataSetPlanner} from "../echo-generator-ui/EchoGenerator.jsx";
 import {applySetPlanToEchoes} from "../../suggestions/setPlain-suggestion/utils.js";
 import {runMainStatSuggestor} from "../../suggestions/mainStat-suggestion/suggestMainStat.js";
 import {runSetSuggestor} from "../../suggestions/setPlain-suggestion/suggestSetPlan.js";
+import {getSetPlanFromEchoes} from "../../data/buffs/setEffect.js";
 
 const SuggestionsWorker = new URL('../../workers/suggestionsWorker.js', import.meta.url);
 
@@ -58,6 +59,23 @@ function haveSameMainStats(echoesA, echoesB) {
     for (let i = 0; i < listA.length; i++) {
         if (listA[i] !== listB[i]) return false;
     }
+    return true;
+}
+
+function setsEqual(a, b) {
+    if (!Array.isArray(a) || !Array.isArray(b)) return false;
+    if (a.length !== b.length) return false;
+
+    const map = new Map();
+    for (const s of a) {
+        map.set(s.setId, s.count);
+    }
+
+    for (const t of b) {
+        if (!map.has(t.setId)) return false;
+        if (map.get(t.setId) !== t.pieces) return false;
+    }
+
     return true;
 }
 
@@ -312,6 +330,8 @@ export default function SuggestionsPane({
 
     const [isMainStatsModalOpen, setIsMainStatsModalOpen] = useState(false);
 
+    const setData = getSetPlanFromEchoes(echoData);
+
     return (
         <div className="suggestions-pane">
             <SkillMenu
@@ -558,6 +578,8 @@ export default function SuggestionsPane({
                                     : 0;
                                 diffPercent = Number((diffPercent).toFixed(2));
                                 const isSelected = index === selectedPlanIndex;
+                                const current = setsEqual(setData, plan?.setPlan);
+
 
                                 return (
                                     <button
@@ -620,7 +642,7 @@ export default function SuggestionsPane({
                                                                 (diffPercent !== 0 ? diffPercent > 0 ? 'positive' : 'negative' : 'zero')
                                                             }
                                                         >
-                                                            {diffPercent !== 0 ? `${(Math.abs(diffPercent).toFixed(2))}%` : 'Current'}
+                                                            {!current ? `${(Math.abs(diffPercent).toFixed(2))}%` : 'Current'}
                                                             {diffPercent !== 0 ? diffPercent > 0 ? '⬆' : '⬇' : ''}
                                                         </span>
                                                     )}
