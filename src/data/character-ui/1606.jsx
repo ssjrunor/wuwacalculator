@@ -128,7 +128,7 @@ export function rocciaSequenceToggles({
                                         setCharacterRuntimeStates,
                                         charId
                                     }) {
-    const validKeys = ['2', '4', '6'];
+    const validKeys = ['2', '3', '4', '6'];
     if (!validKeys.includes(String(nodeKey))) return null;
 
     const requiredLevel = Number(nodeKey);

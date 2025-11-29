@@ -44,16 +44,12 @@ export function applyRocciaLogic({
 
     const seq2Value = characterState?.toggles?.['2_value'] ?? 0;
     const luceanite = Math.min(seq2Value * 10, 30);
-
-    if (!mergedBuffs.__luceaniteApplied) {
-        mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + luceanite;
-        if (seq2Value >= 3) {
-            mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 10;
-        }
+    if (!mergedBuffs.__luceaniteApplied && isActiveSequence(2)) {
+        mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + luceanite + (seq2Value >= 3 ? 10 : 0);
         mergedBuffs.__luceaniteApplied = true;
     }
 
-    if (isActiveSequence(2) && !mergedBuffs.__rocciaS3 && isToggleActive(2)) {
+    if (isActiveSequence(3) && !mergedBuffs.__rocciaS3 && isToggleActive(3)) {
         mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 10;
         mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + 30;
         mergedBuffs.__rocciaS3 = true;
