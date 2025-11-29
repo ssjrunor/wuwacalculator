@@ -113,7 +113,7 @@ export default function Optimizer({
         tab
     };
     const skill = skillResults
-        ?.find(skill => skill.name === level?.label || skill.name === level?.Name) ?? {};
+        ?.find(skill => (skill.name === level?.label || skill.name === level?.Name) && skill.tab === tab) ?? {};
     const statWeight = skill.statWeight ?? skill.custSkillMeta?.statWeight ?? {};
 
     const mainStatFilter = optimizer.mainStatFilter ?? getDefaultMainStatFilter(statWeight, charId);

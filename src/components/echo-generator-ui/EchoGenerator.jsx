@@ -92,10 +92,8 @@ export function EchoGenerator({
         detail: level?.Type ?? tab,
         tab,
     };
-    const skill =
-        skillResults?.find(
-            (s) => s.name === level?.label || s.name === level?.Name
-        ) ?? {};
+    const skill = skillResults
+        ?.find(skill => (skill.name === level?.label || skill.name === level?.Name) && skill.tab === tab) ?? {};
 
     useEffect(() => {
         const worker = new Worker(

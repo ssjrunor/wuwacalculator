@@ -169,7 +169,7 @@ export default function SuggestionsPane({
         tab
     };
     const skill = skillResults
-        ?.find(skill => skill.name === level?.label || skill.name === level?.Name) ?? {};
+        ?.find(skill => (skill.name === level?.label || skill.name === level?.Name) && skill.tab === tab) ?? {};
     const statWeight = skill.statWeight ?? skill.custSkillMeta?.statWeight ?? {};
 
     const workerRef = useRef(null);
