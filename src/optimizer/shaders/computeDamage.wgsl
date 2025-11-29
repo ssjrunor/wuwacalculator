@@ -5,7 +5,7 @@ fn computeDamageForCombo(index: u32) {
     }
 
     let elementId   = params.elementId;
-    let skillTypeId = params.skillTypeId;
+    let skillMask   : u32 = u32(params.skillTypeId);
 
     // -------------------------
     // Load 5 echo indices
@@ -191,7 +191,10 @@ fn computeDamageForCombo(index: u32) {
 
     // SET 13 — ER → ATK%
     if (setCount[13u] >= 2u) { finalER += 10.0; }
-    if (setCount[13u] >= 5u) { atkP += 20.0; }
+    if (setCount[13u] >= 5u) {
+        coord += 80.0;
+        atkP += 20.0;
+    }
 
     // SET 14 — ER 2pc, ATK% 5pc
     if (setCount[14u] >= 2u) { finalER += 10.0; }
@@ -246,7 +249,12 @@ fn computeDamageForCombo(index: u32) {
     if (setCount[22u] >= 3u) {
         fusion += 16.0;
     }
-    if (setCount[22u] >= 3u && (skillTypeId == 1.0 || skillTypeId == 6.0)) {
+
+    let SKILL_HEAVY     : u32 = 1u << 1u;
+    let SKILL_ECHO_SKILL: u32 = 1u << 6u;
+
+    if (setCount[22u] >= 3u &&
+        (hasSkill(skillMask, SKILL_HEAVY) || hasSkill(skillMask, SKILL_ECHO_SKILL))) {
         critRateEcho += 20.0;
     }
 
@@ -268,12 +276,18 @@ fn computeDamageForCombo(index: u32) {
     if (elementId == 5.0) { bonus += electro; }
 
     // skill type bonus
-    if (skillTypeId == 0.0) { bonus += basicEcho; }
-    if (skillTypeId == 1.0) { bonus += heavyEcho; }
-    if (skillTypeId == 2.0) { bonus += skillEcho; }
-    if (skillTypeId == 3.0) { bonus += libEcho;   }
-    if (skillTypeId == 6.0) { bonus += echoSkill; }
-    if (skillTypeId == 7.0) { bonus += coord;     }
+    let FLAG_BASIC      : u32 = 1u << 0u;
+    let FLAG_HEAVY      : u32 = 1u << 1u;
+    let FLAG_SKILL      : u32 = 1u << 2u;
+    let FLAG_LIB        : u32 = 1u << 3u;
+    let FLAG_ECHO_SKILL : u32 = 1u << 6u;
+    let FLAG_COORD      : u32 = 1u << 7u;
+    if (hasSkill(skillMask, FLAG_BASIC))      { bonus += basicEcho; }
+    if (hasSkill(skillMask, FLAG_HEAVY))      { bonus += heavyEcho; }
+    if (hasSkill(skillMask, FLAG_SKILL))      { bonus += skillEcho; }
+    if (hasSkill(skillMask, FLAG_LIB))        { bonus += libEcho;   }
+    if (hasSkill(skillMask, FLAG_ECHO_SKILL)) { bonus += echoSkill; }
+    if (hasSkill(skillMask, FLAG_COORD))      { bonus += coord;     }
 
     let dmgBonus = params.dmgBonus + bonus / 100.0;
 

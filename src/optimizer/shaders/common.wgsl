@@ -98,3 +98,7 @@ fn passes_constraints(
 
     return true;
 }
+
+fn hasSkill(mask: u32, flag: u32) -> bool {
+    return (mask & flag) != 0u;
+}

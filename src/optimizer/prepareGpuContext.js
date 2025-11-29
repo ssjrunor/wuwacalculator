@@ -84,17 +84,17 @@ export const ELEMENT_MAP = {
     physical: 6
 };
 
-export const SKILLTYPE_MAP = {
-    basic: 0,
-    heavy: 1,
-    skill: 2,
-    ultimate: 3,
-    outro: 4,
-    intro: 5,
-    echoSkill: 6,
-    coord: 7,
-    aeroErosion: 8,
-    spectroFrazzle: 9
+export const SKILLTYPE_FLAGS = {
+    basic:          1 << 0, // 1
+    heavy:          1 << 1, // 2
+    skill:          1 << 2, // 4
+    ultimate:       1 << 3, // 8
+    outro:          1 << 4, // 16
+    intro:          1 << 5, // 32
+    echoSkill:      1 << 6, // 64
+    coord:          1 << 7, // 128
+    aeroErosion:    1 << 8, // 256
+    spectroFrazzle: 1 << 9, // 512
 };
 
 export function mapElementToId(element) {
@@ -103,14 +103,17 @@ export function mapElementToId(element) {
 }
 
 export function mapSkillTypeToId(skillType) {
-    if (!skillType) return -1;
-    if (Array.isArray(skillType)) {
-        for (const type of skillType) {
-            const id = SKILLTYPE_MAP[type];
-            if (id !== undefined) return id;
+    if (!skillType) return 0;
+
+    const arr = Array.isArray(skillType) ? skillType : [skillType];
+    let mask = 0;
+
+    for (const type of arr) {
+        const flag = SKILLTYPE_FLAGS[type];
+        if (flag) {
+            mask |= flag;
         }
-        return -1;
     }
 
-    return SKILLTYPE_MAP[skillType] ?? -1;
+    return mask;
 }
