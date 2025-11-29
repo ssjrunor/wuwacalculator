@@ -1,3 +1,5 @@
+import {SKILLTYPE_FLAGS} from "../../optimizer/prepareGpuContext.js";
+
 function inRange(val, range) {
     if (!range) return true;
     const { min = -Infinity, max = Infinity } = range;
@@ -179,7 +181,10 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
 
     // SET 13 — ER → ATK%
     if (setCount[13] >= 2) { finalER += 10.0; }
-    if (setCount[13] >= 5) { atkP += 20.0; }
+    if (setCount[13] >= 5) {
+        coord += 80.0;
+        atkP += 20.0;
+    }
 
     // SET 14 — ER 2pc, ATK% 5pc + conditional DMG bonus
     if (setCount[14] >= 2) { finalER += 10.0; }
@@ -252,12 +257,12 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
     if (elementId === 5.0) { bonus += electro; }
 
     // Skill-type bonuses
-    if (skillTypeId === 0.0) { bonus += basicEcho; }
-    if (skillTypeId === 1.0) { bonus += heavyEcho; }
-    if (skillTypeId === 2.0) { bonus += skillEcho; }
-    if (skillTypeId === 3.0) { bonus += libEcho;   }
-    if (skillTypeId === 6.0) { bonus += echoSkill; }
-    if (skillTypeId === 7.0) { bonus += coord;     }
+    if (skillTypeId & SKILLTYPE_FLAGS.basic)     bonus += basicEcho;
+    if (skillTypeId & SKILLTYPE_FLAGS.heavy)     bonus += heavyEcho;
+    if (skillTypeId & SKILLTYPE_FLAGS.skill)     bonus += skillEcho;
+    if (skillTypeId & SKILLTYPE_FLAGS.ultimate)       bonus += libEcho;
+    if (skillTypeId & SKILLTYPE_FLAGS.echoSkill) bonus += echoSkill;
+    if (skillTypeId & SKILLTYPE_FLAGS.coord)     bonus += coord;
 
     const dmgBonusTotal = dmgBonus + bonus / 100.0;
 

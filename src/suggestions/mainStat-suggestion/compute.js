@@ -2,6 +2,8 @@
 // Helpers
 // ----------------------
 
+import {SKILLTYPE_FLAGS} from "../../optimizer/prepareGpuContext.js";
+
 function inRange(val, range) {
     if (!range) return true; // no constraint
     const { min = -Infinity, max = Infinity } = range;
@@ -100,13 +102,6 @@ export function computeMainStatDamage(
         spectro = 0,
         havoc   = 0,
         electro = 0,
-
-        basic     = 0,
-        heavy     = 0,
-        skill     = 0,
-        lib       = 0,
-        echoSkill = 0,
-        coord     = 0,
     } = mainStats || {};
 
     // element + skill bonuses (same as before)
@@ -120,18 +115,7 @@ export function computeMainStatDamage(
         case 5: elementBonus += electro; break;
     }
 
-    let skillBonus = 0;
-    switch (skillTypeId) {
-        case 0: skillBonus += basic;     break;
-        case 1: skillBonus += heavy;     break;
-        case 2: skillBonus += skill;     break;
-        case 3: skillBonus += lib;       break;
-        case 6: skillBonus += echoSkill; break;
-        case 7: skillBonus += coord;     break;
-    }
-
-    const extraBonusPercent = elementBonus + skillBonus;
-    const dmgBonusTotal = dmgBonus + extraBonusPercent / 100;
+    const dmgBonusTotal = dmgBonus + elementBonus / 100;
 
     // final stats
     let finalER = baseER + (energyRegen);
