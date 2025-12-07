@@ -199,7 +199,7 @@ fn computeDamageForCombo(index: u32) {
     // SET 14 — ER 2pc, ATK% 5pc
     if (setCount[14u] >= 2u) { finalER += 10.0; }
     if (setCount[14u] >= 5u) {
-        atkP += 10.0;
+        atkP += 15.0;
         if (finalER >= 250) {
             bonus += 30;
         }
@@ -262,6 +262,16 @@ fn computeDamageForCombo(index: u32) {
     if (setCount[23u] >= 3u) {
         atkP += 20.0;
         libEcho += 30.0;
+    }
+
+    if (setCount[24u] >= 2) { spectro += 10.0; }
+
+    if (setCount[25u] >= 5) { bonus += 25.0; }
+
+    if (setCount[26u] >= 2u) { spectro += 10.0; }
+    if (setCount[26u] >= 5u) {
+        spectro += 30.0;
+        basicEcho += 40.0;
     }
 
     // -------------------------
