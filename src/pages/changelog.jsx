@@ -731,7 +731,7 @@ export const changelog = [
                 content: `Added an in-app <strong>Calculator Status</strong> window so you can quickly see coverage, known issues, and patch info without digging through the full changelog.`,
             },
         ],
-        shortDesc: `3.0.1 beta content, unified buff path, and an in-app status panel~! (〜^∇^)〜`,
+        shortDesc: `3.0.1 beta content~! (and some other stuff) (〜^∇^)〜`,
         statusHighlights: [
             '3.0.1 beta characters, weapons, Echoes, and Sonata sets are now supported where data exists.',
             'Buff & stat handling were rebuilt into a unified "buff path" pipeline.',

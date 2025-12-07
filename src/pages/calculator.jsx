@@ -113,7 +113,7 @@ export default function Calculator(props) {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-12-07 17:41';
+    const LATEST_CHANGELOG_VERSION = '2025-12-07 17:45';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
