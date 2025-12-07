@@ -199,7 +199,7 @@ fn computeDamageForCombo(index: u32) {
     // SET 14 — ER 2pc, ATK% 5pc
     if (setCount[14u] >= 2u) { finalER += 10.0; }
     if (setCount[14u] >= 5u) {
-        atkP += 10.0;
+        atkP += 15.0;
         if (finalER >= 250) {
             bonus += 30;
         }

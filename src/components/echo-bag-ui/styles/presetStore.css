@@ -168,6 +168,8 @@
 .preset-name {
     font-weight: bold;
     margin: unset;
+    color: rgba(32, 191, 185, 0.89);
+    text-shadow: 0 0 1px rgb(96, 255, 250);
 }
 
 .preset-preview.guides {
@@ -180,6 +182,8 @@
     bottom: 0.60rem;
     left: 1.25rem;
     font-size: 0.8rem;
+    color: rgba(32, 191, 185, 0.89) !important;
+    text-shadow: 0 0 1px rgb(96, 255, 250) !important;
 }
 
 .preset-name-edit {

@@ -7,8 +7,7 @@ export function applyWeaponLogic({
                                  }) {
 
     const bonus = parseFloat(currentParamValues[0]) * (characterState?.activeStates?.huntersStacks ?? 0);
-    mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + bonus;
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + bonus;
-
+    mergedBuffs.skillType.heavyAtk.dmgBonus += bonus;
+    mergedBuffs.atk.percent += bonus;
     return { mergedBuffs, combatState, skillMeta };
 }

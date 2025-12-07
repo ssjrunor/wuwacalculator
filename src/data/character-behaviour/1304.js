@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyJinhsiLogic({
                                mergedBuffs,
                                combatState,
@@ -21,7 +19,7 @@ export function applyJinhsiLogic({
     const tab = skillMeta.tab ?? '';
 
     if (!mergedBuffs.__jinhsiInherent1 && characterLevel >= 50) {
-        mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 20;
+        mergedBuffs.attribute.spectro.dmgBonus += 20;
         mergedBuffs.__jinhsiInherent1 = true;
     }
 
@@ -61,7 +59,7 @@ export function applyJinhsiLogic({
     const seq3Value = characterState?.toggles?.['3_value'] ?? 0;
     if (isActiveSequence(3) && seq3Value > 0) {
         if (!mergedBuffs.__jinhsiS3) {
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + (seq3Value * 25);
+            mergedBuffs.atk.percent += (seq3Value * 25);
             mergedBuffs.__jinhsiS3 = true;
         }
     } else {
@@ -69,9 +67,7 @@ export function applyJinhsiLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__jinhsiS4) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 20;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 20;
         mergedBuffs.__jinhsiS4 = true;
     }
 
@@ -93,9 +89,7 @@ export function jinhsiBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.benevolent) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 20;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 20;
     }
 
     return { mergedBuffs };

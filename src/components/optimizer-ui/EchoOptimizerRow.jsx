@@ -1,20 +1,22 @@
 import React from "react";
-import echoSets, {setIconMap, setPieceTypeMap, highlightKeywordsInText} from "../../constants/echoSetData.jsx";
+import { highlightKeywordsInText } from "../../constants/echoSetData.jsx";
+import { echoSets as echoSetData, setPieceTypeMap, setIconMap } from "../../constants/echoSetData2.js";
 import {typeMap} from "../../constants/skillTabs.js";
 import {applySpecialBuffs} from "../../optimizer/echoOptimizerContext.js";
 import {Tooltip} from "antd";
 import {formatDescription} from "../../utils/echoHelper.js";
 import {normalizedSkillTypeNames} from "../rotations-ui/Rotations.jsx";
 
-export function accumulateSkillStatBonus(skillType, stats, skillMetaBonus = 0) {
+export function accumulateSkillStatBonus(skillType, stats, skillMetaBonus = 0, bonusType = 'dmgBonus') {
     const typeList = Array.isArray(skillType) ? skillType : [skillType];
     let sum = 0;
     for (const type of typeList) {
         if (!type || typeof type !== "string") continue;
         const normalized = type.trim();
-        const mapped = typeMap[normalized];
-
-        if (mapped) sum += stats[mapped] ?? stats[normalized] ?? 0;
+        const mapped = typeMap[normalized] ?? null;
+        let path = 0;
+        if (mapped) path = stats.skillType ? stats.skillType[mapped][bonusType] : stats[mapped];
+        sum += path ?? 0;
     }
     return sum + skillMetaBonus;
 }
@@ -34,6 +36,8 @@ export default function EchoOptimizerRow({
                                              keywords,
                                              sequence = 0
                                          }) {
+    const echoSetList = Object.values(echoSetData);
+
     const entries = setPlan.flatMap(s => {
         const validPieces = setPieceTypeMap[s.setId] || [];
         const activePieces = validPieces.filter(piece => s.count >= piece);
@@ -71,25 +75,29 @@ export default function EchoOptimizerRow({
             stats,
             skillMeta?.skillDmgBonus ?? 0
         );
-        b += (stats?.[skill.element] ?? 0);
+        const path =
+            stats?.[skill.element] ?? stats?.attribute[skill.element]?.dmgBonus ?? 0;
+        b += path;
         return b;
     })();
 
     const amp = (() => {
         let a = accumulateSkillStatBonus(
             skill.skillType,
-            mergedBuffs?.damageTypeAmplify ?? 0,
+            mergedBuffs,
             skillMeta?.amplify ?? 0,
+            'amplify'
         );
-        a += mergedBuffs?.elementDmgAmplify?.[skill.element] ?? 0;
+        const path = mergedBuffs?.attribute[skill.element]?.amplify ?? 0;
+        a += path;
         return a;
     })();
 
     const stats = {
-        atk: base ? finalStats.atk : statTotals.atk +
+        atk: base ? finalStats.atk.final : statTotals.finalAtk +
             applySpecialBuffs({energyRegen: statTotals.er}, {}, charId, 'atk').atk ?? 0,
-        hp: base ? finalStats.hp : statTotals.hp,
-        def: base ? finalStats.def : statTotals.def,
+        hp: base ? finalStats.hp.final : statTotals.finalHp,
+        def: base ? finalStats.def.final : statTotals.finalDef,
         er: base ? finalStats.energyRegen : statTotals.er,
         cr: base ? finalStats.critRate : statTotals.cr,
         cd: base ? finalStats.critDmg : statTotals.cd +
@@ -107,8 +115,7 @@ export default function EchoOptimizerRow({
         normalizedSkillTypeNames
     );
 
-    const sonataSummary = formatSonataSets(setPlan, echoSets);
-
+    const sonataSummary = formatSonataSets(setPlan, echoSetList);
 
     return (
         <div

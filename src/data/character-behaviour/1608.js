@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyPhrolovaLogic({
                                    mergedBuffs,
                                    combatState,
@@ -36,12 +34,12 @@ export function applyPhrolovaLogic({
         ? 60 + (stacks - 24)
         : 2.5 * stacks;
     if (!mergedBuffs.__phrolovaInherent2) {
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 150) + critBonus;
+        mergedBuffs.critDmg += critBonus;
         mergedBuffs.__phrolovaInherent2 = true;
     }
 
     if (characterState?.activeStates?.maestro && !mergedBuffs.__phrolovaMaestro) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 120;
+        mergedBuffs.atk.percent += 120;
         mergedBuffs.__phrolovaMaestro = true;
     }
 
@@ -66,7 +64,7 @@ export function applyPhrolovaLogic({
 
     if (isActiveSequence(3)) {
         if (!mergedBuffs.__phrolovaS3) {
-            mergedBuffs.damageTypeAmplify.echoSkill = (mergedBuffs.damageTypeAmplify.echoSkill ?? 0) + 80;
+            mergedBuffs.skillType.echoSkill.amplify += 80;
             mergedBuffs.__phrolovaS3 = true;
         }
 
@@ -76,9 +74,7 @@ export function applyPhrolovaLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__phrolovaS4) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 20;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 20;
         mergedBuffs.__phrolovaS4 = true;
     }
 
@@ -88,10 +84,10 @@ export function applyPhrolovaLogic({
         }
 
         if (isToggleActive('6-a') && !mergedBuffs.__phrolovaS6a) {
-            mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 60;
+            mergedBuffs.attribute.havoc.dmgBonus += 60;
             mergedBuffs.__phrolovaS6a = true;
         } else if (isToggleActive('6-b') && !mergedBuffs.__phrolovaS6b) {
-            mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 40;
+            mergedBuffs.attribute.all.dmgVuln += 40;
             mergedBuffs.__phrolovaS6b = true;
         }
     }
@@ -121,14 +117,12 @@ export function phrolovaBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.illuminating) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 20;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 20;
     }
 
     if (state.unfinishedPiece) {
-        mergedBuffs.damageTypeAmplify.heavy = (mergedBuffs.damageTypeAmplify.heavy ?? 0) + 25;
-        mergedBuffs.elementDmgAmplify.havoc = (mergedBuffs.elementDmgAmplify.havoc ?? 0) + 20;
+        mergedBuffs.skillType.heavyAtk.amplify += 25;
+        mergedBuffs.attribute.havoc.amplify += 20;
     }
 
     return { mergedBuffs };

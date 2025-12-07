@@ -25,7 +25,9 @@
 }
 
 .dark .skills-modal-content,
+.dark .changelog-modal.guides,
 .dark .notification-toast {
     background-color: #131922;
     color: #f9fafb;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }

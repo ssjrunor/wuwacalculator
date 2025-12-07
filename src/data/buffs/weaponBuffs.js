@@ -7,44 +7,56 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
         staticMist: () => {
             const rank = state['staticMist_rank'] ?? 0;
             const values = [0, 10, 12.5, 15, 17.5, 20];
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + values[rank];
+            mergedBuffs.atk.percent = (mergedBuffs.atk.percent ?? 0) + values[rank];
         },
         stellarSymphony: () => {
             const rank = state['stellarSymphony_rank'] ?? 0;
             const values = [0, 14, 17.5, 21, 24.5, 28];
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + values[rank];
+            mergedBuffs.atk.percent = (mergedBuffs.atk.percent ?? 0) + values[rank];
         },
         luminousHymn: () => {
             const rank = state['luminousHymn_rank'] ?? 0;
             const values = [0, 30, 37.5, 45, 52.5, 60];
-            mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + values[rank];
+            mergedBuffs.skillType.spectroFrazzle.amplify = (mergedBuffs.skillType.spectroFrazzle.amplify ?? 0) + values[rank];
         },
         woodlandAria: () => {
             const rank = state['woodlandAria_rank'] ?? 0;
             const values = [0, 10, 11.5, 13, 14.5, 16];
-            mergedBuffs.aeroErosionResShred = (mergedBuffs?.aeroErosionResShred ?? 0) + values[rank];
+            mergedBuffs.skillType.aeroErosion.resShred = (mergedBuffs.skillType.aeroErosion.resShred ?? 0) + values[rank];
         },
         bloodpactsPledge: () => {
             const rank = state['bloodpactsPledge_rank'] ?? 0;
             const values = [0, 10, 14, 18, 22, 26];
-            mergedBuffs.elementDmgAmplify.aero = (mergedBuffs.elementDmgAmplify.aero ?? 0) + values[rank];
+            mergedBuffs.aero.amplify = (mergedBuffs.aero.amplify ?? 0) + values[rank];
         },
         wildfireMark: () => {
             const rank = state['wildfireMark_rank'] ?? 0;
             const values = [0, 24, 30, 36, 42, 48];
-            mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + values[rank];
+            mergedBuffs.attribute.fusion.dmgBonus += values[rank];
         },
         emeraldSentence: () => {
             const rank = state['emeraldSentence_rank'] ?? 0;
             const values = [0, 20, 25, 30, 35, 40];
-            mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + values[rank];
+            mergedBuffs.skillType.echoSkill.dmgBonus += values[rank];
         },
         kumokiri: () => {
             const rank = state['kumokiri_rank'] ?? 0;
             const values = [0, 24, 30, 36, 42, 48];
-            for (const elem of Object.values(elementToAttribute)) {
-                mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + values[rank];
-            }
+            mergedBuffs.attribute.all.dmgBonus += values[rank];
+        },
+        stayTuned: () => {
+            const rank  = state['stayTuned_rank'] ?? 0;
+            const stacks = state['stayTuned_stacks'] ?? 0;
+
+            if (rank <= 0 || stacks <= 0) return;
+
+            const perStackValues = [0, 8, 10, 12, 14, 16];
+            const perStack = perStackValues[rank] ?? 0;
+            const total = perStack * stacks;
+
+            console.log(total)
+
+            mergedBuffs.attribute.all.dmgBonus += total;
         }
     };
 
@@ -90,7 +102,8 @@ export function getActiveStateWeapons(activeStates) {
         woodlandAria: 21030026,
         wildfireMark: 21010036,
         emeraldSentence: 21020066,
-        kumokiri: 21010056
+        kumokiri: 21010056,
+        stayTuned: 21030046,
     };
 
     return Object.entries(weaponIdMap)

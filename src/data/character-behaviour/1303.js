@@ -17,7 +17,6 @@ export function applyYuanwuLogic({
 
     skillMeta.scaling = { atk: 0, hp: 0, def: 1, energyRegen: 0 };
 
-    const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
     const name = skillMeta.name?.toLowerCase();
     const tab = skillMeta.tab ?? '';
 
@@ -49,12 +48,12 @@ export function applyYuanwuLogic({
     }
 
     if (isActiveSequence(5) && isToggleActive(5) && !mergedBuffs.__yuanwuS5) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 50;
+        mergedBuffs.skillType.resonanceLiberation.dmgBonus += 50;
         mergedBuffs.__yuanwuS5 = true;
     }
 
     if (isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__yuanwuS6) {
-        mergedBuffs.defPercent = (mergedBuffs.defPercent ?? 0) + 32;
+        mergedBuffs.def.percent += 32;
         mergedBuffs.__yuanwuS6 = true;
     }
 
@@ -72,21 +71,12 @@ export const yuanwuMultipliers = {
 };
 
 export function yuanwuBuffsLogic({
-                                   mergedBuffs, characterState, activeCharacter
+                                   mergedBuffs, characterState
                                }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.defender) {
-        mergedBuffs.defPercent = (mergedBuffs.defPercent ?? 0) + 32;
+        mergedBuffs.def.percent += 32;
     }
 
     return { mergedBuffs };

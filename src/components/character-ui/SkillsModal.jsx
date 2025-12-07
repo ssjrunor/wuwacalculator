@@ -51,6 +51,7 @@ export default function SkillsModal({
                 className={`skills-modal-content ${
                     isDark ? "dark-text" : "light-text"
                 } ${isClosing ? "closing" : "open"}`}
+                style={{ maxWidth: '900px' }}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="rotation-view-toggle">

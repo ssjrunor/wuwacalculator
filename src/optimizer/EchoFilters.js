@@ -1,5 +1,6 @@
-import {validSubstatRanges} from "../utils/echoHelper.js";
-import {echoSetBuffs, mainEchoBuffs, setEffectBuffMap} from "../data/buffs/setEffect.js";
+import {normalizeLegacyEchoStats, validSubstatRanges} from "../utils/echoHelper.js";
+import {elementMap, mainEchoBuffs} from "../data/buffs/setEffect.js";
+import {echoSets} from "../constants/echoSetData2.js";
 
 export const EchoFilters = {
     applyStatWorthFilter(form, echoes) {
@@ -103,34 +104,35 @@ function weighted(stat, value, weightMap) {
 }
 
 function getSetWeightedValue(setId, statWeight) {
-    const setData = echoSetBuffs[setId];
-    const effData = setEffectBuffMap[setId];
+    const cfg = echoSets[setId];
+    if (!cfg) return 0;
 
     let score = 0;
 
-    // 2-piece
-    if (setData?.twoPiece) {
-        for (const [s, v] of Object.entries(setData.twoPiece)) {
-            score += weighted(s, v, statWeight);
+    const addBuffs = (buffs) => {
+        if (!buffs) return;
+        for (const [stat, value] of Object.entries(buffs)) {
+            score += weighted(stat, value, statWeight);
+        }
+    };
+
+    // 2-piece flat bonuses
+    addBuffs(cfg.twoPiece);
+
+    // 5-piece flat bonuses (Lingering, Empyrean, Tidebreaking, etc.)
+    addBuffs(cfg.fivePiece);
+
+    // State-driven effects at max value (frost stacks, radiance, crown, etc.)
+    if (cfg.states) {
+        for (const stateCfg of Object.values(cfg.states)) {
+            const maxBuffs = stateCfg.max ?? stateCfg.perStack;
+            addBuffs(maxBuffs);
         }
     }
 
-    // 5-piece
-    if (setData?.fivePiece) {
-        for (const [s, v] of Object.entries(setData.fivePiece)) {
-            score += weighted(s, v, statWeight);
-        }
-    }
-
-    // effect buffs (max stacks)
-    if (effData) {
-        for (const [key, buffs] of Object.entries(effData)) {
-            if (key === "setMax") continue;
-
-            const maxVals = buffs.max ?? buffs;
-            for (const [s, v] of Object.entries(maxVals)) {
-                score += weighted(s, v, statWeight);
-            }
+    if (setId === 14) {
+        for (const elem of Object.values(elementMap)) {
+            score += weighted(elem, 30, statWeight);
         }
     }
 
@@ -208,5 +210,5 @@ export function extractMainEchoBuffs(echoId, charId) {
         out.aero = (out.aero ?? 0) + 10;
     }
 
-    return out;
+    return normalizeLegacyEchoStats(out);
 }

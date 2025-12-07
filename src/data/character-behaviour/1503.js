@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyVerinaLogic({
                                mergedBuffs,
                                combatState,
@@ -38,7 +36,7 @@ export function applyVerinaLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__verinaInherent1) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__verinaInherent1 = true;
     }
 
@@ -48,9 +46,7 @@ export function applyVerinaLogic({
     }
 
     if (characterState?.activeStates?.blossom && !mergedBuffs.__blossom) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 15;
-        }
+        mergedBuffs.attribute.all.amplify += 15;
         mergedBuffs.__blossom = true;
     }
 
@@ -64,7 +60,7 @@ export function applyVerinaLogic({
     }
 
     if (isToggleActive(4) && !mergedBuffs.__verinaS4 && isActiveSequence(4)) {
-        mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 15;
+        mergedBuffs.attribute.spectro.dmgBonus += 15;
         mergedBuffs.__verinaS4 = true;
     }
 
@@ -122,17 +118,15 @@ export function verinauffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.graceOfLife) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
     }
 
     if (state.blossom) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 15;
-        }
+        mergedBuffs.attribute.all.amplify += 15;
     }
 
     if (state.blossoming) {
-        mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 15;
+        mergedBuffs.attribute.spectro.dmgBonus += 15;
     }
 
     return { mergedBuffs };

@@ -21,14 +21,16 @@ export default function NotificationToast({
     useEffect(() => {
         setVisible(true);
 
-        const hideTimer = setTimeout(() => setVisible(false), duration - 300);
-        const closeTimer = setTimeout(onClose, duration);
+        const hideTimer = setTimeout(() => setVisible(false), Math.max(0, duration - 300));
+        const closeTimer = setTimeout(() => {
+            onClose?.();
+        }, duration);
 
         return () => {
             clearTimeout(hideTimer);
             clearTimeout(closeTimer);
         };
-    }, [duration, onClose]);
+    }, [duration, message]);
 
     useEffect(() => {
         function handleClickOutside(e) {
@@ -36,9 +38,10 @@ export default function NotificationToast({
                 closeWithAnimation();
             }
         }
+
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    });
+    }, []);
 
     const closeWithAnimation = () => {
         if (!visible) return;

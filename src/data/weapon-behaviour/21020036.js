@@ -9,14 +9,14 @@ export function applyWeaponLogic({
     const cr = parseFloat(currentParamValues[0]);
     const basic2 = parseFloat(currentParamValues[3]);
 
-    mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + cr;
+    mergedBuffs.critRate += cr;
 
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + basic1;
+        mergedBuffs.skillType.basicAtk.dmgBonus += basic1;
     }
 
     if (characterState?.activeStates?.secondP) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + basic2;
+        mergedBuffs.skillType.basicAtk.dmgBonus += basic2;
     }
 
     return { mergedBuffs, combatState, skillMeta };

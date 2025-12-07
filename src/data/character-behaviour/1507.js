@@ -37,7 +37,7 @@ export function applyZaniLogic({
     }
 
     if (characterState?.activeStates?.sunburst && !mergedBuffs.__zaniSunburst) {
-        mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + 20;
+        mergedBuffs.skillType.spectroFrazzle.amplify += 20;
         mergedBuffs.__zaniSunburst = true;
     }
 
@@ -63,18 +63,18 @@ export function applyZaniLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__ZaniInherent1) {
-        mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 12;
+        mergedBuffs.attribute.spectro.dmgBonus += 12;
         mergedBuffs.__ZaniInherent1 = true;
     }
 
     if (isToggleActive(1) && isActiveSequence(1) && !mergedBuffs.__zaniS1) {
-        mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 50;
+        mergedBuffs.attribute.spectro.dmgBonus += 50;
         mergedBuffs.__zaniS1 = true;
     }
 
     if (isActiveSequence(2)) {
         if (!mergedBuffs.__zaniS2) {
-            mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
+            mergedBuffs.critRate += 20;
             mergedBuffs.__zaniS2 = true;
         }
         if (name.includes('forcible') || name.includes('targeted')) {
@@ -88,7 +88,7 @@ export function applyZaniLogic({
     }
 
     if (isToggleActive(4) && isActiveSequence(4) && !mergedBuffs.__zaniS4) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__zaniS4 = true;
     }
 
@@ -103,14 +103,7 @@ export function applyZaniLogic({
     return {mergedBuffs, combatState, skillMeta};
 }
 
-export const zaniMultipliers = {
-    outroSkill: [
-        {
-            name: "Beacon For the Future DMG",
-            scaling: { atk: 1 }
-        }
-    ]
-};
+export const zaniMultipliers = { outroSkill: [ { name: "Beacon For the Future DMG" } ] };
 
 export function zaniBuffsLogic({
                                    mergedBuffs, characterState
@@ -118,11 +111,11 @@ export function zaniBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.beacon) {
-        mergedBuffs.elementDmgAmplify.spectro = (mergedBuffs.elementDmgAmplify.spectro ?? 0) + 20;
+        mergedBuffs.attribute.spectro.amplify = (mergedBuffs.attribute.spectro.amplify ?? 0) + 20;
     }
 
     if (state.efficiency) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent = (mergedBuffs.atk.percent ?? 0) + 20;
     }
 
     return { mergedBuffs };

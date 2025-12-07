@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {setIconMap} from "../../constants/echoSetData.jsx";
+import { setIconMap } from "../../constants/echoSetData2.js";
 import { imageCache } from '../../pages/calculator.jsx';
 
 export default function EchoMenu({ echoes, handleEchoSelect, menuRef, menuOpen, setMenuOpen, onClickOut = null }) {

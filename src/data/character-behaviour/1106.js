@@ -56,7 +56,7 @@ export function applyYouhuLogic({
 
     if (isToggleActiveLocal('inherent2')) {
         if (!mergedBuffs.__youhuInherent1) {
-            mergedBuffs.glacio += 15;
+            mergedBuffs.attribute.glacio.dmgBonus += 15;
             mergedBuffs.__youhuInherent1 = true;
         }
     } else {
@@ -84,7 +84,7 @@ export function applyYouhuLogic({
 
     if (isActiveSequence(3)) {
         if (!mergedBuffs.__youhuSeq3) {
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+            mergedBuffs.atk.percent += 20;
             mergedBuffs.__youhuSeq3 = true;
         }
     } else {
@@ -93,7 +93,7 @@ export function applyYouhuLogic({
 
     if (isToggleActive(5) && isActiveSequence(5)) {
         if (!mergedBuffs.__youhuSeq5) {
-            mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 15;
+            mergedBuffs.critRate += 15;
             mergedBuffs.__youhuSeq5 = true;
         }
     } else {
@@ -103,7 +103,7 @@ export function applyYouhuLogic({
     const seq6Value = characterState?.toggles?.['6_value'] ?? 0;
     if (isActiveSequence(6) && seq6Value > 0) {
         if (!mergedBuffs.__youhuSeq6) {
-            mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + (seq6Value * 15);
+            mergedBuffs.critDmg += (seq6Value * 15);
             mergedBuffs.__youhuSeq6 = true;
         }
     } else {
@@ -156,7 +156,7 @@ export function youhuBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.timeless) {
-        mergedBuffs.damageTypeAmplify.coord = (mergedBuffs.damageTypeAmplify.coord ?? 0) + 100;
+        mergedBuffs.skillType.coord.amplify += 100;
     }
 
     return { mergedBuffs };

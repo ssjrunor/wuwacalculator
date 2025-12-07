@@ -349,7 +349,10 @@
 
 .dark-alt .skill-tab-label {
     color: #eee;
-    border-left-color: rgba(32, 178, 170, 0.5);
+    border-left-color: rgba(255, 70, 30, 0.25);
+}
+.dark-alt .collapsible-label::after {
+    background-color: #ff461e;
 }
 
 .dark-alt .skill-option:hover {
@@ -361,7 +364,7 @@
 }
 
 .dark-alt .skill-menu-panel {
-    background: rgba(9, 9, 9, 0.85);
+    background: black;
     border: 0.01rem solid rgba(255, 255, 255, 0.1);
 }
 

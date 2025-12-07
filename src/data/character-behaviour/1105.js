@@ -26,7 +26,7 @@ export function applyZhezhiLogic({
     const tab = skillMeta.tab ?? '';
 
     if (characterState?.activeStates?.zenith && !mergedBuffs.__zhezhiZenithApplied) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 18;
+        mergedBuffs.skillType.basicAtk.dmgBonus += 18;
         mergedBuffs.__zhezhiZenithApplied = true;
     }
 
@@ -41,13 +41,13 @@ export function applyZhezhiLogic({
     const inherent1Stacks = characterState?.activeStates?.inherent1 ?? 0;
     const inherent1 = Math.min(inherent1Stacks * 6, 18);
     if (!mergedBuffs.__zhezhiInherent1) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + inherent1;
+        mergedBuffs.atk.percent += inherent1;
         mergedBuffs.__zhezhiInherent1 = true;
     }
 
     if (isToggleActive(1) && isActiveSequence(1)) {
         if (!mergedBuffs.__ZhezhiSeq1) {
-            mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 10;
+            mergedBuffs.critRate += 10;
             mergedBuffs.__ZhezhiSeq1 = true;
         }
     } else {
@@ -57,7 +57,7 @@ export function applyZhezhiLogic({
     const seq3Value = characterState?.toggles?.['3_value'] ?? 0;
     if (isActiveSequence(3) && seq3Value > 0) {
         if (!mergedBuffs.__ZhezhiSeq3) {
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + (seq3Value * 15);
+            mergedBuffs.atk.percent += (seq3Value * 15);
             mergedBuffs.__ZhezhiSeq3 = true;
         }
     } else {
@@ -66,7 +66,7 @@ export function applyZhezhiLogic({
 
     if (isToggleActive(4) && isActiveSequence(4)) {
         if (!mergedBuffs.__ZhezhiSeq4) {
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+            mergedBuffs.atk.percent += 20;
             mergedBuffs.__ZhezhiSeq4 = true;
         }
     } else {
@@ -123,12 +123,12 @@ export function zhezhiBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.carveAndDraw) {
-        mergedBuffs.elementDmgAmplify.glacio = (mergedBuffs.elementDmgAmplify.glacio ?? 0) + 20;
-        mergedBuffs.damageTypeAmplify.skill = (mergedBuffs.damageTypeAmplify.skill ?? 0) + 25;
+        mergedBuffs.attribute.glacio.amplify += 20;
+        mergedBuffs.skillType.resonanceSkill.amplify += 25;
     }
 
     if (state.spectrum) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
     }
 
     return { mergedBuffs };

@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyIunoLogic({
                                    mergedBuffs,
                                    combatState,
@@ -42,21 +40,17 @@ export function applyIunoLogic({
     const wanLightStacks = characterState?.activeStates?.wanLight ?? 0;
     const wanLight = Math.min(wanLightStacks * 4, 4 * 10);
     if (!mergedBuffs.__iunoWanLight) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + wanLight;
-        }
+        mergedBuffs.attribute.all.amplify += wanLight;
         mergedBuffs.__iunoWanLight = true;
     }
 
     if (isActiveSequence(1) && isToggleActive(1) && !mergedBuffs.__iunoS1) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 40;
+        mergedBuffs.atk.percent += 40;
         mergedBuffs.__iunoS1 = true;
     }
 
     if (isActiveSequence(2) && wanLightStacks >= 10) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 40;
-        }
+        mergedBuffs.attribute.all.amplify += 40;
         mergedBuffs.__iunoS2 = true;
     }
 
@@ -79,7 +73,7 @@ export function applyIunoLogic({
     }
 
     if (isActiveSequence(5) && !mergedBuffs.__iunoS5) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 20;
+        mergedBuffs.skillType.resonanceLiberation.dmgBonus += 20;
         mergedBuffs.__iunoS5 = true;
     }
 
@@ -154,22 +148,15 @@ export function iunoBuffsLogic({
 
     const wanLightStacks = state?.wanLight ?? 0;
     const wanLight = Math.min(wanLightStacks * 4, 4 * 10);
-    if (!mergedBuffs.__iunoWanLight) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + wanLight;
-        }
-        mergedBuffs.__iunoWanLight = true;
-    }
 
-    if (!mergedBuffs.__iunoWanLightS2 && wanLightStacks >= 10 && state.iunoS2) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 40;
-        }
-        mergedBuffs.__iunoWanLightS2 = true;
+    mergedBuffs.attribute.all.amplify += wanLight;
+
+    if (wanLightStacks >= 10 && state.iunoS2) {
+        mergedBuffs.attribute.all.amplify += 40;
     }
 
     if (state.gloomtoGleam) {
-        mergedBuffs.damageTypeAmplify.heavy = (mergedBuffs.damageTypeAmplify.heavy ?? 0) + 50;
+        mergedBuffs.skillType.heavyAtk.amplify += 50;
     }
 
     return { mergedBuffs };

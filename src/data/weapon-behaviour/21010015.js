@@ -10,8 +10,8 @@ export function applyWeaponLogic({
     const stacks = characterState?.activeStates?.stacks ?? 0;
     const ult = parseFloat(currentParamValues[1]) * stacks;
 
-    mergedBuffs.energyRegen = (mergedBuffs.energyRegen ?? 0) + energy;
-    mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + ult;
+    mergedBuffs.energyRegen += energy;
+    mergedBuffs.skillType.resonanceLiberation.dmgBonus += ult;
 
 
     return { mergedBuffs, combatState, skillMeta };

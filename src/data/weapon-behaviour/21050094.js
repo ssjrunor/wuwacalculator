@@ -9,7 +9,7 @@ export function applyWeaponLogic({
     const atk = parseFloat(currentParamValues[0]) * stacks;
 
     if (combatState.spectroFrazzle > 0 || combatState.aeroErosion > 0) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+        mergedBuffs.atk.percent += atk;
     }
 
     return { mergedBuffs, combatState, skillMeta };

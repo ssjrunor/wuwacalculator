@@ -61,7 +61,7 @@ export function applyPheobeLogic({
 
         if (tab === 'outroSkill' && combatState.spectroFrazzle > 0) {
             if (!mergedBuffs.__pheobeOutroApplied && isActiveSequence(2)) {
-                mergedBuffs.damageTypeAmplify.outro = (mergedBuffs.damageTypeAmplify.outro ?? 0) + 120;
+                mergedBuffs.skillType.outroSkill.amplify += 120;
                 mergedBuffs.__pheobeOutroApplied = true;
             }
             skillMeta.multiplier *= (1 + 2.55);
@@ -77,9 +77,9 @@ export function applyPheobeLogic({
         }
 
         if (!mergedBuffs.__attentive && characterState?.activeStates?.attentive) {
-            mergedBuffs.spectroFrazzleResShred = (mergedBuffs?.spectroFrazzleResShred ?? 0) + 10;
+            mergedBuffs.skillType.spectroFrazzle.resShred += 10;
             skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + (skillMeta.element === 'spectro' ? 10 : 0);
-            mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) +  100;
+            mergedBuffs.skillType.spectroFrazzle.amplify += 100;
             mergedBuffs.__attentive = true;
         }
 
@@ -89,12 +89,12 @@ export function applyPheobeLogic({
     }
 
     if (characterState?.activeStates?.attentive && !mergedBuffs.__attentive) {
-        mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + 100;
+        mergedBuffs.skillType.spectroFrazzle.amplify += 100;
         mergedBuffs.__attentive = true;
     }
 
     if ((state === 'Absolution' || state === 'Confession') && !mergedBuffs.__pheobeSpectro1 && characterLevel >= 70) {
-        mergedBuffs.spectro += 12;
+        mergedBuffs.attribute.spectro.dmgBonus += 12;
         mergedBuffs.__pheobeSpectro1 = true;
     }
 
@@ -103,7 +103,7 @@ export function applyPheobeLogic({
 
     if (isToggleActive(5) && isActiveSequence(5)) {
         if (!mergedBuffs.__pheobeSpectro2) {
-            mergedBuffs.spectro += 12;
+            mergedBuffs.attribute.spectro.dmgBonus += 12;
             mergedBuffs.__pheobeSpectro2 = true;
         }
     } else {
@@ -112,7 +112,7 @@ export function applyPheobeLogic({
 
     if (isToggleActive(6) && isActiveSequence(6)) {
         if (!mergedBuffs.__pheobeAtkBuff) {
-            mergedBuffs.atkPercent += 10;
+            mergedBuffs.atk.percent += 10;
             mergedBuffs.__pheobeAtkBuff = true;
         }
     } else {
@@ -135,28 +135,8 @@ export function pheobeBuffsLogic({
                                      mergedBuffs, characterState, activeCharacter
                                  }) {
     const state = characterState?.activeStates ?? {};
-
-    if (state.attentive) {
-        mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + 100;
-    }
-
-    if (state.boatAdrift) {
-        mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + 120;
-    }
-
-    mergedBuffs.spectroFrazzleResShred = (mergedBuffs?.spectroFrazzleResShred ?? 0) +
-        (state.attentive ? 10 : 0);
-
+    mergedBuffs.skillType.spectroFrazzle.amplify += (state.attentive ? 100 : 0);
+    mergedBuffs.skillType.spectroFrazzle.amplify += (state.boatAdrift ? 120 : 0);
+    mergedBuffs.attribute.spectro.resShred += (state.attentive ? 10 : 0);
     return { mergedBuffs };
-}
-
-export function pheobeSkillMetaBuffsLogic({
-                                            characterState,
-                                            skillMeta
-                                        }) {
-
-    const state = characterState?.activeStates ?? {};
-    const element = skillMeta?.element ?? null;
-    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + (element === 'spectro' && state.attentive ? 10 : 0);
-    return { skillMeta };
 }

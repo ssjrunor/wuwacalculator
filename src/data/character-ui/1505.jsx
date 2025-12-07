@@ -2,7 +2,7 @@ import React from "react";
 import {formatDescription} from "../../utils/formatDescription.js";
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
 
-export default function SkUI({ setCharacterRuntimeStates, charId, activeStates, toggleState }) {
+export default function SkUI({ activeStates, toggleState }) {
 
     return (
         <div className="status-toggles">
@@ -230,7 +230,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                     max={250}
                     step={1}
                     onChange={(e) => {
-                        const value = parseFloat(e.target.value) || 100;
+                        const value = Math.min(Math.max(parseFloat(e.target.value) || 100, 100), 250);
                         updateState('innerEnergy', value);
                     }}
                     className="character-level-input"

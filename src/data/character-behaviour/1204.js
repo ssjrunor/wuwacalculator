@@ -65,7 +65,7 @@ export function applyMortefiLogic({
     }
 
     if (isToggleActive(6) && isActiveSequence(6) && !mergedBuffs.__mortefiS6) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__mortefiS6 = true;
     }
 
@@ -96,26 +96,16 @@ export const mortefiMultipliers = {
 }
 
 export function mortefiBuffsLogic({
-                                     mergedBuffs, characterState, activeCharacter
+                                     mergedBuffs, characterState
                                  }) {
     const state = characterState?.activeStates ?? {};
 
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
-
     if (state.transposition) {
-        mergedBuffs.damageTypeAmplify.heavy = (mergedBuffs.damageTypeAmplify.heavy ?? 0) + 38;
+        mergedBuffs.skillType.heavyAtk.amplify += 38;
     }
 
     if (state.apoplectic) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
     }
 
     return { mergedBuffs };

@@ -2,31 +2,19 @@ export function applyWeaponLogic({
                                      mergedBuffs,
                                      combatState,
                                      characterState,
-                                     skillMeta = {},
                                      currentParamValues = [],
                                  }) {
 
     const atk = parseFloat(currentParamValues[0]);
     const firstp = parseFloat(currentParamValues[1]);
+    const defIgnore = characterState?.activeStates?.eminenceStacks ?? 0;
+    mergedBuffs.skillType.heavyAtk.defIgnore += defIgnore * parseFloat(currentParamValues[3]);
 
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+    mergedBuffs.atk.percent += atk;
 
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + firstp;
+        mergedBuffs.skillType.heavyAtk.dmgBonus += firstp;
     }
 
-    return { mergedBuffs, combatState, skillMeta };
-}
-
-export function updateSkillMeta({
-                                    characterState,
-                                    skillMeta = {},
-                                    currentParamValues = []
-                                } ) {
-    const defIgnore = characterState?.activeStates?.eminenceStacks ?? 0;
-    if (skillMeta.skillType.includes('heavy')) {
-        skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + defIgnore * parseFloat(currentParamValues[3]);
-    }
-
-    return skillMeta;
+    return { mergedBuffs, combatState };
 }

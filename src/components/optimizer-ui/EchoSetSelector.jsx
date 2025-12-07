@@ -1,6 +1,6 @@
 import { Flex, Popover, Typography } from "antd";
 import React, {useEffect, useMemo, useState} from "react";
-import echoSets, {setIconMap} from "../../constants/echoSetData.jsx";
+import { setIconMap } from "../../constants/echoSetData2.js";
 import {groupEchoSetsByPiece} from "../../optimizer/setSolver.js";
 
 const { Text } = Typography;

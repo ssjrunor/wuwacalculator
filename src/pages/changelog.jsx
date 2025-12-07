@@ -705,5 +705,37 @@ export const changelog = [
             }
         ],
         shortDesc: `BIG update: Optimizer + Suggestions ( · ❛ ֊ ❛)`
+    },
+    {
+        date: '07/12/2025',
+        patchVersion: '3.0.1 (Beta)',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `Added <strong>3.0.1</strong> beta content to the calculator.`,
+            },
+            {
+                type: 'paragraph',
+                content: `
+                - All currently released characters are supported; 3.0 characters have initial Tune Rupture data.<br/>
+                - All new Echoes and Sonata sets have been added to the data model.<br/>
+                - Most new weapons are wired in; a few are still waiting for official EN data.
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `Reworked how buffs and stats are stored and applied: everything now flows through a unified <strong>"buff path"</strong> system instead of a patchwork of special cases. This should make future characters, Echoes, and weapons much easier to support.`,
+            },
+            {
+                type: 'paragraph',
+                content: `Added an in-app <strong>Calculator Status</strong> window so you can quickly see coverage, known issues, and patch info without digging through the full changelog.`,
+            },
+        ],
+        shortDesc: `3.0.1 beta content, unified buff path, and an in-app status panel~! (〜^∇^)〜`,
+        statusHighlights: [
+            '3.0.1 beta characters, weapons, Echoes, and Sonata sets are now supported where data exists.',
+            'Buff & stat handling were rebuilt into a unified "buff path" pipeline.',
+            'New in-app Calculator Status window shows coverage, known issues, and patch info.',
+        ],
     }
 ];

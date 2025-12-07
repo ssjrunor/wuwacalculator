@@ -10,8 +10,8 @@ export function applyWeaponLogic({
     const basic = parseFloat(currentParamValues[0]);
 
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + basic;
+        mergedBuffs.atk.percent += atk;
+        mergedBuffs.skillType.basicAtk.dmgBonus += basic;
     }
 
     return { mergedBuffs, combatState, skillMeta };

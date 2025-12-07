@@ -31,7 +31,7 @@ export function applyYinlinLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__inherent1) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 15;
+        mergedBuffs.critRate += 15;
         mergedBuffs.__inherent1 = true;
     }
 
@@ -39,7 +39,7 @@ export function applyYinlinLogic({
         if (name === 'lightning execution damage') {
             skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 10;
         } else if (!mergedBuffs.__yinlinInherent2) {
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 10;
+            mergedBuffs.atk.percent += 10;
             mergedBuffs.__yinlinInherent2 = true;
         }
     }
@@ -47,7 +47,6 @@ export function applyYinlinLogic({
 
     if (isActiveSequence(1) && !mergedBuffs.__yinlinS1) {
         if (name === 'lightning execution damage' || name === 'magnetic roar damage') {
-
             skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 70;
             mergedBuffs.__yinlinS1 = true;
         }
@@ -59,7 +58,7 @@ export function applyYinlinLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__yinlinS4) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__yinlinS4 = true;
     }
 
@@ -91,27 +90,17 @@ export const yinlinMultipliers = {
 };
 
 export function yinlinBuffsLogic({
-                                      mergedBuffs, characterState, activeCharacter
+                                      mergedBuffs, characterState
                                   }) {
     const state = characterState?.activeStates ?? {};
 
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
-
     if (state.strategist) {
-        mergedBuffs.elementDmgAmplify.electro = (mergedBuffs.elementDmgAmplify.electro ?? 0) + 20;
-        mergedBuffs.damageTypeAmplify.ultimate = (mergedBuffs.damageTypeAmplify.ultimate ?? 0) + 25;
+        mergedBuffs.attribute.electro.amplify += 20;
+        mergedBuffs.skillType.resonanceLiberation.amplify += 25;
     }
 
     if (state.conviction) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
     }
 
     return { mergedBuffs };

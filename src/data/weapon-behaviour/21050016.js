@@ -12,12 +12,12 @@ export function applyWeaponLogic({
     const atk2 = parseFloat(currentParamValues[4]);
 
     for (const elem of Object.values(elementToAttribute)) {
-        mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + attr;
+        mergedBuffs.attribute[elem].dmgBonus += attr;
     }
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+    mergedBuffs.atk.percent += atk;
 
     if (characterState?.activeStates?.secondP) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk2;
+        mergedBuffs.atk.percent += atk2;
     }
 
     return { mergedBuffs, combatState, skillMeta };

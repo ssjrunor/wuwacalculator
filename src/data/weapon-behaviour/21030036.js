@@ -9,18 +9,18 @@ export function applyWeaponLogic({
     const heavy = parseFloat(currentParamValues[1]);
     const defIgnore = parseFloat(currentParamValues[6]);
 
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+    mergedBuffs.atk.percent += atk;
 
     if (characterState?.activeStates?.firstP1) {
-        mergedBuffs.damageTypeAmplify.heavy = (mergedBuffs.damageTypeAmplify.heavy ?? 0) + heavy;
+        mergedBuffs.skillType.heavyAtk.amplify += heavy;
     }
 
     if (characterState?.activeStates?.firstP2) {
-        mergedBuffs.damageTypeAmplify.echoSkill = (mergedBuffs.damageTypeAmplify.echoSkill ?? 0) + heavy;
+        mergedBuffs.skillType.echoSkill.amplify += heavy;
     }
 
     if (characterState?.activeStates?.firstP1 && characterState?.activeStates?.firstP2) {
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + defIgnore;
+        mergedBuffs.attribute.all.defIgnore += defIgnore;
     }
 
     return { mergedBuffs, combatState, skillMeta };

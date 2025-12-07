@@ -9,12 +9,12 @@ export function applyWeaponLogic({
     const dmgBonus = parseFloat(currentParamValues[2]);
     const defIgnore = parseFloat(currentParamValues[4]);
 
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+    mergedBuffs.atk.percent += atk;
 
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + dmgBonus;
-        mergedBuffs.damageTypeAmplify.echoSkill = (mergedBuffs.damageTypeAmplify.echoSkill ?? 0) + dmgBonus;
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + defIgnore;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += dmgBonus;
+        mergedBuffs.skillType.echoSkill.amplify += dmgBonus;
+        mergedBuffs.skillType.all.defIgnore += defIgnore;
     }
 
     return { mergedBuffs, combatState, skillMeta };

@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyAugustaLogic({
                                    mergedBuffs,
                                    combatState,
@@ -8,7 +6,6 @@ export function applyAugustaLogic({
                                    isActiveSequence = () => false,
                                       isToggleActive = () => false,
                                       characterLevel = 1,
-                                      finalStats
 }) {
     skillMeta = {
         ...skillMeta,
@@ -41,17 +38,17 @@ export function applyAugustaLogic({
 
         if (typeof crown === 'number' && allowStacks) {
             if (crown > 0) {
-                mergedBuffs.electro = (mergedBuffs.electro ?? 0) + (15 * crown);
+                mergedBuffs.attribute.electro.dmgBonus += (15 * crown);
                 mergedBuffs.__augustaCrownofWills = true;
             }
         } else if (crown === true) {
-            mergedBuffs.electro = (mergedBuffs.electro ?? 0) + 15;
+            mergedBuffs.attribute.electro.dmgBonus += 15;
             mergedBuffs.__augustaCrownofWills = true;
         }
     }
 
     if (isActiveSequence(1) && !mergedBuffs.__augustaS1) {
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + (15 * crown);
+        mergedBuffs.critDmg += (15 * crown);
         mergedBuffs.__augustaS1 = true;
     }
 
@@ -59,8 +56,8 @@ export function applyAugustaLogic({
     const excessCritRate = Math.max(0, critRate - 100 + (20 * crown));
     const bonusCritDmg = Math.min(100, excessCritRate * 2);
     if (isActiveSequence(2) && !mergedBuffs.__augustaS2) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + (20 * crown);
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + bonusCritDmg;
+        mergedBuffs.critRate += (20 * crown);
+        mergedBuffs.critDmg += bonusCritDmg;
         mergedBuffs.__augustaS2 = true;
     }
 
@@ -81,7 +78,7 @@ export function applyAugustaLogic({
     }
 
     if (isActiveSequence(4) && !mergedBuffs.__augustaS4 && isToggleActive(4)) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__augustaS4 = true;
     }
 
@@ -90,7 +87,7 @@ export function applyAugustaLogic({
     const excessCritRate2 = Math.max(0, critRate - 150 + (20 * crown));
     const bonusCritDmg2 = Math.min(50, excessCritRate2 * 2);
     if (isActiveSequence(6) && !mergedBuffs.__augustaS6) {
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + bonusCritDmg2;
+        mergedBuffs.critDmg += bonusCritDmg2;
         mergedBuffs.__augustaS6 = true;
     }
 
@@ -130,13 +127,11 @@ export function augustaBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.battlesong) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 15;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 15;
     }
 
     if (state.ascentinSun) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
     }
 
     return { mergedBuffs };

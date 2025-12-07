@@ -31,24 +31,22 @@ export function applyBulingLogic({
 
 
     if (characterState?.activeStates?.yinAndYang && !mergedBuffs.__yinAndYang) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 10;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += 10;
         mergedBuffs.__yinAndYang = true;
     }
 
     if (characterState?.activeStates?.heavenEarthMind && !mergedBuffs.__heavenEarthMind) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 30;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += 30;
         mergedBuffs.__heavenEarthMind = true;
     }
 
     if (characterState?.activeStates?.exorcistInCommand && !mergedBuffs.__exorcistInCommand) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 15;
-        }
+        mergedBuffs.attribute.all.amplify += 15;
         mergedBuffs.__exorcistInCommand = true;
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__bulingInherent1) {
-        mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + 25;
+        mergedBuffs.healingBonus += 25;
         mergedBuffs.__bulingInherent1 = true;
     }
 
@@ -59,14 +57,14 @@ export function applyBulingLogic({
 
     if (name.includes('summoner of spirits, seeker of fate healing')) skillMeta.visible = isActiveSequence(3);
     if (isActiveSequence(4) && !mergedBuffs.__bulingS4) {
-        mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + 20;
+        mergedBuffs.healingBonus += 20;
         mergedBuffs.__bulingS4 = true;
     }
 
     if (isActiveSequence(6) &&
         !mergedBuffs.__bulingS6 &&
         isToggleActive(6) && characterState?.activeStates?.heavenEarthMind) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 50;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += 50;
         mergedBuffs.__bulingS6 = true;
     }
 
@@ -120,16 +118,14 @@ export function bulingBuffsLogic({
                                }) {
     const state = characterState?.activeStates ?? {};
 
-    mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + (state.yinAndYang ? 10 : 0);
-    mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + (state.heavenEarthMind ? 30 : 0);
+    mergedBuffs.skillType.resonanceSkill.dmgBonus += (state.yinAndYang ? 10 : 0);
+    mergedBuffs.skillType.resonanceSkill.dmgBonus += (state.heavenEarthMind ? 30 : 0);
 
     if (state.exorcistInCommand) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 15;
-        }
+        mergedBuffs.attribute.all.amplify += 15;
     }
 
-    mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) +
+    mergedBuffs.skillType.resonanceSkill.dmgBonus +=
     ((state.almightyCelestialLord && state.heavenEarthMind) ? 50 : 0);
 
     return { mergedBuffs };

@@ -40,17 +40,18 @@ export default function StatProfileCard({
         let b = accumulateSkillStatBonus(
             skill.skillType,
             mergedBuffs,
-            skillMeta?.skillDmgBonus ?? 0
+            skillMeta?.skillDmgBonus ?? 0,
+            'dmgBonus'
         );
-        b += (mergedBuffs?.[skill.element] ?? 0);
+        b += mergedBuffs.attribute[skill.element].dmgBonus;
         return b;
     })();
 
     const currentStats = useMemo(
         () => ({
-            atk: finalStats.atk,
-            hp: finalStats.hp,
-            def: finalStats.def,
+            atk: finalStats.atk.final,
+            hp: finalStats.hp.final,
+            def: finalStats.def.final,
             energyRegen: finalStats.energyRegen,
             critRate: finalStats.critRate,
             critDmg: finalStats.critDmg,
@@ -69,10 +70,10 @@ export default function StatProfileCard({
 
     const candidateStats = useMemo(
         () => ({
-            atk: statTotals.atk +
+            atk: statTotals.finalAtk +
                 applySpecialBuffs({energyRegen: statTotals.er}, {}, charIdForm, 'atk').atk,
-            hp: statTotals.hp,
-            def: statTotals.def,
+            hp: statTotals.finalHp,
+            def: statTotals.finalDef,
             energyRegen: statTotals.er,
             critRate: statTotals.cr,
             critDmg: statTotals.cd +
@@ -80,9 +81,9 @@ export default function StatProfileCard({
             bonus: (statTotals.dmgBonus ?? 0) + candidateBonus,
         }),
         [
-            statTotals.atk,
-            statTotals.hp,
-            statTotals.def,
+            statTotals.finalAtk,
+            statTotals.finalHp,
+            statTotals.finalDef,
             statTotals.er,
             statTotals.cr,
             statTotals.cd,

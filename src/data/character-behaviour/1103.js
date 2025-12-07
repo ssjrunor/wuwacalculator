@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyBaizhiLogic({
                                      mergedBuffs,
                                      combatState,
@@ -26,14 +24,14 @@ export function applyBaizhiLogic({
     }
 
     if (characterState?.activeStates?.inherent1 && !mergedBuffs.__baizhiInherentApplied) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
+        mergedBuffs.atk.percent += 15;
         mergedBuffs.__baizhiInherentApplied = true;
     }
 
     if (isToggleActive(2) && isActiveSequence(2)) {
         if (!mergedBuffs.__baizhiSeq2) {
-            mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + 15;
-            mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + 15;
+            mergedBuffs.healingBonus += 15;
+            mergedBuffs.attribute.glacio.dmgBonus += 15;
             mergedBuffs.__baizhiSeq2 = true;
         }
     } else {
@@ -42,7 +40,7 @@ export function applyBaizhiLogic({
 
     if (isToggleActive(3) && isActiveSequence(3)) {
         if (!mergedBuffs.__baizhiSeq3) {
-            mergedBuffs.hpPercent = (mergedBuffs.hpPercent ?? 0) + 12;
+            mergedBuffs.hp.percent += 12;
             mergedBuffs.__baizhiSeq3 = true;
         }
     } else {
@@ -63,7 +61,7 @@ export function applyBaizhiLogic({
 
     if (isToggleActive(6) && isActiveSequence(6)) {
         if (!mergedBuffs.__baizhiSeq6) {
-            mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + 12;
+            mergedBuffs.attribute.glacio.dmgBonus += 12;
             mergedBuffs.__baizhiSeq6 = true;
         }
     } else {
@@ -135,17 +133,15 @@ export function baizhiBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.euphonia) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
+        mergedBuffs.atk.percent += 15;
     }
 
     if (state.rejuvinating) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 15;
-        }
+        mergedBuffs.attribute.all.amplify += 15;
     }
 
     if (state.devotion) {
-        mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + 12;
+        mergedBuffs.attribute.glacio.dmgBonus += 12;
     }
 
     return { mergedBuffs };

@@ -48,7 +48,7 @@ export function applyCamellyaLogic({
 
     if (characterLevel >= 50) {
         if (!mergedBuffs.__camellyaInherent1) {
-            mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 15;
+            mergedBuffs.attribute.havoc.dmgBonus += 15;
             mergedBuffs.__camellyaInherent1 = true;
         }
         if (tab === 'normalAttacht') {
@@ -57,12 +57,12 @@ export function applyCamellyaLogic({
     }
 
     if (characterLevel >= 70 && !mergedBuffs.__camellyaInherent2) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 15;
+        mergedBuffs.skillType.basicAtk.dmgBonus += 15;
         mergedBuffs.__camellyaInherent2 = true;
     }
 
     if (isActiveSequence(1) && isToggleActive(1) && !mergedBuffs.__camellyaS1) {
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + 28;
+        mergedBuffs.critDmg += 28;
         mergedBuffs.__camellyaS1 = true;
     }
 
@@ -72,7 +72,7 @@ export function applyCamellyaLogic({
 
     if (isActiveSequence(3)) {
         if (!mergedBuffs.__camellyaS3 && isToggleActive(3)) {
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 58;
+            mergedBuffs.atk.percent += 58;
             mergedBuffs.__camellyaS3 = true;
         }
 
@@ -82,7 +82,7 @@ export function applyCamellyaLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__camellyaS4) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 25;
+        mergedBuffs.skillType.basicAtk.dmgBonus += 25;
         mergedBuffs.__camellyaS4 = true;
     }
 
@@ -149,18 +149,9 @@ export function camBuffsLogic({
                                      mergedBuffs, characterState, activeCharacter
                                  }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.eternity) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 25;
+        mergedBuffs.skillType.basicAtk.dmgBonus += 25;
     }
 
     return { mergedBuffs };

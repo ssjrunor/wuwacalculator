@@ -1,7 +1,9 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import EchoMenu from './EchoMenu.jsx';
 import EditSubstatsModal from './EchoEditModal.jsx';
-import echoSets, {setIconMap, setPieceTypeMap, skillKeywords, statKeywords} from "../../constants/echoSetData.jsx";
+import { skillKeywords, statKeywords } from "../../constants/echoSetData.jsx";
+import { echoSets as echoSetData, setPieceTypeMap } from "../../constants/echoSetData2.js";
+import { setIconMap } from "../../constants/echoSetData2.js";
 import { getEchoSetUIOverrides } from "../../data/set-ui/index.js";
 import { echoes } from '../../json-data-scripts/getEchoes.js';
 import {attributeColors} from "../../utils/attributeHelpers.js";
@@ -211,9 +213,20 @@ export default function EchoesPane({
         preloadImages(allPaths);
     }, []);
 
+    const echoSetList = React.useMemo(
+        () => Object.entries(echoSetData).map(([id, cfg]) => ({
+            id: Number(id),
+            name: cfg.name,
+            twoPiece: cfg.desc?.twoPiece,
+            threePiece: cfg.desc?.threePiece,
+            fivePiece: cfg.desc?.fivePiece,
+        })),
+        []
+    );
+
     const setCounts = getSetCounts(echoData);
     const setRequirements = new Map(
-        echoSets.map(set => {
+        echoSetList.map(set => {
             const requiredCount = set.threePiece ? 3 : 2;
             return [set.id, requiredCount];
         })
@@ -224,20 +237,9 @@ export default function EchoesPane({
         const requiredCount = setRequirements.get(numericId) ?? 2;
         return count >= requiredCount;
     });
-    const echoStatTotals = getEchoStatsFromEquippedEchoes(echoData);
 
-    const critRate = echoStatTotals.critRate ?? 0;
-    const critDmg = echoStatTotals.critDmg ?? 0;
-    let critValue = critRate * 2 + critDmg;
+    const echoStatTotals = getEchoStatsFromEquippedEchoes(echoData);
     const maxScore = getTop5SubstatScoreDetails(charId).total;
-    const buildScore = getEquippedEchoesScoreDetails(charId, characterRuntimeStates);
-    const maxBuildScore = maxScore * 5;
-    const percentScore = (buildScore.total / maxBuildScore) * 100
-    const extendedTotals = {
-        ...echoStatTotals,
-        ...(critValue && { critValue }),
-        ...(percentScore && { percentScore })
-    };
 
     const echoesPaneRef = useRef(null);
 
@@ -660,6 +662,17 @@ export default function EchoesPane({
                                                     }));
                                                 };
 
+                                                const msg = (
+                                                    <>
+                                                        <span style={{ marginTop: '8px', fontSize: '1.25rem', color: 'gray' }}>
+                                                            (It needs it's twin bro)
+                                                        </span>
+                                                    </>
+                                                )
+
+                                                if (echo.id === '6000179' && !runtime.activeStates.nebulousCannon) return msg;
+                                                if (echo.id === '6000180' && !runtime.activeStates.collapsarBlade) return msg;
+
                                                 return (
                                                     <DropdownSelect
                                                         label=""
@@ -687,7 +700,7 @@ export default function EchoesPane({
                     <div className="echo-buffs set">
                         {Object.entries(setCounts).map(([setId, count]) => {
                             const numericId = Number(setId);
-                            const setInfo = echoSets.find(set => set.id === numericId);
+                            const setInfo = echoSetList.find(set => set.id === numericId);
                             if (!setInfo || count < 2) return null;
 
                             const {
@@ -764,67 +777,11 @@ export default function EchoesPane({
                 </div>
             )}
 
-            {Object.keys(extendedTotals).length > 0 && (
-                <ExpandableSection title="Totals">
-                    <div className="stats-grid">
-                        {Object.entries(extendedTotals)
-                            .sort(([a], [b]) => {
-                                const indexA = statDisplayOrder.indexOf(a);
-                                const indexB = statDisplayOrder.indexOf(b);
-                                return (indexA === -1 ? Infinity : indexA) - (indexB === -1 ? Infinity : indexB);
-                            })
-                            .map(([key, val]) => {
-                                const label = formatStatKey(key);
-                                const iconUrl = statIconMap[label];
-
-                                return (
-                                    <div
-                                        key={key}
-                                        className="stat-row"
-                                        style={{ display: 'flex', gap: '1rem', justifyContent: 'space-between' }}
-                                    >
-                                          <span className="echo-stat-label">
-                                              {iconUrl && (
-                                                  <div
-                                                      className="stat-icon"
-                                                      style={{
-                                                          width: 18,
-                                                          height: 18,
-                                                          backgroundColor: '#999',
-                                                          WebkitMaskImage: `url(${iconUrl})`,
-                                                          maskImage: `url(${iconUrl})`,
-                                                          WebkitMaskRepeat: 'no-repeat',
-                                                          maskRepeat: 'no-repeat',
-                                                          WebkitMaskSize: 'contain',
-                                                          maskSize: 'contain',
-                                                          display: 'inline-block',
-                                                          marginRight: '0.25rem',
-                                                          verticalAlign: 'middle',
-                                                          paddingRight: '0.25rem',
-                                                      }}
-                                                  />
-                                              )}
-                                              {key === 'critValue' || key === 'percentScore' ? (
-                                                  <span className="highlight">{label}</span>
-                                              ) : (
-                                                  `${label}`
-                                              )}
-                                          </span>
-                                        <div className="stat-total">
-                                            {key === 'critValue' || key === 'percentScore' ? (
-                                                <span className="highlight">{val.toFixed(1)}%</span>
-                                            ) : key.endsWith('Flat') ? (
-                                                val
-                                            ) : (
-                                                `${val.toFixed(1)}%`
-                                            )}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                    </div>
-                </ExpandableSection>
-            )}
+            <EchoTotals
+                echoStats={echoStatTotals}
+                charId={charId}
+                characterRuntimeStates={characterRuntimeStates}
+            />
 
             <EchoMenu
                 echoes={echoes}
@@ -947,4 +904,154 @@ export function getEquippedEchoesScoreDetails(charId, characterRuntimeStates) {
     });
     const total = items.reduce((acc, it) => acc + it.totalScore, 0);
     return { total, items };
+}
+
+function EchoTotals({ echoStats, charId, characterRuntimeStates }) {
+    if (!echoStats) return null;
+
+    // ---- flatten unified echo stats for display ----
+    const displayTotals = {};
+
+    // main stats
+    displayTotals.atkFlat    = echoStats.atk?.flat ?? 0;
+    displayTotals.atkPercent = echoStats.atk?.percent ?? 0;
+
+    displayTotals.hpFlat     = echoStats.hp?.flat ?? 0;
+    displayTotals.hpPercent  = echoStats.hp?.percent ?? 0;
+
+    displayTotals.defFlat    = echoStats.def?.flat ?? 0;
+    displayTotals.defPercent = echoStats.def?.percent ?? 0;
+
+    // scalar stats
+    displayTotals.energyRegen  = echoStats.energyRegen ?? 0;
+    displayTotals.critRate     = echoStats.critRate ?? 0;
+    displayTotals.critDmg      = echoStats.critDmg ?? 0;
+    displayTotals.healingBonus = echoStats.healingBonus ?? 0;
+    displayTotals.shieldBonus  = echoStats.shieldBonus ?? 0;
+
+    // element dmg bonuses from attribute buckets
+    const attr = echoStats.attribute ?? {};
+    const elementKeys = ['aero', 'glacio', 'spectro', 'fusion', 'electro', 'havoc', 'physical'];
+
+    for (const el of elementKeys) {
+        const bucket = attr[el];
+        if (!bucket) continue;
+        const val = bucket.dmgBonus ?? 0;
+        if (val) {
+            displayTotals[el] = (displayTotals[el] ?? 0) + val;
+        }
+    }
+
+    // skill-type dmg bonuses from skillType buckets
+    const st = echoStats.skillType ?? {};
+    const skillTypeToDisplayKey = {
+        basicAtk: 'basicAtk',
+        heavyAtk: 'heavyAtk',
+        resonanceSkill: 'resonanceSkill',
+        resonanceLiberation: 'resonanceLiberation',
+    };
+
+    for (const [typeKey, bucket] of Object.entries(st)) {
+        const dk = skillTypeToDisplayKey[typeKey];
+        if (!dk || !bucket) continue;
+        const val = bucket.dmgBonus ?? 0;
+        if (!val) continue;
+        displayTotals[dk] = (displayTotals[dk] ?? 0) + val;
+    }
+
+    // strip pure-zero entries so UI isn't spammy
+    const cleanedTotals = Object.fromEntries(
+        Object.entries(displayTotals).filter(([, v]) => v !== 0)
+    );
+
+    // ---- crit value & build score ----
+    const critRate = cleanedTotals.critRate ?? 0;
+    const critDmg  = cleanedTotals.critDmg ?? 0;
+    const critValue = (critRate || critDmg) ? critRate * 2 + critDmg : 0;
+
+    const maxScore = getTop5SubstatScoreDetails(charId).total;
+    const buildScore = getEquippedEchoesScoreDetails(charId, characterRuntimeStates);
+    const maxBuildScore = maxScore * 5 || 0;
+    const percentScore =
+        maxBuildScore > 0 ? (buildScore.total / maxBuildScore) * 100 : 0;
+
+    const extendedTotals = {
+        ...cleanedTotals,
+        ...(critValue ? { critValue } : {}),
+        ...(percentScore ? { percentScore } : {})
+    };
+
+    if (Object.keys(extendedTotals).length === 0) return null;
+
+    return (
+        <ExpandableSection title="Totals">
+            <div className="stats-grid">
+                {Object.entries(extendedTotals)
+                    .sort(([a], [b]) => {
+                        const indexA = statDisplayOrder.indexOf(a);
+                        const indexB = statDisplayOrder.indexOf(b);
+                        return (indexA === -1 ? Infinity : indexA) - (indexB === -1 ? Infinity : indexB);
+                    })
+                    .map(([key, val]) => {
+                        const label = formatStatKey(key);
+                        const iconUrl = statIconMap[label];
+
+                        const isHighlight = key === 'critValue' || key === 'percentScore';
+                        const isFlat = key.endsWith('Flat');
+
+                        let displayValue;
+                        if (isHighlight) {
+                            displayValue = `${val.toFixed(1)}%`;
+                        } else if (isFlat) {
+                            displayValue = Math.round(val);
+                        } else {
+                            displayValue = `${val.toFixed(1)}%`;
+                        }
+
+                        return (
+                            <div
+                                key={key}
+                                className="stat-row"
+                                style={{ display: 'flex', gap: '1rem', justifyContent: 'space-between' }}
+                            >
+                                <span className="echo-stat-label">
+                                    {iconUrl && (
+                                        <div
+                                            className="stat-icon"
+                                            style={{
+                                                width: 18,
+                                                height: 18,
+                                                backgroundColor: '#999',
+                                                WebkitMaskImage: `url(${iconUrl})`,
+                                                maskImage: `url(${iconUrl})`,
+                                                WebkitMaskRepeat: 'no-repeat',
+                                                maskRepeat: 'no-repeat',
+                                                WebkitMaskSize: 'contain',
+                                                maskSize: 'contain',
+                                                display: 'inline-block',
+                                                marginRight: '0.25rem',
+                                                verticalAlign: 'middle',
+                                                paddingRight: '0.25rem',
+                                            }}
+                                        />
+                                    )}
+                                    {isHighlight ? (
+                                        <span className="highlight">{label}</span>
+                                    ) : (
+                                        label
+                                    )}
+                                </span>
+                                <div className="stat-total">
+                                    {isHighlight ? (
+                                        <span className="highlight">{displayValue}</span>
+                                    ) : (
+                                        displayValue
+                                    )}
+                                </div>
+                            </div>
+                        );
+                    })}
+            </div>
+        </ExpandableSection>
+    );
 }

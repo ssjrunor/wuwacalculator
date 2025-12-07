@@ -36,12 +36,11 @@ export function prepareGpuContext({
         returnContextOnly: true
     });
 
-    const weaponBaseAtk = combatState?.weaponBaseAtk ?? 0;
 
     return {
-        baseAtk: finalStatsBase.Atk + weaponBaseAtk,
-        baseHp: finalStatsBase.Life,
-        baseDef: finalStatsBase.Def,
+        baseAtk: finalStatsBase.atk.base,
+        baseHp: finalStatsBase.hp.base,
+        baseDef: finalStatsBase.def.base,
         baseER: ctx.baseER,
 
         finalAtk: ctx.baseAtk,

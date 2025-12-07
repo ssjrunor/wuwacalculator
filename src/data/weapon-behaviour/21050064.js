@@ -3,12 +3,12 @@ export function applyWeaponLogic({
                                      combatState,
                                      characterState,
                                      skillMeta = {},
-                                     currentParamValues = []
+                                 currentParamValues = []
                                  }) {
     const stacks = characterState?.activeStates?.stacks ?? 0;
     const heal = parseFloat(currentParamValues[0]) * stacks;
 
-    mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + heal;
+    mergedBuffs.healingBonus += heal;
 
 
     return { mergedBuffs, combatState, skillMeta };

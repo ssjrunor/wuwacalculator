@@ -4,7 +4,7 @@ import { echoImageMap, setNameImageMap } from '../../utils/autoEchoImageMap.js';
 import { applyParsedEchoesToEquipped } from "../../utils/buildEchoObjectsFromParsedResults.js";
 import {useNavigate} from "react-router-dom";
 import {getEchoScores, getTop5SubstatScoreDetails} from "../../utils/echoHelper.js";
-import {setIconMap} from "../../constants/echoSetData.jsx";
+import { setIconMap } from "../../constants/echoSetData2.js";
 import {EchoGridPreview} from "../overview-ui/OverviewDetailPane.jsx";
 import {imageCache} from "../../pages/calculator.jsx";
 import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
