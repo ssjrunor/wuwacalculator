@@ -830,5 +830,61 @@
     "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21050104_UI.T_IconWeapon21050104_UI.webp",
     "rank": 4,
     "type": 5
+  },
+  {
+    "id": "21010045",
+    "name": "Radiance Cleaver",
+    "description": "Spacetrek Collective \"Synth Armament\" Series — Model -SCSA-LHRi-BB240523-\nBuilt using Exostrider's bio-morphic components and Tactite Composite Engineering, this blade achieves two core functions: frequency auto-adaptation and user binding. Its upper performance threshold scales with the wielder's Forte, and consistent Forte training and developing improves its output.\n\nThe light patterns across the blade shift in response to the wielder's frequency fluctuations. It turns reason into a single, concentrated force—a tool to cut through obstacles as well as a measure for charting the unknown, it is well-suited for pioneers who carve their path forward with unwavering resolve.",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010046_UI.T_IconWeapon21010046_UI.webp",
+    "rank": 5,
+    "type": 1
+  },
+  {
+    "id": "21010066",
+    "name": "Stay tuned",
+    "description": "Stay tuned",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21010036_UI.T_IconWeapon21010036_UI.webp",
+    "rank": 5,
+    "type": 1
+  },
+  {
+    "id": "21020045",
+    "name": "Laser Shearer",
+    "description": "Stay tuned",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21020066_UI.T_IconWeapon21020066_UI.webp",
+    "rank": 5,
+    "type": 2
+  },
+  {
+    "id": "21030045",
+    "name": "Phasic Homogenizer",
+    "description": "Stay tuned",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030026_UI.T_IconWeapon21030026_UI.webp",
+    "rank": 5,
+    "type": 3
+  },
+  {
+    "id": "21030046",
+    "name": "Stay tuned",
+    "description": "Stay tuned",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21030036_UI.T_IconWeapon21030036_UI.webp",
+    "rank": 5,
+    "type": 3
+  },
+  {
+    "id": "21040045",
+    "name": "Pulsation Bracer",
+    "description": "Stay tuned",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21040046_UI.T_IconWeapon21040046_UI.webp",
+    "rank": 5,
+    "type": 4
+  },
+  {
+    "id": "21050045",
+    "name": "Boson Astrolabe",
+    "description": "Stay tuned",
+    "icon": "https://api.hakush.in/ww/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon21050066_UI.T_IconWeapon21050066_UI.webp",
+    "rank": 5,
+    "type": 5
   }
 ]

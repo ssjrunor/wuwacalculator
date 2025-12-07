@@ -26,17 +26,17 @@ export function applyYangLogic({
     }
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__yangInherent1) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 8;
+        mergedBuffs.attribute.aero.dmgBonus += 8;
         mergedBuffs.__yangInherent1 = true;
     }
 
     if (isActiveSequence(1) && isToggleActive(1) && !mergedBuffs.yangS1) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 15;
+        mergedBuffs.attribute.aero.dmgBonus += 15;
         mergedBuffs.yangS1 = true;
     }
 
     if (isActiveSequence(3) && !mergedBuffs.yangS3) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 40;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += 40;
     }
 
     if (isActiveSequence(4) && name.includes('feather release\'s')) {
@@ -48,7 +48,7 @@ export function applyYangLogic({
     }
 
     if (isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.yangS6) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.yangS6 = true;
     }
 
@@ -56,21 +56,12 @@ export function applyYangLogic({
 }
 
 export function yangBuffsLogic({
-                                  mergedBuffs, characterState, activeCharacter
+                                  mergedBuffs, characterState
                               }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.sweetHymn) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
     }
 
     return { mergedBuffs };

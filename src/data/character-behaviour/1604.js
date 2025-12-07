@@ -36,12 +36,12 @@ export function applyHavocWLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__havocWInherent1) {
-        mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 20;
+        mergedBuffs.attribute.havoc.dmgBonus += 20;
         mergedBuffs.__havocWInherent1 = true;
     }
 
     if (isActiveSequence(1) && !mergedBuffs.__havocWS1) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 30;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += 30;
         mergedBuffs.__havocWS1 = true;
     }
 
@@ -53,7 +53,7 @@ export function applyHavocWLogic({
     }
 
     if (isToggleActive(6) && isActiveSequence(6) && !mergedBuffs.__havocWS6) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 25;
+        mergedBuffs.critRate += 25;
         mergedBuffs.__havocWS6 = true;
     }
 
@@ -69,20 +69,15 @@ export const havocWMultipliers = {
     ]
 };
 
-export function havocWSkillMetaBuffsLogic({
+export function havocWBuffsLogic({
                                               mergedBuffs,
                                               characterState,
-                                              activeCharacter,
-                                              combatState,
-                                              skillMeta
                                           }) {
 
     const state = characterState?.activeStates ?? {};
-    const element = skillMeta?.element ?? null;
 
-    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
-        (state.annihilated && element === 'havoc' ? 10 : 0);
+    mergedBuffs.attribute.havoc.resShred +=
+        (state.annihilated ? 10 : 0);
 
-
-    return { skillMeta };
+    return { mergedBuffs };
 }

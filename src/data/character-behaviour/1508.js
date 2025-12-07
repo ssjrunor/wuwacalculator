@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 const negativeStatus = [
     'aeroErosion',
     'spectroFrazzle',
@@ -49,7 +47,7 @@ export function applyChisaLogic({
     }
 
     if (!mergedBuffs.__threadOfBane && characterState.activeStates.threadOfBane) {
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 18;
+        mergedBuffs.attribute.all.defIgnore += 18;
         mergedBuffs.__threadOfBane = true
     }
 
@@ -59,13 +57,13 @@ export function applyChisaLogic({
         skillMeta.multiplier *= 2.2;
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__chisaInherent2) {
-        mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + 20;
-        mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 20;
+        mergedBuffs.healingBonus += 20;
+        mergedBuffs.attribute.havoc.dmgBonus += 20;
         mergedBuffs.__chisaInherent2 = true;
     }
 
     if (isActiveSequence(1) && !mergedBuffs.__chisaS1 && isToggleActive(1)) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 30;
+        mergedBuffs.atk.percent += 30;
         mergedBuffs.__chisaS1 = true;
     }
 
@@ -81,14 +79,13 @@ export function applyChisaLogic({
         }
     }
 
-    if (isActiveSequence(2)) {
-        skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + (skillMeta.element === 'havoc' ? 10 : 0);
+    if (isActiveSequence(2) && !mergedBuffs.__chisaS21) {
+        mergedBuffs.attribute.havoc.resShred += 10;
         if (!mergedBuffs.__chisaS2 && characterState.activeStates.threadOfBane) {
-            for (const elem of Object.values(elementToAttribute)) {
-                mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 50;
-            }
+            mergedBuffs.attribute.all.dmgBonus += 50;
             mergedBuffs.__chisaS2 = true;
         }
+        mergedBuffs.__chisaS21 = true;
     }
 
     if (isActiveSequence(3) && (name.includes('sawring - blitz') ||
@@ -99,8 +96,10 @@ export function applyChisaLogic({
     if(isActiveSequence(5) && tab === 'resonanceLiberation') skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 100;
 
     if (isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__chisaS6) {
-        mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 40;
-        mergedBuffs.negativeStatus.dmgReduction = (mergedBuffs.negativeStatus?.dmgReduction ?? 0) + 30;
+        mergedBuffs.attribute.all.dmgVuln += 40;
+        for (const status in negativeStatus) {
+            mergedBuffs.skillType[negativeStatus[status]].dmgVuln += 30;
+        }
         mergedBuffs.__chisaS6 = true;
     }
 
@@ -140,21 +139,18 @@ export function chisaBuffsLogic({
                                    mergedBuffs, characterState, combatState
                                }) {
     const state = characterState?.activeStates ?? {};
-    //const havocBane = combatState.havocBane ?? 0;
 
     if (state.threadOfBane) {
-        //const bonusDefIgnore = Math.min(havocBane * 3, 18);
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 18;
+        mergedBuffs.attribute.all.defIgnore += 18;
     }
 
     if (state.endlessBonds && state.threadOfBane) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 50;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 50;
     }
-    mergedBuffs.negativeStatus.dmgReduction = (mergedBuffs.negativeStatus?.dmgReduction ?? 0) +
-        (state.risingDawn ? 30 : 0)
 
+    for (const i in negativeStatus) {
+        mergedBuffs.skillType[negativeStatus[i]].dmgVuln += (state.risingDawn ? 30 : 0);
+    }
 
     return { mergedBuffs };
 }

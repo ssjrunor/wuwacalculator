@@ -1,5 +1,6 @@
 import {getWeight, getWeightObj} from "../constants/charStatWeights.js";
 import {echoes} from "../json-data-scripts/getEchoes.js";
+import {makeBaseBuffs, makeModBuffs} from "./getUnifiedStatPool.js";
 
 export const formatStatKey = (key) => {
     return statLabelMap[key] ?? key;
@@ -66,24 +67,6 @@ export function formatDescription(rawDesc, paramArray) {
     if (!rawDesc || !Array.isArray(paramArray)) return rawDesc ?? '';
 
     return rawDesc.replace(/{(\d+)}/g, (_, index) => paramArray[index] ?? `{${index}}`);
-}
-
-export function getEchoStatsFromEquippedEchoes(equippedEchoes = []) {
-    const echoStats = {};
-
-    for (const echo of equippedEchoes) {
-        if (!echo) continue;
-
-        for (const [key, value] of Object.entries(echo.mainStats ?? {})) {
-            echoStats[key] = (echoStats[key] ?? 0) + value;
-        }
-
-        for (const [key, value] of Object.entries(echo.subStats ?? {})) {
-            echoStats[key] = (echoStats[key] ?? 0) + value;
-        }
-    }
-
-    return echoStats;
 }
 
 export const statDisplayOrder = [
@@ -500,4 +483,150 @@ export function buildMultipleRandomEchoes(recipes = [], setId = null, mainEchoId
     }
 
     return results;
+}
+
+// This is the "echo buffs" object we’ll return
+function createEmptyEchoBuffs() {
+    return {
+        atk: makeBaseBuffs(),
+        hp: makeBaseBuffs(),
+        def: makeBaseBuffs(),
+
+        attribute: {
+            aero:    makeModBuffs(),
+            glacio:  makeModBuffs(),
+            spectro: makeModBuffs(),
+            fusion:  makeModBuffs(),
+            electro: makeModBuffs(),
+            havoc:   makeModBuffs(),
+            physical: makeModBuffs()
+        },
+
+        skillType: {
+            all: makeModBuffs(),
+            basicAtk: makeModBuffs(),
+            heavyAtk: makeModBuffs(),
+            resonanceSkill: makeModBuffs(),
+            resonanceLiberation: makeModBuffs(),
+            introSkill: makeModBuffs(),
+            outroSkill: makeModBuffs(),
+            coord: makeModBuffs(),
+            echoSkill: makeModBuffs(),
+            spectroFrazzle: makeModBuffs(),
+            aeroErosion: makeModBuffs()
+        },
+        critRate: 0,
+        critDmg: 0,
+        energyRegen: 0,
+        healingBonus: 0,
+        shieldBonus: 0,
+    };
+}
+
+/**
+ * Normalize legacy flat echo stats (atkFlat, atkPercent, aero, basicAtk, etc.)
+ * into the unified buff structure.
+ */
+export function normalizeLegacyEchoStats(legacyStats = {}) {
+    const out = createEmptyEchoBuffs();
+
+    for (const [key, valueRaw] of Object.entries(legacyStats)) {
+        const value = Number(valueRaw) || 0;
+        if (!value) continue;
+
+        switch (key) {
+            // main stats
+            case 'atkFlat':
+                out.atk.flat += value;
+                break;
+            case 'atkPercent':
+                out.atk.percent += value;
+                break;
+
+            case 'hpFlat':
+                out.hp.flat += value;
+                break;
+            case 'hpPercent':
+                out.hp.percent += value;
+                break;
+
+            case 'defFlat':
+                out.def.flat += value;
+                break;
+            case 'defPercent':
+                out.def.percent += value;
+                break;
+
+            // scalar stats
+            case 'energyRegen':
+                out.energyRegen += value;
+                break;
+            case 'critRate':
+                out.critRate += value;
+                break;
+            case 'critDmg':
+                out.critDmg += value;
+                break;
+
+            // skill-type dmg bonus → dmgBonus on skillType buckets
+            case 'basicAtk':
+                out.skillType.basicAtk.dmgBonus += value;
+                break;
+            case 'heavyAtk':
+                out.skillType.heavyAtk.dmgBonus += value;
+                break;
+            case 'resonanceSkill':
+                out.skillType.resonanceSkill.dmgBonus += value;
+                break;
+            case 'resonanceLiberation':
+                out.skillType.resonanceLiberation.dmgBonus += value;
+                break;
+
+            // elemental dmg bonus → dmgBonus on attributes
+            case 'aero':
+                out.attribute.aero.dmgBonus += value;
+                break;
+            case 'glacio':
+                out.attribute.glacio.dmgBonus += value;
+                break;
+            case 'spectro':
+                out.attribute.spectro.dmgBonus += value;
+                break;
+            case 'fusion':
+                out.attribute.fusion.dmgBonus += value;
+                break;
+            case 'electro':
+                out.attribute.electro.dmgBonus += value;
+                break;
+            case 'havoc':
+                out.attribute.havoc.dmgBonus += value;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    return out;
+}
+
+/**
+ * Collect stats from equipped echoes and return them in the unified format.
+ */
+export function getEchoStatsFromEquippedEchoes(equippedEchoes = []) {
+    const legacy = {};
+
+    for (const echo of equippedEchoes) {
+        if (!echo) continue;
+
+        for (const [key, value] of Object.entries(echo.mainStats ?? {})) {
+            legacy[key] = (legacy[key] ?? 0) + (Number(value) || 0);
+        }
+
+        for (const [key, value] of Object.entries(echo.subStats ?? {})) {
+            legacy[key] = (legacy[key] ?? 0) + (Number(value) || 0);
+        }
+    }
+
+    return normalizeLegacyEchoStats(legacy);
 }

@@ -10,15 +10,15 @@ export function applyWeaponLogic({
     const firstP = parseFloat(currentParamValues[1]) * stacks;
     const secondP = parseFloat(currentParamValues[4]);
 
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+    mergedBuffs.atk.percent += atk;
 
     if (combatState.spectroFrazzle > 0) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + firstP;
-        mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + firstP;
+        mergedBuffs.skillType.basicAtk.dmgBonus += firstP;
+        mergedBuffs.skillType.heavyAtk.dmgBonus += firstP;
     }
 
     if (characterState?.activeStates?.secondP) {
-        mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + secondP;
+        mergedBuffs.skillType.spectroFrazzle.amplify += secondP;
     }
 
     return { mergedBuffs, combatState, skillMeta };

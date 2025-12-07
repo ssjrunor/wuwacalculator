@@ -27,12 +27,12 @@ export function applyLumiLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__lumiInherent1) {
-        mergedBuffs.electro = (mergedBuffs.electro ?? 0) + 10;
+        mergedBuffs.attribute.electro.dmgBonus += 10;
         mergedBuffs.__lumiInherent1 = true;
     }
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__lumiInherent2) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 10;
+        mergedBuffs.atk.eprcent += 10;
         mergedBuffs.__lumiInherent2 = true;
     }
 
@@ -45,7 +45,7 @@ export function applyLumiLogic({
     }
 
     if (isActiveSequence(4) && !mergedBuffs.__lumiS4) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 30;
+        mergedBuffs.skillType.basicAtk.dmgBonus += 30;
         mergedBuffs.__lumiS4 = true;
     }
 
@@ -54,7 +54,7 @@ export function applyLumiLogic({
     }
 
     if (isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__lumiS6) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__lumiS6 = true;
     }
 
@@ -62,25 +62,16 @@ export function applyLumiLogic({
 }
 
 export function lumiBuffsLogic({
-                                   mergedBuffs, characterState, activeCharacter
+                                   mergedBuffs, characterState
                                }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.escorting) {
-        mergedBuffs.damageTypeAmplify.skill = (mergedBuffs.damageTypeAmplify.skill ?? 0) + 38;
+        mergedBuffs.skillType.resonanceSkill.amplify += 38;
     }
 
     if (state.rating) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
     }
 
     return { mergedBuffs };

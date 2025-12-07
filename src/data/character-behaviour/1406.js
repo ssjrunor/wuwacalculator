@@ -25,7 +25,7 @@ export function applyAeroRoverMLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__aeroMInherents) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__aeroMInherents = true;
     }
 
@@ -39,12 +39,12 @@ export function applyAeroRoverMLogic({
     }
 
     if (isActiveSequence(3) && !mergedBuffs.__aeroMS3) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 15;
+        mergedBuffs.attribute.aero.dmgBonus += 15;
         mergedBuffs.__aeroMS3 = true;
     }
 
     if (isActiveSequence(4) && !mergedBuffs.__aeroMS4 && isToggleActive(4)) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 15;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += 15;
         mergedBuffs.__aeroMS4 = true;
     }
 

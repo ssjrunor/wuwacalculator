@@ -30,15 +30,12 @@ export function applyLingyangLogic({
     }
 
     if (characterState?.activeStates?.lionsVigor && !mergedBuffs.__lingyangVigorApplied) {
-        mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + 50;
+        mergedBuffs.attribute.glacio.dmgBonus += 50;
         mergedBuffs.__lingyangVigorApplied = true;
     }
 
-    if (
-        isToggleActive('inherent1') &&
-        skillMeta.skillType === 'intro'
-    ) {
-        skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 50;
+    if (isToggleActive('inherent1')) {
+        mergedBuffs.skillType.introSkill.dmgBonus += 50;
     }
 
     if (name === 'mountain roamer damage' && !skillMeta.__inherent2Applied && isToggleActive('inherent2')) {
@@ -48,8 +45,8 @@ export function applyLingyangLogic({
 
     if (isToggleActive(3) && isActiveSequence(3)) {
         if (!mergedBuffs.__lingyangs3) {
-            mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 20;
-            mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 10;
+            mergedBuffs.skillType.basicAtk.dmgBonus += 20;
+            mergedBuffs.skillType.resonanceSkill.dmgBonus += 10;
             mergedBuffs.__lingyangs3 = true;
         }
     } else {
@@ -89,7 +86,7 @@ export function lingBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.immortals) {
-        mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + 20;
+        mergedBuffs.attribute.glacio.dmgBonus += 20;
     }
 
     return { mergedBuffs };

@@ -91,11 +91,46 @@ export const weaponBuffs = [
                 When Resonators in the team inflict <span className="highlight">Negative Status</span> or deal <span className="highlight">Negative Status DMG</span>, grants <span className="highlight">{param[0] ?? '—'}%</span> DMG Bonus of all Attributes for 15s.
             </>
         )
+    },
+    {
+        key: 'stayTuned',
+        name: 'Stay Tuned',
+        icon: '/assets/weapon-icons/default.webp',
+        // per-rank values: R1–R5
+        param: [[8, 10, 12, 14, 16]],
+        effect: (param = [], stacks = 0) => {
+            const perStack = param[0] ?? '—';
+            const hasNumber = typeof perStack === 'number';
+
+            return (
+                <>
+                    Each time the wielder inflicts{" "}
+                    <span className="highlight">Tune Rupture: Shifting</span> or{" "}
+                    <span className="highlight">Tune Strain: Interfered</span>{" "}
+                    during Basic Attacks, all DMG dealt by Resonators in the team is
+                    increased by{" "}
+                    <span className="highlight">
+                    {hasNumber ? `${perStack}%` : `${perStack}`}
+                </span>{" "}
+                    for <span className="highlight">25s</span>, stacking up to{" "}
+                    <span className="highlight">3</span> times.
+                    {hasNumber && stacks > 0 && (
+                        <>
+                            {" "}
+                            (Current:{" "}
+                            <span className="highlight">
+                            {(perStack * stacks).toFixed(1)}%
+                        </span>
+                            )
+                        </>
+                    )}
+                </>
+            );
+        }
     }
 ];
 
 export const weaponBuffList = weaponBuffs;
-
 
 export default function WeaponBuffs({ activeStates, setCharacterRuntimeStates, charId }) {
     const updateState = (key, value) => {
@@ -114,29 +149,57 @@ export default function WeaponBuffs({ activeStates, setCharacterRuntimeStates, c
     return (
         <div className="echo-buffs">
             {weaponBuffs.map(({ key, name, icon, effect, param }) => {
-                const rank = activeStates?.[`${key}_rank`] ?? 0;
+                const rankKey = `${key}_rank`;
+                const stackKey = `${key}_stacks`;
+
+                const rank = activeStates?.[rankKey] ?? 0;
+                const stacks = activeStates?.[stackKey] ?? 0;
+
                 const paramValues = getCurrentParamValues(param, rank);
 
                 return (
                     <div className="echo-buff" key={key}>
                         <div className="echo-buff-header">
-                            <img src={icon} alt={name} className="echo-buff-icon" loading="lazy"
-                                 onError={(e) => {
-                                     e.target.onerror = null;
-                                     e.target.src = '/assets/weapon-icons/default.webp';
-                                     e.currentTarget.classList.add('fallback-icon');
-                                 }}
+                            <img
+                                src={icon}
+                                alt={name}
+                                className="echo-buff-icon"
+                                loading="lazy"
+                                onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = '/assets/weapon-icons/default.webp';
+                                    e.currentTarget.classList.add('fallback-icon');
+                                }}
                             />
                             <div className="echo-buff-name">{name}</div>
                         </div>
-                        <div className="echo-buff-effect">{effect(paramValues)}</div>
-                        <DropdownSelect
-                            label="Rank"
-                            options={[0, 1, 2, 3, 4, 5]}
-                            value={rank}
-                            onChange={(newValue) => updateState(`${key}_rank`, newValue)}
-                            width="80px"
-                        />
+
+                        <div className="echo-buff-effect">
+                            {key === 'stayTuned'
+                                ? effect(paramValues, stacks)
+                                : effect(paramValues)}
+                        </div>
+
+                        {/* Controls row */}
+                        <div className="echo-buff-controls">
+                            <DropdownSelect
+                                label="Rank"
+                                options={[0, 1, 2, 3, 4, 5]}
+                                value={rank}
+                                onChange={(newValue) => updateState(rankKey, newValue)}
+                                width="80px"
+                            />
+
+                            {key === 'stayTuned' && (
+                                <DropdownSelect
+                                    label="Stacks"
+                                    options={[0, 1, 2, 3]}
+                                    value={stacks}
+                                    onChange={(newValue) => updateState(stackKey, newValue)}
+                                    width="80px"
+                                />
+                            )}
+                        </div>
                     </div>
                 );
             })}

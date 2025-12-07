@@ -22,7 +22,7 @@ export function applyLupaLogic({
     const name = skillMeta.name?.toLowerCase();
 
     if (local('wildfireBanner') && !mergedBuffs.__wildfireBanner) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 12;
+        mergedBuffs.atk.percent += 12;
         mergedBuffs.__wildfireBanner = true;
     }
 
@@ -30,13 +30,13 @@ export function applyLupaLogic({
     const packHunt = Math.min(stacks * 6, 12);
 
     if (!mergedBuffs.__lupaPackHuntApplied && local('packHunt1')) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + packHunt;
+        mergedBuffs.atk.percent += packHunt;
         mergedBuffs.__lupaPackHuntApplied = true;
     }
 
     if (local('packHunt1') && !mergedBuffs.__packHunt1) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 6;
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
+        mergedBuffs.atk.percent += 6;
+        mergedBuffs.attribute.fusion.dmgBonus += 10;
         mergedBuffs.__packHunt1 = true;
     }
 
@@ -45,7 +45,7 @@ export function applyLupaLogic({
         team?.every(char => Number(char.Attribute) === 2)) || isActiveSequence(3)) ?? false;
 
     if (local('packHunt2') && isTeamValid && !mergedBuffs.__packHunt2) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
+        mergedBuffs.attribute.fusion.dmgBonus += 10;
         mergedBuffs.__packHunt2 = true;
     }
 
@@ -63,13 +63,11 @@ export function applyLupaLogic({
             ? (inherent2Stacks ? 15 : 0)
             : (Math.min(inherent2Stacks * 3, 9) + (isTeamValid ? 6 : 0));
 
-    if (skillMeta.element === 'fusion') {
-        skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + inherent2;
-    }
+    mergedBuffs.attribute.fusion.resShred += inherent2;
 
     if (isToggleActive(1) && isActiveSequence(1)) {
         if (!mergedBuffs.__lupSeq1) {
-            mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 25;
+            mergedBuffs.critRate += 25;
             mergedBuffs.__lupSeq1 = true;
         }
     } else {
@@ -96,7 +94,7 @@ export function applyLupaLogic({
 
     if (isToggleActive(5) && isActiveSequence(5)) {
         if (!mergedBuffs.__lupSeq3) {
-            mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 15;
+            mergedBuffs.skillType.resonanceLiberation.dmgBonus += 15;
             mergedBuffs.__lupSeq3 = true;
         }
     } else {
@@ -131,55 +129,39 @@ export function lupaBuffsLogic({
     const isTeamValid = ((team?.length === 3 &&
         team?.every(char => Number(char.Attribute) === 2)) || state.wolflame) ?? false;
 
+    const stacks = typeof state.glory === 'boolean'
+        ? (state.glory ? 15 : 0)
+        : state.glory > 0 ? (state.glory ?? 0) * 3 + (isTeamValid ? 6 : 0) : 0;
+
+    mergedBuffs.attribute.fusion.resShred += stacks;
+
     const stacks2 = (state.huntingField ?? 0) * 20;
 
     const stacksPack = state.packHunt ?? 0;
     const packHunt = Math.min(stacksPack * 6, 18);
 
     if (!mergedBuffs.__lupaPackHuntApplied) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + packHunt;
+        mergedBuffs.atk.percent += packHunt;
         mergedBuffs.__lupaPackHuntApplied = true;
     }
 
     if (local('packHunt1') && !mergedBuffs.__packHunt1) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 6;
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
+        mergedBuffs.atk.percent += 6;
+        mergedBuffs.attribute.fusion.dmgBonus += 10;
         mergedBuffs.__packHunt1 = true;
     }
 
     if (local('packHunt2') && isTeamValid && !mergedBuffs.__packHunt2) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
+        mergedBuffs.attribute.fusion.dmgBonus += 10;
         mergedBuffs.__packHunt2 = true;
     }
 
     if (state.warrior) {
-        mergedBuffs.damageTypeAmplify.basic = (mergedBuffs.damageTypeAmplify.basic ?? 0) + 25;
-        mergedBuffs.elementDmgAmplify.fusion = (mergedBuffs.elementDmgAmplify.fusion ?? 0) + 20;
+        mergedBuffs.skillType.basicAtk.amplify += 25;
+        mergedBuffs.attribute.fusion.amplify += 20;
     }
 
-    mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + stacks2;
+    mergedBuffs.attribute.fusion.dmgBonus += stacks2;
 
     return { mergedBuffs };
-}
-
-export function lupaSkillMetaBuffsLogic({
-                                            characterState,
-                                            skillMeta
-                                        }) {
-
-    const state = characterState?.activeStates ?? {};
-    const element = skillMeta?.element ?? null;
-
-    const team = state?.teamBase;
-    const isTeamValid = ((team?.length === 3 &&
-        team?.every(char => Number(char.Attribute) === 2)) || state.wolflame) ?? false;
-
-    const stacks = typeof state.glory === 'boolean'
-        ? (state.glory ? 15 : 0)
-        : state.glory > 0 ? (state.glory ?? 0) * 3 + (isTeamValid ? 6 : 0) : 0;
-
-    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0)
-        + (element === 'fusion' && state.glory > 0 ? stacks : 0);
-
-    return { skillMeta };
 }

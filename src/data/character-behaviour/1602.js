@@ -41,7 +41,7 @@ export function applyDanjinLogic({
     const seq1Value = characterState?.toggles?.['1_value'] ?? 0;
     if (isActiveSequence(1) && seq1Value > 0) {
         if (!mergedBuffs.__danjinS1) {
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + (seq1Value * 5);
+            mergedBuffs.atk.percent += (seq1Value * 5);
             mergedBuffs.__danjinS1 = true;
         }
     } else {
@@ -53,28 +53,28 @@ export function applyDanjinLogic({
     }
 
     if (isActiveSequence(3) && !mergedBuffs.__danjinS3) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 30;
+        mergedBuffs.skillType.resonanceLiberation.dmgBonus += 30;
         mergedBuffs.__danjinS3 = true;
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__danjinS4) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 15;
+        mergedBuffs.critRate += 15;
         mergedBuffs.__danjinS4 = true;
     }
 
     if (isActiveSequence(5)) {
         if (!mergedBuffs.__danjinS51) {
-            mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 15;
+            mergedBuffs.attribute.havoc.dmgBonus += 15;
             mergedBuffs.__danjinS51 = true;
         }
         if (isToggleActive(5) && !mergedBuffs.__danjinS52) {
-            mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 15;
+            mergedBuffs.attribute.havoc.dmgBonus += 15;
             mergedBuffs.__danjinS52 = true;
         }
     }
 
     if (isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__danjinS6) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__danjinS6 = true;
     }
 
@@ -92,25 +92,16 @@ export const danjinMultipliers = {
 };
 
 export function danjinBuffsLogic({
-                                    mergedBuffs, characterState, activeCharacter
+                                    mergedBuffs, characterState
                                 }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.dDuality) {
-        mergedBuffs.elementDmgAmplify.havoc = (mergedBuffs.elementDmgAmplify.havoc ?? 0) + 23;
+        mergedBuffs.attribute.havoc.amplify += 23;
     }
 
     if (state.bloodied) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
     }
 
     return { mergedBuffs };

@@ -1,6 +1,7 @@
 import {getEchoStatsFromEquippedEchoes, statLabelMap} from "../utils/echoHelper.js";
 import {extractMainEchoBuffs} from "./EchoFilters.js";
-import {elementMap, getSetPlanFromEchoes} from "../data/buffs/setEffect.js";
+import {applyBuffArray, applyBuffByPath, getSetPlanFromEchoes} from "../data/buffs/setEffect.js";
+import {echoSets} from "../constants/echoSetData2.js";
 
 export const ECHO_STAT_ORDER = [
     "atkPercent", "atkFlat",
@@ -15,34 +16,6 @@ export const ECHO_STAT_ORDER = [
     "aero", "spectro", "fusion",
     "glacio", "havoc", "electro",
 ];
-
-export const ECHO_STAT_COUNT = ECHO_STAT_ORDER.length;
-
-export const SET_EFFECT_TABLE = {
-    1: { maxPieces:5, two:{ glacio:10 }, five:{ glacio:30 }},
-    2: { maxPieces:5, two:{ fusion:10 }, five:{ fusion:30 }},
-    3: { maxPieces:5, two:{ electro:10 }, five:{ electro:30 }},
-    4: { maxPieces:5, two:{ aero:10 }, five:{ aero:30 }},
-    5: { maxPieces:5, two:{ spectro:10 }, five:{ spectro:30 }},
-    6: { maxPieces:5, two:{ havoc:10 }, five:{ havoc:30 }},
-    7: { maxPieces:5, two:{ healingBonus:10 }, five:{ atkPercent:15 }},
-    8: { maxPieces:5, two:{ energyRegen:10 }},
-    9: { maxPieces:5, two:{ atkPercent:10 }, five:{ atkPercent:20 }},
-    10:{ maxPieces:5, two:{ resonanceSkill:12 }, five:{ glacio:22.5, resonanceSkill:36 }},
-    11:{ maxPieces:5, two:{ spectro:10 }, five:{ critRate:20, spectro:15 }},
-    12:{ maxPieces:5, two:{ havoc:10 }},
-    13:{ maxPieces:5, two:{ energyRegen:10 }, five:{ atkPercent:20 }},
-    14:{ maxPieces:5, two:{ energyRegen:10 }, five:{ atkPercent:10 }},
-    16:{ maxPieces:5, two:{ aero:10 }, five:{ aero:30 }},
-    17:{ maxPieces:5, two:{ aero:10 }, five:{ critRate:10, aero:30 }},
-    18:{ maxPieces:5, two:{ fusion:10 }, five:{ fusion:15, resonanceLiberation:20 }},
-
-    19:{ maxPieces:3, three:{ critRate:20, echoSkill:35 }},
-    20:{ maxPieces:3, three:{ atkPercent:30, critDmg:20 }},
-    21:{ maxPieces:3, three:{ heavyAtk:30, echoSkill:16 }},
-    22:{ maxPieces:3, two:{ fusion:16 }, three:{ fusion:32 }},
-    23:{ maxPieces:3, three:{ atkPercent:20, havoc:30 }},
-};
 
 function getSetPieceCounts(echoObjs) {
     const counts = {};
@@ -69,42 +42,39 @@ function getSetPieceCounts(echoObjs) {
     return counts;
 }
 
-export function getActiveSetEffects(echoObjs, stats) {
+export function getActiveSetEffects(echoObjs) {
     const counts = getSetPieceCounts(echoObjs);
-    const total = {};
+    const total  = {};
 
-    for (const [setId, count] of Object.entries(counts)) {
-        const cfg = SET_EFFECT_TABLE[setId];
+    for (const [setIdStr, count] of Object.entries(counts)) {
+        const setId = Number(setIdStr);
+        const cfg   = echoSets[setId];
         if (!cfg) continue;
 
-        if (count >= 2 && cfg.two) {
-            for (const [stat, val] of Object.entries(cfg.two)) {
-                total[stat] = (total[stat] || 0) + val;
+        const maxPieces = cfg.setMax ?? 5;
+
+        if (count >= 2 && Array.isArray(cfg.twoPiece)) {
+            applyBuffArray(total, cfg.twoPiece);
+        }
+
+        if (count >= maxPieces && Array.isArray(cfg.fivePiece)) {
+            applyBuffArray(total, cfg.fivePiece);
+        }
+
+        if (count >= maxPieces && cfg.states) {
+            for (const stateCfg of Object.values(cfg.states)) {
+                if (!stateCfg) continue;
+
+                if (Array.isArray(stateCfg.max) && stateCfg.max.length > 0) {
+                    applyBuffArray(total, stateCfg.max);
+                } else if (Array.isArray(stateCfg.perStack)) {
+                    applyBuffArray(total, stateCfg.perStack);
+                }
             }
         }
 
-        // 3-piece
-        if (count >= 3 && cfg.three) {
-            for (const [stat, val] of Object.entries(cfg.three)) {
-                total[stat] = (total[stat] || 0) + val;
-            }
-        }
-
-        // 5-piece
-        if (count >= 5 && cfg.five) {
-            for (const [stat, val] of Object.entries(cfg.five)) {
-                total[stat] = (total[stat] || 0) + val;
-            }
-        }
-
-        if (count >= 5 && Number(setId) === 14) {
-            const er =
-                (total.energyRegen ?? 0) + (stats.baseER ?? 0) + (stats.energyRegen ?? 0);
-            if (er < 250) continue;
-            const allElements = Object.values(elementMap);
-            for (const key of allElements) {
-                total[key] = (total[key] ?? 0) + 30;
-            }
+        if (setId === 14 && count >= maxPieces) {
+            applyBuffByPath(total, ['attribute', 'all', 'dmgBonus'], 30);
         }
     }
 
@@ -194,6 +164,33 @@ export function resolveIdsFromEchoes(echoObjs) {
     });
 }
 
+function mergeBuffTrees(target, source) {
+    if (!source || typeof source !== 'object') return target;
+    if (!target || typeof target !== 'object') return structuredClone(source);
+
+    for (const [key, value] of Object.entries(source)) {
+        if (value == null) continue;
+
+        if (typeof value === 'number') {
+            const prev = Number(target[key] ?? 0);
+            target[key] = prev + value;
+            continue;
+        }
+
+        if (typeof value === 'object' && !Array.isArray(value)) {
+            if (typeof target[key] !== 'object' || target[key] === null) {
+                target[key] = {};
+            }
+            mergeBuffTrees(target[key], value);
+            continue;
+        }
+
+        target[key] = value;
+    }
+
+    return target;
+}
+
 export function computeEchoStatsFromIds(uids, echoes, ctxObj, charId) {
     const echoByUid = new Map(
         echoes.map(e => [e.uid, e])
@@ -206,37 +203,41 @@ export function computeEchoStatsFromIds(uids, echoes, ctxObj, charId) {
 
     const cost = echoObjs.reduce((sum, e) => sum + e.cost, 0);
 
-    let totals = getEchoStatsFromEquippedEchoes(echoObjs);
+    let totals = getEchoStatsFromEquippedEchoes(echoObjs) || {};
 
     const main = echoObjs[0];
     if (main) {
         const mainBuffs = extractMainEchoBuffs(main.id, charId);
-        for (const [k, v] of Object.entries(mainBuffs)) {
-            totals[k] = (totals[k] || 0) + v;
+        if (mainBuffs) {
+            mergeBuffTrees(totals, mainBuffs);
         }
     }
 
-    const setStats = getActiveSetEffects(echoObjs, {...ctxObj, ...totals});
-    for (const [k, v] of Object.entries(setStats)) {
-        totals[k] = (totals[k] || 0) + v;
+    const setStats = getActiveSetEffects(echoObjs);
+    if (setStats) {
+        mergeBuffTrees(totals, setStats);
     }
 
-    const def = ctxObj.baseDef * (totals.defPercent || 0) / 100
-        + (totals.defFlat || 0) + ctxObj.finalDef;
+    const atkPercent = totals.atk?.percent ?? 0;
+    const atkFlat    = totals.atk?.flat    ?? 0;
 
-    const atk = ctxObj.baseAtk * (totals.atkPercent || 0) / 100
-        + (totals.atkFlat || 0) + ctxObj.finalAtk;
+    const defPercent = totals.def?.percent ?? 0;
+    const defFlat    = totals.def?.flat    ?? 0;
 
-    const hp = ctxObj.baseHp * (totals.hpPercent || 0) / 100
-        + (totals.hpFlat || 0) + ctxObj.finalHp;
+    const hpPercent  = totals.hp?.percent  ?? 0;
+    const hpFlat     = totals.hp?.flat     ?? 0;
+
+    const finalDef = ctxObj.baseDef * defPercent / 100 + defFlat + ctxObj.finalDef;
+    const finalAtk = ctxObj.baseAtk * atkPercent / 100 + atkFlat + ctxObj.finalAtk;
+    const finalHp  = ctxObj.baseHp  * hpPercent  / 100 + hpFlat  + ctxObj.finalHp;
 
     return {
         cost,
         setPlan: getSetPlanFromEchoes(echoObjs),
         statTotals: {
-            def,
-            atk,
-            hp,
+            finalDef,
+            finalAtk,
+            finalHp,
             er: (totals.energyRegen || 0) + ctxObj.baseER,
             cr: (totals.critRate || 0) + ctxObj.critRate * 100,
             cd: (totals.critDmg || 0) + ctxObj.critDmg * 100,
@@ -271,7 +272,7 @@ export function getDefaultMainStatFilter(statWeight = {}, charId = null) {
         }
     }
 
-    if (Number(charId) === 1206) result.energyRegen = true;
+    if (Number(charId) === 1206 || Number(charId) === 1209) result.energyRegen = true;
 
     return result;
 }

@@ -31,9 +31,9 @@ export const skillTypeIconMap = {
     outro: '/assets/stat-icons/outro.png',
     //healing: '/assets/stat-icons/healing.png',
     shielding: '/assets/stat-icons/shield.png',
-    spectrofrazzle: '/assets/stat-icons/flat-attribute/spectro.webp',
-    aeroerosion: '/assets/stat-icons/flat-attribute/aero.webp',
-    echoskill: '/assets/stat-icons/echo.png'
+    spectroFrazzle: '/assets/stat-icons/flat-attribute/spectro.webp',
+    aeroErosion: '/assets/stat-icons/flat-attribute/aero.webp',
+    echoSkill: '/assets/stat-icons/echo.png'
 };
 
 export const skillTypeLabelMap = {
@@ -48,6 +48,7 @@ export const skillTypeLabelMap = {
     echoSkill: 'Echo Skill',
     healing: 'Healing',
     shielding: 'Shielding',
+    tuneRupture: 'Tune Rupture'
 };
 
 export default function SkillMenu({
@@ -84,20 +85,23 @@ export default function SkillMenu({
                     {tabDisplayOrder.map(
                         (tabKey) =>
                             groupedSkillOptions[tabKey]?.length > 0 && (
-                                <div key={tabKey} className="skill-tab-section">
+                                <div key={tabKey} className={`skill-tab-section echo-buff ${
+                                    expandedTabs[tabKey] ? 'open' : 'closed'
+                                }`}>
                                     <div
                                         className="skill-tab-label collapsible-label"
                                         onClick={() => toggleTab(tabKey)}
                                     >
                                         <span>{tabDisplayNames[tabKey]}</span>
-                                        <span className="collapse-icon">
-                                          {expandedTabs[tabKey] ? "▾" : "▸"}
-                                        </span>
                                     </div>
 
-                                    {expandedTabs[tabKey] &&
-                                        groupedSkillOptions[tabKey].map((skill, index) => (
-                                            <button
+                                    <div
+                                        className={`skill-tab-content ${
+                                            expandedTabs[tabKey] ? 'open' : 'closed'
+                                        }`}
+                                    >
+                                        {groupedSkillOptions[tabKey].map((skill, index) => (
+                                            <div
                                                 key={index}
                                                 className="skill-option"
                                                 onClick={() => handleAddSkill(skill)}
@@ -134,19 +138,20 @@ export default function SkillMenu({
                                                         <span
                                                             style={{ opacity: 0.75, fontSize: "0.8rem" }}
                                                         >
-                                                          {(() => {
-                                                              const type = Array.isArray(skill.type)
+                                                            {(() => {
+                                                                const type = Array.isArray(skill.type)
                                                                   ? skill.type[0]
                                                                   : skill.type;
-                                                              return typeof type === "string"
+                                                                return typeof type === "string"
                                                                   ? skillTypeLabelMap[type] ?? type
                                                                   : "Unknown";
-                                                          })()}
+                                                            })()}
                                                         </span>
                                                     </div>
                                                 </div>
-                                            </button>
+                                            </div>
                                         ))}
+                                    </div>
                                 </div>
                             )
                     )}

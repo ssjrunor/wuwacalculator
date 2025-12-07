@@ -39,7 +39,7 @@ export function applyQYLogic({
     }
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__qyInherent2) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 10;
+        mergedBuffs.atk.percent += 10;
         mergedBuffs.__qyInherent2 = true;
     }
 
@@ -54,22 +54,22 @@ export function applyQYLogic({
     }
 
     if (characterState?.activeStates?.sunderingStrike && !mergedBuffs.__sunderingStrike) {
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + critDmg;
+        mergedBuffs.critDmg += critDmg;
         mergedBuffs.__sunderingStrike = true;
     }
 
     if (characterState?.activeStates?.bambooShade && !mergedBuffs.__bambooShade) {
-        mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + 30;
+        mergedBuffs.skillType.echoSkill.dmgBonus += 30;
         mergedBuffs.__bambooShade = true;
     }
 
     if (isActiveSequence(1) && !mergedBuffs.__qyS1) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
+        mergedBuffs.critRate += 20;
         mergedBuffs.__qyS1 = true;
     }
 
     if (isActiveSequence(2) && characterState?.activeStates?.bambooShade && !mergedBuffs.__qyS2) {
-        mergedBuffs.damageTypeAmplify.echoSkill = (mergedBuffs.damageTypeAmplify.echoSkill ?? 0) + 30;
+        mergedBuffs.skillType.echoSkill.amplify += 30;
         mergedBuffs.__qyS2 = true;
     }
 
@@ -95,12 +95,12 @@ export function applyQYLogic({
     }
 
     if (isActiveSequence(4) && !mergedBuffs.__qyS4) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__qyS4 = true;
     }
 
     if (isActiveSequence(5) && !mergedBuffs.__qyS5) {
-        mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 15;
+        mergedBuffs.attribute.all.defIgnore += 15;
         mergedBuffs.__qyS5 = true;
     }
 
@@ -111,7 +111,7 @@ export function applyQYLogic({
     }
 
     if (isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__qyS6) {
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + 100;
+        mergedBuffs.critDmg += 100;
         mergedBuffs.__qyS6 = true;
     }
 
@@ -150,36 +150,20 @@ export function QYBuffsLogic({
     const critDmg = Math.min((state.sunderingCr ?? 0) * 2, 30);
 
     if (state.strikeBeforeReady) {
-        mergedBuffs.damageTypeAmplify.echoSkill = (mergedBuffs.damageTypeAmplify.echoSkill ?? 0) + 50;
+        mergedBuffs.skillType.echoSkill.amplify += 50;
     }
 
     if (state.sunderingStrike) {
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + critDmg;
+        mergedBuffs.critDmg += critDmg;
     }
 
     if (state.bambooShade) {
-        mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + 30;
+        mergedBuffs.skillType.echoSkill.dmgBonus += 30;
     }
 
     if (state.bambooShade && state.qiuyuanS2) {
-        mergedBuffs.damageTypeAmplify.echoSkill = (mergedBuffs.damageTypeAmplify.echoSkill ?? 0) + 30;
+        mergedBuffs.skillType.echoSkill.amplify += 30;
     }
 
     return { mergedBuffs };
 }
-
-/*
-export function QYSkillMetaBuffsLogic({
-                                 characterState, skillMeta,
-                             }) {
-    const state = characterState?.activeStates ?? {};
-    const skillType = skillMeta?.skillType;
-
-    if (state.qiuyuanS6 && skillType.includes('echoSkill')) {
-        skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) + 10;
-    }
-
-    return { skillMeta };
-}
-
-*/

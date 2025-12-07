@@ -1,26 +1,5 @@
-export const setStateMap = {
-    windward5: 'windward',
-    molten5: 'molten',
-    sierra5: 'sierra',
-    celestial5: 'celestial',
-    rejuvenating5: 'rejuvenating',
-    radiance5p1: 'radiance',
-    radiance5p2: 'radiance',
-    welkin5: 'welkin',
-    clawprint5: 'clawprint',
-    empyrean5: 'empyrean',
-    frosty5p1: 'frosty',
-    frosty5p2: 'frosty',
-    frost5pc: 'frost',
-    lingering5p1: 'lingering',
-    eclipse5pc: 'eclipse',
-    void5pc: 'voidThunder',
-    dreamOfTheLost3pc: 'dreamOfTheLost',
-    crownOfValor3pc: 'crownOfValor',
-    lawOfHarmony3p: 'lawOfHarmony',
-    flamewingsShadow2pcP1: 'flamewingsShadow',
-    flamewingsShadow2pcP2: 'flamewingsShadow'
-};
+import {echoSets, stateToSetId} from "../../constants/echoSetData2.js";
+import {normalizeLegacyEchoStats} from "../../utils/echoHelper.js";
 
 export const elementMap = {
     1: 'glacio',
@@ -32,272 +11,242 @@ export const elementMap = {
     7: 'physical'
 };
 
+const ATTRIBUTE_KEYS = new Set(['glacio', 'fusion', 'electro', 'aero', 'spectro', 'havoc', 'physical']);
 
-export function applySetEffect({ mergedBuffs, characterState, activeCharacter, combatState, setCounts = 5 }) {
-    const effect = characterState?.activeStates ?? {};
+const SKILL_TYPE_KEYS = new Set([
+    'basicAtk',
+    'heavyAtk',
+    'resonanceSkill',
+    'resonanceLiberation',
+    'introSkill',
+    'echoSkill',
+    'outroAtk',
+    'coord',
+]);
 
-    const activeSets = {
-        frost: setCounts?.[1] >= 5,
-        molten: setCounts?.[2] >= 5,
-        voidThunder: setCounts?.[3] >= 5,
-        sierra: setCounts?.[4] >= 5,
-        celestial: setCounts?.[5] >= 5,
-        eclipse: setCounts?.[6] >= 5,
-        rejuvenating: setCounts?.[7] >= 5,
-        lingering: setCounts?.[9] >= 5,
-        frosty: setCounts?.[10] >= 5,
-        radiance: setCounts?.[11] >= 5,
-        empyrean: setCounts?.[13] >= 5,
-        welkin: setCounts?.[16] >= 5,
-        windward: setCounts?.[17] >= 5,
-        clawprint: setCounts?.[18] >= 5,
-        dreamOfTheLost: setCounts?.[19] >= 3,
-        crownOfValor: setCounts?.[20] >= 3,
-        lawOfHarmony: setCounts?.[21] >= 3,
-        flamewingsShadow: setCounts?.[22] >= 3
-    };
+export function applyStatToMerged(mergedBuffs, stat, value) {
+    if (!value) return;
 
-    for (const [stateKey, value] of Object.entries(effect)) {
-        const parentSet = setStateMap[stateKey];
+    // ATK%
+    if (stat === 'atkPercent') {
+        mergedBuffs.atk ??= {};
+        mergedBuffs.atk.percent = (mergedBuffs.atk.percent ?? 0) + value;
+        return;
+    }
 
-        if (stateKey.startsWith('__inactive__')) {
-            const originalKey = stateKey.replace('__inactive__', '');
-            const parent = setStateMap[originalKey];
-            if (parent && activeSets[parent]) {
-                effect[originalKey] = value;
-                delete effect[stateKey];
-            }
-            continue;
+    if (stat === 'hpPercent') {
+        mergedBuffs.hp ??= {};
+        mergedBuffs.hp.percent = (mergedBuffs.hp.percent ?? 0) + value;
+        return;
+    }
+
+    if (stat === 'defPercent') {
+        mergedBuffs.def ??= {};
+        mergedBuffs.def.percent = (mergedBuffs.def.percent ?? 0) + value;
+        return;
+    }
+
+    if (ATTRIBUTE_KEYS.has(stat)) {
+        mergedBuffs.attribute ??= {};
+        mergedBuffs.attribute[stat] ??= { dmgBonus: 0 };
+        mergedBuffs.attribute[stat].dmgBonus =
+            (mergedBuffs.attribute[stat].dmgBonus ?? 0) + value;
+        return;
+    }
+
+    if (SKILL_TYPE_KEYS.has(stat)) {
+        mergedBuffs.skillType ??= {};
+        mergedBuffs.skillType[stat] ??= { dmgBonus: 0 };
+        mergedBuffs.skillType[stat].dmgBonus =
+            (mergedBuffs.skillType[stat].dmgBonus ?? 0) + value;
+        return;
+    }
+
+    mergedBuffs[stat] = (mergedBuffs[stat] ?? 0) + value;
+}
+
+export function applyBuffByPath(target, path, delta) {
+    if (!target || !Array.isArray(path) || path.length === 0) return;
+    const value = Number(delta ?? 0);
+    if (!Number.isFinite(value)) return;
+
+    let obj = target;
+    const lastIndex = path.length - 1;
+
+    for (let i = 0; i < lastIndex; i++) {
+        const key = path[i];
+        const cur = obj[key];
+
+        if (cur == null || typeof cur !== 'object') {
+            obj[key] = {};
+        }
+        obj = obj[key];
+    }
+
+    const lastKey = path[lastIndex];
+    const curVal = Number(obj[lastKey] ?? 0);
+    obj[lastKey] = curVal + value;
+}
+
+export function applyBuffArray(target, entries) {
+    if (!target || !Array.isArray(entries)) return;
+
+    for (const entry of entries) {
+        if (!entry?.path) continue;
+        applyBuffByPath(target, entry.path, entry.value ?? 0);
+    }
+}
+
+function getStateEntries(stateCfg, stacks) {
+    if (!stateCfg) return null;
+
+    const perStack = stateCfg.perStack;
+    const max      = stateCfg.max;
+
+    if (!perStack && !max) return null;
+
+    // perStack + max → clamp each path separately
+    if (perStack && max) {
+        const maxMap = new Map();
+        for (const m of max) {
+            if (!m?.path) continue;
+            maxMap.set(m.path.join("|"), m.value ?? Infinity);
         }
 
-        if (parentSet && !activeSets[parentSet]) {
-            effect[`__inactive__${stateKey}`] = value;
-            delete effect[stateKey];
+        const out = [];
+        for (const entry of perStack) {
+            if (!entry?.path) continue;
+            const key    = entry.path.join("|");
+            const cap    = maxMap.get(key) ?? Infinity;
+            const scaled = (entry.value ?? 0) * stacks;
+            const value  = Math.min(scaled, cap);
+
+            out.push({ path: entry.path, value });
         }
+        return out;
     }
 
-    if (effect.windward5 && combatState.aeroErosion > 0) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 10;
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 30;
+    // pure per-stack: no explicit cap
+    if (perStack) {
+        return perStack
+            .filter(e => e?.path)
+            .map(e => ({
+                path: e.path,
+                value: (e.value ?? 0) * stacks
+            }));
     }
 
-    if (effect.molten5) mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 30;
-    if (effect.sierra5) mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 30;
-    if (effect.celestial5) mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 30;
-    if (effect.rejuvenating5) mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
-    if (effect.radiance5p1) mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
-    if (effect.radiance5p2 && combatState.spectroFrazzle >= 10) mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 15;
-    if (effect.welkin5 ) mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 30;
-    if (effect.clawprint5 ) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 15;
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 20;
-    }
-    if (effect.empyrean5 ) mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
-    if (effect.frosty5p1 ) mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + 22.5;
+    // pure on/off: use max as-is
+    return Array.isArray(max) ? max.slice() : null;
+}
 
-    const frostStacks = effect.frost5pc ?? 0;
-    const frostBonus = Math.min(frostStacks * 10, 30);
-    mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + frostBonus;
+export function applyEchoSetBuffLogic({ mergedBuffs, setCounts }) {
+    if (!mergedBuffs || !setCounts) return mergedBuffs;
 
-    const frostyStacks = effect.frosty5p2 ?? 0;
-    const frostySkill = Math.min(frostyStacks * 18, 36);
-    mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + frostySkill;
+    for (const [setIdStr, rawCount] of Object.entries(setCounts)) {
+        const setId = Number(setIdStr);
+        const cfg   = echoSets[setId];
+        if (!cfg) continue;
 
-    const lingeringStacks = effect.lingering5p1 ?? 0;
-    const lingeringAtk = Math.min(lingeringStacks * 5, 20);
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + lingeringAtk;
+        const count     = Number(rawCount) || 0;
+        const maxPieces = cfg.setMax ?? 5;
 
-    const eclipseStack = effect.eclipse5pc ?? 0;
-    const eclipseHavoc = Math.min(eclipseStack * 7.5, 30);
-    mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + eclipseHavoc;
+        // 2-piece static buffs
+        if (count >= 2 && Array.isArray(cfg.twoPiece)) {
+            applyBuffArray(mergedBuffs, cfg.twoPiece);
+        }
 
-    const voidStack = effect.void5pc ?? 0;
-    const voidElectro = Math.min(voidStack * 15, 30);
-    mergedBuffs.electro = (mergedBuffs.electro ?? 0) + voidElectro;
-
-    if (effect.dreamOfTheLost3pc) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 20;
-        mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + 35;
-    }
-
-    const crownOfValorStack = effect.crownOfValor3pc ?? 0;
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 6 * crownOfValorStack;
-    mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + 4 * crownOfValorStack;
-
-    const lawOfHarmonyStack = effect.lawOfHarmony3p ?? 0;
-    if (lawOfHarmonyStack > 0) mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + 30;
-    mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + 4 * lawOfHarmonyStack;
-
-    if (effect.flamewingsShadow2pcP1 && effect.flamewingsShadow2pcP2) mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 16;
-
-    if (effect.threadOfSeveredFate3pc) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
-        mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + 30;
+        // Full-set static buffs (3p / 5p) – non-toggle, non-stacking
+        if (count >= maxPieces && Array.isArray(cfg.fivePiece)) {
+            applyBuffArray(mergedBuffs, cfg.fivePiece);
+        }
     }
 
     return mergedBuffs;
 }
 
-export const echoSetBuffs = {
-    1: { twoPiece: { glacio: 10 } },                                                // Freezing Frost
-    2: { twoPiece: { fusion: 10 } },                                                // Molten Rift
-    3: { twoPiece: { electro: 10 } },                                               // Void Thunder
-    4: { twoPiece: { aero: 10 } },                                                  // Sierra Gale
-    5: { twoPiece: { spectro: 10 } },                                               // Celestial Light
-    6: { twoPiece: { havoc: 10 } },                                                 // Sun-sinking Eclipse
-    7: { twoPiece: { healingBonus: 10 } },                                          // Rejuvenating Glow
-    8: { twoPiece: { energyRegen: 10 } },                                           // Moonlit Clouds
-    9: { twoPiece: { atkPercent: 10 }, fivePiece: {outroAtk: 60} },                 // Lingering Tunes
-    10: { twoPiece: { resonanceSkill: 12 } },                                       // Frosty Resolve
-    11: { twoPiece: { spectro: 10 } },                                              // Eternal Radiance
-    12: { twoPiece: { havoc: 10 } },                                                // Midnight Veil
-    13: { twoPiece: { energyRegen: 10 }, fivePiece: { coord: 80 } },                // Empyrean Anthem
-    14: { twoPiece: { energyRegen: 10 }, fivePiece: { atkPercent: 10 } },           // Tidebreaking Courage
-    16: { twoPiece: { aero: 10 } },                                                 // Gusts of Welkin
-    17: { twoPiece: { aero: 10 } },                                                 // Windward Pilgrimage
-    18: { twoPiece: { fusion: 10 } }                                                // Flaming Clawprint
-};
+export function applySetEffect({
+                                   mergedBuffs,
+                                   characterState,
+                                   combatState,
+                                   setCounts = {}
+                               }) {
+    if (!mergedBuffs) return mergedBuffs;
 
-export const setEffectBuffMap = {
-    1:{ // Freezing Frost
-        setMax:5,
-        frost5pc:{glacio:10,max:{glacio:30}},              // 10×3 stacks = 30
-        frosty5p1:{glacio:7.5,max:{glacio:22.5}}           // 7.5×3 stacks = 22.5
-    },
-    2:{setMax:5,molten5:{fusion:30,max:{fusion:30}}},             // flat
-    3:{setMax:5,void5pc:{electro:15,max:{electro:30}}},           // 15×2 stacks = 30
-    4:{setMax:5,sierra5:{aero:30,max:{aero:30}}},                 // flat
-    5:{setMax:5,celestial5:{spectro:30,max:{spectro:30}}},        // flat
-    6:{setMax:5,eclipse5pc:{havoc:7.5,max:{havoc:30}}},           // 7.5×4 stacks = 30
-    7:{setMax:5,rejuvenating5:{atkPercent:15,max:{atkPercent:15}}}, // flat
-    9:{setMax:5,lingering5p1:{atkPercent:5,max:{atkPercent:20}}}, // 5×4 stacks = 20
-    10:{ // Frosty Resolve
-        setMax:5,
-        frosty5p1:{glacio:7.5,max:{glacio:22.5}},          // 7.5×3 stacks
-        frosty5p2:{resonanceSkill:18,max:{resonanceSkill:36}} // 18×2 stacks
-    },
-    11:{ // Radiance
-        setMax:5,
-        radiance5p1:{critRate:20,max:{critRate:20}},       // flat
-        radiance5p2:{spectro:15,max:{spectro:15}}          // conditional flat
-    },
-    13:{setMax:5,empyrean5:{atkPercent:20,max:{atkPercent:20}}},  // flat
-    16:{setMax:5,welkin5:{aero:30,max:{aero:30}}},                // flat
-    17:{setMax:5,windward5:{critRate:10,aero:30,max:{critRate:10,aero:30}}}, // flat conditional
-    18:{setMax:5,clawprint5:{fusion:15,resonanceLiberation:20,max:{fusion:15,resonanceLiberation:20}}}, // flat
+    const activeStates = characterState?.activeStates ?? {};
 
-    // --- 3-piece sets ---
-    19:{setMax:3,dreamOfTheLost3pc:{critRate:20,echoSkill:35,max:{critRate:20,echoSkill:35}}},
-    20:{setMax:3,crownOfValor3pc:{atkPercent:6,critDmg:4,max:{atkPercent:30,critDmg:20}}},
-    21:{setMax:3,lawOfHarmony3p:{heavyAtk:30,echoSkill:4,max:{heavyAtk:30,echoSkill:16}}},
-    22:{ // Flamewings Shadow
-        setMax:3,
-        flamewingsShadow2pcP1:{fusion:16,max:{fusion:16}},
-        flamewingsShadow2pcP2:{fusion:16,max:{fusion:16}}
-    },
-    23:{setMax:3,threadOfSeveredFate3pc:{atkPercent:20,havoc:30,max:{atkPercent:20,havoc:30}}},
-};
+    // Walk all sets and apply state-based effects when you have the full set
+    for (const [setIdStr, cfg] of Object.entries(echoSets)) {
+        const setId  = Number(setIdStr);
+        const count  = Number(setCounts?.[setId] ?? 0);
+        const setMax = cfg.setMax ?? 5;
+
+        if (count < setMax || !cfg.states) continue;
+
+        for (const [stateKey, stateCfg] of Object.entries(cfg.states)) {
+            let stacks = activeStates[stateKey];
+
+            // Off / undefined → no buff
+            if (!stacks) continue;
+            if (typeof stacks !== "number") stacks = 1;
+
+            // Special combat-state gates
+            if (stateKey === "windward5") {
+                const aeroErosionStacks = combatState?.aeroErosion ?? 0;
+                if (aeroErosionStacks <= 0) continue;
+            }
+
+            if (stateKey === "radiance5p2") {
+                const frazzle = combatState?.spectroFrazzle ?? 0;
+                if (frazzle < 10) continue;
+            }
+
+            const entries = getStateEntries(stateCfg, stacks);
+            if (!entries?.length) continue;
+
+            applyBuffArray(mergedBuffs, entries);
+        }
+    }
+
+    // Flamewing’s Shadow 3p synergy:
+    // When both P1 & P2 states are active and you actually have the set,
+    // gain +16% Fusion DMG.
+    {
+        const flameCount = Number(setCounts?.[22] ?? 0);
+        const flameCfg   = echoSets[22];
+
+        if (flameCfg && flameCount >= (flameCfg.setMax ?? 3)) {
+            const p1 = activeStates.flamewingsShadow2pcP1;
+            const p2 = activeStates.flamewingsShadow2pcP2;
+            if (p1 && p2) {
+                applyBuffByPath(mergedBuffs, ['attribute', 'fusion', 'dmgBonus'], 16);
+            }
+        }
+    }
+
+    // Tidebreaking Courage 5p “all attributes +30% at >= 250% ER”
+    // (static +15% ATK 5p is in echoSets[14].fivePiece and applied in applyEchoSetBuffLogic)
+    {
+        const tideCount = Number(setCounts?.[14] ?? 0);
+        const tideCfg   = echoSets[14];
+
+        if (tideCfg && tideCount >= (tideCfg.setMax ?? 5)) {
+            const er = Number(mergedBuffs.energyRegen ?? 0);
+            if (er >= 150) {
+                // attribute.all gets folded into element buckets later in getFinalStats
+                applyBuffByPath(mergedBuffs, ['attribute', 'all', 'dmgBonus'], 30);
+            }
+        }
+    }
+
+    return mergedBuffs;
+}
 
 const statMirrors = {
     resonanceSkill: ["skillAtk"],
     resonanceLiberation: ["ultimateAtk"]
 };
 
-export function removeSetEffectsFromBuffs(mergedBuffs, sets, runtime, skillType = null) {
-    if (!mergedBuffs) return {};
-    const newBuffs = { ...mergedBuffs };
-    const setArray = Array.isArray(sets) ? sets : [{setId: sets, count: 5}];
-    const subtractBuffs = (buffObj) => {
-        if (!buffObj) return;
-        for (const [stat, val] of Object.entries(buffObj)) {
-            if (val == null) continue;
-            const targets = [stat, ...(statMirrors[stat] ?? [])];
-            for (const target of targets) {
-                const current = Number(newBuffs[target] ?? 0);
-                const result = current - Number(val);
-                if (Math.abs(result) < 1e-6) {
-                    delete newBuffs[target];
-                } else {
-                    newBuffs[target] = result;
-                }
-            }
-        }
-    };
-
-    for (const entry of setArray) {
-        const id = entry?.setId ?? entry;
-        const count = entry?.count ?? 0;
-        const setData = echoSetBuffs[id];
-        if (!setData) continue;
-        if (count >= 2 && setData.twoPiece) subtractBuffs(setData.twoPiece);
-        if (count >= 5 && setData.fivePiece) subtractBuffs(setData.fivePiece);
-    }
-
-    const activeStates = runtime?.activeStates ?? {};
-    if (activeStates?.flamewingsShadow2pcP2 && skillType?.includes("echoSkill")) subtractBuffs({critRate: 20});
-    if (activeStates?.flamewingsShadow2pcP1 && skillType?.includes("heavy")) subtractBuffs({critRate: 20});
-
-    if (setArray[0].setId === 14 && setArray[0].count === 5 && mergedBuffs.energyRegen >= 150) {
-        const e = Object.values(elementMap);
-        const b = {};
-        for (const k of e) { b[k] = 30; }
-        subtractBuffs(b);
-    }
-
-    for (const entry of setArray) {
-        const id = entry?.setId ?? entry;
-        if (id === 22) {
-            const p1 = activeStates?.flamewingsShadow2pcP1;
-            const p2 = activeStates?.flamewingsShadow2pcP2;
-            if (p1 && p2) {
-                subtractBuffs({ fusion: 16 });
-            }
-            continue;
-        }
-        const setEffects = setEffectBuffMap[id];
-        if (!setEffects) continue;
-        for (const [stateKey, buffs] of Object.entries(setEffects)) {
-            if (!activeStates[stateKey]) continue;
-            const buffData = buffs.max ?? buffs;
-            subtractBuffs(buffData);
-        }
-    }
-
-    return newBuffs;
-}
-
-export function applySetEffectsToBuffs(mergedBuffs, sets) {
-    if (!mergedBuffs) return {};
-    const newBuffs = { ...mergedBuffs };
-    const setArray = Array.isArray(sets) ? sets : [sets];
-
-    const addBuffs = (buffObj) => {
-        if (!buffObj) return;
-        for (const [key, value] of Object.entries(buffObj)) {
-            newBuffs[key] = (Number(newBuffs[key] ?? 0)) + Number(value ?? 0);
-        }
-    };
-
-    for (const entry of setArray) {
-        const id = entry?.setId ?? entry;
-        const count = entry?.count ?? 0;
-        const setEffects = setEffectBuffMap[id];
-        if (!setEffects) continue;
-
-        const maxPieces = setEffects.setMax ?? 5;
-        if (count < maxPieces) continue; // only apply full set effects
-
-        for (const [stateKey, buffs] of Object.entries(setEffects)) {
-            if (stateKey === "setMax") continue;
-
-            // apply only the "max" buffs version if available
-            const maxBuffs = buffs.max ?? buffs;
-            addBuffs(maxBuffs);
-        }
-    }
-
-    return newBuffs;
-}
 
 export function getSetPlanFromEchoes(equippedEchoes = []) {
     if (!Array.isArray(equippedEchoes) || equippedEchoes.length === 0) return null;
@@ -332,42 +281,144 @@ export function getSetPlanFromEchoes(equippedEchoes = []) {
     return entries.sort((a, b) => a.setId - b.setId);
 }
 
-export function applyEchoSetBuffLogic({ mergedBuffs, equippedEchoes, activeCharacter }) {
-    const setCounts = {};
-    for (const echo of equippedEchoes) {
-        const setId = Number(echo?.selectedSet);
-        if (!setId) continue;
-        setCounts[setId] = (setCounts[setId] || 0) + 1;
-    }
-
-    for (const [setIdStr, count] of Object.entries(setCounts)) {
-        const setId = Number(setIdStr);
-        const buffs = echoSetBuffs[setId];
-        if (!buffs) continue;
-
-        if (count >= 2 && buffs.twoPiece) {
-            for (const [stat, value] of Object.entries(buffs.twoPiece)) {
-                mergedBuffs[stat] = (mergedBuffs[stat] ?? 0) + value;
-            }
-        }
-
-        if (count === 5 && buffs.fivePiece) {
-            for (const [stat, value] of Object.entries(buffs.fivePiece)) {
-                mergedBuffs[stat] = (mergedBuffs[stat] ?? 0) + value;
-            }
-
-            const allElements = Object.values(elementMap);
-
-            if (setId === 14 && mergedBuffs.energyRegen >= 150) {
-                for (const key of allElements) {
-                    mergedBuffs[key] = (mergedBuffs[key] ?? 0) + 30;
-                }
-            }
+function addBuffs(target, buffObj) {
+    if (!buffObj) return;
+    for (const [stat, val] of Object.entries(buffObj)) {
+        const targets = [stat, ...(statMirrors[stat] ?? [])];
+        for (const t of targets) {
+            target[t] = (Number(target[t] ?? 0)) + Number(val ?? 0);
         }
     }
-    return mergedBuffs;
 }
 
+function subtractBuffByPath(target, path, delta) {
+    if (!target || !Array.isArray(path) || path.length === 0) return;
+    const value = Number(delta ?? 0);
+    if (!Number.isFinite(value) || value === 0) return;
+
+    let obj = target;
+    const lastIndex = path.length - 1;
+
+    for (let i = 0; i < lastIndex; i++) {
+        const key = path[i];
+        const cur = obj[key];
+
+        if (cur == null || typeof cur !== 'object') {
+            // If it doesn't exist, then there's effectively nothing to subtract.
+            // We can early out.
+            return;
+        }
+        obj = cur;
+    }
+
+    const lastKey = path[lastIndex];
+    const curVal  = Number(obj[lastKey] ?? 0);
+    const res     = curVal - value;
+
+    if (Math.abs(res) < 1e-6) {
+        // Clean small noise to zero
+        delete obj[lastKey];
+    } else {
+        obj[lastKey] = res;
+    }
+}
+
+function subtractBuffArray(target, entries) {
+    if (!target || !Array.isArray(entries)) return;
+    for (const entry of entries) {
+        if (!entry?.path) continue;
+        subtractBuffByPath(target, entry.path, entry.value ?? 0);
+    }
+}
+
+export function removeSetEffectsFromBuffs(
+    baseBuffs,
+    sets,
+    runtime
+) {
+    if (!baseBuffs) return {};
+
+    const newBuffs = structuredClone(baseBuffs);
+    const setArray =
+        Array.isArray(sets) ? sets : [{ setId: sets, count: echoSets[sets]?.setMax ?? 5 }];
+    const activeStates = runtime?.activeStates ?? {};
+
+    for (const entry of setArray) {
+        const id    = entry?.setId ?? entry;
+        const count = Number(entry?.count ?? 0);
+        const cfg   = echoSets[id];
+        if (!cfg) continue;
+
+        const maxPieces = cfg.setMax ?? 5;
+
+        if (count >= 2 && Array.isArray(cfg.twoPiece)) {
+            subtractBuffArray(newBuffs, cfg.twoPiece);
+        }
+
+        if (count >= maxPieces && Array.isArray(cfg.fivePiece)) {
+            subtractBuffArray(newBuffs, cfg.fivePiece);
+        }
+    }
+
+    for (const entry of setArray) {
+        const id    = entry?.setId ?? entry;
+        const count = Number(entry?.count ?? 0);
+        const cfg   = echoSets[id];
+        if (!cfg || !cfg.states) continue;
+
+        const maxPieces = cfg.setMax ?? 5;
+        if (count < maxPieces) continue;
+
+        for (const [stateKey, stateCfg] of Object.entries(cfg.states)) {
+            let stacks = activeStates[stateKey];
+
+            if (!stacks) continue;
+            if (typeof stacks !== "number") stacks = 1;
+
+            if (stateKey === "windward5") {
+                const aeroErosionStacks = runtime.CombatState?.aeroErosion ?? 0;
+                if (aeroErosionStacks <= 0) continue;
+            }
+
+            if (stateKey === "radiance5p2") {
+                const frazzle = runtime.CombatState?.spectroFrazzle ?? 0;
+                if (frazzle < 10) continue;
+            }
+
+            const entries = getStateEntries(stateCfg, stacks);
+            if (!entries?.length) continue;
+
+            subtractBuffArray(newBuffs, entries);
+        }
+    }
+
+    if (setArray.some(e => (e?.setId ?? e) === 22)) {
+        const flameCfg = echoSets[22];
+        const entry    = setArray.find(e => (e?.setId ?? e) === 22);
+        const count    = Number(entry?.count ?? 0);
+
+        if (flameCfg && count >= (flameCfg.setMax ?? 3)) {
+            const p1 = activeStates.flamewingsShadow2pcP1;
+            const p2 = activeStates.flamewingsShadow2pcP2;
+            if (p1 && p2) {
+                subtractBuffByPath(newBuffs, ['attribute', 'fusion', 'dmgBonus'], 16);
+            }
+        }
+    }
+
+    if (setArray.some(e => (e?.setId ?? e) === 14)) {
+        const tideCfg  = echoSets[14];
+        const entry    = setArray.find(e => (e?.setId ?? e) === 14);
+        const count    = Number(entry?.count ?? 0);
+        const er       = Number(baseBuffs.energyRegen ?? 0);
+
+        if (tideCfg && count >= (tideCfg.setMax ?? 5) && er >= 150) {
+            subtractBuffByPath(newBuffs, ['attribute', 'all', 'dmgBonus'], 30);
+        }
+    }
+
+    return newBuffs;
+}
 
 export const mainEchoBuffs = {
     '6000042': {
@@ -633,105 +684,208 @@ export const mainEchoBuffs = {
             return skillMeta;
         }
     },
+    '6000175': {
+        skillMetaModifier: (skillMeta) => {
+            if (skillMeta.name.includes('Flora Drone Skill 2')) {
+                skillMeta.scaling = { hp: 1 };
+                skillMeta.tags.push('healing');
+            }
+            return skillMeta;
+        }
+    },
+    '6000179': {
+        always: { spectro: 12, basicAtk: 12 },
+        stackable: {
+            label: "Stacks",
+            key: "mainEchoStacks",
+            max: 6,
+            buffsPerStack: { echoSkill: 10 }
+        },
+        skillMetaModifier: (skillMeta, { characterState }) => {
+            if (skillMeta.name.includes('Twin Nova: Nebulous Cannon Skill 2')) {
+                skillMeta.visible = characterState.nebulousCannon;
+                skillMeta.label = 'Twin Nova: Collapsar Blade';
+            } else skillMeta.label = 'Twin Nova: Nebulous Cannon';
+            return skillMeta;
+        }
+    },
+    '6000180': {
+        always: { electro: 12, basicAtk: 12 },
+        stackable: {
+            label: "Stacks",
+            key: "mainEchoStacks",
+            max: 6,
+            buffsPerStack: { echoSkill: 10 }
+        },
+        skillMetaModifier: (skillMeta, { characterState }) => {
+            if (skillMeta.name.includes('Twin Nova: Collapsar Blade Skill 2')) {
+                skillMeta.visible = characterState.collapsarBlade;
+                skillMeta.label = 'Twin Nova: Nebulous Cannon';
+            } else skillMeta.label = 'Twin Nova: Collapsar Blade';
+            return skillMeta;
+        }
+    },
+    '6000184': {
+        skillMetaModifier: (skillMeta) => {
+            if (skillMeta.name.includes('Spacetrek Explorer')) {
+                skillMeta.tags.push('shielding');
+            }
+            return skillMeta;
+        }
+    },
+    '6000190': {
+        always: { energyRegen: 10 }
+    },
 };
+
+export function computeNebulousCollapsarStates(equippedEchoes = []) {
+    const main = equippedEchoes[0];
+    if (!main) {
+        return { nebulousCannon: false, collapsarBlade: false };
+    }
+
+    const mainId = String(main.id);
+    const others = equippedEchoes.slice(1);
+
+    const has6000180InOthers = others.some(e => e && String(e.id) === '6000180');
+    const has6000179InOthers = others.some(e => e && String(e.id) === '6000179');
+
+    const nebulousCannon =
+        mainId === '6000179' && has6000180InOthers;
+
+    const collapsarBlade =
+        mainId === '6000180' && has6000179InOthers;
+
+    return { nebulousCannon, collapsarBlade };
+}
 
 export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterState, charId }) {
     const activeStates = characterState?.activeStates ?? {};
     const mainEcho = equippedEchoes?.[0];
     if (!mainEcho) return mergedBuffs;
 
-    const buffs = mainEchoBuffs?.[mainEcho.id];
-    if (!buffs) return mergedBuffs;
+    const config = mainEchoBuffs?.[mainEcho.id];
+    if (!config) return mergedBuffs;
 
-    const { always, toggleable, stackable } = buffs;
+    const { always, toggleable, stackable } = config;
 
-    if (always) {
-        for (const [stat, val] of Object.entries(always)) {
-            mergedBuffs[stat] = (mergedBuffs[stat] ?? 0) + val;
-        }
-    }
-
-    if (toggleable && activeStates?.mainEchoToggle && toggleable.buffs) {
-        for (const [stat, val] of Object.entries(toggleable.buffs)) {
-            if (stat === 'element') {
+    const applyBuffMap = (buffs) => {
+        if (!buffs) return;
+        for (const [stat, val] of Object.entries(buffs)) {
+            // special “all elements” case
+            if (stat === "element") {
                 for (const elem of Object.values(elementMap)) {
-                    mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + val;
+                    applyStatToMerged(mergedBuffs, elem, val);
                 }
             } else {
-                mergedBuffs[stat] = (mergedBuffs[stat] ?? 0) + val;
+                applyStatToMerged(mergedBuffs, stat, val);
             }
         }
+    };
+
+    // Always-on buffs
+    if (always) {
+        applyBuffMap(always);
     }
 
-    if (stackable) {
-        const stackKey = stackable.key ?? 'mainEchoStacks';
-        const currentStacks = Math.min(activeStates?.[stackKey] ?? 0, stackable.max ?? 1);
+    // Toggleable buffs (simple stat buffs)
+    if (toggleable && activeStates?.mainEchoToggle && toggleable.buffs) {
+        applyBuffMap(toggleable.buffs);
+    }
 
-        for (const [stat, perStackVal] of Object.entries(stackable.buffsPerStack)) {
-            const total = perStackVal * currentStacks;
-            mergedBuffs[stat] = (mergedBuffs[stat] ?? 0) + total;
+    // Stackable buffs
+    if (stackable) {
+        const stackKey = stackable.key ?? "mainEchoStacks";
+        const currentStacks = Math.min(
+            activeStates?.[stackKey] ?? 0,
+            stackable.max ?? 1
+        );
+
+        if (currentStacks > 0 && stackable.buffsPerStack) {
+            const totalBuffs = {};
+            for (const [stat, perStackVal] of Object.entries(stackable.buffsPerStack)) {
+                totalBuffs[stat] = (totalBuffs[stat] ?? 0) + perStackVal * currentStacks;
+            }
+            applyBuffMap(totalBuffs);
         }
     }
 
-    if (mainEcho.id === '6000106' && (charId === '1409' || charId === '1406' || charId === '1408')) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 10;
+    // Special-case: 6000106 extra Aero for specific chars
+    if (
+        mainEcho.id === "6000106" &&
+        (charId === "1409" || charId === "1406" || charId === "1408")
+    ) {
+        applyStatToMerged(mergedBuffs, "aero", 10);
     }
 
     return mergedBuffs;
 }
 
-export function removeMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterState, charId }) {
+export function removeMainEchoBuffLogic({
+                                            equippedEchoes,
+                                            mergedBuffs,
+                                            characterState,
+                                            charId
+                                        }) {
     const activeStates = characterState?.activeStates ?? {};
     const mainEcho = equippedEchoes?.[0];
     if (!mainEcho) return mergedBuffs;
 
-    const buffs = mainEchoBuffs?.[mainEcho.id];
-    if (!buffs) return mergedBuffs;
+    const config = mainEchoBuffs?.[mainEcho.id];
+    if (!config) return mergedBuffs;
 
-    const { always, toggleable, stackable } = buffs;
+    const { always, toggleable, stackable } = config;
 
-    const remove = (stat, val) => {
-        mergedBuffs[stat] = (mergedBuffs[stat] ?? 0) - val;
-        if (stat === 'resonanceLiberation') {
-            mergedBuffs.ultimateAtk = (mergedBuffs.ultimateAtk ?? 0) - val;
-        }
-        if (stat === 'resonanceSkill') {
-            mergedBuffs.skillAtk = (mergedBuffs.skillAtk ?? 0) - val;
-        }
-    }
+    const removeBuffMap = (buffs) => {
+        if (!buffs) return;
+        for (const [stat, val] of Object.entries(buffs)) {
+            if (!val) continue;
 
-    if (always) {
-        for (const [stat, val] of Object.entries(always)) {
-            remove(stat, val);
-        }
-    }
-
-    if (toggleable && activeStates?.mainEchoToggle && toggleable.buffs) {
-        for (const [stat, val] of Object.entries(toggleable.buffs)) {
-            if (stat === 'element') {
-                for (const elem of Object.values(elementMap ?? {})) {
-                    mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) - val;
+            // same “all elements” handling as apply, but inverted
+            if (stat === "element") {
+                for (const elem of Object.values(elementMap)) {
+                    applyStatToMerged(mergedBuffs, elem, -val);
                 }
             } else {
-                remove(stat, val);
-
+                applyStatToMerged(mergedBuffs, stat, -val);
             }
         }
+    };
+
+    // Always-on buffs
+    if (always) {
+        removeBuffMap(always);
     }
 
+    // Toggleable buffs (only if toggle is currently ON, same as apply)
+    if (toggleable && activeStates?.mainEchoToggle && toggleable.buffs) {
+        removeBuffMap(toggleable.buffs);
+    }
+
+    // Stackable buffs
     if (stackable) {
-        const stackKey = stackable.key ?? 'mainEchoStacks';
-        const currentStacks = Math.min(activeStates?.[stackKey] ?? 0, stackable.max ?? 1);
+        const stackKey = stackable.key ?? "mainEchoStacks";
+        const currentStacks = Math.min(
+            activeStates?.[stackKey] ?? 0,
+            stackable.max ?? 1
+        );
 
-        for (const [stat, perStackVal] of Object.entries(stackable.buffsPerStack)) {
-            const total = perStackVal * currentStacks;
-            remove(stat, total);
-
+        if (currentStacks > 0 && stackable.buffsPerStack) {
+            const totalBuffs = {};
+            for (const [stat, perStackVal] of Object.entries(stackable.buffsPerStack)) {
+                totalBuffs[stat] =
+                    (totalBuffs[stat] ?? 0) + perStackVal * currentStacks;
+            }
+            removeBuffMap(totalBuffs);
         }
     }
 
-    if (mainEcho.id === '6000106' && (charId === '1409' || charId === '1406' || charId === '1408')) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) - 10;
+    // Special-case: 6000106 extra Aero for specific chars
+    if (
+        mainEcho.id === "6000106" &&
+        (charId === "1409" || charId === "1406" || charId === "1408")
+    ) {
+        applyStatToMerged(mergedBuffs, "aero", -10);
     }
 
     return mergedBuffs;

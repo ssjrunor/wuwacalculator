@@ -4,7 +4,11 @@ import {fetchCharacters} from '../json-data-scripts/wutheringFetch';
 import characterStatesRaw from '../data/characterStates.json';
 import '../styles';
 import SkillsModal from '../components/character-ui/SkillsModal.jsx';
-import CharacterSelector, {traceIcons} from '../components/character-ui/CharacterSelector.jsx';
+import CharacterSelector, {
+    applyTraceBuff,
+    createEmptyTraceBuffs,
+    traceIcons
+} from '../components/character-ui/CharacterSelector.jsx';
 import CharacterStats from '../components/CharacterStats';
 import DamageSection from '../components/DamageSection';
 import WeaponPane, {mapExtraStatToCombat} from '../components/weapon-pane/WeaponPane.jsx';
@@ -14,7 +18,7 @@ import CustomBuffsPane from '../components/custom-buffs-ui/CustomBuffsPane.jsx';
 import ToolbarIconButton, {ToolbarSidebarButton} from '../components/utils-ui/ToolbarIconButton.jsx';
 import {attributeColors, attributeIcons, elementToAttribute} from '../utils/attributeHelpers';
 import {getFinalStats} from '../utils/getStatsForLevel';
-import {getUnifiedStatPool} from '../utils/getUnifiedStatPool';
+import {getUnifiedStatPool, makeBaseBuffs, makeModBuffs} from '../utils/getUnifiedStatPool';
 import {getPersistentValue, setPersistentValue, usePersistentState} from '../hooks/usePersistentState';
 import {getBuffsLogic, getCharacterOverride} from '../data/character-behaviour';
 import ChangelogModal from '../components/utils-ui/GuideModal.jsx';
@@ -30,7 +34,8 @@ import {
     UserRound,
     ScanHeart,
     Backpack,
-    ChartColumn
+    ChartColumn,
+    Activity
 } from 'lucide-react';
 import {useNavigate} from 'react-router-dom';
 import {fetchWeapons} from '../json-data-scripts/fetchWeapons';
@@ -40,8 +45,13 @@ import {applyWeaponBuffLogic} from "../data/buffs/weaponBuffs.js";
 import RotationsPane from "../components/rotations-ui/RotationsPane.jsx";
 import EchoesPane from '../components/echoes-pane-ui/EchoesPane.jsx';
 import {echoes} from "../json-data-scripts/getEchoes.js";
-import {applyEchoSetBuffLogic, applyMainEchoBuffLogic, applySetEffect} from "../data/buffs/setEffect.js";
-import {getEchoStatsFromEquippedEchoes, getSetCounts} from "../utils/echoHelper.js";
+import {
+    applyEchoSetBuffLogic,
+    applyMainEchoBuffLogic,
+    applySetEffect,
+    computeNebulousCollapsarStates
+} from "../data/buffs/setEffect.js";
+import {getEchoStatsFromEquippedEchoes, getSetCounts, normalizeLegacyEchoStats} from "../utils/echoHelper.js";
 import CharacterOverviewPane from "../components/overview-ui/CharacterOverview.jsx";
 import {isEqual} from "lodash";
 import {getMainRotationTotals, getTeamRotationTotal} from "../components/rotations-ui/Rotations.jsx";
@@ -60,6 +70,32 @@ import {getEchoBag} from "../state/echoBagStore.js";
 import Optimizer from "../components/optimizer-ui/Optimizer.jsx";
 import {Tooltip} from "antd";
 import SuggestionsPane from "../components/suggestions-ui/SuggestionsPane.jsx";
+import AppStatusModal from "../components/utils-ui/AppStatusModal.jsx";
+
+export const defaultTraceBuffs = {
+    // main stats: only percent is used, flat stays 0
+    atk: makeBaseBuffs(),   // use atk.percent
+    hp:  makeBaseBuffs(),   // use hp.percent
+    def: makeBaseBuffs(),   // use def.percent
+
+    // element dmgBonus only; other fields left at 0
+    attribute: {
+        aero:    makeModBuffs(),
+        glacio:  makeModBuffs(),
+        spectro: makeModBuffs(),
+        fusion:  makeModBuffs(),
+        electro: makeModBuffs(),
+        havoc:   makeModBuffs(),
+    },
+
+    // scalar stats from traces
+    critRate: 0,
+    critDmg: 0,
+    healingBonus: 0,
+
+    // UI / bookkeeping only
+    activeNodes: {}
+};
 
 export default function Calculator(props) {
     const [characters, setCharacters] = useState([]);
@@ -77,12 +113,10 @@ export default function Calculator(props) {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-11-26 18:26';
+    const LATEST_CHANGELOG_VERSION = '2025-12-07 17:45';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
-    const [showChangelog, setShowChangelog] = useState(false);
-    const [shouldScrollChangelog, setShouldScrollChangelog] = useState(false);
     const [characterLevel, setCharacterLevel] = useState(1);
     const {
         theme,
@@ -116,8 +150,7 @@ export default function Calculator(props) {
     const currentAttribute = elementToAttribute[activeCharacter?.attribute] ?? '';
     const currentSliderColor = attributeColors[currentAttribute] ?? '#888';
     const attributeIconPath = attributeIcons[currentAttribute] ?? '';
-    const defaultSliderValues = { normalAttack: 1, resonanceSkill: 1, forteCircuit: 1, resonanceLiberation: 1, introSkill: 1, sequence: 0 };
-    const defaultTraceBuffs = { atkPercent: 0, hpPercent: 0, defPercent: 0, healingBonus: 0, critRate: 0, critDmg: 0, activeNodes: {} };
+    const defaultSliderValues = { normalAttack: 1, resonanceSkill: 1, forteCircuit: 1, resonanceLiberation: 1, introSkill: 1, stayTuned: 1, sequence: 0 };
     const defaultCustomBuffs = { atkFlat: 0, hpFlat: 0, defFlat: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, critRate: 0, critDmg: 0, energyRegen: 0, healingBonus: 0, basicAtk: 0, heavyAtk: 0, resonanceSkill: 0, resonanceLiberation: 0, aero: 0, glacio: 0, spectro: 0, fusion: 0, electro: 0, havoc: 0 };
     const defaultCombatState = { enemyLevel: enemyLevel ?? 100, enemyRes: enemyRes ?? 20, critRate: 0, critDmg: 0, weaponBaseAtk: 0, spectroFrazzle: 0, havocBane: 0, electroFlare: 0, aeroErosion: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, energyRegen: 0 };
     const [characterState, setCharacterState] = useState({ activeStates: {} });
@@ -166,6 +199,12 @@ export default function Calculator(props) {
             setTeam(profile.Team ?? [resolvedCharId, null, null]);
             setBaseCharacterState(state ?? null);
             setCharacterLevel(profile.CharacterLevel ?? 1);
+            if (profile.SkillLevels && !profile.SkillLevels.stayTuned) {
+                profile.SkillLevels = {
+                    ...profile.SkillLevels,
+                    stayTuned: 1,
+                }
+            }
             setSliderValues(profile.SkillLevels ?? defaultSliderValues);
             setTraceNodeBuffs(profile.TraceNodeBuffs ?? profile.TemporaryBuffs ?? defaultTraceBuffs);
             profile.TraceNodeBuffs = profile.TraceNodeBuffs ?? profile.TemporaryBuffs ?? defaultTraceBuffs;
@@ -252,8 +291,8 @@ export default function Calculator(props) {
                 color: { light: 'green', dark: 'limegreen' },
                 duration: 60000,
                 prompt: {
-                    message: latest?.actionMessage ?? 'See changelog~!',
-                    action: latest?.action ?? (latest?.navigate ? (() => navigate(latest?.navigate)) : (() => navigate('/changelog'))),
+                    message: latest?.actionMessage ?? 'See updates~!',
+                    action: latest?.action ?? (latest?.navigate ? (() => navigate(latest?.navigate)) : (() => setStatusOpen(true))),
                 }
             });
             setShowToast(true);
@@ -264,13 +303,6 @@ export default function Calculator(props) {
             setPersistentValue('seenChangelogVersion', LATEST_CHANGELOG_VERSION)
         }
     }, []);
-
-    useEffect(() => {
-        if (showChangelog && shouldScrollChangelog) {
-            const timeout = setTimeout(() => setShouldScrollChangelog(false), 100);
-            return () => clearTimeout(timeout);
-        }
-    }, [showChangelog, shouldScrollChangelog]);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -477,7 +509,7 @@ export default function Calculator(props) {
     );
 
     let mergedBuffs = getUnifiedStatPool(
-        [traceNodeBuffs, combatState, customBuffs, echoStats],
+        [traceNodeBuffs, customBuffs, normalizeLegacyEchoStats(combatState), echoStats],
         overrideLogic
     );
 
@@ -550,13 +582,13 @@ export default function Calculator(props) {
         activeCharacter
     })
 
+    const setCounts = getSetCounts(characterRuntimeStates[charId]?.equippedEchoes ?? []);
+
     mergedBuffs = applyEchoSetBuffLogic({
         mergedBuffs,
         activeCharacter,
-        equippedEchoes
+        setCounts
     })
-
-    const setCounts = getSetCounts(characterRuntimeStates[charId]?.equippedEchoes ?? []);
 
     mergedBuffs = applySetEffect({
         characterState: {
@@ -579,7 +611,7 @@ export default function Calculator(props) {
         charId
     })
 
-    mergedBuffs.enemyDefShred = (mergedBuffs.enemyDefShred ?? 0) +  2 * combatState.havocBane;
+    mergedBuffs.attribute.all.defIgnore += 2 * combatState.havocBane;
 
     if (overrideLogic && typeof overrideLogic === 'function') {
         const charId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
@@ -612,9 +644,6 @@ export default function Calculator(props) {
         }
     }
 
-    mergedBuffs.basicAtk = mergedBuffs.basicAtk ?? 0;
-    mergedBuffs.skillAtk = mergedBuffs.resonanceSkill ?? 0;
-    mergedBuffs.ultimateAtk = mergedBuffs.resonanceLiberation ?? 0;
     let finalStats = getFinalStats(activeCharacter, baseCharacterState, characterLevel, mergedBuffs, combatState);
 
     useEffect(() => {
@@ -971,7 +1000,7 @@ export default function Calculator(props) {
                 if (!groups[tab]) groups[tab] = [];
                 groups[tab].push({
                     name: skill.name,
-                    type: skill.skillType,
+                    type: skill.supportLabel || skill.skillType,
                     tab,
                     visible: skill.visible,
                     element: skill.element ?? null,
@@ -1108,6 +1137,62 @@ export default function Calculator(props) {
 
     const [suggestionsPaneSettings, setSuggestionsPaneSettings] = usePersistentState('suggestionsPaneSettings', {});
 
+    useEffect(() => {
+        if (!activeCharacter?.raw?.SkillTrees) return;
+
+        const existing = traceNodeBuffs ?? {};
+        const activeNodes = existing.activeNodes ?? {};
+
+        const looksUnified =
+            existing.atk &&
+            existing.hp &&
+            existing.def &&
+            existing.attribute;
+
+        if (looksUnified) return;
+
+        const buffs = createEmptyTraceBuffs();
+        const newActiveNodes = {};
+
+        for (const [nodeId, node] of Object.entries(activeCharacter.raw.SkillTrees ?? {})) {
+            if (!activeNodes[nodeId]) continue;
+            if (node.NodeType !== 4) continue;
+
+            const skillName = node.Skill?.Name;
+            if (!skillName) continue;
+
+            const raw = node.Skill?.Param?.[0] ?? "0";
+            const percent = parseFloat(String(raw).replace('%', ''));
+
+            applyTraceBuff(buffs, skillName, percent);
+            newActiveNodes[nodeId] = true;
+        }
+
+        buffs.activeNodes = newActiveNodes;
+
+        setTraceNodeBuffs(buffs);
+    }, [activeCharacter, traceNodeBuffs?.activeNodes, setTraceNodeBuffs]);
+
+    const [statusOpen, setStatusOpen] = useState(false);
+
+    useEffect(() => {
+        if (!equippedEchoes[0]) return;
+        const { nebulousCannon, collapsarBlade } =
+            computeNebulousCollapsarStates(equippedEchoes);
+
+        setCharacterRuntimeStates(prev => ({
+            ...prev,
+            [charId]: {
+                ...(prev[charId] ?? {}),
+                activeStates: {
+                    ...(prev[charId]?.activeStates ?? {}),
+                    nebulousCannon,
+                    collapsarBlade,
+                }
+            }
+        }));
+    }, [equippedEchoes]);
+
     return (
         <>
             <SkillsModal
@@ -1120,6 +1205,11 @@ export default function Calculator(props) {
                 currentSliderColor={currentSliderColor}
                 keywords={keywords}
                 isDark={isDark}
+            />
+
+            <AppStatusModal
+                open={statusOpen}
+                onClose={() => setStatusOpen(false)}
             />
 
             {bagOpen && (
@@ -1374,6 +1464,17 @@ export default function Calculator(props) {
                                 </div>
                                 <div className="label-slot">
                                     <span className="label-text">Overview</span>
+                                </div>
+                            </button>
+
+                            <button className="sidebar-button" onClick={() => setStatusOpen(true)}>
+                                <div className="icon-slot">
+                                    <Activity />
+                                </div>
+                                <div className="label-slot">
+                                    <span className="label-text">
+                                        Status
+                                    </span>
                                 </div>
                             </button>
 
@@ -1711,11 +1812,6 @@ export default function Calculator(props) {
                 </div>
             </div>
 
-            <ChangelogModal
-                open={showChangelog}
-                onClose={() => setShowChangelog(false)}
-                shouldScroll={shouldScrollChangelog}
-            />
             {showToast && popupMessage.message && (
                 <NotificationToast
                     message={popupMessage.message}
@@ -1893,7 +1989,7 @@ function getHighlightKeywords(character) {
     return result;
 }
 
-const skillTabs = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill', 'outroSkill', 'echoAttacks', 'negativeEffect'];
+const skillTabs = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill', 'outroSkill', 'stayTuned', 'echoAttacks', 'negativeEffect'];
 
 export async function cropAndCompressImage(
     fileOrUrl,

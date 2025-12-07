@@ -9,7 +9,7 @@ export function applyWeaponLogic({
     const ult = parseFloat(currentParamValues[0]);
 
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + ult;
+        mergedBuffs.skillType.resonanceLiberation.dmgBonus += ult;
 
     }
 

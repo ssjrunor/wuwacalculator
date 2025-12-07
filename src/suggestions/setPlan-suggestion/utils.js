@@ -1,5 +1,5 @@
 import { echoes as echoTemplates } from "../../json-data-scripts/getEchoes.js";
-import {DEFAULT_THREE_PIECE_SETS} from "../../constants/echoSetData.jsx";
+import {DEFAULT_THREE_PIECE_SETS} from "../../constants/echoSetData2.js";
 
 const THREE_PIECE_SET_IDS = new Set(DEFAULT_THREE_PIECE_SETS);
 

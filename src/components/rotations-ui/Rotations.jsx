@@ -162,6 +162,7 @@ function getSkillType(entry) {
     if (detail.includes('frazzle')) return 'Spectro Frazzle';
     if (detail.includes('erosion')) return 'Aero Erosion';
     if (detail.includes('echo')) return 'Echo Skill';
+    if (detail.includes('tune rupture')) return 'Tune Rupture';
     return 'Other';
 }
 
@@ -175,6 +176,7 @@ export const normalizedSkillTypeNames = {
     aeroErosion: 'Aero Erosion',
     outroSkill: 'Outro Skill',
     introSkill: 'Intro Skill',
+    tuneRupture: 'Tune Rupture'
 }
 
 export function calculateRotationTotals(skillCache, rotationEntries) {

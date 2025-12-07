@@ -36,19 +36,19 @@ export function applyEncoreLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__encoreInherent1) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
+        mergedBuffs.attribute.fusion.dmgBonus += 10;
         mergedBuffs.__encoreInherent1 = true;
     }
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__encoreInherent2) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
+        mergedBuffs.attribute.fusion.dmgBonus += 10;
         mergedBuffs.__encoreInherent2 = true;
     }
 
     const encoreS1 = characterState?.toggles?.['1_value'] ?? 0;
     const encoreSeq1stacks = Math.min(encoreS1 * 3, 12);
     if (isActiveSequence(1) && encoreSeq1stacks > 0 && !mergedBuffs.__encoreSeq1) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + encoreSeq1stacks;
+        mergedBuffs.attribute.fusion.dmgBonus += encoreSeq1stacks;
         mergedBuffs.__encoreSeq1 = true;
     }
 
@@ -57,19 +57,19 @@ export function applyEncoreLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__encoreS4) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 20;
+        mergedBuffs.attribute.fusion.dmgBonus += 20;
         mergedBuffs.__encoreS4 = true;
     }
 
     if (isActiveSequence(5) && !mergedBuffs.__encoreS5) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 35;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += 35;
         mergedBuffs.__encoreS5 = true;
     }
 
     const encoreS6 = characterState?.toggles?.['6_value'] ?? 0;
     const encoreSeq6stacks = Math.min(encoreS6 * 5, 25);
     if (isActiveSequence(1) && encoreSeq6stacks > 0 && !mergedBuffs.__encoreSeq6) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + encoreSeq6stacks;
+        mergedBuffs.atk.percent += encoreSeq6stacks;
         mergedBuffs.__encoreSeq6 = true;
     }
 
@@ -86,21 +86,12 @@ export const encoreMultipliers = {
 }
 
 export function encoreBuffsLogic({
-                                     mergedBuffs, characterState, activeCharacter
+                                     mergedBuffs, characterState
                                  }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.adventure) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 20;
+        mergedBuffs.attribute.fusion.dmgBonus += 20;
     }
 
     return { mergedBuffs };

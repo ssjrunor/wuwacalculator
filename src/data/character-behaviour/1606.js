@@ -29,7 +29,7 @@ export function applyRocciaLogic({
     }
 
     if (characterState?.activeStates?.commedia && !mergedBuffs.__rocciaCommeddia) {
-        mergedBuffs.atkFlat = (mergedBuffs.atkFlat ?? 0) + atkFlat;
+        mergedBuffs.atk.flat += atkFlat;
         mergedBuffs.__rocciaCommeddia = true;
     }
 
@@ -38,20 +38,20 @@ export function applyRocciaLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__rocciaInherent1) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__rocciaInherent1 = true;
     }
 
     const seq2Value = characterState?.toggles?.['2_value'] ?? 0;
     const luceanite = Math.min(seq2Value * 10, 30);
     if (!mergedBuffs.__luceaniteApplied && isActiveSequence(2)) {
-        mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + luceanite + (seq2Value >= 3 ? 10 : 0);
+        mergedBuffs.attribute.havoc.dmgBonus += luceanite + (seq2Value >= 3 ? 10 : 0);
         mergedBuffs.__luceaniteApplied = true;
     }
 
     if (isActiveSequence(3) && !mergedBuffs.__rocciaS3 && isToggleActive(3)) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 10;
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + 30;
+        mergedBuffs.critRate += 10;
+        mergedBuffs.critDmg += 30;
         mergedBuffs.__rocciaS3 = true;
     }
 
@@ -135,16 +135,16 @@ export function rocciaBuffsLogic({
     }
 
     if (state.applause) {
-        mergedBuffs.damageTypeAmplify.basic = (mergedBuffs.damageTypeAmplify.basic ?? 0) + 25;
-        mergedBuffs.elementDmgAmplify.havoc = (mergedBuffs.elementDmgAmplify.havoc ?? 0) + 20;
+        mergedBuffs.skillType.basicAtk.amplify += 25;
+        mergedBuffs.attribute.havoc.amplify += 20;
     }
 
     if (state.commedia) {
-        mergedBuffs.atkFlat = (mergedBuffs.atkFlat ?? 0) + atkFlat;
+        mergedBuffs.atk.flat += atkFlat;
     }
 
     if (state.luceanite) {
-        mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + stacks;
+        mergedBuffs.attribute.havoc.dmgBonus += stacks;
     }
 
     return { mergedBuffs };

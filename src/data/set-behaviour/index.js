@@ -1,10 +1,4 @@
-import {three22SkillMeta} from "./22.js";
-
 export function getEchoSetSkillMeta(setId) {
-    const sets = {
-        '22': {
-            threePiece: three22SkillMeta
-        }
-    }
+    const sets = {}
     return sets[String(setId)]?.threePiece ?? null;
 }

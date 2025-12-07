@@ -7,9 +7,8 @@ export function generateSetPlanContext(form) {
     const runtime = form.characterRuntimeStates[charId];
     const currentSetPlan = getSetPlanFromEchoes(form.equippedEchoes);
     const withoutSetEffects = removeSetEffectsFromBuffs(
-        removeSpecialBuffs(form.mergedBuffs, {...form.mergedBuffs}, charId, runtime.activeStates),
+        removeSpecialBuffs(form.mergedBuffs, structuredClone(form.mergedBuffs), charId, runtime.activeStates, form.skillType),
         currentSetPlan, runtime, form.skillType);
-
     const raw = {
         charId,
         activeCharacter: form.activeCharacter,

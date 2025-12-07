@@ -7,8 +7,7 @@ export function applyWeaponLogic({
                                  }) {
     const skill = parseFloat(currentParamValues[0]);
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + skill;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += skill;
     }
-
     return { mergedBuffs, combatState, skillMeta };
 }

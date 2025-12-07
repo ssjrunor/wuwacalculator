@@ -70,11 +70,6 @@
     color: unset;
 }
 
-.dark .changelog-modal.guides {
-    background-color: rgb(23, 30, 41);
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
 .changelog-entries.guides{
     mask-image: unset;
     -webkit-mask-image: unset;

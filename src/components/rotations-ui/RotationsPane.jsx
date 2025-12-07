@@ -22,7 +22,7 @@ import {isEqual} from "lodash";
 import GuidesModal from "../utils-ui/GuideModal.jsx";
 import ConfirmationModal from "../utils-ui/ConfirmationModal.jsx";
 import Select from 'react-select';
-import SkillMenu, {tabDisplayOrder} from "../utils-ui/SkillMenu.jsx";
+import SkillMenu, {tabDisplayOrder} from "./SkillMenu.jsx";
 import PlainModal from "../utils-ui/PlainModal.jsx";
 
 const errorMessages = [

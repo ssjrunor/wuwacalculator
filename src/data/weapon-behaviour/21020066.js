@@ -10,11 +10,11 @@ export function applyWeaponLogic({
     const stacks = characterState?.activeStates?.stacks ?? 0;
     const echoSkill = parseFloat(currentParamValues[4]);
 
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
-    mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + heavy * stacks;
+    mergedBuffs.atk.percent += atk;
+    mergedBuffs.skillType.heavyAtk.dmgBonus += heavy * stacks;
 
     if (characterState?.activeStates?.firstP2) {
-        mergedBuffs.echoSkill = (mergedBuffs.echoSkill ?? 0) + echoSkill;
+        mergedBuffs.skillType.echoSkill.dmgBonus += echoSkill;
     }
 
     return { mergedBuffs, combatState, skillMeta };

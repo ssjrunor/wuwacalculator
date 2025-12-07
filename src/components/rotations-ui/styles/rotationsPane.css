@@ -109,10 +109,6 @@
     gap: 10px;
 }
 
-.skill-option:hover {
-    background: #333;
-}
-
 .rotation-header {
     display: flex;
     justify-content: space-between;
@@ -299,11 +295,13 @@ select:focus {
 
 .skill-menu-panel {
     background-color: #f5f5f5;
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 10px;
     padding: 0;
-    width: 43.75rem;
-    max-height: 500px;
+    width: 73.75rem;
+    max-height: 620px;
     display: flex;
+    gap: unset !important;
     flex-direction: column;
     animation: fadeInScale 0.3s ease-out;
     overflow: hidden;
@@ -322,7 +320,7 @@ select:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 0.75rem;
+    padding: 0.5rem 0.9rem;
     gap: 0.75rem;
     font-size: 15px;
     flex-shrink: 0;
@@ -334,58 +332,71 @@ select:focus {
 }
 
 .skill-menu-list {
-    padding: 12px;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
+    gap: 12px;
     overflow-y: auto;
     flex-grow: 1;
 }
 
 .skill-tab-section {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    padding: 0.5rem;
+    position: relative;
 }
 
 .skill-tab-label {
     font-weight: bold;
-    font-size: 18px;
-    padding: 4px 6px;
-    margin-bottom: 6px;
-    border-left: 3px solid rgba(14, 106, 102, 0.5);
+    font-size: 17px;
+    border-radius: 10px;
+    background: rgba(136, 136, 136, 0.04);
+    border: 1px solid rgba(133, 133, 133, 0.07);
     color: var(--text-color, #333);
+    display: flex;
+    padding: 6px 10px;
+    align-items: center;
+    transition: all 0.3s ease;
+    border-left: 2px solid rgba(255, 165, 0, 0.5);
 }
 
 .dark .skill-tab-label {
     color: #eee;
-    border-left-color: rgba(32, 178, 170, 0.5);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .skill-option {
-    background: transparent;
-    border: none;
+    background: rgba(136, 136, 136, 0.04);
+    border: 1px solid rgba(133, 133, 133, 0.07);
     color: inherit;
-    padding: 10px 12px;
-    border-radius: 8px;
+    padding: 5px 8px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.3s ease;
     text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dark .skill-option {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .skill-option:hover {
     background: rgba(0, 0, 0, 0.05);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
 }
 
 .dark .skill-option:hover {
     background: rgba(255, 255, 255, 0.05);
-}
-
-.skill-option:hover {
-    background: rgba(149, 149, 149, 0.25);
-}
-
-.dark .skill-option:hover {
-    background: rgba(255,255,255,0.05);
 }
 
 .skill-menu-overlay {
@@ -402,8 +413,29 @@ select:focus {
     z-index: 1001;
 }
 
-.dark .skill-menu-panel {
-    background: rgba(21, 31, 41, 0.87);
+.skill-tab-content {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    display: flex;
+    margin-top: 8px;
+    flex-direction: column;
+    gap: 0.25rem;
+    transform-origin: top;
+    transition:
+            max-height 0.5s ease,
+            opacity 0.5s ease, margin-top 0.4s ease;
+
+}
+
+.skill-tab-content.open {
+    max-height: 1000px;
+    opacity: 1;
+}
+
+.skill-tab-content.closed {
+    pointer-events: none;
+    margin-top: 0;
 }
 
 .collapsible-label {
@@ -412,13 +444,81 @@ select:focus {
     align-items: center;
     cursor: pointer;
     user-select: none;
-    transition: background 0.2s;
+    gap: 8px;
+
+    position: relative;
 }
 
 .collapsible-label:hover {
+    border-radius: 1.5rem;
+    padding-left: 1rem;
     background-color: rgba(0, 0, 0, 0.04);
-    border-radius: 6px;
-    padding-right: 6px;
+}
+.collapsible-label span {
+    margin-left: 0.5rem;
+    transition: margin-left 0.4s ease;
+}
+
+.skill-tab-section.open .collapsible-label {
+    padding-left: 1rem;
+}
+
+.collapsible-label:hover span,
+.skill-tab-section.open .collapsible-label span {
+    margin-left: 0.75rem;
+}
+
+.collapsible-label::after {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 55%;
+    background-color: orange;
+
+    clip-path: polygon(2px 0, 25% 2px, 25% 100%, 0 100%);
+
+    transition: clip-path .4s ease, transform .4s ease;
+}
+
+.pastel-pink .collapsible-label::after {
+    background-color: rgba(0, 102, 255, 0.64);
+}
+.pastel-pink .collapsible-label::after {
+    background-color: rgba(0, 102, 255, 0.16);
+}
+.vibrant-citrus .collapsible-label::after {
+    background-color: #0045da;
+}
+.vibrant-citrus .skill-tab-label {
+    border-left: 2px solid rgba(0, 69, 218, 0.25);
+}
+.pastel-blue .collapsible-label::after {
+    background-color: darkgoldenrod;
+}
+.pastel-blue .skill-tab-label {
+    border-left: 2px solid rgba(184, 134, 11, 0.25);
+}
+
+
+.skill-tab-section.open .collapsible-label::after {
+    clip-path: polygon(0 20%, 60% 50%, 0 80%, 0 80%);
+    transform: rotate(90deg) translate(-40%, 0);
+}
+
+
+.skill-tab-section.open .skill-tab-label,
+.skill-tab-section .skill-tab-label:hover {
+    border-left: 2px solid transparent;
+}
+
+@media (any-hover: hover) {
+    .collapsible-label:hover::after {
+        clip-path: polygon(0 20%, 60% 50%, 0 80%, 0 80%);
+        transform: translateY(-50%) translateX(.25rem);
+    }
 }
 
 .dark .collapsible-label:hover {
@@ -441,15 +541,18 @@ select:focus {
     filter: none;
 }
 
-.skill-tab-section {
-    margin-bottom: 12px;
-}
-
 .rotation-view-toggle {
     display: flex;
     gap: 12px;
     margin-bottom: 16px;
 }
+
+
+
+.skill-menu-list {
+    position: relative;
+}
+
 
 .saved-rotation-header {
     display: flex;

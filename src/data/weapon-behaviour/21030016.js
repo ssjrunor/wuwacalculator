@@ -8,11 +8,11 @@ export function applyWeaponLogic({
     const atkBonus = parseFloat(currentParamValues[0]);
     const skill = parseFloat(currentParamValues[1]);
 
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atkBonus;
+    mergedBuffs.atk.percent += atkBonus;
 
 
     if (characterState?.activeStates?.eulogy) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + skill;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += skill;
     }
 
     return { mergedBuffs, combatState, skillMeta };

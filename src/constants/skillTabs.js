@@ -3,7 +3,9 @@ const skillTabs = [
     'resonanceSkill',
     'forteCircuit',
     'resonanceLiberation',
-    'introSkill'
+    'introSkill',
+    'outroSkill',
+    'stayTuned'
 ];
 
 export const typeMap = {

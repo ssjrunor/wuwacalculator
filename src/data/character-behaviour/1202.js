@@ -34,7 +34,7 @@ export function applyChixiaLogic({
     const inherent2Stacks = characterState?.activeStates?.inherent2 ?? 0;
     const inherent2 = Math.min(inherent2Stacks * 1, 30);
     if (inherent2 > 0 && !mergedBuffs.__chixiaInherent2) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + inherent2;
+        mergedBuffs.atk.percent += inherent2;
         mergedBuffs.__chixiaInherent2 = true;
     }
 
@@ -48,12 +48,12 @@ export function applyChixiaLogic({
     }
 
     if(isActiveSequence(5) && inherent2 >= 30 && !mergedBuffs.__chixiaSeq5) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 30;
+        mergedBuffs.atk.percent += 30;
         mergedBuffs.__chixiaSeq5 = true;
     }
 
     if(isActiveSequence(6) && isToggleActive(6) && !mergedBuffs.__chixiaSeq6) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 25;
+        mergedBuffs.skillType.basicAtk.dmgBonus += 25;
         mergedBuffs.__chixiaSeq6 = true;
     }
 
@@ -70,21 +70,12 @@ export const chixiaMultipliers = {
 };
 
 export function chixiaBuffsLogic({
-                                    mergedBuffs, characterState, activeCharacter
+                                    mergedBuffs, characterState
                                 }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.easter) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 25;
+        mergedBuffs.skillType.basicAtk.dmgBonus += 25;
     }
 
     return { mergedBuffs };

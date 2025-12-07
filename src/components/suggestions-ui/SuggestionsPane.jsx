@@ -2,11 +2,12 @@ import React, {useEffect, useRef, useState} from 'react';
 import NotificationToast from "../utils-ui/NotificationToast.jsx";
 import GuidesModal from "../utils-ui/GuideModal.jsx";
 import ConfirmationModal from "../utils-ui/ConfirmationModal.jsx";
-import {echoSetMap, highlightKeywordsInText, setIconMap} from "../../constants/echoSetData.jsx";
+import { highlightKeywordsInText } from "../../constants/echoSetData.jsx";
+import { echoSetMap, setIconMap } from "../../constants/echoSetData2.js";
 import {formatStatKey, getEchoScores, getTop5SubstatScoreDetails} from "../../utils/echoHelper.js";
 import {Tooltip} from "antd";
 import {attributeColors, elementToAttribute, withOpacity} from "../../utils/attributeHelpers.js";
-import SkillMenu, {tabDisplayOrder} from "../utils-ui/SkillMenu.jsx";
+import SkillMenu, {tabDisplayOrder} from "../rotations-ui/SkillMenu.jsx";
 import {getGroupedSkillOptions} from "../../utils/prepareDamageData.js";
 import {applyMainStatRecipesToEchoes} from "../../suggestions/mainStat-suggestion/utils.js";
 import {getEquippedEchoesScoreDetails} from "../echoes-pane-ui/EchoesPane.jsx";
@@ -15,9 +16,9 @@ import {EchoGridPreview} from "../overview-ui/OverviewDetailPane.jsx";
 import EchoMenu from "../echoes-pane-ui/EchoMenu.jsx";
 import {echoes as allEchoes} from "../../json-data-scripts/getEchoes.js";
 import {SonataSetPlanner} from "../echo-generator-ui/EchoGenerator.jsx";
-import {applySetPlanToEchoes} from "../../suggestions/setPlain-suggestion/utils.js";
+import {applySetPlanToEchoes} from "../../suggestions/setPlan-suggestion/utils.js";
 import {runMainStatSuggestor} from "../../suggestions/mainStat-suggestion/suggestMainStat.js";
-import {runSetSuggestor} from "../../suggestions/setPlain-suggestion/suggestSetPlan.js";
+import {runSetSuggestor} from "../../suggestions/setPlan-suggestion/suggestSetPlan.js";
 import {getSetPlanFromEchoes} from "../../data/buffs/setEffect.js";
 
 const SuggestionsWorker = new URL('../../workers/suggestionsWorker.js', import.meta.url);
@@ -84,22 +85,15 @@ export default function SuggestionsPane({
                                             charId,
                                             setCharacterRuntimeStates,
                                             characterRuntimeStates,
-                                            characters,
                                             activeCharacter,
                                             baseCharacterState,
                                             mergedBuffs,
                                             allSkillLevels,
                                             skillResults,
                                             getImageSrc,
-                                            rarityMap,
-                                            triggerRef,
-                                            menuOpen,
-                                            setMenuOpen,
-                                            menuRef,
                                             suggestionsPaneSettings,
                                             setSuggestionsPaneSettings,
                                             keywords,
-                                            finalStats
                                         }) {
     const runtime = characterRuntimeStates[charId] ?? {};
     const echoData = runtime?.equippedEchoes ?? [];
@@ -109,9 +103,6 @@ export default function SuggestionsPane({
         echoData.every(e => e == null);
 
     const suggestionSettings = runtime?.suggestionSettings ?? {};
-/*
-    const suggestionSettings = runtime?.optimizerSettings ?? {};
-*/
     const updateSuggestionsPersonalSettings = (patch) => {
         const charId = activeCharacter.Id ?? activeCharacter.id ?? activeCharacter.link;
         setCharacterRuntimeStates((prev) => {
@@ -293,7 +284,7 @@ export default function SuggestionsPane({
         if (!activeCharacter || !level) return;
         run('mainStats');
         run('setPlans');
-    }, [activeCharacter, level]);
+    }, [activeCharacter, level, echoData]);
 
     const getSetMeta = (setId) => echoSetMap?.[setId] ?? null;
 
@@ -503,7 +494,7 @@ export default function SuggestionsPane({
                                                                         className="echo-buff main-stat-pill"
                                                                     >
                                                                         <span className="main-stat-pill-stat">
-                                                                            {formatStatKey(key)}:
+                                                                            {formatStatKey(key)}
                                                                         </span>
                                                                         <span className="main-stat-pill-value highlight">
                                                                             {value}
@@ -686,16 +677,8 @@ export default function SuggestionsPane({
                 echoData={newEquipped}
                 charId={charId}
                 getImageSrc={getImageSrc}
-                characterRuntimeStates={characterRuntimeStates}
-                allSkillLevels={allSkillLevels}
-                skillResults={skillResults}
-                activeCharacter={activeCharacter}
-                baseCharacterState={baseCharacterState}
-                mergedBuffs={mergedBuffs}
-                onEquipGenerated={() => {}}
                 setCharacterRuntimeStates={setCharacterRuntimeStates}
-                setIsGeneratorOpen={setIsMainStatsModalOpen}
-                rerun={() => run(viewMode)}
+                rerun={() => run(viewMode === 'mainStats' ? 'setPlans' : 'mainStats')}
                 viewMode={viewMode}
             />
 
@@ -721,10 +704,8 @@ export function SuggestionsModal({
                                   echoData,
                                   charId,
                                   getImageSrc,
-                                  characterRuntimeStates,
                                   setCharacterRuntimeStates,
                                   rerun,
-                                  onEquipGenerated,
                               }) {
     const [isClosing, setIsClosing] = useState(false);
 

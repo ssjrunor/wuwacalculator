@@ -1020,66 +1020,41 @@ export default function Setting(props) {
                 </div>
             </div>
 
-            {showImportModal && (
-                <div
-                    className="skills-modal-overlay"
-                    onClick={() => setShowImportModal(false)}
-                >
-                    <div
-                        className="skills-modal-content settings-import changelog-modal guides"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h2>Import Preview</h2>
-                        <h3 style={{ margin: 'unset'}} >You’re about to import the following character:</h3>
+            <ImportOverviewMini
+                importPreview={importPreview}
+                isOpen={showImportModal}
+                onClose={() => setShowImportModal(false)}
+                onConfirm={() => {
+                    const charId =
+                        importPreview?.Id ??
+                        importPreview?.id ??
+                        importPreview?.link;
 
-                        <ImportOverviewMini importPreview={importPreview} />
+                    const prev = getPersistentValue('characterRuntimeStates', {});
 
-                        <div className="modal-footer" style={{ display: 'flex', gap: '0.5rem' }}>
-                            <button
-                                className="edit-substat-button btn-primary echoes"
-                                onClick={() => setShowImportModal(false)}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="edit-substat-button btn-primary echoes"
-                                onClick={() => {
-                                    const charId =
-                                        importPreview?.Id ??
-                                        importPreview?.id ??
-                                        importPreview?.link;
+                    const newRuntimeStates = {
+                        ...prev,
+                        [charId]: importPreview,
+                    };
 
-                                    const prev = getPersistentValue('characterRuntimeStates', {});
+                    setPersistentValue('characterRuntimeStates', newRuntimeStates);
+                    setPersistentValue('activeCharacterId', charId);
+                    setPersistentValue('team', [
+                        charId,
+                        importPreview.Team?.[1] ?? null,
+                        importPreview.Team?.[2] ?? null,
+                    ]);
+                    const rotationEntriesRaw = getPersistentValue('rotationEntriesStore', {});
+                    const newRotationEntries = {
+                        ...rotationEntriesRaw,
+                        [charId]: importPreview.rotationEntries ?? [],
+                    };
+                    setPersistentValue('rotationEntriesStore', newRotationEntries);
 
-                                    const newRuntimeStates = {
-                                        ...prev,
-                                        [charId]: importPreview,
-                                    };
-
-                                    setPersistentValue('characterRuntimeStates', newRuntimeStates);
-                                    setPersistentValue('activeCharacterId', charId);
-                                    setPersistentValue('team', [
-                                        charId,
-                                        importPreview.Team?.[1] ?? null,
-                                        importPreview.Team?.[2] ?? null,
-                                    ]);
-                                    const rotationEntriesRaw = getPersistentValue('rotationEntriesStore', {});
-                                    const newRotationEntries = {
-                                        ...rotationEntriesRaw,
-                                        [charId]: importPreview.rotationEntries ?? [],
-                                    };
-                                    setPersistentValue('rotationEntriesStore', newRotationEntries);
-
-                                    setShowImportModal(false);
-                                    window.location.href = '/';
-                                }}
-                            >
-                                Confirm Import
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+                    setShowImportModal(false);
+                    window.location.href = '/';
+                }}
+            />
 
             {showToast && popupMessage.message && (
                 <NotificationToast

@@ -43,7 +43,7 @@ export function applyTaoqiLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__taoqiInherent1) {
-        mergedBuffs.defPercent = (mergedBuffs.defPercent ?? 0) + 15;
+        mergedBuffs.def.percent += 15;
         mergedBuffs.__taoqiInherent1 = true;
     }
 
@@ -62,7 +62,7 @@ export function applyTaoqiLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__taoqiS4) {
-        mergedBuffs.defPercent = (mergedBuffs.defPercent ?? 0) + 50;
+        mergedBuffs.def.percent += 50;
         mergedBuffs.__taoqiS4 = true;
     }
 
@@ -88,25 +88,16 @@ export const taoqiMultipliers = {
 };
 
 export function taoqiBuffsLogic({
-                                   mergedBuffs, characterState, activeCharacter
+                                   mergedBuffs, characterState
                                }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.steadfast) {
-        mergedBuffs.defPercent = (mergedBuffs.defPercent ?? 0) + 15;
+        mergedBuffs.def.percent += 15;
     }
 
     if (state.ironWill) {
-        mergedBuffs.damageTypeAmplify.skill = (mergedBuffs.damageTypeAmplify.skill ?? 0) + 38;
+        mergedBuffs.skillType.resonanceSkill.amplify += 38;
     }
 
     return { mergedBuffs };

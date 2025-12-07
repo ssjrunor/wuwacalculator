@@ -1,7 +1,156 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import GuidesModal from "../utils-ui/GuideModal.jsx";
 import ConfirmationModal from "../utils-ui/ConfirmationModal.jsx";
 import NotificationToast from "../utils-ui/NotificationToast.jsx";
+
+const percentageFields = new Set([
+    'atkPercent', 'hpPercent', 'defPercent',
+    'critRate', 'critDmg', 'energyRegen', 'healingBonus',
+    'basicAtk', 'heavyAtk', 'resonanceSkill', 'resonanceLiberation', 'coord', 'echoSkill',
+    'aero', 'glacio', 'spectro', 'fusion', 'electro', 'havoc',
+    'basicAtkAmplify', 'heavyAtkAmplify', 'resonanceSkillAmplify',
+    'resonanceLiberationAmplify', 'coordAmplify',
+    'echoSkillAmplify', 'aeroAmplify', 'glacioAmplify',
+    'spectroAmplify', 'fusionAmplify', 'electroAmplify', 'havocAmplify',
+    'enemyResShred', 'enemyDefShred', 'enemyDefIgnore',
+    'spectroFrazzleAmplify', 'aeroErosionAmplify',
+    'spectroFrazzleDmg', 'aeroErosionDmg'
+]);
+
+const flatFields = new Set(['atkFlat', 'hpFlat', 'defFlat']);
+
+// --- mapping: UI keys -> nested buff structure ---
+
+// Main stats
+const statFieldMap = {
+    atkFlat:     { statKey: 'atk', subKey: 'flat' },
+    atkPercent:  { statKey: 'atk', subKey: 'percent' },
+    hpFlat:      { statKey: 'hp', subKey: 'flat' },
+    hpPercent:   { statKey: 'hp', subKey: 'percent' },
+    defFlat:     { statKey: 'def', subKey: 'flat' },
+    defPercent:  { statKey: 'def', subKey: 'percent' }
+};
+
+// Skill-type DMG% (dmgBonus)
+const damageTypeDmgMap = {
+    basicAtk:           { skillKey: 'basicAtk' },
+    heavyAtk:           { skillKey: 'heavyAtk' },
+    resonanceSkill:     { skillKey: 'resonanceSkill' },
+    resonanceLiberation:{ skillKey: 'resonanceLiberation' },
+    coord:              { skillKey: 'coord' },
+    echoSkill:          { skillKey: 'echoSkill' },
+    spectroFrazzleDmg:  { skillKey: 'spectroFrazzle' },
+    aeroErosionDmg:     { skillKey: 'aeroErosion' }
+};
+
+// Skill-type Amplify
+const damageTypeAmplifyMap = {
+    basicAtkAmplify:            { skillKey: 'basicAtk' },
+    heavyAtkAmplify:            { skillKey: 'heavyAtk' },
+    resonanceSkillAmplify:      { skillKey: 'resonanceSkill' },
+    resonanceLiberationAmplify: { skillKey: 'resonanceLiberation' },
+    coordAmplify:               { skillKey: 'coord' },
+    echoSkillAmplify:           { skillKey: 'echoSkill' },
+    spectroFrazzleAmplify:      { skillKey: 'spectroFrazzle' },
+    aeroErosionAmplify:         { skillKey: 'aeroErosion' }
+};
+
+// Element DMG% (dmgBonus)
+const elementDmgMap = {
+    aero:    { attrKey: 'aero' },
+    glacio:  { attrKey: 'glacio' },
+    spectro: { attrKey: 'spectro' },
+    fusion:  { attrKey: 'fusion' },
+    electro: { attrKey: 'electro' },
+    havoc:   { attrKey: 'havoc' }
+};
+
+// Element Amplify
+const elementAmplifyMap = {
+    aeroAmplify:    { attrKey: 'aero' },
+    glacioAmplify:  { attrKey: 'glacio' },
+    spectroAmplify: { attrKey: 'spectro' },
+    fusionAmplify:  { attrKey: 'fusion' },
+    electroAmplify: { attrKey: 'electro' },
+    havokAmplify:   { attrKey: 'havoc' } // typo-safe, but we'll use the correct key below
+};
+elementAmplifyMap.havocAmplify = { attrKey: 'havoc' }; // ensure correct key
+
+// Global enemy modifiers (applied to attribute.all)
+const resFieldMap = {
+    enemyResShred:  'resShred',
+    enemyDefShred:  'defShred',
+    enemyDefIgnore: 'defIgnore'
+};
+
+function makeBaseBuffs() {
+    return { percent: 0, flat: 0 };
+}
+
+function makeModBuffs() {
+    return {
+        resShred: 0,
+        dmgBonus: 0,
+        amplify: 0,
+        defIgnore: 0,
+        defShred: 0,
+        dmgVuln: 0,
+        critRate: 0,
+        critDmg: 0
+    };
+}
+
+function createEmptyCustomBuffs() {
+    return {
+        atk: makeBaseBuffs(),
+        hp: makeBaseBuffs(),
+        def: makeBaseBuffs(),
+
+        skillType: {
+            all: makeModBuffs(),
+            basicAtk: makeModBuffs(),
+            heavyAtk: makeModBuffs(),
+            resonanceSkill: makeModBuffs(),
+            resonanceLiberation: makeModBuffs(),
+            introSkill: makeModBuffs(),
+            coord: makeModBuffs(),
+            echoSkill: makeModBuffs(),
+            outroSkill: makeModBuffs(),
+            spectroFrazzle: makeModBuffs(),
+            aeroErosion: makeModBuffs(),
+            havocBane: makeModBuffs(),
+            electroFlare: makeModBuffs()
+        },
+
+        attribute: {
+            all: makeModBuffs(),
+            aero: makeModBuffs(),
+            glacio: makeModBuffs(),
+            spectro: makeModBuffs(),
+            fusion: makeModBuffs(),
+            electro: makeModBuffs(),
+            havoc: makeModBuffs(),
+            physical: makeModBuffs()
+        },
+
+        flatDmg: 0,
+        physical: 0,
+        critRate: 0,
+        critDmg: 0,
+        energyRegen: 0,
+        healingBonus: 0,
+        shieldBonus: 0
+    };
+}
+
+function isAllZero(obj) {
+    if (obj == null) return true;
+    if (typeof obj === 'number') return obj === 0;
+    if (typeof obj === 'object') {
+        return Object.values(obj).every(isAllZero);
+    }
+    return true;
+}
 
 export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
     const [showToast, setShowToast] = useState(false);
@@ -29,109 +178,157 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
         setShowGuide(true);
     }, []);
 
-    const percentageFields = new Set([
-        'atkPercent', 'hpPercent', 'defPercent',
-        'critRate', 'critDmg', 'energyRegen', 'healingBonus',
-        'basicAtk', 'heavyAtk', 'resonanceSkill', 'resonanceLiberation', 'coord',
-        'aero', 'glacio', 'spectro', 'fusion', 'electro', 'havoc',
-        'basicAtkAmplify', 'heavyAtkAmplify', 'resonanceSkillAmplify',
-        'resonanceLiberationAmplify', 'coordAmplify',
-        'echoSkill', 'echoSkillAmplify', 'aeroAmplify', 'glacioAmplify',
-        'spectroAmplify', 'fusionAmplify', 'electroAmplify', 'havocAmplify',
-        'enemyResShred', 'enemyDefShred', 'enemyDefIgnore',
-        'spectroFrazzleAmplify', 'aeroErosionAmplify',
-        'spectroFrazzleDmg', 'aeroErosionDmg'
-    ]);
-
-    const flatFields = new Set(['atkFlat', 'hpFlat', 'defFlat']);
-
     const handleChange = (key, value) => {
         const num = Number(value);
-        let clamped = num;
+        let clamped = Number.isNaN(num) ? 0 : num;
 
         if (percentageFields.has(key)) {
-            clamped = Math.min(Math.max(num, 0), 999);
+            clamped = Math.min(Math.max(clamped, 0), 999);
         } else if (flatFields.has(key)) {
-            clamped = Math.min(Math.max(num, 0), 9999);
+            clamped = Math.min(Math.max(clamped, 0), 9999);
         }
 
-        const damageTypeMap = {
-            basicAtkAmplify: 'basic',
-            heavyAtkAmplify: 'heavy',
-            resonanceSkillAmplify: 'skill',
-            resonanceLiberationAmplify: 'ultimate',
-            spectroFrazzleAmplify: 'spectroFrazzle',
-            aeroErosionAmplify: 'aeroErosion',
-            coordAmplify: 'coord',
-            echoSkillAmplify: 'echoSkill'
-        };
+        // main stats: atk/hp/def
+        if (statFieldMap[key]) {
+            const { statKey, subKey } = statFieldMap[key];
+            setCustomBuffs(prev => {
+                const current = prev ?? {};
+                const statObj = {
+                    ...(current[statKey] ?? makeBaseBuffs())
+                };
+                statObj[subKey] = clamped;
+                return { ...current, [statKey]: statObj };
+            });
+            return;
+        }
 
-        if (damageTypeMap[key]) {
+        // global scalar stats
+        if (['critRate', 'critDmg', 'energyRegen', 'healingBonus', 'shieldBonus'].includes(key)) {
             setCustomBuffs(prev => ({
-                ...prev,
-                damageTypeAmplify: {
-                    ...prev.damageTypeAmplify,
-                    [damageTypeMap[key]]: clamped
-                }
+                ...(prev ?? {}),
+                [key]: clamped
             }));
             return;
         }
 
-        const elementAmplifyMap = {
-            aeroAmplify: 'aero',
-            glacioAmplify: 'glacio',
-            spectroAmplify: 'spectro',
-            fusionAmplify: 'fusion',
-            electroAmplify: 'electro',
-            havocAmplify: 'havoc'
-        };
+        // skill-type DMG% (dmgBonus)
+        if (damageTypeDmgMap[key]) {
+            const { skillKey } = damageTypeDmgMap[key];
+            setCustomBuffs(prev => {
+                const current = prev ?? {};
+                const skillType = { ...(current.skillType ?? {}) };
+                const mod = { ...(skillType[skillKey] ?? makeModBuffs()) };
+                mod.dmgBonus = clamped;
+                skillType[skillKey] = mod;
+                return { ...current, skillType };
+            });
+            return;
+        }
 
+        // skill-type Amplify
+        if (damageTypeAmplifyMap[key]) {
+            const { skillKey } = damageTypeAmplifyMap[key];
+            setCustomBuffs(prev => {
+                const current = prev ?? {};
+                const skillType = { ...(current.skillType ?? {}) };
+                const mod = { ...(skillType[skillKey] ?? makeModBuffs()) };
+                mod.amplify = clamped;
+                skillType[skillKey] = mod;
+                return { ...current, skillType };
+            });
+            return;
+        }
+
+        // element DMG% (attribute.*.dmgBonus)
+        if (elementDmgMap[key]) {
+            const { attrKey } = elementDmgMap[key];
+            setCustomBuffs(prev => {
+                const current = prev ?? {};
+                const attribute = { ...(current.attribute ?? {}) };
+                const mod = { ...(attribute[attrKey] ?? makeModBuffs()) };
+                mod.dmgBonus = clamped;
+                attribute[attrKey] = mod;
+                return { ...current, attribute };
+            });
+            return;
+        }
+
+        // element Amplify (attribute.*.amplify)
         if (elementAmplifyMap[key]) {
-            setCustomBuffs(prev => ({
-                ...prev,
-                elementDmgAmplify: {
-                    ...prev.elementDmgAmplify,
-                    [elementAmplifyMap[key]]: clamped
-                }
-            }));
+            const { attrKey } = elementAmplifyMap[key];
+            setCustomBuffs(prev => {
+                const current = prev ?? {};
+                const attribute = { ...(current.attribute ?? {}) };
+                const mod = { ...(attribute[attrKey] ?? makeModBuffs()) };
+                mod.amplify = clamped;
+                attribute[attrKey] = mod;
+                return { ...current, attribute };
+            });
             return;
         }
 
+        // global enemy res/def mods (attribute.all.*)
+        if (resFieldMap[key]) {
+            const field = resFieldMap[key];
+            setCustomBuffs(prev => {
+                const current = prev ?? {};
+                const attribute = { ...(current.attribute ?? {}) };
+                const all = { ...(attribute.all ?? makeModBuffs()) };
+                all[field] = clamped;
+                attribute.all = all;
+                return { ...current, attribute };
+            });
+            return;
+        }
+
+        // fallback: store at top-level (for anything we missed)
         setCustomBuffs(prev => ({
-            ...prev,
+            ...(prev ?? {}),
             [key]: clamped
         }));
     };
 
     const renderInput = (key) => {
-        const damageTypeMap = {
-            basicAtkAmplify: 'basic',
-            heavyAtkAmplify: 'heavy',
-            resonanceSkillAmplify: 'skill',
-            resonanceLiberationAmplify: 'ultimate',
-            spectroFrazzleAmplify: 'spectroFrazzle',
-            aeroErosionAmplify: 'aeroErosion',
-            coordAmplify: 'coord',
-            echoSkillAmplify: 'echoSkill',
-        };
+        let value = 0;
+        const buffs = customBuffs ?? {};
 
-        const elementAmplifyMap = {
-            aeroAmplify: 'aero',
-            glacioAmplify: 'glacio',
-            spectroAmplify: 'spectro',
-            fusionAmplify: 'fusion',
-            electroAmplify: 'electro',
-            havocAmplify: 'havoc'
-        };
-
-        let value = customBuffs[key] ?? 0;
-
-        if (damageTypeMap[key]) {
-            value = customBuffs.damageTypeAmplify?.[damageTypeMap[key]] ?? 0;
+        // main stats
+        if (statFieldMap[key]) {
+            const { statKey, subKey } = statFieldMap[key];
+            value = buffs[statKey]?.[subKey] ?? 0;
         }
-
-        if (elementAmplifyMap[key]) {
-            value = customBuffs.elementDmgAmplify?.[elementAmplifyMap[key]] ?? 0;
+        // global scalar stats
+        else if (['critRate', 'critDmg', 'energyRegen', 'healingBonus', 'shieldBonus'].includes(key)) {
+            value = buffs[key] ?? 0;
+        }
+        // skill-type DMG%
+        else if (damageTypeDmgMap[key]) {
+            const { skillKey } = damageTypeDmgMap[key];
+            value = buffs.skillType?.[skillKey]?.dmgBonus ?? 0;
+        }
+        // skill-type Amplify
+        else if (damageTypeAmplifyMap[key]) {
+            const { skillKey } = damageTypeAmplifyMap[key];
+            value = buffs.skillType?.[skillKey]?.amplify ?? 0;
+        }
+        // element DMG%
+        else if (elementDmgMap[key]) {
+            const { attrKey } = elementDmgMap[key];
+            value = buffs.attribute?.[attrKey]?.dmgBonus ?? 0;
+        }
+        // element Amplify
+        else if (elementAmplifyMap[key]) {
+            const { attrKey } = elementAmplifyMap[key];
+            value = buffs.attribute?.[attrKey]?.amplify ?? 0;
+        }
+        // enemy res/def mods
+        else if (resFieldMap[key]) {
+            const field = resFieldMap[key];
+            value = buffs.attribute?.all?.[field] ?? 0;
+        }
+        // fallback
+        else {
+            value = buffs[key] ?? 0;
         }
 
         return percentageFields.has(key) ? (
@@ -153,21 +350,10 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
     };
 
     const clearAll = () => {
-        setCustomBuffs({
-            atkFlat: 0, atkPercent: 0, hpFlat: 0, hpPercent: 0, defFlat: 0, defPercent: 0,
-            critRate: 0, critDmg: 0, energyRegen: 0, healingBonus: 0,
-            basicAtk: 0, heavyAtk: 0, resonanceSkill: 0, resonanceLiberation: 0,
-            aero: 0, glacio: 0, spectro: 0, fusion: 0, electro: 0, havoc: 0,
-            coord: 0, coordAmplify: 0, basicAtkAmplify: 0, heavyAtkAmplify: 0,
-            resonanceSkillAmplify: 0, resonanceLiberationAmplify: 0, aeroAmplify: 0,
-            glacioAmplify: 0, spectroAmplify: 0, fusionAmplify: 0, electroAmplify: 0,
-            havocAmplify: 0, enemyResShred: 0, enemyDefShred: 0, enemyDefIgnore: 0,
-            spectroFrazzleDmg: 0, aeroErosionDmg: 0, spectroFrazzleAmplify: 0,
-            aeroErosionAmplify: 0, echoSkillAmplify: 0, echoSkill: 0
-        });
-    }
+        setCustomBuffs(createEmptyCustomBuffs());
+    };
 
-    const allZero = Object.values(customBuffs).every(v => v === 0);
+    const allZero = isAllZero(customBuffs);
 
     return (
         <>
@@ -182,7 +368,7 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
                         right: '1rem',
                         display: 'inline-flex',
                         zIndex: 10
-                }}
+                    }}
                 >
                     See Guide
                 </button>
@@ -196,19 +382,18 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
                         <div className="buff-row" key={label}>
                             <label>{label}</label>
                             <div className="dual-input">
-                                <input type="number" value={customBuffs[flatKey] ?? 0}
-                                       onChange={e => handleChange(flatKey, e.target.value)} />
-                                <div className="input-with-suffix">
-                                    <input type="number" value={customBuffs[percentKey] ?? 0}
-                                           onChange={e => handleChange(percentKey, e.target.value)} />
-                                    <span>%</span>
-                                </div>
+                                {renderInput(flatKey)}
+                                {renderInput(percentKey)}
                             </div>
                         </div>
                     ))}
 
-                    {[['Crit Rate', 'critRate'], ['Crit DMG', 'critDmg'],
-                        ['Energy Regen', 'energyRegen'], ['Healing Bonus', 'healingBonus']].map(([label, key]) => (
+                    {[
+                        ['Crit Rate', 'critRate'],
+                        ['Crit DMG', 'critDmg'],
+                        ['Energy Regen', 'energyRegen'],
+                        ['Healing Bonus', 'healingBonus']
+                    ].map(([label, key]) => (
                         <div className="buff-row" key={key}>
                             <label>{label}</label>
                             {renderInput(key)}
@@ -221,22 +406,37 @@ export default function CustomBuffsPane({ customBuffs, setCustomBuffs }) {
                 <h3>Damage Modifiers</h3>
                 <div className="buff-grid">
                     {[
-                        ['Basic Attack DMG', 'basicAtk'], ['Heavy Attack DMG', 'heavyAtk'],
-                        ['Resonance Skill DMG', 'resonanceSkill'], ['Resonance Liberation DMG', 'resonanceLiberation'],
-                        ['Coordinated DMG', 'coord'], ['Echo Skill DMG', 'echoSkill'],
-                        ['Aero DMG', 'aero'], ['Glacio DMG', 'glacio'],
-                        ['Spectro DMG', 'spectro'], ['Fusion DMG', 'fusion'], ['Electro DMG', 'electro'],
-                        ['Havoc DMG', 'havoc'], ['Basic Attack DMG Amplify', 'basicAtkAmplify'],
-                        ['Heavy Attack DMG Amplify', 'heavyAtkAmplify'], ['Resonance Skill DMG Amplify', 'resonanceSkillAmplify'],
+                        ['Basic Attack DMG', 'basicAtk'],
+                        ['Heavy Attack DMG', 'heavyAtk'],
+                        ['Resonance Skill DMG', 'resonanceSkill'],
+                        ['Resonance Liberation DMG', 'resonanceLiberation'],
+                        ['Coordinated DMG', 'coord'],
+                        ['Echo Skill DMG', 'echoSkill'],
+                        ['Aero DMG', 'aero'],
+                        ['Glacio DMG', 'glacio'],
+                        ['Spectro DMG', 'spectro'],
+                        ['Fusion DMG', 'fusion'],
+                        ['Electro DMG', 'electro'],
+                        ['Havoc DMG', 'havoc'],
+                        ['Basic Attack DMG Amplify', 'basicAtkAmplify'],
+                        ['Heavy Attack DMG Amplify', 'heavyAtkAmplify'],
+                        ['Resonance Skill DMG Amplify', 'resonanceSkillAmplify'],
                         ['Resonance Liberation DMG Amplify', 'resonanceLiberationAmplify'],
-                        ['Coordinated DMG Amplify', 'coordAmplify'], ['Echo Skill DMG Amplify', 'echoSkillAmplify'],
-                        ['Aero DMG Amplify', 'aeroAmplify'], ['Glacio DMG Amplify', 'glacioAmplify'],
-                        ['Spectro DMG Amplify', 'spectroAmplify'], ['Fusion DMG Amplify', 'fusionAmplify'],
+                        ['Coordinated DMG Amplify', 'coordAmplify'],
+                        ['Echo Skill DMG Amplify', 'echoSkillAmplify'],
+                        ['Aero DMG Amplify', 'aeroAmplify'],
+                        ['Glacio DMG Amplify', 'glacioAmplify'],
+                        ['Spectro DMG Amplify', 'spectroAmplify'],
+                        ['Fusion DMG Amplify', 'fusionAmplify'],
                         ['Electro DMG Amplify', 'electroAmplify'],
-                        ['Havoc DMG Amplify', 'havocAmplify'], ['Enemy Res Shred', 'enemyResShred'],
-                        ['Enemy DEF Shred', 'enemyDefShred'], ['Enemy DEF Ignore', 'enemyDefIgnore'],
-                        ['Spectro Frazzle DMG', 'spectroFrazzleDmg'], ['Aero Erosion DMG', 'aeroErosionDmg'],
-                        ['Spectro Frazzle DMG Amplify', 'spectroFrazzleAmplify'], ['Aero Erosion DMG Amplify', 'aeroErosionAmplify']
+                        ['Havoc DMG Amplify', 'havocAmplify'],
+                        ['Enemy Res Shred', 'enemyResShred'],
+                        ['Enemy DEF Shred', 'enemyDefShred'],
+                        ['Enemy DEF Ignore', 'enemyDefIgnore'],
+                        ['Spectro Frazzle DMG', 'spectroFrazzleDmg'],
+                        ['Aero Erosion DMG', 'aeroErosionDmg'],
+                        ['Spectro Frazzle DMG Amplify', 'spectroFrazzleAmplify'],
+                        ['Aero Erosion DMG Amplify', 'aeroErosionAmplify']
                     ].map(([label, key]) => (
                         <div className="buff-row" key={key}>
                             <label>{label}</label>

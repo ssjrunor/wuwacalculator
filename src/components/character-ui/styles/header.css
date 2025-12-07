@@ -24,8 +24,8 @@
 
 .header-icon {
     flex-shrink: 0;
-    width: 90px;
-    height: 90px;
+    width: 93px;
+    height: 93px;
     object-fit: cover;
     border-radius: 50%;
     border: 1px solid #e0e0e0;
@@ -36,10 +36,10 @@
     backdrop-filter: blur(4px);
 }
 
-.light .header-icon {
+/*.light .header-icon {
     width: 93px;
     height: 93px;
-}
+}*/
 
 .light .echo-slot-icon-wrapper .header-icon {
     border: none;

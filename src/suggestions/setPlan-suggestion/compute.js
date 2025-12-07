@@ -77,6 +77,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
         skillTypeId = 0,
 
         charId = 0,
+        sequence = 0,
     } = ctx || {};
 
     // -------------------------
@@ -189,7 +190,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
     // SET 14 — ER 2pc, ATK% 5pc + conditional DMG bonus
     if (setCount[14] >= 2) { finalER += 10.0; }
     if (setCount[14] >= 5) {
-        atkP += 10.0;
+        atkP += 15.0;
         if (finalER >= 250.0) {
             bonus += 30.0;
         }
@@ -234,16 +235,26 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
 
     // SET 22
     if (setCount[22] >= 3) {
+        if (skillTypeId & SKILLTYPE_FLAGS.echoSkill || skillTypeId & SKILLTYPE_FLAGS.heavy) {
+            critRateEcho += 20.0;
+        }
         fusion += 16.0;
-    }
-    if (setCount[22] >= 3 && (skillTypeId === 1.0 || skillTypeId === 6.0)) {
-        critRateEcho += 20.0;
     }
 
     // SET 23
     if (setCount[23] >= 3) {
         atkP += 20.0;
         libEcho += 30.0;
+    }
+
+    if (setCount[24] >= 2) { spectro += 10.0; }
+
+    if (setCount[25] >= 5) { bonus += 25.0; }
+
+    if (setCount[26] >= 2) { spectro += 10.0; }
+    if (setCount[26] >= 5) {
+        spectro += 30.0;
+        basicEcho += 40.0;
     }
 
     // -------------------------
@@ -260,7 +271,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
     if (skillTypeId & SKILLTYPE_FLAGS.basic)     bonus += basicEcho;
     if (skillTypeId & SKILLTYPE_FLAGS.heavy)     bonus += heavyEcho;
     if (skillTypeId & SKILLTYPE_FLAGS.skill)     bonus += skillEcho;
-    if (skillTypeId & SKILLTYPE_FLAGS.ultimate)       bonus += libEcho;
+    if (skillTypeId & SKILLTYPE_FLAGS.ultimate)  bonus += libEcho;
     if (skillTypeId & SKILLTYPE_FLAGS.echoSkill) bonus += echoSkill;
     if (skillTypeId & SKILLTYPE_FLAGS.coord)     bonus += coord;
 
@@ -278,16 +289,25 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
     const finalDef =
         baseDef * (defP / 100.0) + defF + baseFinalDef;
 
-    // Brant ER → ATK conversion (same as WGSL)
+    let critRateTotal = critRate + critRateEcho / 100.0;
+    let critDmgTotal  = critDmg  + critDmgEcho  / 100.0;
+
+
     if (charId === 1206) {
         const erOver = Math.max(0, finalER - 150.0);
         let extraAtk = erOver * 20.0;
-        extraAtk = Math.min(extraAtk, 2600.0);
-        finalAtk += extraAtk;
+        finalAtk += Math.min(extraAtk, 2600.0);
     }
 
-        const critRateTotal = critRate + critRateEcho / 100.0;
-    const critDmgTotal  = critDmg  + critDmgEcho  / 100.0;
+    let dmgVuln = 0;
+    if (charId === 1209) {
+        const erOver = Math.max(0, finalER - 100.0);
+        dmgVuln += Math.min(erOver * 0.25, 40);
+        if (skillTypeId & SKILLTYPE_FLAGS.ultimate) {
+            critRateTotal += Math.min(erOver * .5 / 100, .8);
+            critDmgTotal += Math.min(erOver / 100, 1.6);
+        }
+    }
 
     // -------------------------
     // Ability scaling
@@ -338,7 +358,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
         (scaled * multiplier + flatDmg) *
         resMult *
         defMult *
-        dmgReductionTotal *
+        (dmgReductionTotal + dmgVuln / 100) *
         dmgBonusTotal *
         dmgAmplify;
 
@@ -363,7 +383,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}, constraints = null) {
 */
 
     return {
-        avgDamage,
+        avgDamage: Math.floor(avgDamage),
         baseDamage,
 /*
         finalAtk,

@@ -42,7 +42,7 @@ export function applyCantLogic({
     }
 
     if (characterLevel >= 50 && !mergedBuffs.__cantInherent1) {
-        mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + 20;
+        mergedBuffs.healingBonus += 20;
         mergedBuffs.__cantInherent1 = false;
     }
 
@@ -50,7 +50,7 @@ export function applyCantLogic({
     const inherent2 = Math.min(inherent2Stacks * 6, 12);
 
     if (!mergedBuffs.__cantInherent2) {
-        mergedBuffs.havoc = (mergedBuffs.havoc ?? 0) + inherent2;
+        mergedBuffs.attribute.havoc.dmgBonus += inherent2;
         mergedBuffs.__cantInherent2 = true;
     }
 
@@ -67,7 +67,7 @@ export function applyCantLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__cantS4 ) {
-        mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + 25;
+        mergedBuffs.healingBonus += 25;
         mergedBuffs.__cantS4 = false;
     }
 
@@ -77,7 +77,7 @@ export function applyCantLogic({
         }
 
         if (isToggleActive(6) && !mergedBuffs.__cantS6) {
-            mergedBuffs.enemyDefIgnore = (mergedBuffs.enemyDefIgnore ?? 0) + 30;
+            mergedBuffs.attribute.all.defIgnore += 30;
             mergedBuffs.__cantS6 = false;
         }
     }
@@ -134,19 +134,9 @@ export function cantBuffsLogic({
                                }) {
     const state = characterState?.activeStates ?? {};
 
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
-
     if (state.tentacles) {
-        mergedBuffs.damageTypeAmplify.skill = (mergedBuffs.damageTypeAmplify.skill ?? 0) + 25;
-        mergedBuffs.elementDmgAmplify.havoc = (mergedBuffs.elementDmgAmplify.havoc ?? 0) + 20;
+        mergedBuffs.skillType.resonanceSkill.amplify += 25;
+        mergedBuffs.attribute.havoc.amplify += 20;
     }
 
     return { mergedBuffs };

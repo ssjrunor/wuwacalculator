@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import SequenceSkillsBox from './SequenceSkillsBox.jsx';
 import CharacterHeader from './CharacterHeader.jsx';
 import CharacterMenu from './CharacterMenu.jsx';
@@ -7,29 +7,106 @@ import { formatDescription } from '../../utils/formatDescription.js';
 import { getCharacterUIComponent } from '../../data/character-ui/index.js';
 import { getCustomInherentSkillsComponent } from '../../data/character-ui/index.js';
 import {highlightKeywordsInText} from "../../constants/echoSetData.jsx";
+import {makeBaseBuffs, makeModBuffs} from "../../utils/getUnifiedStatPool.js";
 
 const cleanTooltipText = html => html.replace(/<[^>]*>?/gm, '');
 
 const traceNodeIconMap = {
     'ATK+': 'atk', 'HP+': 'hp', 'HP Up': 'hp','DEF+': 'def',
-    'Healing Bonus+': 'healing-bonus', 'Crit. Rate+': 'crit-rate', 'Crit. Rate Up': 'crit-rate', 'Crit. DMG+': 'crit-dmg',
-    'Aero DMG Bonus+': 'aero-bonus', 'Glacio DMG Bonus+': 'glacio-bonus',
-    'Spectro DMG Bonus+': 'spectro-bonus', 'Fusion DMG Bonus+': 'fusion-bonus',
-    'Electro DMG Bonus+': 'electro-bonus', 'Havoc DMG Bonus+': 'havoc-bonus'
+    'Healing Bonus+': 'healing-bonus',
+    'Crit. Rate+': 'crit-rate', 'Crit. Rate Up': 'crit-rate',
+    'Crit. DMG+': 'crit-dmg',
+    'Aero DMG Bonus+': 'aero-bonus',
+    'Glacio DMG Bonus+': 'glacio-bonus',
+    'Spectro DMG Bonus+': 'spectro-bonus',
+    'Fusion DMG Bonus+': 'fusion-bonus',
+    'Electro DMG Bonus+': 'electro-bonus',
+    'Havoc DMG Bonus+': 'havoc-bonus'
 };
 
 export const traceIcons = Object.values(traceNodeIconMap);
 
-const skillToBuffMap = {
-    'ATK+': 'atkPercent', 'HP+': 'hpPercent', 'HP Up': 'hpPercent', 'DEF+': 'defPercent',
-    'Healing Bonus+': 'healingBonus', 'Crit. Rate+': 'critRate', 'Crit. Rate Up': 'critRate', 'Crit. DMG+': 'critDmg',
-    'Aero DMG Bonus+': 'aero',
-    'Glacio DMG Bonus+': 'glacio',
-    'Spectro DMG Bonus+': 'spectro',
-    'Fusion DMG Bonus+': 'fusion',
-    'Electro DMG Bonus+': 'electro',
-    'Havoc DMG Bonus+': 'havoc'
+// ---- NEW: trace buff mapping into unified structure ----
+const traceBuffMap = {
+    // main stats: percent only
+    'ATK+':            { type: 'stat', stat: 'atk' },
+    'HP+':             { type: 'stat', stat: 'hp' },
+    'HP Up':           { type: 'stat', stat: 'hp' },
+    'DEF+':            { type: 'stat', stat: 'def' },
+
+    // scalar stats
+    'Healing Bonus+':  { type: 'scalar', key: 'healingBonus' },
+    'Crit. Rate+':     { type: 'scalar', key: 'critRate' },
+    'Crit. Rate Up':   { type: 'scalar', key: 'critRate' },
+    'Crit. DMG+':      { type: 'scalar', key: 'critDmg' },
+
+    // element dmg bonus
+    'Aero DMG Bonus+':    { type: 'attribute', attr: 'aero' },
+    'Glacio DMG Bonus+':  { type: 'attribute', attr: 'glacio' },
+    'Spectro DMG Bonus+': { type: 'attribute', attr: 'spectro' },
+    'Fusion DMG Bonus+':  { type: 'attribute', attr: 'fusion' },
+    'Electro DMG Bonus+': { type: 'attribute', attr: 'electro' },
+    'Havoc DMG Bonus+':   { type: 'attribute', attr: 'havoc' }
 };
+
+/**
+ * Fresh trace buff object in the unified shape.
+ * Only fields we actually care about for traces are filled.
+ */
+export function createEmptyTraceBuffs() {
+    return {
+        atk: makeBaseBuffs(),
+        hp:  makeBaseBuffs(),
+        def: makeBaseBuffs(),
+
+        attribute: {
+            aero:    makeModBuffs(),
+            glacio:  makeModBuffs(),
+            spectro: makeModBuffs(),
+            fusion:  makeModBuffs(),
+            electro: makeModBuffs(),
+            havoc:   makeModBuffs(),
+            physical: makeModBuffs()
+        },
+
+        critRate: 0,
+        critDmg: 0,
+        healingBonus: 0,
+
+        activeNodes: {}
+    };
+}
+
+/**
+ * Apply a single trace buff (by skill name and % value) into the traceBuffs object.
+ */
+export function applyTraceBuff(traceBuffs, skillName, value) {
+    const info = traceBuffMap[skillName];
+    if (!info || !Number.isFinite(value) || value === 0) return;
+
+    switch (info.type) {
+        case 'stat': {
+            const key = info.stat;
+            const statObj = traceBuffs[key] ?? (traceBuffs[key] = makeBaseBuffs());
+            statObj.percent += value;
+            break;
+        }
+        case 'scalar': {
+            const key = info.key;
+            traceBuffs[key] = (traceBuffs[key] ?? 0) + value;
+            break;
+        }
+        case 'attribute': {
+            const attrKey = info.attr;
+            const attribute = traceBuffs.attribute ?? (traceBuffs.attribute = {});
+            const mod = attribute[attrKey] ?? (attribute[attrKey] = makeModBuffs());
+            mod.dmgBonus += value;
+            break;
+        }
+        default:
+            break;
+    }
+}
 
 export default function CharacterSelector({
                                               characters, activeCharacter, handleCharacterSelect, menuRef, menuOpen,
@@ -139,27 +216,25 @@ export default function CharacterSelector({
                                     return newValues;
                                 });
 
+                                // NEW: recompute ALL trace buffs in unified shape
                                 setTraceNodeBuffs(prev => {
                                     const allActiveNodes = {};
-                                    const buffs = {};
+                                    const buffs = createEmptyTraceBuffs();
 
                                     for (const [nodeId, node] of Object.entries(activeCharacter.raw?.SkillTrees ?? {})) {
                                         if (node.NodeType === 4 && node.Skill?.Name) {
                                             allActiveNodes[nodeId] = true;
-                                            const buffKey = skillToBuffMap[node.Skill.Name];
-                                            const value = parseFloat((node.Skill?.Param?.[0] ?? "0").replace('%', ''));
 
-                                            if (buffKey) {
-                                                buffs[buffKey] = (buffs[buffKey] ?? 0) + value;
-                                            }
+                                            const skillName = node.Skill.Name;
+                                            const percent = parseFloat(
+                                                (node.Skill?.Param?.[0] ?? "0").replace('%', '')
+                                            );
+                                            applyTraceBuff(buffs, skillName, percent);
                                         }
                                     }
 
-                                    return {
-                                        ...prev,
-                                        activeNodes: allActiveNodes,
-                                        ...buffs
-                                    };
+                                    buffs.activeNodes = allActiveNodes;
+                                    return buffs;
                                 });
                             }}
                         >
@@ -290,41 +365,31 @@ export default function CharacterSelector({
                                                 '--slider-color': currentSliderColor,
                                             }}
                                             onClick={() => {
-                                                const nodeIdNum = Number(nodeId);
-                                                const skillName = node.Skill?.Name;
-                                                const buffKey = skillToBuffMap[skillName];
-                                                const percent = parseFloat((node.Skill?.Param?.[0] ?? "0").replace('%', ''));
-
                                                 setTraceNodeBuffs(prev => {
-                                                    const wasActive = prev.activeNodes?.[nodeIdNum] ?? false;
+                                                    const prevActive = prev?.activeNodes ?? {};
+                                                    const wasActive = !!prevActive[nodeId];
                                                     const newActiveNodes = {
-                                                        ...prev.activeNodes,
-                                                        [nodeIdNum]: !wasActive
+                                                        ...prevActive,
+                                                        [nodeId]: !wasActive
                                                     };
 
-                                                    if (!buffKey) {
-                                                        return {
-                                                            ...prev,
-                                                            activeNodes: newActiveNodes
-                                                        };
+                                                    // recompute all trace buffs from scratch
+                                                    const buffs = createEmptyTraceBuffs();
+                                                    buffs.activeNodes = newActiveNodes;
+
+                                                    for (const [id, isNodeActive] of Object.entries(newActiveNodes)) {
+                                                        if (!isNodeActive) continue;
+                                                        const otherNode = activeCharacter.raw?.SkillTrees?.[id];
+                                                        const skillName = otherNode?.Skill?.Name;
+                                                        if (!skillName) continue;
+
+                                                        const value = parseFloat(
+                                                            (otherNode.Skill?.Param?.[0] ?? "0").replace('%', '')
+                                                        );
+                                                        applyTraceBuff(buffs, skillName, value);
                                                     }
 
-                                                    const total = Object.entries(newActiveNodes)
-                                                        .filter(([, isActive]) => isActive)
-                                                        .map(([id]) => {
-                                                            const otherNode = activeCharacter.raw?.SkillTrees?.[id];
-                                                            const otherSkillName = otherNode?.Skill?.Name;
-                                                            const otherBuffKey = skillToBuffMap[otherSkillName];
-                                                            const value = parseFloat((otherNode?.Skill?.Param?.[0] ?? "0").replace('%', ''));
-                                                            return otherBuffKey === buffKey ? value : 0;
-                                                        })
-                                                        .reduce((sum, val) => sum + val, 0);
-
-                                                    return {
-                                                        ...prev,
-                                                        activeNodes: newActiveNodes,
-                                                        [buffKey]: total
-                                                    };
+                                                    return buffs;
                                                 });
                                             }}
                                         />
@@ -332,6 +397,7 @@ export default function CharacterSelector({
                                 );
                             })}
                     </div>
+
                     {CustomCharacterUI && (
                         <div className="echo-buff">
                             <CustomCharacterUI

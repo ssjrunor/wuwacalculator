@@ -1,4 +1,10 @@
-import {applyFixedSecondMainStat, getValidMainStats, validSubstatRanges, snapToNearestSubstatValue} from "./echoHelper.js";
+import {
+    applyFixedSecondMainStat,
+    getValidMainStats,
+    validSubstatRanges,
+    snapToNearestSubstatValue,
+    normalizeLegacyEchoStats
+} from "./echoHelper.js";
 import {computeSkillDamage, getSkillData} from "./computeSkillDamage.js";
 import {getFinalStats} from "./getStatsForLevel.js";
 import {initWorkerPool} from "../optimizer/gpu/GpuWorkerPool.js";
@@ -7,6 +13,7 @@ import {countEchoCombos, generateEchoPermutationBatches2} from "../optimizer/gen
 import {runGpuEchoOptimizer} from "../optimizer/GpuEchoOptimizer.js";
 import {prepareGpuContext} from "../optimizer/prepareGpuContext.js";
 import {generateEchoContext} from "../optimizer/echoOptimizerContext.js";
+import {applyStatToMerged} from "../data/buffs/setEffect.js";
 
 let rand = Math.random;
 
@@ -540,40 +547,64 @@ export async function findBestFullEchoSetMonteCarlo(
     return best;
 }
 
+// assumes applyStatToMerged and elementMap etc are already imported in this file
+
 export function removeEchoArrayFromBuffs(mergedBuffs, echoes) {
     if (!mergedBuffs || !Array.isArray(echoes)) return mergedBuffs ?? {};
 
-    const newBuffs = { ...mergedBuffs };
+    // deep clone so we don't mutate the original object
+    const newBuffs = structuredClone(mergedBuffs);
 
+    // accumulate everything we want to remove
     const totalEchoStats = {};
 
     for (const echo of echoes) {
         if (!echo) continue;
 
-        for (const [key, value] of Object.entries(echo.mainStats ?? {})) {
+        // main stats
+        for (const [key, rawVal] of Object.entries(echo.mainStats ?? {})) {
+            const value = Number(rawVal ?? 0);
+            if (!value) continue;
             totalEchoStats[key] = (totalEchoStats[key] ?? 0) + value;
         }
 
-        for (const [key, value] of Object.entries(echo.subStats ?? {})) {
+        // sub stats
+        for (const [key, rawVal] of Object.entries(echo.subStats ?? {})) {
+            const value = Number(rawVal ?? 0);
+            if (!value) continue;
             totalEchoStats[key] = (totalEchoStats[key] ?? 0) + value;
-            if (key === 'resonanceLiberation') {
-                totalEchoStats.ultimateAtk = (totalEchoStats.ultimateAtk ?? 0) + value;
-            }
-            if (key === 'resonanceSkill') {
-                totalEchoStats.skillAtk = (totalEchoStats.skillAtk ?? 0) + value;
-            }
         }
     }
 
+    // now subtract them using the same normalization logic as "apply"
+    for (const [key, total] of Object.entries(totalEchoStats)) {
+        if (!total) continue;
 
-    for (const [key, value] of Object.entries(totalEchoStats)) {
-        const current = Number(newBuffs[key] ?? 0);
-        const result = current - Number(value ?? 0);
+        switch (key) {
+            // flat main stats: map to {stat}.flat
+            case 'atkFlat': {
+                newBuffs.atk = newBuffs.atk ?? { percent: 0, flat: 0 };
+                newBuffs.atk.flat = (newBuffs.atk.flat ?? 0) - total;
+                break;
+            }
+            case 'hpFlat': {
+                newBuffs.hp = newBuffs.hp ?? { percent: 0, flat: 0 };
+                newBuffs.hp.flat = (newBuffs.hp.flat ?? 0) - total;
+                break;
+            }
+            case 'defFlat': {
+                newBuffs.def = newBuffs.def ?? { percent: 0, flat: 0 };
+                newBuffs.def.flat = (newBuffs.def.flat ?? 0) - total;
+                break;
+            }
 
-        if (Math.abs(result) < 1e-6) {
-            delete newBuffs[key];
-        } else {
-            newBuffs[key] = result;
+            // everything else: let the shared normalizer handle it
+            // (atkPercent, hpPercent, critRate, critDmg, glacio, aero,
+            // resonanceSkill, resonanceLiberation, etc.)
+            default: {
+                applyStatToMerged(newBuffs, key, -total);
+                break;
+            }
         }
     }
 
