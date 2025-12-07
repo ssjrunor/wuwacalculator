@@ -264,6 +264,16 @@ fn computeDamageForCombo(index: u32) {
         libEcho += 30.0;
     }
 
+    if (setCount[24u] >= 2) { spectro += 10.0; }
+
+    if (setCount[25u] >= 5) { bonus += 25.0; }
+
+    if (setCount[26u] >= 2u) { spectro += 10.0; }
+    if (setCount[26u] >= 5u) {
+        spectro += 30.0;
+        basicEcho += 40.0;
+    }
+
     // -------------------------
     // Pick element bonuses
     // -------------------------
