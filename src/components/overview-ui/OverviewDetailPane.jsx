@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { highlightKeywordsInText, setIconMap } from '../../constants/echoSetData.jsx';
+import { highlightKeywordsInText } from '../../constants/echoSetData.jsx';
+import { setIconMap } from '../../constants/echoSetData2.js';
 import {imageCache} from '../../pages/calculator.jsx';
 import {
     formatStatKey,
@@ -90,32 +91,101 @@ export default function OverviewDetailPane({
         : '/assets/weapon-icons/default.webp';
     const getImageSrc = (icon) => imageCache[icon]?.src || icon;
     const finalStats = runtime?.FinalStats ?? runtime.Stats ?? {};
+
+    const getMainStatTotal = (objOrNumber) => {
+        if (objOrNumber && typeof objOrNumber === 'object') {
+            const base  = objOrNumber.base ?? 0;
+            const total = objOrNumber.final ?? base;
+            return total;
+        }
+        return objOrNumber ?? 0;
+    };
+
     const statGroups = [
+        // Main stats: ATK / HP / DEF
         [
-            { label: 'ATK', key: 'atk' },
-            { label: 'HP', key: 'hp' },
-            { label: 'DEF', key: 'def' }
+            {
+                label: 'ATK',
+                isFlat: true,
+                resolve: (fs) => getMainStatTotal(fs.atk)
+            },
+            {
+                label: 'HP',
+                isFlat: true,
+                resolve: (fs) => getMainStatTotal(fs.hp)
+            },
+            {
+                label: 'DEF',
+                isFlat: true,
+                resolve: (fs) => getMainStatTotal(fs.def)
+            }
         ],
+
+        // Secondary stats: % values from finalStats
         [
-            { label: 'Energy Regen', key: 'energyRegen' },
-            { label: 'Crit Rate', key: 'critRate' },
-            { label: 'Crit DMG', key: 'critDmg' },
-            { label: 'Healing Bonus', key: 'healingBonus' }
+            {
+                label: 'Energy Regen',
+                isFlat: false,
+                resolve: (fs) => fs.energyRegen ?? 0
+            },
+            {
+                label: 'Crit Rate',
+                isFlat: false,
+                resolve: (fs) => fs.critRate ?? 0
+            },
+            {
+                label: 'Crit DMG',
+                isFlat: false,
+                resolve: (fs) => fs.critDmg ?? 0
+            },
+            {
+                label: 'Healing Bonus',
+                isFlat: false,
+                resolve: (fs) => fs.healingBonus ?? 0
+            }
         ],
+
+        // Element DMG bonuses: from finalStats.attribute[element].dmgBonus
         [
             'aero', 'glacio', 'spectro', 'fusion', 'electro', 'havoc'
         ].map(el => ({
             label: `${el.charAt(0).toUpperCase() + el.slice(1)} DMG Bonus`,
-            key: `${el}DmgBonus`,
-            color: attributeColors[el] ?? '#fff'
+            isFlat: false,
+            color: attributeColors[el] ?? '#fff',
+            resolve: (fs) => fs.attribute?.[el]?.dmgBonus ?? 0
         })),
+
+        // Skill-type DMG bonuses: from finalStats.skillType[...].dmgBonus
         [
-            { label: 'Basic Attack DMG Bonus', key: 'basicAtk' },
-            { label: 'Heavy Attack DMG Bonus', key: 'heavyAtk' },
-            { label: 'Resonance Skill DMG Bonus', key: 'skillAtk' },
-            { label: 'Resonance Liberation DMG Bonus', key: 'ultimateAtk' }
+            {
+                label: 'Basic Attack DMG Bonus',
+                isFlat: false,
+                resolve: (fs) => fs.skillType?.basicAtk?.dmgBonus ?? 0
+            },
+            {
+                label: 'Heavy Attack DMG Bonus',
+                isFlat: false,
+                resolve: (fs) => fs.skillType?.heavyAtk?.dmgBonus ?? 0
+            },
+            {
+                label: 'Resonance Skill DMG Bonus',
+                isFlat: false,
+                resolve: (fs) => fs.skillType?.resonanceSkill?.dmgBonus ?? 0
+            },
+            {
+                label: 'Resonance Liberation DMG Bonus',
+                isFlat: false,
+                resolve: (fs) => fs.skillType?.resonanceLiberation?.dmgBonus ?? 0
+            }
         ]
     ];
+
+    const displayValue = (stat, val) => {
+        const n = Number(val ?? 0);
+        return stat.isFlat
+            ? Math.floor(n)
+            : `${n.toFixed(1)}%`;
+    };
 
     const [selectedRotationIndex, setSelectedRotationIndex] = useState(0);
     const [selectedTeamRotationIndex, setSelectedTeamRotationIndex] = useState(0);
@@ -171,7 +241,6 @@ export default function OverviewDetailPane({
         setContributorCycleIndex((prev) => (prev + 1) % (numContributors + 1));
     };
 
-    const displayValue = (key, val) => ['atk', 'hp', 'def'].includes(key) ? Math.floor(val) : `${val.toFixed(1)}%`;
     const maxScore = getTop5SubstatScoreDetails(character.link).total;
 
     const echoData = runtime?.equippedEchoes ?? [null, null, null, null, null];
@@ -265,12 +334,21 @@ export default function OverviewDetailPane({
                             </div>
                         </div>
                         <div className="overview-dmg">
-                            {runtime?.FinalStats &&(
-                                <div className="stats-grid overview" style={{marginTop: '0.5rem'}}>
+                            {runtime?.FinalStats && (
+                                <div className="stats-grid overview" style={{ marginTop: '0.5rem' }}>
                                     {statGroups.flat().map((stat, i) => {
-                                        const val = finalStats[stat.key];
+                                        const rawVal = typeof stat.resolve === 'function'
+                                            ? stat.resolve(finalStats)
+                                            : finalStats[stat.key];
+
+                                        const val = Number(rawVal ?? 0);
+
                                         return (
-                                            <div key={stat.key ?? i} className="stat-row" style={{ display: 'flex', gap: '1rem', justifyContent: 'space-between' }}>
+                                            <div
+                                                key={stat.label ?? i}
+                                                className="stat-row"
+                                                style={{ display: 'flex', gap: '1rem', justifyContent: 'space-between' }}
+                                            >
                                                 <div
                                                     className="stat-label"
                                                     style={{
@@ -299,7 +377,7 @@ export default function OverviewDetailPane({
                                                     {stat.label}
                                                 </div>
                                                 <div className="stat-total">
-                                                    <span>{displayValue(stat.key, val)}</span>
+                                                    <span>{displayValue(stat, val)}</span>
                                                 </div>
                                             </div>
                                         );

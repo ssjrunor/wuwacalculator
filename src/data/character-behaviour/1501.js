@@ -28,22 +28,22 @@ export function applySpectroMLogic({
     }
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__spectroMInherent1) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
+        mergedBuffs.atk.percent += 15;
         mergedBuffs.__spectroMInherent1 = true;
     }
 
     if (isToggleActive(1) && isActiveSequence(1) && !mergedBuffs.__spectroMS1) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 15;
+        mergedBuffs.critRate += 15;
         mergedBuffs.__spectroMS1 = true;
     }
 
     if (isActiveSequence(2) && !mergedBuffs.__spectroMS2) {
-        mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + 20;
+        mergedBuffs.attribute.spectro.dmgBonus += 20;
         mergedBuffs.__spectroMS2 = true;
     }
 
     if (isActiveSequence(3) && !mergedBuffs.__spectroMS3) {
-        mergedBuffs.energyRegen = (mergedBuffs.energyRegen ?? 0) + 20;
+        mergedBuffs.energyRegen += 20;
         mergedBuffs.__spectroMS3 = true;
     }
 
@@ -53,13 +53,11 @@ export function applySpectroMLogic({
     }
 
     if (isActiveSequence(5) && !mergedBuffs.__spectroMS4) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 40;
+        mergedBuffs.skillType.resonanceLiberation.dmgBonus += 40;
         mergedBuffs.__spectroMS4 = true;
     }
 
-    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
-        (isToggleActive(6) && isActiveSequence(6) && skillMeta.element === 'spectro' ? 10 : 0);
-    mergedBuffs.spectroFrazzleResShred = (mergedBuffs?.spectroFrazzleResShred ?? 0) +
+    mergedBuffs.attribute.spectro.resShred +=
         (isToggleActive(6) && isActiveSequence(6) ? 10 : 0);
 
     return {mergedBuffs, combatState, skillMeta};
@@ -80,20 +78,8 @@ export function spectroMBuffsLogic({
                                  }) {
     const state = characterState?.activeStates ?? {};
 
-    mergedBuffs.spectroFrazzleResShred = (mergedBuffs?.spectroFrazzleResShred ?? 0) +
+    mergedBuffs.attribute.spectro.resShred +=
         (state.wanderlust ? 10 : 0);
 
     return { mergedBuffs };
-}
-
-
-export function spectroMSkillMetaBuffsLogic({
-                                                characterState, skillMeta
-                               }) {
-    const state = characterState?.activeStates ?? {};
-    const element = skillMeta.element ?? null;
-    skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
-        (state.wanderlust && element === 'spectro' ? 10 : 0);
-
-    return { skillMeta };
 }

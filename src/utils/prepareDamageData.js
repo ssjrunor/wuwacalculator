@@ -45,8 +45,8 @@ export function prepareDamageData({
     const echoSkillResults = [];
     const negativeEffects = [];
 
-    const { frazzle } = calculateSpectroFrazzleDamage(combatState, mergedBuffs, characterLevel);
-    const { erosion } = calculateAeroErosionDamage(combatState, mergedBuffs, characterLevel);
+    const { frazzle } = calculateSpectroFrazzleDamage(combatState, finalStats, characterLevel);
+    const { erosion } = calculateAeroErosionDamage(combatState, finalStats, characterLevel);
 
     negativeEffects.push({
         name: 'Spectro Frazzle',
@@ -112,12 +112,16 @@ export function prepareDamageData({
                         : skillArrays.length > 1
                             ? ` Skill ${skillIndex + 1}`
                             : "";
+                const isSupportSkill =
+                    result.skillMeta?.tags?.includes("healing") || result.skillMeta?.tags?.includes("shielding");
+                const supportColor = result.skillMeta?.tags?.includes("healing") ? "limegreen" : "#838383";
+
 
                 const label = `${mainEcho.name}${suffix}`;
-                const { normal, crit, avg, subHits } = result;
+                const { normal, crit, avg, subHits, skillMeta } = result;
 
                 echoSkillResults.push({
-                    name: label,
+                    name: skillMeta.label ?? label,
                     skillType: "echoSkill",
                     tags,
                     element: echoElement ?? result.skillMeta?.element,
@@ -125,7 +129,10 @@ export function prepareDamageData({
                     crit,
                     avg,
                     subHits,
-                    visible: true,
+                    isSupportSkill,
+                    supportColor,
+                    supportLabel: suffix,
+                    visible: skillMeta.visible ?? true,
                     custSkillMeta: result.skillMeta,
                     tab: 'echoAttacks'
                 });
@@ -213,7 +220,6 @@ export function getEffectiveSkillLevels(charId, activeCharacter, tab, skill) {
     return levels.map((level) => {
         let label = level.Name;
         const skillName = skill?.Name ?? "";
-
 
         if (
             label === 'Press DMG' ||

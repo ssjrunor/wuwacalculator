@@ -2,7 +2,6 @@ export function applyJianxinLogic({
                                mergedBuffs,
                                combatState,
                                skillMeta,
-                               characterState,
                                isActiveSequence = () => false,
                                isToggleActive = () => false,
     characterLevel = 1
@@ -15,7 +14,6 @@ export function applyJianxinLogic({
         ...skillMeta
     };
 
-    const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
     const name = skillMeta.name?.toLowerCase();
     const tab = skillMeta.tab ?? '';
 
@@ -78,21 +76,12 @@ export const jianxinMultipliers = {
 };
 
 export function jianxinBuffsLogic({
-                                    mergedBuffs, characterState, activeCharacter
+                                    mergedBuffs, characterState
                                 }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.transcendence) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 38;
+        mergedBuffs.skillType.resonanceLiberation.dmgBonus += 38;
     }
 
     return { mergedBuffs };

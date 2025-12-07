@@ -15,7 +15,6 @@ export function applyCiacconaLogic({
         ...skillMeta
     };
 
-    const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
     const name = skillMeta.name?.toLowerCase();
     const tab = skillMeta.tab ?? '';
 
@@ -24,12 +23,12 @@ export function applyCiacconaLogic({
     }
 
     if (characterState?.activeStates?.concert && !mergedBuffs.__concert) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 24;
+        mergedBuffs.attribute.aero.dmgBonus += 24;
         mergedBuffs.__concert = true;
     }
 
     if (characterState?.activeStates?.windcalling && !mergedBuffs.__windcalling) {
-        mergedBuffs.damageTypeAmplify.aeroErosion = (mergedBuffs.damageTypeAmplify.aeroErosion ?? 0) + 100;
+        mergedBuffs.skillType.aeroErosion.amplify += 100;
         mergedBuffs.__windcalling = true;
     }
 
@@ -44,12 +43,12 @@ export function applyCiacconaLogic({
     }
 
     if (isToggleActive(1) && isActiveSequence(1) && !mergedBuffs.__ciacconaS1) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 35;
+        mergedBuffs.atk.percent += 35;
         mergedBuffs.__ciacconaS1 = true;
     }
 
     if (isToggleActive(2) && isActiveSequence(2) && !mergedBuffs.__ciacconaS2) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 40;
+        mergedBuffs.attribute.aero.dmgBonus += 40;
         mergedBuffs.__ciacconaS2 = true;
     }
 
@@ -58,7 +57,7 @@ export function applyCiacconaLogic({
     }
 
     if (isActiveSequence(5) && !mergedBuffs.__ciacconaS5) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 40;
+        mergedBuffs.skillType.resonanceLiberation.amplify += 40;
         mergedBuffs.__ciacconaS5 = true;
     }
 
@@ -90,15 +89,15 @@ export function ciacconaBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.windcalling) {
-        mergedBuffs.damageTypeAmplify.aeroErosion = (mergedBuffs.damageTypeAmplify.aeroErosion ?? 0) + 100;
+        mergedBuffs.skillType.aeroErosion.amplify += 100;
     }
 
     if (state.concert) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 24;
+        mergedBuffs.attribute.aero.dmgBonus += 24;
     }
 
     if (state.s2) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 40;
+        mergedBuffs.attribute.aero.dmgBonus += 40;
     }
 
     return { mergedBuffs };

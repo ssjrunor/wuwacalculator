@@ -2,7 +2,8 @@
 // 1. Group Echo Sets by piece type
 //------------------------------------------------------
 
-import echoSets, {setIconMap} from "../constants/echoSetData.jsx";
+import { echoSets } from "../constants/echoSetData2.js";
+import { setIconMap } from "../constants/echoSetData2.js";
 
  export function computeAllowTable(selected, setOptions) {
     const solverSelections = convertUISelectionToSolver(selected, setOptions.grouped);
@@ -33,7 +34,17 @@ export function convertUISelectionToSolver(selected, grouped) {
     return selections;
 }
 
-export function groupEchoSetsByPiece() {
+function toEchoSetList(setObjMap = echoSets) {
+    return Object.entries(setObjMap).map(([id, cfg]) => ({
+        id: Number(id),
+        name: cfg.name,
+        fivePiece: cfg.desc?.fivePiece ?? cfg.fivePiece,
+        threePiece: cfg.desc?.threePiece ?? cfg.threePiece,
+        twoPiece: cfg.desc?.twoPiece ?? cfg.twoPiece
+    }));
+}
+
+export function groupEchoSetsByPiece(setObjMap = echoSets) {
     const result = {
         5: [],
         3: [],
@@ -42,7 +53,7 @@ export function groupEchoSetsByPiece() {
 */
     };
 
-    for (const set of echoSets) {
+    for (const set of toEchoSetList(setObjMap)) {
         if (set.fivePiece) {
             result[5].push({
                 id: set.id,
@@ -243,9 +254,9 @@ export function buildAllowTableFromUISelections(selections) {
 // 8. Final Assembly — everything your solver needs
 //------------------------------------------------------
 
-export function buildFullEchoSetSolver(echoSets) {
+export function buildFullEchoSetSolver(setObjMap = echoSets) {
     // Step A: group base sets by piece
-    const grouped = groupEchoSetsByPiece(echoSets);
+    const grouped = groupEchoSetsByPiece(setObjMap);
 
     // Step B: precompute col1/col2 for UI
     const uiColumns = precomputeSetPaneColumns(grouped);

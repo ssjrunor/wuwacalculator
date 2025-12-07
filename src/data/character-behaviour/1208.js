@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyGalbrenaLogic({
                                mergedBuffs,
                                combatState,
@@ -56,11 +54,11 @@ export function applyGalbrenaLogic({
     }
 
     if (characterState?.activeStates?.burningDrive && !mergedBuffs.__burningDrive) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + (isActiveSequence(2) ? (20 * 4.5) : 20);
+        mergedBuffs.atk.percent += (isActiveSequence(2) ? (20 * 4.5) : 20);
         mergedBuffs.__burningDrive = true;
     }
 
-    if ( !tab.includes('echoAttacks' ) ) {
+    if ( !tab.includes('echoAttacks') ) {
         const bonus = Math.min((characterState?.activeStates?.oathbound ?? 0) * 5, 5 * 4);
         skillMeta.amplify = (skillMeta.amplify ?? 0) + bonus;
     }
@@ -75,9 +73,7 @@ export function applyGalbrenaLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__galbrenaS4) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 20;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 20;
         mergedBuffs.__galbrenaS4 = true;
     }
 
@@ -128,9 +124,7 @@ export function GalbrenaBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.fadingSpark) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 20;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 20;
     }
 
     return { mergedBuffs };

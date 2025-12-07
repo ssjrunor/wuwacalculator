@@ -14,7 +14,7 @@ import {refreshAccessTokenIfNeeded} from "./utils/googleAuth.js";
 import {useGoogleAuth} from "./hooks/useGoogleAuth.js";
 import useDarkMode from "./hooks/useDarkMode.js";
 import PlainModal from "./components/utils-ui/PlainModal.jsx";
-import DotArt, {art, DotArtGallery, TrollButtonsLayer} from "./constants/trolling.jsx";
+import {DotArtGallery, TrollButtonsLayer} from "./constants/trolling.jsx";
 
 const GA_ID = 'G-W502BDD62S';
 

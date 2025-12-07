@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Wrench } from "lucide-react";
 import {
@@ -7,10 +7,11 @@ import {
 } from "../../utils/echoHelper.js";
 import { getEquippedEchoesScoreDetails } from "../echoes-pane-ui/EchoesPane.jsx";
 import { attributeColors, elementToAttribute } from "../../utils/attributeHelpers.js";
-import echoSets, { setIconMap } from "../../constants/echoSetData.jsx";
+import { echoSets as echoSetData } from "../../constants/echoSetData2.js";
+import { setIconMap } from "../../constants/echoSetData2.js";
 import { echoes as allEchoes } from "../../json-data-scripts/getEchoes.js";
 import EchoMenu from "../echoes-pane-ui/EchoMenu.jsx";
-import SkillMenu, {tabDisplayOrder} from "../utils-ui/SkillMenu.jsx";
+import SkillMenu, {tabDisplayOrder} from "../rotations-ui/SkillMenu.jsx";
 import { EchoGridPreview } from "../overview-ui/OverviewDetailPane.jsx";
 import {getGroupedSkillOptions} from "../../utils/prepareDamageData.js";
 
@@ -64,6 +65,17 @@ export function EchoGenerator({
     const groupedSkillOptions = React.useMemo(() => {
         return getGroupedSkillOptions({ skillResults });
     }, [skillResults]);
+
+    const echoSetList = useMemo(
+        () => Object.entries(echoSetData).map(([id, cfg]) => ({
+            id: Number(id),
+            name: cfg.name,
+            twoPiece: cfg.desc?.twoPiece,
+            threePiece: cfg.desc?.threePiece,
+            fivePiece: cfg.desc?.fivePiece
+        })),
+        []
+    );
 
     const [expandedTabs, setExpandedTabs] = useState(() =>
         Object.fromEntries(tabDisplayOrder.map((key) => [key, true]))
@@ -604,7 +616,7 @@ export function SonataSetPlanner({ selectedSets, updateRandGenSettings }) {
     };
 
     const handleCountChange = (id, value) => {
-        const setObj = echoSets.find((s) => s.id === id);
+        const setObj = echoSetList.find((s) => s.id === id);
         if (!setObj) return;
 
         const validCounts = Object.keys(setObj)
@@ -664,7 +676,7 @@ export function SonataSetPlanner({ selectedSets, updateRandGenSettings }) {
             <h4>Sonata Set Plan:</h4>
 
             {selectedSets.map(({ setId, count }) => {
-                const setData = echoSets.find((s) => s.id === setId);
+                const setData = echoSetList.find((s) => s.id === setId);
                 if (!setData) return null;
                 return (
                     <div key={setId} className="selected-set-entry">
@@ -748,7 +760,7 @@ export function SonataSetPlanner({ selectedSets, updateRandGenSettings }) {
                                     zIndex: 9999,
                                 }}
                             >
-                                {echoSets.map((setObj) => (
+                                {echoSetList.map((setObj) => (
                                     <div
                                         key={setObj.id}
                                         className="set-menu-item"

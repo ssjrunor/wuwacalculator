@@ -9,8 +9,8 @@ export function applyWeaponLogic({
     const stacks = characterState?.activeStates?.stacks ?? 0;
     const atk = parseFloat(currentParamValues[1]) * stacks;
 
-    mergedBuffs.energyRegen = (mergedBuffs.energyRegen ?? 0) + energy;
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+    mergedBuffs.energyRegen += energy;
+    mergedBuffs.atk.percent += atk;
 
 
     return { mergedBuffs, combatState, skillMeta };

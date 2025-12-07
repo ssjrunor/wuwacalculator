@@ -5,17 +5,17 @@ export function applyWeaponLogic({
                                      combatState,
                                      characterState,
                                      skillMeta = {},
-                                     currentParamValues = [],
+                                 currentParamValues = [],
                                  }) {
     const attr = parseFloat(currentParamValues[0]);
     const firstP = parseFloat(currentParamValues[1]);
 
     for (const elem of Object.values(elementToAttribute)) {
-        mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + attr;
+        mergedBuffs.attribute[elem].dmgBonus += attr;
     }
 
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + firstP;
+        mergedBuffs.skillType.resonanceLiberation.dmgBonus += firstP;
     }
 
 

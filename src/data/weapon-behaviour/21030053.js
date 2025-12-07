@@ -5,8 +5,6 @@ export function applyWeaponLogic({
                                      currentParamValues = []
                                  }) {
     const bonus = parseFloat(currentParamValues[0]);
-    mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + bonus;
-
-
+    mergedBuffs.skillType.resonanceSkill.dmgBonus += bonus;
     return { mergedBuffs, combatState, skillMeta };
 }

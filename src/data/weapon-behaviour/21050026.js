@@ -11,11 +11,11 @@ export function applyWeaponLogic({
     const basic = parseFloat(currentParamValues[1]) * stacks;
     const secondP = parseFloat(currentParamValues[5]);
 
-    mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + basic;
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+    mergedBuffs.skillType.basicAtk.dmgBonus += basic;
+    mergedBuffs.atk.percent += atk;
 
     if (characterState?.activeStates?.secondP) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + secondP;
+        mergedBuffs.skillType.basicAtk.dmgBonus += secondP;
     }
 
     return { mergedBuffs, combatState, skillMeta };

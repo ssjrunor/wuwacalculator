@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyWeaponLogic({
                                      mergedBuffs,
                                      combatState,
@@ -12,15 +10,13 @@ export function applyWeaponLogic({
     const attr = parseFloat(currentParamValues[0]);
     const skill = parseFloat(currentParamValues[1]);
 
-    for (const elem of Object.values(elementToAttribute)) {
-        mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + attr;
-    }
+    mergedBuffs.attribute.all.dmgBonus += attr;
     if (characterState?.activeStates?.ageless) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + skill;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += skill;
     }
 
     if (characterState?.activeStates?.ethereal) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + skill;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += skill;
     }
 
     return { mergedBuffs, combatState, skillMeta };

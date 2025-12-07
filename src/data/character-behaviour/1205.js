@@ -34,12 +34,12 @@ export function applyChangliLogic({
     }
 
     if (isActiveSequence(1) && isToggleActive(1) && !mergedBuffs.__changliS1) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 10;
+        mergedBuffs.attribute.fusion.dmgBonus += 10;
         mergedBuffs.__changliS1 = true;
     }
 
     if (isActiveSequence(2) && isToggleActive(2) && !mergedBuffs.__changliS2) {
-        mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 25;
+        mergedBuffs.critRate += 25;
         mergedBuffs.__changliS2 = true;
     }
 
@@ -48,7 +48,7 @@ export function applyChangliLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__changliS4) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
         mergedBuffs.__changliS4 = true;
     }
 
@@ -68,27 +68,17 @@ export function applyChangliLogic({
 }
 
 export function changliBuffsLogic({
-                                     mergedBuffs, characterState, activeCharacter
+                                     mergedBuffs, characterState
                                  }) {
     const state = characterState?.activeStates ?? {};
 
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
-
     if (state.duality) {
-        mergedBuffs.elementDmgAmplify.fusion = (mergedBuffs.elementDmgAmplify.fusion ?? 0) + 20;
-        mergedBuffs.damageTypeAmplify.ultimate = (mergedBuffs.damageTypeAmplify.ultimate ?? 0) + 25;
+        mergedBuffs.attribute.fusion.amplify += 20;
+        mergedBuffs.skillType.resonanceLiberation.amplify += 25;
     }
 
     if (state.polished) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 20;
+        mergedBuffs.atk.percent += 20;
     }
 
     return { mergedBuffs };

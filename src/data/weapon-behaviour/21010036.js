@@ -9,14 +9,14 @@ export function applyWeaponLogic({
     const ult = parseFloat(currentParamValues[1]);
     const fusion = parseFloat(currentParamValues[5]);
 
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
+    mergedBuffs.atk.percent += atk;
 
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + ult;
+        mergedBuffs.skillType.resonanceLiberation.dmgBonus += ult;
     }
 
     if (characterState?.activeStates?.secondP) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + fusion;
+        mergedBuffs.attribute.fusion.dmgBonus += fusion;
     }
 
     return { mergedBuffs, combatState, skillMeta };

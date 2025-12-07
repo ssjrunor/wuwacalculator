@@ -10,11 +10,11 @@ export function applyWeaponLogic({
 
 
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + skill;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += skill;
     }
 
     if (characterState?.activeStates?.secondP) {
-        mergedBuffs.elementDmgAmplify.aero = (mergedBuffs.elementDmgAmplify.aero ?? 0) + amp;
+        mergedBuffs.attribute.aero.amplify += amp;
     }
 
     return { mergedBuffs, combatState, skillMeta };

@@ -1,5 +1,5 @@
 import {imageCache} from "../../pages/calculator.jsx";
-import {setIconMap} from "../../constants/echoSetData.jsx";
+import { setIconMap } from "../../constants/echoSetData2.js";
 import {removeEchoFromBag} from "../../state/echoBagStore.js";
 import {X} from "lucide-react";
 import {formatStatKey, statIconMap} from "../../utils/echoHelper.js";

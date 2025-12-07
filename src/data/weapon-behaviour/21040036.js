@@ -7,10 +7,10 @@ export function applyWeaponLogic({
                                  }) {
     const atkBonus = parseFloat(currentParamValues[0]);
     const amplify = parseFloat(currentParamValues[2]);
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atkBonus;
+    mergedBuffs.atk.percent += atkBonus;
 
     if (characterState?.activeStates?.darknessBreaker) {
-        mergedBuffs.damageTypeAmplify.spectroFrazzle = (mergedBuffs.damageTypeAmplify.spectroFrazzle ?? 0) + amplify;
+        mergedBuffs.skillType.spectroFrazzle.amplify += amplify;
     }
 
     return { mergedBuffs, combatState, skillMeta };

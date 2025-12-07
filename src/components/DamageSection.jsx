@@ -25,7 +25,7 @@ export default function DamageSection({
     const formatNumber = (num) => {
         if (num >= 1e9) return (num / 1e9).toFixed(1) + "B";
         if (num >= 1e6) return (num / 1e6).toFixed(1) + "M";
-        return Math.round(num).toLocaleString();
+        return num.toLocaleString();
     };
 
     const getSubHitFormula = (hits, type) => {
@@ -98,13 +98,13 @@ export default function DamageSection({
                                 ↳ {skill.name}-{i + 1}{hit.label ? ` (${hit.label})` : ""}
                             </div>
                             <div className="subhit" style={{ fontSize: "0.9rem", opacity: 0.6 }}>
-                                {formatNumber(Math.round(hit.normal))}
+                                {formatNumber(hit.normal)}
                             </div>
                             <div className="subhit" style={{ fontSize: "0.9rem", opacity: 0.6 }}>
-                                {formatNumber(Math.round(hit.crit))}
+                                {formatNumber(hit.crit)}
                             </div>
                             <div className="subhit" style={{ fontSize: "0.9rem", opacity: 0.6 }}>
-                                {formatNumber(Math.round(hit.avg))}
+                                {formatNumber(hit.avg)}
                             </div>
                         </React.Fragment>
                     ))}
@@ -139,7 +139,7 @@ export default function DamageSection({
                             <div className="subhit">AVG</div>
                             {skills
                                 .filter(s => s.visible)
-                                .map(s => renderSkillRow(s, attributeColors[s.element] ?? "#ccc"))}
+                                .map(s => renderSkillRow(s, attributeColors[s.element] ?? "#a1a1a1"))}
                         </div>
                     </div>
                 </div>

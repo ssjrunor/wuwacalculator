@@ -2,7 +2,7 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {ctxObj, EchoOptimizer} from "../../optimizer/EchoOptimizer.js";
 import {getEchoBag} from "../../state/echoBagStore.js";
 import {getSetPlanFromEchoes} from "../../data/buffs/setEffect.js";
-import echoSetData, {setIconMap} from "../../constants/echoSetData.jsx";
+import { setIconMap } from "../../constants/echoSetData2.js";
 import {getEchoScores, getTop5SubstatScoreDetails} from "../../utils/echoHelper.js";
 import {EchoGridPreview} from "../overview-ui/OverviewDetailPane.jsx";
 import {attributeColors, elementToAttribute} from "../../utils/attributeHelpers.js";
@@ -10,7 +10,7 @@ import {EchoFilters} from "../../optimizer/EchoFilters.js";
 import {countEchoCombos} from "../../optimizer/generateEchoCombos.js";
 import ExpandableSection from "../utils-ui/Expandable.jsx";
 import CharacterMenu from "../character-ui/CharacterMenu.jsx";
-import SkillMenu, {tabDisplayOrder} from "../utils-ui/SkillMenu.jsx";
+import SkillMenu, {tabDisplayOrder} from "../rotations-ui/SkillMenu.jsx";
 import {CharacterOptionsPanel} from "./CharacterOptionsPanel.jsx";
 import {EchoOptimizerControlBox} from "./EchoOptimizerControlBox.jsx";
 import {groupEchoSetsByPiece} from "../../optimizer/setSolver.js";
@@ -32,7 +32,7 @@ import {
     generateMainStatsContext
 } from "../../suggestions/mainStat-suggestion/ctx-builder.js";
 import {runMainStatSuggestor} from "../../suggestions/mainStat-suggestion/suggestMainStat.js";
-import {runSetSuggestor} from "../../suggestions/setPlain-suggestion/suggestSetPlan.js";
+import {runSetSuggestor} from "../../suggestions/setPlan-suggestion/suggestSetPlan.js";
 
 const HEADER_TITLES = [
     "Set",

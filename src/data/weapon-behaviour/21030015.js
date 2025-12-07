@@ -5,7 +5,7 @@ export function applyWeaponLogic({
                                      currentParamValues = []
                                  }) {
     const energy = parseFloat(currentParamValues[0]);
-    mergedBuffs.energyRegen = (mergedBuffs.energyRegen ?? 0) + energy;
+    mergedBuffs.energyRegen += energy;
 
     return { mergedBuffs, combatState, skillMeta };
 }

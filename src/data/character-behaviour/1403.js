@@ -31,12 +31,12 @@ export function applyAaltoLogic({
     }
 
     if (characterState?.activeStates?.quandary && !mergedBuffs.__aaltoQuandary) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 10;
+        mergedBuffs.atk.percent += 10;
         mergedBuffs.__aaltoQuandary = true;
     }
 
     if (isToggleActive(2) && isActiveSequence(2) && !mergedBuffs.__aaltoS2) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 15;
+        mergedBuffs.atk.percent += 15;
         mergedBuffs.__aaltoS2 = true;
     }
 
@@ -51,13 +51,13 @@ export function applyAaltoLogic({
     }
 
     if (isActiveSequence(5) && !mergedBuffs.__aaltoS5 && isToggleActive(5)) {
-        mergedBuffs.aero = (mergedBuffs.aero ?? 0) + 25;
+        mergedBuffs.attribute.aero.dmgBonus += 25;
         mergedBuffs.__aaltoS5 = true;
     }
 
     if (isActiveSequence(5) && isToggleActive(6)) {
         if (!mergedBuffs.__aaltoS6) {
-            mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 8;
+            mergedBuffs.critRate += 8;
             mergedBuffs.__aaltoS6 = true;
         }
 
@@ -243,21 +243,11 @@ export const aaltoMultipliers = {
 };
 
 export function aaltoBuffsLogic({
-                                    mergedBuffs, characterState, activeCharacter
+                                    mergedBuffs, characterState
                                 }) {
     const state = characterState?.activeStates ?? {};
-    const elementMap = {
-        1: 'glacio',
-        2: 'fusion',
-        3: 'electro',
-        4: 'aero',
-        5: 'spectro',
-        6: 'havoc'
-    };
-    const element = elementMap?.[activeCharacter?.attribute];
-
     if (state.dissolving) {
-        mergedBuffs.elementDmgAmplify.aero = (mergedBuffs.elementDmgAmplify.aero ?? 0) + 23;
+        mergedBuffs.attribute.aero.amplify += 23;
     }
 
     return { mergedBuffs };

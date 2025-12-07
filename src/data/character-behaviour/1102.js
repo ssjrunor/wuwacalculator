@@ -44,7 +44,7 @@ export function applySanhuaLogic({
 
     if (isToggleActive(1) && isActiveSequence(1)) {
         if (!mergedBuffs.__sanhuaSeq1) {
-            mergedBuffs.critRate = (mergedBuffs.critRate ?? 0) + 15;
+            mergedBuffs.critRate += 15;
             mergedBuffs.__sanhuaSeq1 = true;
         }
     } else {
@@ -53,7 +53,7 @@ export function applySanhuaLogic({
 
     if (isToggleActive(3) && isActiveSequence(3)) {
         if (!mergedBuffs.__sanhuaSeq3) {
-            mergedBuffs.glacio = (mergedBuffs.glacio ?? 0) + 35;
+            mergedBuffs.attribute.glacio.dmgBonus += 35;
             mergedBuffs.__sanhuaSeq3 = true;
         }
     } else {
@@ -63,7 +63,7 @@ export function applySanhuaLogic({
     const seq6Value = characterState?.toggles?.['6_value'] ?? 0;
     if (isActiveSequence(6) && seq6Value > 0) {
         if (!mergedBuffs.__sanhuaSeq6) {
-            mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + (seq6Value * 10);
+            mergedBuffs.atk.percent += (seq6Value * 10);
             mergedBuffs.__sanhuaSeq6 = true;
         }
     } else {
@@ -88,9 +88,9 @@ export function sanhuaBuffsLogic({
     const stacks = (state.daybreak ?? 0) * 10;
 
     if (state.silversnow) {
-        mergedBuffs.damageTypeAmplify.basic = (mergedBuffs.damageTypeAmplify.basic ?? 0) + 38;
+        mergedBuffs.skillType.basicAtk.amplify += 38;
     }
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + stacks;
+    mergedBuffs.atk.percent += stacks;
 
     return { mergedBuffs };
 }

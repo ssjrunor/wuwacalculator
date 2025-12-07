@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const outputPath = path.resolve(__dirname, '../data/weapons.json');
 const weaponApiUrl = 'https://api.hakush.in/ww/data/weapon.json';
 
-const SKIP_EXISTING = false;
+const SKIP_EXISTING = true;
 
 async function fetchAndSaveWeapons() {
     try {

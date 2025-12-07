@@ -9,7 +9,7 @@ export function applyWeaponLogic({
     const spectro = parseFloat(currentParamValues[0]) * stacks;
 
     if (combatState.spectroFrazzle > 0) {
-        mergedBuffs.spectro = (mergedBuffs.spectro ?? 0) + spectro;
+        mergedBuffs.attribute.spectro.dmgBonus += spectro;
     }
 
     return { mergedBuffs, combatState, skillMeta };

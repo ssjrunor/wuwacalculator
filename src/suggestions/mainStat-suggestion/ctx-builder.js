@@ -2,12 +2,13 @@ import {prepareGpuContext} from "../../optimizer/prepareGpuContext.js";
 import {getDefaultMainStatFilter} from "../../optimizer/optimizerUtils.js";
 import {applyFixedSecondMainStat, getValidMainStats} from "../../utils/echoHelper.js";
 import {removeSpecialBuffs} from "../../optimizer/echoOptimizerContext.js";
+import {applyStatToMerged} from "../../data/buffs/setEffect.js";
 
 export function generateMainStatsContext(form) {
     const charId = form.charId;
     const runtime = form.characterRuntimeStates[charId];
     const withoutMainStats = removeMainStatsFromBuffs(
-        removeSpecialBuffs(form.mergedBuffs, {...form.mergedBuffs}, charId, runtime.activeStates, form.sequence),
+        removeSpecialBuffs(form.mergedBuffs, structuredClone(form.mergedBuffs), charId, runtime.activeStates, form.sequence, form.skillType),
         form.equippedEchoes
     );
 
@@ -32,13 +33,16 @@ export function generateMainStatsContext(form) {
     };
 }
 
+
+// assuming applyStatToMerged is already imported in this file
+
 export function removeMainStatsFromBuffs(mergedBuffs, echoData) {
     if (!mergedBuffs || !Array.isArray(echoData)) return mergedBuffs ?? {};
 
-    const newBuffs = { ...mergedBuffs };
+    const newBuffs = structuredClone(mergedBuffs);
     const totalMainStats = {};
 
-    // Accumulate all mainStats per statKey
+    // 1) Accumulate all mainStats per key across echoes
     for (const echo of echoData) {
         if (!echo || !echo.mainStats) continue;
 
@@ -48,16 +52,32 @@ export function removeMainStatsFromBuffs(mergedBuffs, echoData) {
         }
     }
 
-    // Subtract from mergedBuffs
-    for (const [key, value] of Object.entries(totalMainStats)) {
-        const current = Number(newBuffs[key] ?? 0);
-        const result = current - value;
+    // 2) Subtract them from the unified buff structure
+    for (const [key, total] of Object.entries(totalMainStats)) {
+        if (!total) continue;
 
-        // Clean up near-zero noise
-        if (Math.abs(result) < 1e-6) {
-            delete newBuffs[key];
-        } else {
-            newBuffs[key] = result;
+        switch (key) {
+            // flat stats → atk.flat / hp.flat / def.flat
+            case 'atkFlat': {
+                newBuffs.atk = newBuffs.atk ?? { percent: 0, flat: 0 };
+                newBuffs.atk.flat = (newBuffs.atk.flat ?? 0) - total;
+                break;
+            }
+            case 'hpFlat': {
+                newBuffs.hp = newBuffs.hp ?? { percent: 0, flat: 0 };
+                newBuffs.hp.flat = (newBuffs.hp.flat ?? 0) - total;
+                break;
+            }
+            case 'defFlat': {
+                newBuffs.def = newBuffs.def ?? { percent: 0, flat: 0 };
+                newBuffs.def.flat = (newBuffs.def.flat ?? 0) - total;
+                break;
+            }
+
+            default: {
+                applyStatToMerged(newBuffs, key, -total);
+                break;
+            }
         }
     }
 
@@ -68,25 +88,21 @@ export function buildMainStatPoolForSuggestor({ statWeight = {}, charId = null, 
     const costs = [1, 3, 4];
     const pool = [];
 
-    // If no explicit filter passed, derive one from statWeight + charId
     const filter = mainStatFilter ?? getDefaultMainStatFilter(statWeight, charId);
 
     for (const cost of costs) {
-        const valid = getValidMainStats(cost); // e.g. { atkPercent: 33, critRate: 22, ... }
+        const valid = getValidMainStats(cost);
 
         for (const [key, value] of Object.entries(valid)) {
-            // Skip stats that are not marked useful for this character
             if (filter && !filter[key]) continue;
 
-            // Build full mainStats for this echo: primary + fixed second stat
             const mainStats = applyFixedSecondMainStat({ [key]: value }, cost);
-            // mainStats now includes e.g. { atkPercent: 33, atkFlat: 150 }
 
             pool.push({
                 cost,
                 key,
                 value,
-                stats: mainStats,   // full stats bundle this main stat gives
+                stats: mainStats,
             });
         }
     }

@@ -8,7 +8,7 @@ export function applyWeaponLogic({
     const heavy = parseFloat(currentParamValues[1]);
 
     if (characterState?.activeStates?.firstP) {
-        mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + heavy;
+        mergedBuffs.skillType.heavyAtk.dmgBonus += heavy;
     }
 
     return { mergedBuffs, combatState, skillMeta };

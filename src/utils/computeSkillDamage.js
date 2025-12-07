@@ -25,7 +25,7 @@ export function computeSkillDamage({
 
                                    }) {
     const charId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
-    const element = elementToAttribute[activeCharacter?.attribute] ?? echoElement ?? '';
+    let element = elementToAttribute[activeCharacter?.attribute] ?? echoElement ?? '';
 
     const characterState = {
         activeStates: characterRuntimeStates?.[charId]?.activeStates ?? {},
@@ -38,7 +38,7 @@ export function computeSkillDamage({
     const label = entry.label;
     let skillType = entry.detail?.toLowerCase?.() || '';
 
-    if (!['basic', 'heavy', 'skill', 'ultimate', 'intro', 'outro', 'echoSkill'].includes(skillType)) {
+    if (!['basic', 'heavy', 'skill', 'ultimate', 'intro', 'outro', 'echoSkill', 'stayTuned'].includes(skillType)) {
         const label = entry.label?.toLowerCase?.() ?? '';
 
         if (entry.tab === 'echoAttacks' || label.includes('echo attacks')) {
@@ -55,6 +55,9 @@ export function computeSkillDamage({
             skillType = 'intro';
         } else if (entry.tab === 'outroSkill') {
             skillType = 'outro';
+        } else if (entry.tab === 'stayTuned') {
+            skillType = 'tuneRupture';
+            element = '';
         } else {
             skillType = 'basic';
         }
@@ -204,6 +207,7 @@ export function computeSkillDamage({
     const mainEcho = characterRuntimeStates?.[charId]?.equippedEchoes?.[0];
     const echoBuffEntry = mainEcho && mainEchoBuffs?.[mainEcho.id];
     const echoModifier = echoBuffEntry?.skillMetaModifier;
+    skillMeta.scaling = scaling ?? skillMeta?.scaling;
 
     if (typeof echoModifier === 'function') {
         skillMeta = echoModifier(skillMeta, {
@@ -213,12 +217,10 @@ export function computeSkillDamage({
             charId
         }) ?? skillMeta;
     }
-    skillMeta.scaling = scaling ?? skillMeta?.scaling;
     skillMeta = buildSkillStatWeight(skillMeta);
 
     const tag = skillMeta.tags?.[0];
     const isSupportSkill = tag === 'healing' || tag === 'shielding';
-
 
     if (returnContextOnly) {
         const ctx = calculateDamage({

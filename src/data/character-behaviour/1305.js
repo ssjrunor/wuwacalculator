@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyYaoLogic({
                                mergedBuffs,
                                combatState,
@@ -16,7 +14,6 @@ export function applyYaoLogic({
         ...skillMeta
     };
 
-    const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
     const name = skillMeta.name?.toLowerCase();
     const tab = skillMeta.tab ?? '';
 
@@ -36,7 +33,7 @@ export function applyYaoLogic({
     const inherent1 = Math.min(inherent1Stacks * 5, 20);
 
     if (!mergedBuffs.__yaoInherent1) {
-        mergedBuffs.electro = (mergedBuffs.electro ?? 0) + inherent1;
+        mergedBuffs.attribute.electro.dmgBonus += inherent1;
         mergedBuffs.__yaoInherent1 = true;
     }
 
@@ -46,7 +43,7 @@ export function applyYaoLogic({
     }
 
     if (isActiveSequence(2) && isToggleActive(2) && !mergedBuffs.__yaoS2) {
-        mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + 30;
+        mergedBuffs.critDmg += 30;
         mergedBuffs.__yaoS2 = true;
     }
 
@@ -57,9 +54,7 @@ export function applyYaoLogic({
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__yaoS4) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 25;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 20;
         mergedBuffs.__yaoS4 = true;
     }
 
@@ -124,9 +119,7 @@ export function yaoBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.rebirth) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 20;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 20;
     }
 
     return { mergedBuffs };

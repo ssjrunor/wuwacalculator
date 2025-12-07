@@ -37,22 +37,22 @@ export function applyCalcharoLogic({
     }
 
     if (isToggleActiveLocal('inherent1') && !mergedBuffs.__calcharoInherent1) {
-        mergedBuffs.resonanceLiberation = (mergedBuffs.resonanceLiberation ?? 0) + 10;
+        mergedBuffs.skillType.resonanceLiberation.dmgBonus += 10;
         mergedBuffs.__calcharoInherent1 = true;
     }
 
     if (isToggleActive(2) && isActiveSequence(2) && !mergedBuffs.__calcharoS2) {
-        mergedBuffs.resonanceSkill = (mergedBuffs.resonanceSkill ?? 0) + 30;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += 30;
         mergedBuffs.__calcharoS2 = true;
     }
 
     if (isToggleActive(3) && isActiveSequence(3) && !mergedBuffs.__calcharoS3) {
-        mergedBuffs.electro = (mergedBuffs.electro ?? 0) + 25;
+        mergedBuffs.attribute.electro.dmgBonus += 25;
         mergedBuffs.__calcharoS3 = true;
     }
 
     if (isToggleActive(4) && isActiveSequence(4) && !mergedBuffs.__calcharoS4) {
-        mergedBuffs.electro = (mergedBuffs.electro ?? 0) + 20;
+        mergedBuffs.attribute.electro.dmgBonus += 25;
         mergedBuffs.__calcharoS4 = true;
     }
 
@@ -101,7 +101,7 @@ export function calcBuffsLogic({
     const element = elementMap?.[activeCharacter?.attribute];
 
     if (state.alliance) {
-        mergedBuffs.electro = (mergedBuffs.electro ?? 0) + 20;
+        mergedBuffs.attribute.electro.dmgBonus += 25;
     }
 
     return { mergedBuffs };

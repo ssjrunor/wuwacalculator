@@ -60,14 +60,14 @@ export function applyCartethyiaLogic({
     }
 
     if (characterState?.activeStates?.divinity && characterState?.activeStates?.manifestActive && !mergedBuffs.__divinity) {
-        mergedBuffs.damageTypeAmplify.aeroErosion = (mergedBuffs.damageTypeAmplify.aeroErosion ?? 0) + 50;
+        mergedBuffs.skillType.aeroErosion.amplify += 50;
         mergedBuffs.__divinity = true;
     }
 
     const seq1Value = (characterState?.toggles?.['1_value'] ?? 0) / 30;
     if (isActiveSequence(1) && seq1Value > 0) {
         if (!mergedBuffs.__cartethyiaSeq1) {
-            mergedBuffs.critDmg = (mergedBuffs.critDmg ?? 0) + (seq1Value * 25);
+            mergedBuffs.critDmg += (seq1Value * 25);
             mergedBuffs.__cartethyiaSeq1 = true;
         }
     } else {
@@ -90,9 +90,7 @@ export function applyCartethyiaLogic({
 
     if (isToggleActive(4) && isActiveSequence(4)) {
         if (!mergedBuffs.__cartethyiaSeq4) {
-            for (const elem of Object.values(elementToAttribute)) {
-                mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 20;
-            }
+            mergedBuffs.attribute.all.dmgBonus += 20
             mergedBuffs.__cartethyiaSeq4 = true;
         }
     } else {
@@ -101,7 +99,7 @@ export function applyCartethyiaLogic({
 
     if (isActiveSequence(6)) {
         if (!mergedBuffs.__cartethyiaSeq6) {
-            mergedBuffs.dmgReduction = (mergedBuffs.dmgReduction ?? 0) + 40;
+            mergedBuffs.attribute.all.dmgVuln += 40;
             mergedBuffs.__cartethyiaSeq6 = true;
         }
     } else {
@@ -132,17 +130,15 @@ export function cartBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.wishes) {
-        mergedBuffs.healingBonus = (mergedBuffs.healingBonus ?? 0) + 20;
+        mergedBuffs.healingBonus += 20;
     }
 
     if (state.sacrifice) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs[elem] = (mergedBuffs[elem] ?? 0) + 20;
-        }
+        mergedBuffs.attribute.all.dmgBonus += 20
     }
 
     if (state.blessing && (combatState.aeroErosion > 0 || combatState.spectroFrazzle > 0)) {
-        mergedBuffs.elementDmgAmplify.aero = (mergedBuffs.elementDmgAmplify.aero ?? 0) + 17.5;
+        mergedBuffs.attribute.aero.amplify += 17.5;
     }
 
     return { mergedBuffs };

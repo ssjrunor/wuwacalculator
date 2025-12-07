@@ -5,9 +5,7 @@ export function applyWeaponLogic({
                                      currentParamValues = []
                                  }) {
     const bonus = parseFloat(currentParamValues[0]);
-    mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + bonus;
-    mergedBuffs.heavyAtk = (mergedBuffs.heavyAtk ?? 0) + bonus;
-
-
+    mergedBuffs.skillType.basicAtk.dmgBonus += bonus;
+    mergedBuffs.skillType.heavyAtk.dmgBonus += bonus;
     return { mergedBuffs, combatState, skillMeta };
 }

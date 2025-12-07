@@ -132,8 +132,7 @@ export function computeMainStatDamage(
     // Brant ER → ATK
     if (charId === 1206) {
         const erOver = Math.max(0, finalER - 150);
-        const extraAtk = Math.min(erOver * 20, 2600);
-        finalAtk += extraAtk;
+        finalAtk += Math.min(erOver * 20, 2600);
     }
 
     let critRateTotal = critRate + critRateFromStats / 100;
@@ -152,7 +151,16 @@ export function computeMainStatDamage(
         critDmgTotal += bonusCd;
     }
 
-    // scaling
+    let dmgVuln = 0;
+    if (charId === 1209) {
+        const erOver = Math.max(0, finalER - 100);
+        dmgVuln += Math.min(erOver * 1.25, 40);
+        if (skillTypeId & SKILLTYPE_FLAGS.ultimate) {
+            critRateTotal += Math.min(erOver / 2, 80) / 100;
+            critDmgTotal += Math.min(erOver, 160) / 100;
+        }
+    }
+
     const scaled =
         finalAtk * scalingAtk +
         finalHp  * scalingHp +
@@ -194,7 +202,7 @@ export function computeMainStatDamage(
         (scaled * multiplier + flatDmg) *
         resMult *
         defMult *
-        dmgReductionTotal *
+        (dmgReductionTotal + dmgVuln / 100) *
         dmgBonusTotal *
         dmgAmplify;
 
@@ -221,7 +229,7 @@ export function computeMainStatDamage(
     if (returnScalar) return result;
 
     return {
-        avgDamage: result,
+        avgDamage: Math.floor(result),
         baseDamage,
         finalAtk,
         finalHp,

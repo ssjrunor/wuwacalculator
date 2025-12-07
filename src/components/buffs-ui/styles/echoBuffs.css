@@ -58,3 +58,11 @@
 .dark .echo-buff-icon.blackify {
     filter: none;
 }
+
+.echo-buff-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;        /* space between Rank and Stacks */
+    margin-top: 0.5rem; /* space above the whole control row */
+    align-items: center;
+}

@@ -317,7 +317,10 @@
 /* Skill tabs & options */
 .scarlet-nebula .skill-tab-label {
     color: #fff3f3;
-    border-left: 2px solid rgba(100, 255, 245, 0.6);
+    border-left: 2px solid rgba(255, 153, 153, 0.25);
+}
+.scarlet-nebula .collapsible-label::after {
+    background-color: #ff9999;
 }
 .scarlet-nebula .skill-option:hover {
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.04));
@@ -407,10 +410,6 @@
 }
 .scarlet-nebula .skill-option:hover {
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.04));
-}
-.scarlet-nebula .skill-tab-label {
-    color: #fff3f3;
-    border-left: 2px solid rgba(120, 240, 255, 0.7);
 }
 .scarlet-nebula .skill-type-icon {
     filter: drop-shadow(0 0 6px rgba(255, 180, 255, 0.5));

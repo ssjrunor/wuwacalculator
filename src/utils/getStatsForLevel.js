@@ -9,44 +9,172 @@ export const getStatsForLevel = (statsObj, level) => {
     return {};
 };
 
-export function getFinalStats(activeCharacter, baseCharacterState, characterLevel, mergedBuffs, combatState) {
+
+const ELEMENT_KEYS = ['aero', 'glacio', 'spectro', 'fusion', 'electro', 'havoc', 'physical'];
+
+const SKILL_TYPE_KEYS = [
+    'all',
+    'basicAtk',
+    'heavyAtk',
+    'resonanceSkill',
+    'resonanceLiberation',
+    'introSkill',
+    'coord',
+    'echoSkill',
+    'outroSkill',
+    'spectroFrazzle',
+    'aeroErosion',
+    'havocBane',
+    'electroFlare'
+];
+
+function cloneModBuff(mod = {}) {
+    return {
+        resShred: mod.resShred ?? 0,
+        dmgBonus: mod.dmgBonus ?? 0,
+        amplify: mod.amplify ?? 0,
+        defIgnore: mod.defIgnore ?? 0,
+        defShred: mod.defShred ?? 0,
+        dmgVuln: mod.dmgVuln ?? 0,
+        critRate: mod.critRate ?? 0,
+        critDmg: mod.critDmg ?? 0
+    };
+}
+
+export function getFinalStats(
+    activeCharacter,
+    baseCharacterState,
+    characterLevel,
+    mergedBuffs,
+    combatState
+) {
     const baseStats = getStatsForLevel(activeCharacter?.raw?.Stats, characterLevel) ?? {};
+    const charExtra = baseCharacterState?.Stats ?? {};
+    const buffs = mergedBuffs ?? {};
+    const attrBuffs = buffs.attribute ?? {};
+    const skillTypeBuffs = buffs.skillType ?? {};
 
+    // -------------------------
+    // ATK / HP / DEF
+    // -------------------------
     const weaponBaseAtk = combatState?.weaponBaseAtk ?? 0;
-    const characterBaseAtk = (baseStats["Atk"] ?? 0);
+    const characterBaseAtk = baseStats['Atk'] ?? 0;
+    const atkBase = characterBaseAtk + weaponBaseAtk;
+    const atkPercent = buffs.atk?.percent ?? 0;
+    const atkFlat = buffs.atk?.flat ?? 0;
+    const atkFinal = atkBase * (1 + atkPercent / 100) + atkFlat;
 
-    const baseAtk = characterBaseAtk + weaponBaseAtk;
-    const totalAtkPercent = mergedBuffs?.atkPercent ?? 0;
-    const totalAtkFlat = mergedBuffs?.atkFlat ?? 0;
+    const hpBase = baseStats['Life'] ?? 0;
+    const hpPercent = buffs.hp?.percent ?? 0;
+    const hpFlat = buffs.hp?.flat ?? 0;
+    const hpFinal = hpBase * (1 + hpPercent / 100) + hpFlat;
 
-    const finalStats = { ...baseStats };
-    finalStats.atk = baseAtk * (1 + totalAtkPercent / 100) + totalAtkFlat;
+    const defBase = baseStats['Def'] ?? 0;
+    const defPercent = buffs.def?.percent ?? 0;
+    const defFlat = buffs.def?.flat ?? 0;
+    const defFinal = defBase * (1 + defPercent / 100) + defFlat;
 
-    const baseHp = baseStats["Life"] ?? 0;
-    const totalHpPercent = mergedBuffs?.hpPercent ?? 0;
-    const totalHpFlat = mergedBuffs?.hpFlat ?? 0;
-    finalStats.hp = baseHp * (1 + totalHpPercent / 100) + totalHpFlat;
+    // -------------------------
+    // Attribute bucket
+    // (base element dmg bonus + all/element buffs)
+    // -------------------------
+    const attribute = {};
 
-    const baseDef = baseStats["Def"] ?? 0;
-    const totalDefPercent = mergedBuffs?.defPercent ?? 0;
-    const totalDefFlat = mergedBuffs?.defFlat ?? 0;
-    finalStats.def = baseDef * (1 + totalDefPercent / 100) + totalDefFlat;
+    // global attribute "all" – purely from buffs
+    if (attrBuffs.all) {
+        attribute.all = cloneModBuff(attrBuffs.all);
+    } else {
+        attribute.all = cloneModBuff();
+    }
 
-    finalStats.critRate = (baseCharacterState?.Stats?.critRate ?? 0) + (mergedBuffs?.critRate ?? 0);
-    finalStats.critDmg = (baseCharacterState?.Stats?.critDmg ?? 0) + (mergedBuffs?.critDmg ?? 0);
-    finalStats.healingBonus = (baseCharacterState?.Stats?.healingBonus ?? 0) + (mergedBuffs?.healingBonus ?? 0);
-    finalStats.energyRegen = (baseCharacterState?.Stats?.energyRegen ?? 0) + (mergedBuffs?.energyRegen ?? 0);
+    for (const element of ELEMENT_KEYS) {
+        const baseElementDmg = charExtra[`${element}DmgBonus`] ?? 0;
 
-    ['aero', 'glacio', 'spectro', 'fusion', 'electro', 'havoc'].forEach(element => {
-        const dmgBonusKey = `${element}DmgBonus`;
-        const bonusFromBuffs = mergedBuffs?.[dmgBonusKey] ?? 0;
-        const bonusFromPassive = mergedBuffs?.[element] ?? 0;
-        finalStats[dmgBonusKey] = (finalStats[dmgBonusKey] ?? 0) + bonusFromBuffs + bonusFromPassive;
-    });
+        const fromAll = attrBuffs.all ?? {};
+        const fromElement = attrBuffs[element] ?? {};
 
-    ['basicAtk','heavyAtk','skillAtk','ultimateAtk'].forEach(skill => {
-        finalStats[skill] = mergedBuffs?.[skill] ?? 0;
-    });
+        // total for this element = base + buffs
+        attribute[element] = {
+            resShred: (fromAll.resShred ?? 0) + (fromElement.resShred ?? 0),
+            dmgBonus:
+                baseElementDmg +
+                (fromAll.dmgBonus ?? 0) +
+                (fromElement.dmgBonus ?? 0),
+            amplify: (fromAll.amplify ?? 0) + (fromElement.amplify ?? 0),
+            defIgnore: (fromAll.defIgnore ?? 0) + (fromElement.defIgnore ?? 0),
+            defShred: (fromAll.defShred ?? 0) + (fromElement.defShred ?? 0),
+            dmgVuln: (fromAll.dmgVuln ?? 0) + (fromElement.dmgVuln ?? 0),
+            critRate: (fromAll.critRate ?? 0) + (fromElement.critRate ?? 0),
+            critDmg: (fromAll.critDmg ?? 0) + (fromElement.critDmg ?? 0)
+        };
+    }
 
-    return finalStats;
+    // -------------------------
+    // SkillType bucket
+    // (base skill-type bonuses + buffs; base usually 0)
+    // -------------------------
+    const skillType = {};
+
+    for (const key of SKILL_TYPE_KEYS) {
+        const buff = skillTypeBuffs[key] ?? {};
+
+        skillType[key] = {
+            resShred: buff.resShred ?? 0,
+            dmgBonus: (buff.dmgBonus ?? 0),
+            amplify: buff.amplify ?? 0,
+            defIgnore: buff.defIgnore ?? 0,
+            defShred: buff.defShred ?? 0,
+            dmgVuln: buff.dmgVuln ?? 0,
+            critRate: buff.critRate ?? 0,
+            critDmg: buff.critDmg ?? 0
+        };
+    }
+
+    // -------------------------
+    // Global scalar stats
+    // -------------------------
+    const critRate =
+        (charExtra.critRate ?? 0) +
+        (buffs.critRate ?? 0);
+
+    const critDmg =
+        (charExtra.critDmg ?? 0) +
+        (buffs.critDmg ?? 0);
+
+    const energyRegen =
+        (charExtra.energyRegen ?? 0) +
+        (buffs.energyRegen ?? 0);
+
+    const healingBonus =
+        (charExtra.healingBonus ?? 0) +
+        (buffs.healingBonus ?? 0);
+
+    const shieldBonus =
+        (charExtra.shieldBonus ?? 0) +
+        (buffs.shieldBonus ?? 0);
+
+    // -------------------------
+    // Final shape
+    // -------------------------
+    return {
+        atk: {
+            base: atkBase,
+            final: atkFinal
+        },
+        hp: {
+            base: hpBase,
+            final: hpFinal
+        },
+        def: {
+            base: defBase,
+            final: defFinal
+        },
+        attribute,
+        skillType,
+        critRate,
+        critDmg,
+        energyRegen,
+        healingBonus,
+        shieldBonus
+    };
 }

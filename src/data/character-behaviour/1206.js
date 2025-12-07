@@ -25,11 +25,11 @@ export function applyBrantLogic({
 
         if (characterState?.activeStates?.myMoment && !mergedBuffs.__myMoment) {
             const atkBuff = Math.min(excess * 20, 2600);
-            mergedBuffs.atkFlat = (mergedBuffs.atkFlat ?? 0) + atkBuff;
+            mergedBuffs.atk.flat += atkBuff;
             mergedBuffs.__myMoment = true;
         } else if (!characterState?.activeStates?.myMoment && !mergedBuffs.__notMyMoment) {
             const atkBuff = Math.min(excess * 12, 1560);
-            mergedBuffs.atkFlat = (mergedBuffs.atkFlat ?? 0) + atkBuff;
+            mergedBuffs.atk.flat += atkBuff;
             mergedBuffs.__notMyMoment = true;
         }
     }
@@ -49,12 +49,12 @@ export function applyBrantLogic({
     }
 
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__brantInherent2) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 15;
+        mergedBuffs.attribute.fusion.dmgBonus += 15;
         mergedBuffs.__brantInherent2 = true;
     }
 
     if (isActiveSequence(1) && isToggleActive(1) && !mergedBuffs.__brantS1) {
-        mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + 20;
+        mergedBuffs.attribute.fusion.dmgBonus += 20;
         mergedBuffs.__brantS1 = true;
     }
 
@@ -87,7 +87,7 @@ export function applyBrantLogic({
     }
 
     if (isActiveSequence(5) && isToggleActive(5) && !mergedBuffs.__brantS5) {
-        mergedBuffs.basicAtk = (mergedBuffs.basicAtk ?? 0) + 15;
+        mergedBuffs.skillType.basicAtk.dmgBonus += 15;
         mergedBuffs.__brantS5 = true;
     }
 
@@ -213,8 +213,8 @@ export function brantBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.course) {
-        mergedBuffs.elementDmgAmplify.fusion = (mergedBuffs.elementDmgAmplify.fusion ?? 0) + 20;
-        mergedBuffs.damageTypeAmplify.skill = (mergedBuffs.damageTypeAmplify.skill ?? 0) + 25;
+        mergedBuffs.attribute.fusion.amplify += 20;
+        mergedBuffs.skillType.resonanceSkill.amplify += 25;
     }
 
     return { mergedBuffs };

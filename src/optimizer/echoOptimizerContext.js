@@ -45,7 +45,7 @@ export function generateEchoContext(form) {
     };
 }
 
-export function removeSpecialBuffs( original, buffs, charId, activeStates, sequence = 0 ) {
+export function removeSpecialBuffs( original, buffs, charId, activeStates, sequence = 0, skillType = '' ) {
     const idn = Number(charId);
 
     switch (idn) {
@@ -54,10 +54,10 @@ export function removeSpecialBuffs( original, buffs, charId, activeStates, seque
                 const excess = original.energyRegen - 50;
                 if (activeStates?.myMoment) {
                     const atkBuff = Math.min(excess * 20, 2600);
-                    buffs.atkFlat = (buffs.atkFlat ?? 0) - atkBuff;
+                    buffs.atk.flat = (buffs.atk?.flat ?? 0) - atkBuff;
                 } else {
                     const atkBuff = Math.min(excess * 12, 1560);
-                    buffs.atkFlat = (buffs.atkFlat ?? 0) - atkBuff;
+                    buffs.atk.flat = (buffs.atk?.flat ?? 0) - atkBuff;
                 }
             }
             break;
@@ -72,6 +72,14 @@ export function removeSpecialBuffs( original, buffs, charId, activeStates, seque
                 bonusCd += Math.min(50, excess * 2);
             }
             buffs.critDmg = (original.critDmg ?? 0) - bonusCd;
+            break;
+        case 1209:
+            const dmgVuln = Math.min(original.energyRegen * .25, 40);
+            buffs.attribute.all.dmgVuln = (buffs.attribute?.all?.dmgVuln ?? 0) - dmgVuln;
+            if (skillType === 'ultimate') {
+                buffs.critRate -= Math.min(original.energyRegen * .5, 80);
+                buffs.critDmg -= Math.min(original.energyRegen, 160);
+            }
             break;
     }
     return buffs;

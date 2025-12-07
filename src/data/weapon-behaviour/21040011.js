@@ -5,8 +5,6 @@ export function applyWeaponLogic({
                                      currentParamValues = []
                                  }) {
     const atk = parseFloat(currentParamValues[0]);
-    mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + atk;
-
-
+    mergedBuffs.atk.percent += atk;
     return { mergedBuffs, combatState, skillMeta };
 }

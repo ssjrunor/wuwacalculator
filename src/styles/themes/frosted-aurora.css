@@ -192,7 +192,7 @@
 .frosted-aurora .echo-name {
     color: white !important;
     text-shadow: 0 0 1px rgb(0, 0, 0),
-    0 0 2px rgb(0, 0, 0);
+    0 0 2px rgb(0, 0, 0) !important;
 }
 
 .frosted-aurora .dark-text .highlight,
@@ -450,7 +450,10 @@
 }
 .frosted-aurora .skill-tab-label {
     color: #003350;
-    border-left: 2px solid rgba(0,180,255,0.4);
+    border-left: 2px solid rgba(0, 168, 255, 0.25);
+}
+.frosted-aurora .collapsible-label::after {
+    background-color: #00a8ff;
 }
 
 /* Notifications & toasts */

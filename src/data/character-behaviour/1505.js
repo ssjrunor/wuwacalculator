@@ -60,14 +60,12 @@ export function applySkLogic({
     }
 
     if (characterState?.activeStates?.butterfly && !mergedBuffs.__butterfly) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 15;
-        }
+        mergedBuffs.attribute.all.amplify += 15;
         mergedBuffs.__butterfly = true;
     }
 
     if (isActiveSequence(2) && characterState?.activeStates?.supernal && !mergedBuffs.__skS2) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 40;
+        mergedBuffs.atk.percent += 40;
         mergedBuffs.__skS2 = true;
     }
 
@@ -142,13 +140,11 @@ export function SKBuffsLogic({
     }
 
     if (state.butterfly) {
-        for (const elem of Object.values(elementToAttribute)) {
-            mergedBuffs.elementDmgAmplify[elem] = (mergedBuffs.elementDmgAmplify[elem] ?? 0) + 15;
-        }
+        mergedBuffs.attribute.all.amplify += 15;
     }
 
     if (state.nightsGift) {
-        mergedBuffs.atkPercent = (mergedBuffs.atkPercent ?? 0) + 40;
+        mergedBuffs.atk.percent = (mergedBuffs.atk.percent ?? 0) + 40;
     }
 
     return { mergedBuffs };

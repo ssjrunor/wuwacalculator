@@ -5,6 +5,7 @@
     overflow: auto !important;
     gap: 1rem;
     width: 100%;
+    padding: 0 2rem;
     height: 100%;
 }
 

@@ -5185,7 +5185,11 @@
       5
     ],
     "IntensityCode": 1,
-    "MonsterInfo": 320000280
+    "MonsterInfo": 320000280,
+    "Phantom": {
+      "Name": "Phantom: Chop Chop",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_32028_UI.T_IconMonsterGoods_SG_32028_UI"
+    }
   },
   {
     "id": "6000080",
@@ -10183,7 +10187,7 @@
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34017_UI.T_IconMonsterHead_34017_UI",
     "Skill": {
       "Desc": "Transform into the False Sovereign and dash forward in a spinning strike, dealing {0} Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains {1} Electro DMG Bonus and {2} Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal {3} Electro DMG.\nStart with {4} charges. Gain 1 charge every {5}s, up to {6} charges.\nCD: {7}s",
-      "SimpleDesc": "Transform into the False Sovereign to attack nearby enemies and deal Electro DMG.\nThe Resonator with this Echo equipped in the main slot gains Electro and Heavy Attack DMG Bonus. Upon casting Echo Skill, summon the False Sovereign to deal Electro DMG.",
+      "SimpleDesc": "Transform into the False Sovereign to attack nearby enemies and deal Electro DMG.\nThe Resonator with this Echo equipped in the main slot gains Electro and Heavy Attack DMG Bonus. Upon casting Intro Skill, summon the False Sovereign to deal Electro DMG.",
       "Param": [
         [
           "30.75%",
@@ -11643,6 +11647,1894 @@
     ],
     "IntensityCode": 1,
     "MonsterInfo": 320000480
+  },
+  {
+    "id": "6000174",
+    "Id": 6000174,
+    "Code": "T01-",
+    "Name": "Tremor Warrior",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31074_UI.T_IconMonsterHead_31074_UI",
+    "Skill": {
+      "Desc": "Transform into a Tremor Warrior and viciously attack forward enemies, dealing {0} Electro DMG\n\nCD: {1}s.",
+      "SimpleDesc": "Transform into a Tremor Warrior, dealing Electro DMG.",
+      "Param": [
+        [
+          "114.00%",
+          "8"
+        ],
+        [
+          "136.80%",
+          "8"
+        ],
+        [
+          "159.60%",
+          "8"
+        ],
+        [
+          "182.40%",
+          "8"
+        ],
+        [
+          "205.20%",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31074_UI.T_MstSkil_31074_UI",
+      "Damage": {
+        "20011101": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            11400,
+            13680,
+            15960,
+            18240,
+            20520
+          ],
+          "Energy": 285,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15000
+        }
+      }
+    },
+    "Group": {
+      "25": {
+        "Id": 25,
+        "Name": "Halo of Starry Radiance",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriCureWeakness.T_IconElementAttriCureWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Healing Bonus + {0}.",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Param": [
+              "1%",
+              "0.2%",
+              "25%",
+              "4"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000740
+  },
+  {
+    "id": "6000175",
+    "Id": 6000175,
+    "Code": "T01-",
+    "Name": "Flora Drone",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31077_UI.T_IconMonsterHead_31077_UI",
+    "Skill": {
+      "Desc": "Summon a Flora Drone, dealing {0} Aero DMG to enemies and healing Resonators within range by {1} of their HP plus an additional {2} HP.\n\nCD: {3}s",
+      "SimpleDesc": "Summon a Flora Drone, dealing Aero DMG to enemies and healing Resonators.",
+      "Param": [
+        [
+          "36.00%",
+          "2.00%",
+          "160",
+          "8"
+        ],
+        [
+          "43.20%",
+          "2.40%",
+          "160",
+          "8"
+        ],
+        [
+          "50.40%",
+          "2.80%",
+          "160",
+          "8"
+        ],
+        [
+          "57.60%",
+          "3.20%",
+          "160",
+          "8"
+        ],
+        [
+          "64.80%",
+          "3.60%",
+          "160",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31077_UI.T_MstSkil_31077_UI",
+      "Damage": {
+        "20012601": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3600,
+            4320,
+            5040,
+            5760,
+            6480
+          ],
+          "Energy": 45,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3600
+        },
+        "20012602": {
+          "Element": 0,
+          "RelatedProperty": "HP",
+          "Type": 5,
+          "RateLv": [
+            200,
+            240,
+            280,
+            320,
+            360
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 0,
+          "ToughLv": 0
+        }
+      }
+    },
+    "Group": {
+      "24": {
+        "Id": 24,
+        "Name": "Pact of Neonlight Leap",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriLightWeakness.T_IconElementAttriLightWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Param": [
+              "15%",
+              "0.3%",
+              "15%",
+              "15"
+            ]
+          }
+        }
+      },
+      "26": {
+        "Id": 26,
+        "Name": "Rite of Gilded Revelation",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriAttackWeakness.T_IconElementAttriAttackWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Param": [
+              "10%",
+              "3",
+              "5",
+              "40%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000770
+  },
+  {
+    "id": "6000176",
+    "Id": 6000176,
+    "Code": "T01-",
+    "Name": "Mining Drone",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31078_UI.T_IconMonsterHead_31078_UI",
+    "Skill": {
+      "Desc": "Transform into a Mining Drone, dealing {0} Havoc DMG 2 times.\nCD: {1}s.",
+      "SimpleDesc": "Transform into a Mining Drone, dealing Havoc DMG to enemies.",
+      "Param": [
+        [
+          "57.00%",
+          "8"
+        ],
+        [
+          "68.40%",
+          "8"
+        ],
+        [
+          "79.80%",
+          "8"
+        ],
+        [
+          "91.20%",
+          "8"
+        ],
+        [
+          "102.60%",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31078_UI.T_MstSkil_31078_UI",
+      "Damage": {
+        "20012701": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            5700,
+            6840,
+            7980,
+            9120,
+            10260
+          ],
+          "Energy": 71,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 5700
+        }
+      }
+    },
+    "Group": {
+      "25": {
+        "Id": 25,
+        "Name": "Halo of Starry Radiance",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriCureWeakness.T_IconElementAttriCureWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Healing Bonus + {0}.",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Param": [
+              "1%",
+              "0.2%",
+              "25%",
+              "4"
+            ]
+          }
+        }
+      },
+      "26": {
+        "Id": 26,
+        "Name": "Rite of Gilded Revelation",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriAttackWeakness.T_IconElementAttriAttackWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Param": [
+              "10%",
+              "3",
+              "5",
+              "40%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000780
+  },
+  {
+    "id": "6000177",
+    "Id": 6000177,
+    "Code": "T01-",
+    "Name": "Goespider Type-S4",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31079_UI.T_IconMonsterHead_31079_UI",
+    "Skill": {
+      "Desc": "Summon a Geospider S4, dealing {0} and {1} Spectro DMG to enemies once.\n\nCD: {1}s.",
+      "SimpleDesc": "Summon a Geospider S4, dealing Spectro DMG to enemies.",
+      "Param": [
+        [
+          "28.80%",
+          "43.20%",
+          "8"
+        ],
+        [
+          "34.56%",
+          "51.84%",
+          "8"
+        ],
+        [
+          "40.32%",
+          "60.48%",
+          "8"
+        ],
+        [
+          "46.08%",
+          "69.12%",
+          "8"
+        ],
+        [
+          "51.84%",
+          "77.76%",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31079_UI.T_MstSkil_31079_UI",
+      "Damage": {
+        "20012801": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2880,
+            3456,
+            4032,
+            4608,
+            5184
+          ],
+          "Energy": 28,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2880
+        },
+        "20012802": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4320,
+            5184,
+            6048,
+            6912,
+            7776
+          ],
+          "Energy": 64,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4320
+        }
+      }
+    },
+    "Group": {
+      "24": {
+        "Id": 24,
+        "Name": "Pact of Neonlight Leap",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriLightWeakness.T_IconElementAttriLightWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Param": [
+              "15%",
+              "0.3%",
+              "15%",
+              "15"
+            ]
+          }
+        }
+      },
+      "25": {
+        "Id": 25,
+        "Name": "Halo of Starry Radiance",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriCureWeakness.T_IconElementAttriCureWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Healing Bonus + {0}.",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Param": [
+              "1%",
+              "0.2%",
+              "25%",
+              "4"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000790
+  },
+  {
+    "id": "6000178",
+    "Id": 6000178,
+    "Code": "T01-",
+    "Name": "Zip Zap",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31082_UI.T_IconMonsterHead_31082_UI",
+    "Skill": {
+      "Desc": "Summon a Zip Zap to launch spinning attacks at enemies, dealing {0} Electro DMG 5 times.\n\nCD: {1}s.",
+      "SimpleDesc": "Summon a Zip Zap, dealing Electro DMG to enemies.",
+      "Param": [
+        [
+          "14.40%",
+          "8"
+        ],
+        [
+          "17.28%",
+          "8"
+        ],
+        [
+          "20.16%",
+          "8"
+        ],
+        [
+          "23.04%",
+          "8"
+        ],
+        [
+          "25.92%",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31082_UI.T_MstSkil_31082_UI",
+      "Damage": {
+        "20011501": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1440,
+            1728,
+            2016,
+            2304,
+            2592
+          ],
+          "Energy": 7,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1440
+        }
+      }
+    },
+    "Group": {
+      "24": {
+        "Id": 24,
+        "Name": "Pact of Neonlight Leap",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriLightWeakness.T_IconElementAttriLightWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Param": [
+              "15%",
+              "0.3%",
+              "15%",
+              "15"
+            ]
+          }
+        }
+      },
+      "26": {
+        "Id": 26,
+        "Name": "Rite of Gilded Revelation",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriAttackWeakness.T_IconElementAttriAttackWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Param": [
+              "10%",
+              "3",
+              "5",
+              "40%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000820
+  },
+  {
+    "id": "6000179",
+    "Id": 6000179,
+    "Code": "T01-",
+    "Name": "Twin Nova: Nebulous Cannon",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32049_UI.T_IconMonsterHead_32049_UI",
+    "Skill": {
+      "Desc": "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing {0} Spectro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Spectro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill results in both Nebulous Cannon and Collapsar Blade skills being unleashed in quick succession back and forth, but the DMG Bonus from the Echo in the main slot remains unchanged.\n- Damage dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use restored every {9}s.",
+      "SimpleDesc": "Transform into a Twin Nova: Nebulous Cannon to attack enemies, dealing Spectro DMG to enemies.\n\nEquipping this Echo in the main slot grants Spectro and Basic Attack Bonuses to the equipped Resonator.\n\nEquipping Twin Nova: Nebulous Cannon at the same time grants special Echo Skill effects.",
+      "Param": [
+        [
+          "44.73%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ],
+        [
+          "53.67%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ],
+        [
+          "62.62%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ],
+        [
+          "71.56%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ],
+        [
+          "80.51%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32049_UI.T_MstSkil_32049_UI",
+      "Damage": {
+        "20011701": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            4473,
+            5367,
+            6262,
+            7156,
+            8051
+          ],
+          "Energy": 55,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 4473
+        }
+      }
+    },
+    "Group": {
+      "26": {
+        "Id": 26,
+        "Name": "Rite of Gilded Revelation",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriAttackWeakness.T_IconElementAttriAttackWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Param": [
+              "10%",
+              "3",
+              "5",
+              "40%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000490,
+    "Phantom": {
+      "Name": "Phantom Twin Nova: Nebulous Cannon",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_32049_UI.T_IconMonsterGoods_SG_32049_UI"
+    }
+  },
+  {
+    "id": "6000180",
+    "Id": 6000180,
+    "Code": "T01-",
+    "Name": "Twin Nova: Collapsar Blade",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32050_UI.T_IconMonsterHead_32050_UI",
+    "Skill": {
+      "Desc": "Transform into a Twin Nova: Collapsar Blade to rapid fire at enemies for 5s, with each attack dealing {0} Electro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Electro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Nebulous Cannon is equipped in another slot on the Resonator:\n- Casting Echo Skill unleashes both Nebulous Cannon and Collapsar Blade skills in quick succession back and forth, but the DMG Bonus from the Echo in the main slot remains unchanged.\n- Damage dealt by Twin Nova: Collapsar Blade's becomes Spectro DMG.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n- .-\nThis skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use restored every {9}s.",
+      "SimpleDesc": "Transform into a Twin Nova: Collapsar Blade to attack enemies, dealing Electro DMG.\n\n\nEquipping this Echo in the main slot grants Electro and Basic Attack Bonuses to the equipped Resonator.\n\nEquipping Twin Nova: Nebulous Cannon at the same time grants special Echo Skill effects.",
+      "Param": [
+        [
+          "1.12%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ],
+        [
+          "1.34%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ],
+        [
+          "1.56%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ],
+        [
+          "1.79%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ],
+        [
+          "2.01%",
+          "1",
+          "3",
+          "6",
+          "8",
+          "10%",
+          "12.00%",
+          "12.00%",
+          "2",
+          "8",
+          "2",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32050_UI.T_MstSkil_32050_UI",
+      "Damage": {
+        "20011601": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            112,
+            134,
+            156,
+            179,
+            201
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 112
+        },
+        "20011602": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            112,
+            134,
+            156,
+            179,
+            201
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 112
+        }
+      }
+    },
+    "Group": {
+      "26": {
+        "Id": 26,
+        "Name": "Rite of Gilded Revelation",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriAttackWeakness.T_IconElementAttriAttackWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Param": [
+              "10%",
+              "3",
+              "5",
+              "40%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000500,
+    "Phantom": {
+      "Name": "Phantom Twin Nova: Collapsar Blade",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_32050_UI.T_IconMonsterGoods_SG_32050_UI"
+    }
+  },
+  {
+    "id": "6000181",
+    "Id": 6000181,
+    "Code": "T01-",
+    "Name": "Flora Reindeer",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32051_UI.T_IconMonsterHead_32051_UI",
+    "Skill": {
+      "Desc": "Summon a Flora Reindeer, dealing {0} Aero DMG to enemies within a large range.\n\nCD: {1}s.",
+      "SimpleDesc": "Summon a Flora Reindeer, dealing Aero DMG to enemies.",
+      "Param": [
+        [
+          "107.00%",
+          "15"
+        ],
+        [
+          "128.40%",
+          "15"
+        ],
+        [
+          "149.80%",
+          "15"
+        ],
+        [
+          "171.20%",
+          "15"
+        ],
+        [
+          "192.60%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32051_UI.T_MstSkil_32051_UI",
+      "Damage": {
+        "20011801": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10700,
+            12840,
+            14980,
+            17120,
+            19260
+          ],
+          "Energy": 267,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10700
+        }
+      }
+    },
+    "Group": {
+      "26": {
+        "Id": 26,
+        "Name": "Rite of Gilded Revelation",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriAttackWeakness.T_IconElementAttriAttackWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Param": [
+              "10%",
+              "3",
+              "5",
+              "40%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000510
+  },
+  {
+    "id": "6000182",
+    "Id": 6000182,
+    "Code": "T01-",
+    "Name": "Mining Reindeer",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32052_UI.T_IconMonsterHead_32052_UI",
+    "Skill": {
+      "Desc": "Summon a Mining Reindeer for a charged attack on enemies, dealing {0} Electro DMG.\n\n CD: {1}s.",
+      "SimpleDesc": "Summon a Mining Reindeer, dealing Electro DMG to enemies.",
+      "Param": [
+        [
+          "132.00%",
+          "20"
+        ],
+        [
+          "158.40%",
+          "20"
+        ],
+        [
+          "184.80%",
+          "20"
+        ],
+        [
+          "211.20%",
+          "20"
+        ],
+        [
+          "237.60%",
+          "20"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32052_UI.T_MstSkil_32052_UI",
+      "Damage": {
+        "20011901": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            13200,
+            15840,
+            18480,
+            21120,
+            23760
+          ],
+          "Energy": 330,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 13200
+        }
+      }
+    },
+    "Group": {
+      "24": {
+        "Id": 24,
+        "Name": "Pact of Neonlight Leap",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriLightWeakness.T_IconElementAttriLightWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Param": [
+              "15%",
+              "0.3%",
+              "15%",
+              "15"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000520
+  },
+  {
+    "id": "6000183",
+    "Id": 6000183,
+    "Code": "T01-",
+    "Name": "Ironhoof",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32053_UI.T_IconMonsterHead_32053_UI",
+    "Skill": {
+      "Desc": "Summon an Ironhoof to charge at enemies, dealing {0} Fusion DMG. At the end of the charge, it unleashes a goring attack that deals {1} Fusion DMG three times and {2} Fusion DMG once.\n\nCD: {3}s.",
+      "SimpleDesc": "Transform into an Ironhoof to charge at enemies, dealing Fusion DMG.",
+      "Param": [
+        [
+          "29.80%",
+          "7.45%",
+          "96.85%",
+          "15"
+        ],
+        [
+          "35.76%",
+          "8.94%",
+          "116.22%",
+          "15"
+        ],
+        [
+          "41.72%",
+          "10.43%",
+          "135.59%",
+          "15"
+        ],
+        [
+          "47.68%",
+          "11.92%",
+          "154.96%",
+          "15"
+        ],
+        [
+          "53.64%",
+          "13.41%",
+          "174.33%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32053_UI.T_MstSkil_32053_UI",
+      "Damage": {
+        "20012001": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2980,
+            3576,
+            4172,
+            4768,
+            5364
+          ],
+          "Energy": 14,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2980
+        },
+        "20012002": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            745,
+            894,
+            1043,
+            1192,
+            1341
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 745
+        },
+        "20012003": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            9685,
+            11622,
+            13559,
+            15496,
+            17433
+          ],
+          "Energy": 157,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14527
+        }
+      }
+    },
+    "Group": {
+      "24": {
+        "Id": 24,
+        "Name": "Pact of Neonlight Leap",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriLightWeakness.T_IconElementAttriLightWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Param": [
+              "15%",
+              "0.3%",
+              "15%",
+              "15"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000530
+  },
+  {
+    "id": "6000184",
+    "Id": 6000184,
+    "Code": "T01-",
+    "Name": "Spacetrek Explorer",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32054_UI.T_IconMonsterHead_32054_UI",
+    "Skill": {
+      "Desc": "Summon a Spacetrek Explorer, which grants nearby active Resonators in the team a shield equal to {0} of the summoner's HP, lasting {1}s.\n\nCD: {2}s",
+      "SimpleDesc": "Summon a Spacetrek Explorer that grants shields according to the summoner.",
+      "Param": [
+        [
+          "10%",
+          "4",
+          "20"
+        ],
+        [
+          "10%",
+          "4",
+          "20"
+        ],
+        [
+          "10%",
+          "4",
+          "20"
+        ],
+        [
+          "10%",
+          "4",
+          "20"
+        ],
+        [
+          "10%",
+          "4",
+          "20"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32054_UI.T_MstSkil_32054_UI",
+      "Damage": {}
+    },
+    "Group": {
+      "25": {
+        "Id": 25,
+        "Name": "Halo of Starry Radiance",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriCureWeakness.T_IconElementAttriCureWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Healing Bonus + {0}.",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Param": [
+              "1%",
+              "0.2%",
+              "25%",
+              "4"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000540
+  },
+  {
+    "id": "6000185",
+    "Id": 6000185,
+    "Code": "T01-",
+    "Name": "Sabercat Reaver",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32055_UI.T_IconMonsterHead_32055_UI",
+    "Skill": {
+      "Desc": "Summon a Sabercat Reaver to attack enemies, dealing {0} Fusion DMG.\n\nCD: {1}s.",
+      "SimpleDesc": "Summon a Sabercat Reaver Drake, dealing Fusion DMG to enemies.",
+      "Param": [
+        [
+          "107.00%",
+          "15"
+        ],
+        [
+          "128.40%",
+          "15"
+        ],
+        [
+          "149.80%",
+          "15"
+        ],
+        [
+          "171.20%",
+          "15"
+        ],
+        [
+          "192.60%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32055_UI.T_MstSkil_32055_UI",
+      "Damage": {
+        "20012201": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10700,
+            12840,
+            14980,
+            17120,
+            19260
+          ],
+          "Energy": 267,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10700
+        }
+      }
+    },
+    "Group": {
+      "24": {
+        "Id": 24,
+        "Name": "Pact of Neonlight Leap",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriLightWeakness.T_IconElementAttriLightWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Param": [
+              "15%",
+              "0.3%",
+              "15%",
+              "15"
+            ]
+          }
+        }
+      },
+      "25": {
+        "Id": 25,
+        "Name": "Halo of Starry Radiance",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriCureWeakness.T_IconElementAttriCureWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Healing Bonus + {0}.",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Param": [
+              "1%",
+              "0.2%",
+              "25%",
+              "4"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000550
+  },
+  {
+    "id": "6000186",
+    "Id": 6000186,
+    "Code": "T01-",
+    "Name": "Sabercat Prowler",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32056_UI.T_IconMonsterHead_32056_UI",
+    "Skill": {
+      "Desc": "Summon a Sabercat Prowler to fire beams at enemies, dealing {0} Havoc DMG.\n\nCD: {1}s.",
+      "SimpleDesc": "Summon a Sabercat Prowler, dealing Havoc DMG to enemies.",
+      "Param": [
+        [
+          "107.00%",
+          "15"
+        ],
+        [
+          "128.40%",
+          "15"
+        ],
+        [
+          "149.80%",
+          "15"
+        ],
+        [
+          "171.20%",
+          "15"
+        ],
+        [
+          "192.60%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32056_UI.T_MstSkil_32056_UI",
+      "Damage": {
+        "20012301": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10700,
+            12840,
+            14980,
+            17120,
+            19260
+          ],
+          "Energy": 267,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10700
+        }
+      }
+    },
+    "Group": {
+      "24": {
+        "Id": 24,
+        "Name": "Pact of Neonlight Leap",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriLightWeakness.T_IconElementAttriLightWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Param": [
+              "15%",
+              "0.3%",
+              "15%",
+              "15"
+            ]
+          }
+        }
+      },
+      "25": {
+        "Id": 25,
+        "Name": "Halo of Starry Radiance",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriCureWeakness.T_IconElementAttriCureWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Healing Bonus + {0}.",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Param": [
+              "1%",
+              "0.2%",
+              "25%",
+              "4"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000560
+  },
+  {
+    "id": "6000187",
+    "Id": 6000187,
+    "Code": "T01-",
+    "Name": "Frostbite Coleoid",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32057_UI.T_IconMonsterHead_32057_UI",
+    "Skill": {
+      "Desc": "Summon a Frostbite Coleoid to punch enemies, dealing {0} Glacio DMG.\n\nCD: {1}s.",
+      "SimpleDesc": "Summon a Frostbite Coleoid to punch enemies, dealing Glacio DMG.",
+      "Param": [
+        [
+          "107.00%",
+          "15"
+        ],
+        [
+          "128.40%",
+          "15"
+        ],
+        [
+          "149.80%",
+          "15"
+        ],
+        [
+          "171.20%",
+          "15"
+        ],
+        [
+          "192.60%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32057_UI.T_MstSkil_32057_UI",
+      "Damage": {
+        "20012401": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            10700,
+            12840,
+            14980,
+            17120,
+            19260
+          ],
+          "Energy": 267,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 10700
+        }
+      }
+    },
+    "Group": {
+      "25": {
+        "Id": 25,
+        "Name": "Halo of Starry Radiance",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriCureWeakness.T_IconElementAttriCureWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Healing Bonus + {0}.",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Param": [
+              "1%",
+              "0.2%",
+              "25%",
+              "4"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000570
+  },
+  {
+    "id": "6000188",
+    "Id": 6000188,
+    "Code": "T01-",
+    "Name": "Windlash Coleoid",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32058_UI.T_IconMonsterHead_32058_UI",
+    "Skill": {
+      "Desc": "Transform into a Windlash Coleoid to kick enemies, dealing {0} Aero DMG\n\nCD: {1}s.",
+      "SimpleDesc": "Transform into a Windlash Coleoid to kick enemies, dealing Aero DMG.",
+      "Param": [
+        [
+          "149.00%",
+          "15"
+        ],
+        [
+          "178.80%",
+          "15"
+        ],
+        [
+          "208.60%",
+          "15"
+        ],
+        [
+          "238.40%",
+          "15"
+        ],
+        [
+          "268.20%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32058_UI.T_MstSkil_32058_UI",
+      "Damage": {
+        "20012501": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900
+        }
+      }
+    },
+    "Group": {
+      "26": {
+        "Id": 26,
+        "Name": "Rite of Gilded Revelation",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriAttackWeakness.T_IconElementAttriAttackWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Param": [
+              "10%",
+              "3",
+              "5",
+              "40%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000580
+  },
+  {
+    "id": "6000189",
+    "Id": 6000189,
+    "Code": "T01-",
+    "Name": "Hyvatia",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34021_UI.T_IconMonsterHead_34021_UI",
+    "Skill": {
+      "Desc": "Summon Hyvatia to appear in in mid-air and emit lasers at enemies, dealing {0} Spectro DMG damage to enemies each time for ten times.\n\nCasting Outro Skill within {1}s  immediately afterwards increases the DMG Bonus of the Intro Skill of the Incoming Resonator by {2} for {3}s.\n\nCD: {4}s.",
+      "SimpleDesc": "Summon Hyvatia, dealing Spectro DMG to enemies and increasing Intro Skill All-Attribute DMG for the next incoming Resonator.",
+      "Param": [
+        [
+          "15.20%",
+          "15",
+          "10.00%",
+          "15",
+          "20"
+        ],
+        [
+          "18.24%",
+          "15",
+          "10.00%",
+          "15",
+          "20"
+        ],
+        [
+          "21.28%",
+          "15",
+          "10.00%",
+          "15",
+          "20"
+        ],
+        [
+          "24.32%",
+          "15",
+          "10.00%",
+          "15",
+          "20"
+        ],
+        [
+          "27.36%",
+          "15",
+          "10.00%",
+          "15",
+          "20"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34021_UI.T_MstSkil_34021_UI",
+      "Damage": {
+        "28003601": {
+          "Element": 5,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1520,
+            1824,
+            2128,
+            2432,
+            2736
+          ],
+          "Energy": 3,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1520
+        }
+      }
+    },
+    "Group": {
+      "24": {
+        "Id": 24,
+        "Name": "Pact of Neonlight Leap",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriLightWeakness.T_IconElementAttriLightWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Param": [
+              "15%",
+              "0.3%",
+              "15%",
+              "15"
+            ]
+          }
+        }
+      },
+      "26": {
+        "Id": 26,
+        "Name": "Rite of Gilded Revelation",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriAttackWeakness.T_IconElementAttriAttackWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Spectro DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Param": [
+              "10%",
+              "3",
+              "5",
+              "40%"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 2,
+    "MonsterInfo": 340000210
+  },
+  {
+    "id": "6000190",
+    "Id": 6000190,
+    "Code": "T01-",
+    "Name": "Reactor Husk",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34022_UI.T_IconMonsterHead_34022_UI",
+    "Skill": {
+      "Desc": "Transform into the Reactor Husk, jumping into the air and unleashing a heavy slash that deals {0} Fusion DMG to enemies.\n\nThe Resonator with this Echo equipped in their main slot gain {1} Energy Regen.\n\nCD: {4}s.",
+      "SimpleDesc": "Transform into the Reactor Husk, dealing Fusion DMG.\n\nThe Resonator with this Echo equipped in their main slot gains Energy Regen.",
+      "Param": [
+        [
+          "195.00%",
+          "10.00%",
+          "10%",
+          "20",
+          "20"
+        ],
+        [
+          "234.00%",
+          "10.00%",
+          "10%",
+          "20",
+          "20"
+        ],
+        [
+          "273.00%",
+          "10.00%",
+          "10%",
+          "20",
+          "20"
+        ],
+        [
+          "312.00%",
+          "10.00%",
+          "10%",
+          "20",
+          "20"
+        ],
+        [
+          "351.00%",
+          "10.00%",
+          "10%",
+          "20",
+          "20"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34022_UI.T_MstSkil_34022_UI",
+      "Damage": {
+        "28003401": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            19500,
+            23400,
+            27300,
+            31200,
+            35100
+          ],
+          "Energy": 487,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 19500
+        }
+      }
+    },
+    "Group": {
+      "25": {
+        "Id": 25,
+        "Name": "Halo of Starry Radiance",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriCureWeakness.T_IconElementAttriCureWeakness",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Healing Bonus + {0}.",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Param": [
+              "1%",
+              "0.2%",
+              "25%",
+              "4"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 2,
+    "MonsterInfo": 340000220
   },
   {
     "id": "390070051",

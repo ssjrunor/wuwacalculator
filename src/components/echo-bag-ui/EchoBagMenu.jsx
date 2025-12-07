@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import EditSubstatsModal from '../echoes-pane-ui/EchoEditModal.jsx';
-import {setIconMap} from "../../constants/echoSetData.jsx";
+import { setIconMap } from "../../constants/echoSetData2.js";
 import {isEqual} from 'lodash';
 import {clearEchoBag, getEchoBag, subscribeEchoBag, updateEchoInBag} from '../../state/echoBagStore.js';
 import {getValidMainStats} from "../../utils/echoHelper.js";

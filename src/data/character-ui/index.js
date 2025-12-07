@@ -41,6 +41,8 @@ import QiuyuanUI, {QiuyuanSequenceToggles, CustomInherentSkills as QiuyuanInhere
 import GalbrenaUI, {GalbrenaSequenceToggles, CustomInherentSkills as GalbrenaInherents} from "./1208.jsx";
 import BulingUI, {bulingSequenceToggles, CustomInherentSkills as BulingInherents} from "./1307.jsx";
 import ChisaUI, {chisaSequenceToggles, CustomInherentSkills as ChisaInherentSkills} from "./1508.jsx";
+import LynaeUI, {lynaeSequenceToggles, CustomInherentSkills as LynaeInherentSkills} from "./1509.jsx";
+import MornyeUI, {MornyeSequenceToggles} from "./1209.jsx";
 
 
 export function getCharacterUIComponent(characterId) {
@@ -70,6 +72,8 @@ export function getCharacterUIComponent(characterId) {
         case '1208': return GalbrenaUI;
         case '1307': return BulingUI;
         case '1508': return ChisaUI;
+        case '1509': return LynaeUI;
+        case '1209': return MornyeUI;
         default: return null;
     }
 }
@@ -110,6 +114,7 @@ export function getCustomInherentSkillsComponent(characterId) {
         case '1208': return GalbrenaInherents;
         case '1307': return BulingInherents;
         case '1508': return ChisaInherentSkills;
+        case '1509': return LynaeInherentSkills;
         default: return null;
     }
 }
@@ -162,6 +167,8 @@ export function getSequenceToggleComponent(characterId) {
         case '1208': return GalbrenaSequenceToggles;
         case '1307': return bulingSequenceToggles;
         case '1508': return chisaSequenceToggles;
+        case '1509': return lynaeSequenceToggles;
+        case '1209': return MornyeSequenceToggles;
         default: return null;
     }
 }
@@ -211,7 +218,8 @@ const characterBuffUIMap = {
     '1208': () => import('./1208.jsx').then(mod => mod.buffUI),
     '1307': () => import('./1307.jsx').then(mod => mod.buffUI),
     '1508': () => import('./1508.jsx').then(mod => mod.buffUI),
-
+    '1509': () => import('./1509.jsx').then(mod => mod.buffUI),
+    '1209': () => import('./1209.jsx').then(mod => mod.buffUI),
 };
 
 export async function loadCharacterBuffUI(charId) {
