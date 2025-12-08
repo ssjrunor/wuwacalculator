@@ -54,8 +54,6 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
             const perStack = perStackValues[rank] ?? 0;
             const total = perStack * stacks;
 
-            console.log(total)
-
             mergedBuffs.attribute.all.dmgBonus += total;
         }
     };
