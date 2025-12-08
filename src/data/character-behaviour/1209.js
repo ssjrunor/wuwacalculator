@@ -58,10 +58,14 @@ export function applyMornyeLogic({
 
     if (isActiveSequence(5)) {
         if (name.includes('tune rupture') && tab === 'forteCircuit') skillMeta.multiplier *= 2.6;
-        if (tab === 'resonanceLiberation') skillMeta.multiplier *= 1.4;
+        if (tab === 'resonanceLiberation' && name.includes('skill')) skillMeta.multiplier *= 1.4;
     }
-    if (tab === 'resonanceLiberation' && isActiveSequence(6)) {
-        skillMeta.multiplier += 4*2;
+    if (tab === 'resonanceLiberation') {
+        if (name.includes('skill 2 dmg')) {
+            skillMeta.label = 'Critical Protocol DMG';
+            skillMeta.visible = isActiveSequence(6)
+        }
+        if (name.includes('skill dmg')) skillMeta.visible = !isActiveSequence(6);
     }
 
     return {mergedBuffs, combatState, skillMeta};
@@ -94,34 +98,34 @@ export const mornyeMultipliers = {
         }
     ],
     resonanceLiberation: [
-        /*{
-            name: 'Skill DMG',
+        {
+            name: 'Skill 2 DMG',
             scaling: { atk: 0, hp: 0, def: 1, energyRegen: 0 },
             Param: [
                 [
-                    "262.73%+400%*2",
-                    "284.27%+400%*2",
-                    "305.82%+400%*2",
-                    "335.98%+400%*2",
-                    "357.52%+400%*2",
-                    "382.30%+400%*2",
-                    "416.77%+400%*2",
-                    "451.24%+400%*2",
-                    "485.70%+400%*2",
-                    "522.33%+400%*2",
-                    "565.42%+400%*2",
-                    "608.50%+400%*2",
-                    "651.59%+400%*2",
-                    "694.68%+400%*2",
-                    "737.76%+400%*2",
-                    "780.85%+400%*2",
-                    "823.94%+400%*2",
-                    "867.02%+400%*2",
-                    "910.11%+400%*2",
-                    "953.20%+400%*2"
+                    "262.73%+1050.92%*2",
+                    "284.27%+1137.08%*2",
+                    "305.82%+1223.28%*2",
+                    "335.98%+1343.92%*2",
+                    "357.52%+1430.08%*2",
+                    "382.30%+1529.20%*2",
+                    "416.77%+1667.08%*2",
+                    "451.24%+1804.96%*2",
+                    "485.70%+1942.80%*2",
+                    "522.33%+2089.32%*2",
+                    "565.42%+2261.68%*2",
+                    "608.50%+2434.00%*2",
+                    "651.59%+2606.36%*2",
+                    "694.68%+2778.72%*2",
+                    "737.76%+2951.04%*2",
+                    "780.85%+3123.40%*2",
+                    "823.94%+3295.76%*2",
+                    "867.02%+3468.08%*2",
+                    "910.11%+3640.44%*2",
+                    "953.20%+3812.80%*2"
                 ]
             ]
-        },*/
+        },
         {
             name: 'High Syntony Field Healing',
             scaling: { atk: 0, hp: 0, def: 1, energyRegen: 0 },

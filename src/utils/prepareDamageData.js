@@ -165,7 +165,7 @@ export function prepareDamageData({
             const supportColor = skillMeta.tags?.includes("healing") ? "limegreen" : "#838383";
 
             charSkillResults.push({
-                name: level.label ?? level.Name,
+                name: skillMeta.label ?? level.label ?? level.Name,
                 tab,
                 skillType: result.skillMeta?.skillType ?? "basic",
                 statWeight: skillMeta.statWeight ?? {},

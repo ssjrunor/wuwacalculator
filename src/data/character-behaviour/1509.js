@@ -46,6 +46,8 @@ export function applyLynaeLogic({
 
     if (isActiveSequence(2) && name.includes('spectral analysis')) skillMeta.multiplier *= 1.7;
 
+    if (isActiveSequence(3) && name.includes('visual impact')) skillMeta.multiplier *= 1.55;
+
     if (isActiveSequence(4) && !mergedBuffs.__lynaeS4) {
         mergedBuffs.atk.percent += 20;
         mergedBuffs.__lynaeS4 = true;
