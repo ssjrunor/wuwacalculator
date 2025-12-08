@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://www.thewuwacalculator.com/" target="_blank">
-    <img src="public/sample-app2.png" alt="App Screenshot" width="600" />
+    <img src="public/sample-app3.png" alt="App Screenshot" width="600" />
   </a>
 </p>
 
