@@ -43,7 +43,7 @@ export default function StatProfileCard({
             skillMeta?.skillDmgBonus ?? 0,
             'dmgBonus'
         );
-        b += mergedBuffs.attribute[skill.element]?.dmgBonus;
+        b += mergedBuffs.attribute[skill.element] ? mergedBuffs.attribute[skill.element].dmgBonus : 0;
         return b;
     })();
 

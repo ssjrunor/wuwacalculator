@@ -705,7 +705,9 @@ export const mainEchoBuffs = {
             if (skillMeta.name.includes('Twin Nova: Nebulous Cannon Skill 2')) {
                 skillMeta.visible = characterState.nebulousCannon;
                 skillMeta.label = 'Twin Nova: Collapsar Blade';
-            } else skillMeta.label = 'Twin Nova: Nebulous Cannon';
+            } else if (skillMeta.name.includes('Twin Nova: Nebulous Cannon Skill 1')) {
+                skillMeta.label = 'Twin Nova: Nebulous Cannon';
+            }
             return skillMeta;
         }
     },
@@ -721,7 +723,9 @@ export const mainEchoBuffs = {
             if (skillMeta.name.includes('Twin Nova: Collapsar Blade Skill 2')) {
                 skillMeta.visible = characterState.collapsarBlade;
                 skillMeta.label = 'Twin Nova: Nebulous Cannon';
-            } else skillMeta.label = 'Twin Nova: Collapsar Blade';
+            } else if (skillMeta.name.includes('Twin Nova: Collapsar Blade Skill 1')) {
+                skillMeta.label = 'Twin Nova: Collapsar Blade';
+            }
             return skillMeta;
         }
     },
