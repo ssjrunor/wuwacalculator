@@ -44,7 +44,7 @@
     display: grid;
     overflow-y: auto;
     max-height: 37.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(198px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
     gap: 1rem;
     mask-image: linear-gradient(to bottom, black 97%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, black 97%, transparent 100%);
@@ -55,7 +55,7 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 0.75rem;
-    padding: 0.5rem;
+    padding: 0.25rem;
     text-align: center;
     display: flex;
     flex-direction: column;
