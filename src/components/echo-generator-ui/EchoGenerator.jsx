@@ -15,6 +15,14 @@ import SkillMenu, {tabDisplayOrder} from "../rotations-ui/SkillMenu.jsx";
 import { EchoGridPreview } from "../overview-ui/OverviewDetailPane.jsx";
 import {getGroupedSkillOptions} from "../../utils/prepareDamageData.js";
 
+const echoSetList = Object.entries(echoSetData).map(([id, cfg]) => ({
+    id: Number(id),
+    name: cfg.name,
+    twoPiece: cfg.desc?.twoPiece,
+    threePiece: cfg.desc?.threePiece,
+    fivePiece: cfg.desc?.fivePiece
+}));
+
 export function EchoGenerator({
                                   open,
                                   onClose,
@@ -62,20 +70,9 @@ export function EchoGenerator({
     const workerRef = useRef(null);
     const [progress, setProgress] = useState(0);
 
-    const groupedSkillOptions = React.useMemo(() => {
+    const groupedSkillOptions = useMemo(() => {
         return getGroupedSkillOptions({ skillResults });
     }, [skillResults]);
-
-    const echoSetList = useMemo(
-        () => Object.entries(echoSetData).map(([id, cfg]) => ({
-            id: Number(id),
-            name: cfg.name,
-            twoPiece: cfg.desc?.twoPiece,
-            threePiece: cfg.desc?.threePiece,
-            fivePiece: cfg.desc?.fivePiece
-        })),
-        []
-    );
 
     const [expandedTabs, setExpandedTabs] = useState(() =>
         Object.fromEntries(tabDisplayOrder.map((key) => [key, true]))
