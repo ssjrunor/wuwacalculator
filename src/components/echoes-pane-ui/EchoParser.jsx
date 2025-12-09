@@ -68,6 +68,7 @@ const EchoParser = ({
                         saveAllEchoesToBag,
                         setGuideClose,
                         setIsGeneratorOpen,
+                        setStatusOpen
                     }) => {
     const [parsedEchoes, setParsedEchoes] = useState([]);
     const [view, setView] = useState('instructions');
@@ -418,7 +419,22 @@ const EchoParser = ({
                 )}
                 <button
                     className="btn-primary echoes"
-                    onClick={() => setIsGeneratorOpen(true)}
+                    onClick={() => {
+/*
+                        setIsGeneratorOpen(true);
+*/
+                        setPopupMessage({
+                            message: "Disabled, please read status notes~!",
+                            icon: '❤',
+                            color: { light: 'green', dark: 'limegreen' },
+                            duration: 60000,
+                            prompt: {
+                                message: 'See status~!',
+                                action: () => setStatusOpen(true)
+                            }
+                        });
+                        setShowToast(true);
+                    }}
                 >
                     Random
                 </button>

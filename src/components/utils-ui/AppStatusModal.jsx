@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/appStatusModal.css';
 
 const data = {
-    lastUpdated: '07-12-2025',
+    lastUpdated: '09-12-2025',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
     patchVersion: '3.0.1 (Beta)',
@@ -11,8 +11,9 @@ const data = {
     coverage: [
         {
             title: 'Note',
-            desc: 'Did some under-the-hood overhaul stuff... may have destroyed everything (jk). Most stuff should work, but some things may be acting weird.' +
-                ' Tunability and it\'s related effects aren\'t 100% clear to me yet so... yeah, some things will be missing. ',
+            desc: 'WHOOPS... the echo generator has decided to be quirky in all the wrong ways. ' +
+                'A proper fix is on the way and should roll out in about 2 weeks. Till then it will be disabled. ' +
+                'Sorry for the trouble, and thanks for bearing with me~!',
         },
         {
             title: 'Character Coverage',
@@ -28,18 +29,19 @@ const data = {
         },
         {
             title: 'Optimizer Coverage',
-            desc: 'Optimizer, echo generator, suggested main stats and sonata sets are (probably) working well... for everyone other than Mornye that is, i\'m still working on it.',
+            desc: 'Optimizer, suggested main stats and sonata sets are (probably) working well... for everyone other ' +
+                'than Mornye that is, i\'m still working on it. The echo generator is behaving weirdly.',
         },
     ],
     knownIssues: [
-        "Due to this recent change, you might see things like: buffs not applying, applying twice, or mysteriously disappearing when swapping sets / echoes.",
-        "I may not have triggered every possible team/echo/weapon combo yet, so there are likely bugs I simply haven’t seen in the wild. If you spot something off, don’t panic: hop into the server, drop a screenshot + setup, and I’ll squash it as fast as humanly possible.",
         "Tunability and it's related effects are still in the works.",
-        "Lots of missing en beta data and assets."
+        "Lots of missing en beta data and assets.",
+        "Yeah... echo generator bug... i'm aware..."
     ],
     recentChanges: [
         "BIG 3.0.1 beta stuff.",
-        "Reworked how all buffs and stats are stored and applied: everything now flows through a unified 'buff path' system instead of a pile of special cases. Good long-term, but some edge cases may still be cursed.",
+        "Reworked how all buffs and stats are stored and applied: everything now flows through a unified 'buff path' system " +
+        "instead of a pile of special cases. Good long-term, but some edge cases may still be cursed.",
     ],
 };
 

@@ -45,13 +45,16 @@ export default function EchoesPane({
                                        allSkillLevels,
                                        skillResults,
                                        getImageSrc,
+                                       setStatusOpen
                                    }) {
     const runtime = characterRuntimeStates[charId];
     const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
         icon: null,
         message: null,
-        color: null,
+        color: {},
+        duration: null,
+        prompt: {}
     });
 
     const [showConfirm, setShowConfirm] = useState(false);
@@ -383,6 +386,7 @@ export default function EchoesPane({
                 saveAllEchoesToBag={saveAllEchoesToBag}
                 setGuideClose={setGuideClose}
                 setIsGeneratorOpen={setIsGeneratorOpen}
+                setStatusOpen={setStatusOpen}
             />
             {echoSlots.map((slotIndex) => {
                 const echo = echoData[slotIndex];
@@ -816,6 +820,8 @@ export default function EchoesPane({
                     position={'top'}
                     bold={true}
                     duration={3000}
+                    prompt={popupMessage.prompt}
+
                 />
             )}
 

@@ -1738,6 +1738,7 @@ export default function Calculator(props) {
                                                 onEquipPreset={onEquipPreset}
                                                 onEquipBag={onEquipBag}
                                                 getImageSrc={getImageSrc}
+                                                setStatusOpen={setStatusOpen}
                                             />
                                         )}
                                         {leftPaneView === 'suggestions-ui' && (
