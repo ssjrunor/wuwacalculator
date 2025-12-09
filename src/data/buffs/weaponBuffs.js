@@ -7,27 +7,27 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
         staticMist: () => {
             const rank = state['staticMist_rank'] ?? 0;
             const values = [0, 10, 12.5, 15, 17.5, 20];
-            mergedBuffs.atk.percent = (mergedBuffs.atk.percent ?? 0) + values[rank];
+            mergedBuffs.atk.percent += values[rank];
         },
         stellarSymphony: () => {
             const rank = state['stellarSymphony_rank'] ?? 0;
             const values = [0, 14, 17.5, 21, 24.5, 28];
-            mergedBuffs.atk.percent = (mergedBuffs.atk.percent ?? 0) + values[rank];
+            mergedBuffs.atk.percent += values[rank];
         },
         luminousHymn: () => {
             const rank = state['luminousHymn_rank'] ?? 0;
             const values = [0, 30, 37.5, 45, 52.5, 60];
-            mergedBuffs.skillType.spectroFrazzle.amplify = (mergedBuffs.skillType.spectroFrazzle.amplify ?? 0) + values[rank];
+            mergedBuffs.skillType.spectroFrazzle.amplify += values[rank];
         },
         woodlandAria: () => {
             const rank = state['woodlandAria_rank'] ?? 0;
             const values = [0, 10, 11.5, 13, 14.5, 16];
-            mergedBuffs.skillType.aeroErosion.resShred = (mergedBuffs.skillType.aeroErosion.resShred ?? 0) + values[rank];
+            mergedBuffs.attribute.aero.resShred += values[rank];
         },
         bloodpactsPledge: () => {
             const rank = state['bloodpactsPledge_rank'] ?? 0;
             const values = [0, 10, 14, 18, 22, 26];
-            mergedBuffs.aero.amplify = (mergedBuffs.aero.amplify ?? 0) + values[rank];
+            mergedBuffs.attribute.aero.amplify += values[rank];
         },
         wildfireMark: () => {
             const rank = state['wildfireMark_rank'] ?? 0;
@@ -47,9 +47,7 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
         stayTuned: () => {
             const rank  = state['stayTuned_rank'] ?? 0;
             const stacks = state['stayTuned_stacks'] ?? 0;
-
             if (rank <= 0 || stacks <= 0) return;
-
             const perStackValues = [0, 8, 10, 12, 14, 16];
             const perStack = perStackValues[rank] ?? 0;
             const total = perStack * stacks;
@@ -72,12 +70,12 @@ export function applyWeaponSkillMetaBuffLogic({ mergedBuffs, characterState, ski
     const element = skillMeta.element;
 
     const buffs = {
-        woodlandAria: () => {
+        /*woodlandAria: () => {
             const rank = state['woodlandAria_rank'] ?? 0;
             const values = [0, 10, 11.5, 13, 14.5, 16];
             skillMeta.skillResIgnore = (skillMeta.skillResIgnore ?? 0) +
                 (element === 'aero' && combatState.aeroErosion ? values[rank] : 0);
-        },
+        },*/
     };
 
     Object.keys(buffs).forEach(key => {
