@@ -1,11 +1,31 @@
 import {refreshAccessTokenIfNeeded} from "./googleAuth.js";
-import {getPersistentValue, setPersistentValue} from "../hooks/usePersistentState.js";
+import {setPersistentValue} from "../hooks/usePersistentState.js";
+
+const BACKUP_PREFIX = 'wuwacalculator-all-data-';
+const MAX_BACKUPS = 10;
+
+function collectAllDataPayload() {
+    const parentKeys = ['__charInfo__', '__controls__', '__stores__'];
+    const result = { "All Data": {} };
+
+    for (const key of parentKeys) {
+        try {
+            const raw = localStorage.getItem(key);
+            result["All Data"][key] = raw ? JSON.parse(raw) : {};
+        } catch (err) {
+            console.warn(`[Drive Sync] Failed to read key ${key}:`, err);
+            result["All Data"][key] = { error: "Failed to parse data" };
+        }
+    }
+
+    return result;
+}
 
 export async function uploadToDrive(accessToken, fileContent) {
     accessToken = await refreshAccessTokenIfNeeded() || accessToken;
 
     const metadata = {
-        name: `wuwacalculator-sync-${new Date().toISOString()}.json`,
+        name: `${BACKUP_PREFIX}${new Date().toISOString()}.json`,
         mimeType: 'application/json',
         parents: ['appDataFolder']
     };
@@ -38,8 +58,9 @@ export async function uploadToDrive(accessToken, fileContent) {
 async function pruneOldBackups(accessToken) {
     accessToken = await refreshAccessTokenIfNeeded() || accessToken;
 
+    const query = encodeURIComponent(`name contains '${BACKUP_PREFIX}' and 'appDataFolder' in parents`);
     const res = await fetch(
-        `https://www.googleapis.com/drive/v3/files?q=name='wuwacalculator-sync.json' and 'appDataFolder' in parents&spaces=appDataFolder&fields=files(id,createdTime)&orderBy=createdTime desc`,
+        `https://www.googleapis.com/drive/v3/files?q=${query}&spaces=appDataFolder&fields=files(id,createdTime)&orderBy=createdTime desc`,
         {
             headers: { Authorization: `Bearer ${accessToken}` }
         }
@@ -48,8 +69,8 @@ async function pruneOldBackups(accessToken) {
     const data = await res.json();
     const files = data.files || [];
 
-    if (files.length > 10) {
-        const toDelete = files.slice(10);
+    if (files.length > MAX_BACKUPS) {
+        const toDelete = files.slice(MAX_BACKUPS);
         for (const file of toDelete) {
             await fetch(`https://www.googleapis.com/drive/v3/files/${file.id}`, {
                 method: 'DELETE',
@@ -63,16 +84,24 @@ async function pruneOldBackups(accessToken) {
 async function getLatestBackupFile(accessToken) {
     accessToken = await refreshAccessTokenIfNeeded() || accessToken;
 
-    const query = encodeURIComponent("name contains 'wuwacalculator-sync-' and 'appDataFolder' in parents");
-    const res = await fetch(
-        `https://www.googleapis.com/drive/v3/files?q=${query}&spaces=appDataFolder&fields=files(id,createdTime)&orderBy=createdTime desc`,
-        {
-            headers: { Authorization: `Bearer ${accessToken}` }
-        }
-    );
+    const queries = [
+        encodeURIComponent(`name contains '${BACKUP_PREFIX}' and 'appDataFolder' in parents`),
+        encodeURIComponent("name contains 'wuwacalculator-sync-' and 'appDataFolder' in parents") // legacy
+    ];
 
-    const data = await res.json();
-    return data.files?.[0];
+    for (const query of queries) {
+        const res = await fetch(
+            `https://www.googleapis.com/drive/v3/files?q=${query}&spaces=appDataFolder&fields=files(id,createdTime)&orderBy=createdTime desc`,
+            {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            }
+        );
+
+        const data = await res.json();
+        if (data.files?.[0]) return data.files[0];
+    }
+
+    return null;
 }
 
 async function downloadFileById(fileId, accessToken) {
@@ -105,8 +134,16 @@ export async function restoreFromDrive(accessToken) {
         }
 
         const data = await downloadFileById(latest.id, accessToken);
-        for (const [key, value] of Object.entries(data)) {
-            setPersistentValue(key, value);
+
+        if (data?.["All Data"]) {
+            for (const [key, value] of Object.entries(data["All Data"])) {
+                localStorage.setItem(key, JSON.stringify(value ?? {}));
+            }
+        } else {
+            // Legacy single-level backups
+            for (const [key, value] of Object.entries(data)) {
+                setPersistentValue(key, value);
+            }
         }
 
         //alert("Restore complete! Reloading...");
@@ -117,26 +154,7 @@ export async function restoreFromDrive(accessToken) {
     }
 }
 
-const syncKeys = [
-    'activeCharacterId',
-    'characterRuntimeStates',
-    'echoBag',
-    'enemyLevel',
-    'enemyRes',
-    'globalSavedRotations',
-    'seenChangelogVersion',
-    'showSubHits',
-    'user-dark-variant',
-    'user-has-selected-theme',
-    'user-theme',
-    'globalSavedTeamRotations'
-]
-
 export function getSyncData() {
-    const data = {};
-    for (const key of syncKeys) {
-        const value = getPersistentValue(key);
-        if (value !== null) data[key] = value;
-    }
-    return JSON.stringify(data);
+    const payload = collectAllDataPayload();
+    return JSON.stringify(payload);
 }
