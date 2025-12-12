@@ -1,5 +1,3 @@
-import {elementToAttribute} from "../../utils/attributeHelpers.js";
-
 export function applyBulingLogic({
                                    mergedBuffs,
                                    combatState,
@@ -36,7 +34,7 @@ export function applyBulingLogic({
     }
 
     if (characterState?.activeStates?.heavenEarthMind && !mergedBuffs.__heavenEarthMind) {
-        mergedBuffs.skillType.resonanceSkill.dmgBonus += 30;
+        mergedBuffs.skillType.resonanceSkill.dmgBonus += 30 + (isActiveSequence(6) ? 20 : 0);
         mergedBuffs.__heavenEarthMind = true;
     }
 
@@ -59,13 +57,6 @@ export function applyBulingLogic({
     if (isActiveSequence(4) && !mergedBuffs.__bulingS4) {
         mergedBuffs.healingBonus += 20;
         mergedBuffs.__bulingS4 = true;
-    }
-
-    if (isActiveSequence(6) &&
-        !mergedBuffs.__bulingS6 &&
-        isToggleActive(6) && characterState?.activeStates?.heavenEarthMind) {
-        mergedBuffs.skillType.resonanceSkill.dmgBonus += 50;
-        mergedBuffs.__bulingS6 = true;
     }
 
     if (name.includes('exorcist in command')) skillMeta.multiplier = 0.18;
@@ -126,7 +117,7 @@ export function bulingBuffsLogic({
     }
 
     mergedBuffs.skillType.resonanceSkill.dmgBonus +=
-    ((state.almightyCelestialLord && state.heavenEarthMind) ? 50 : 0);
+    ((state.almightyCelestialLord && state.heavenEarthMind) ? 20 : 0);
 
     return { mergedBuffs };
 }

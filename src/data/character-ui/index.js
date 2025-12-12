@@ -39,7 +39,7 @@ import AugustaUI, {AugustaSequenceToggles} from "./1306.jsx";
 import IunoUI, {IunoSequenceToggles} from "./1410.jsx";
 import QiuyuanUI, {QiuyuanSequenceToggles, CustomInherentSkills as QiuyuanInherents} from "./1411.jsx";
 import GalbrenaUI, {GalbrenaSequenceToggles, CustomInherentSkills as GalbrenaInherents} from "./1208.jsx";
-import BulingUI, {bulingSequenceToggles, CustomInherentSkills as BulingInherents} from "./1307.jsx";
+import BulingUI, {CustomInherentSkills as BulingInherents} from "./1307.jsx";
 import ChisaUI, {chisaSequenceToggles, CustomInherentSkills as ChisaInherentSkills} from "./1508.jsx";
 import LynaeUI, {lynaeSequenceToggles, CustomInherentSkills as LynaeInherentSkills} from "./1509.jsx";
 import MornyeUI, {MornyeSequenceToggles} from "./1209.jsx";
@@ -165,7 +165,6 @@ export function getSequenceToggleComponent(characterId) {
         case '1410': return IunoSequenceToggles;
         case '1411': return QiuyuanSequenceToggles;
         case '1208': return GalbrenaSequenceToggles;
-        case '1307': return bulingSequenceToggles;
         case '1508': return chisaSequenceToggles;
         case '1509': return lynaeSequenceToggles;
         case '1209': return MornyeSequenceToggles;

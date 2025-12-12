@@ -138,7 +138,7 @@ export default function EchoBuffs({
         {
             key: 'neonlightLeap',
             name: 'Pact of Neonlight Leap',
-            icon: '/assets/echo-icons/default.webp',
+            icon: '/assets/echo-icons/pactOfNeonlightLeap.webp',
             custom: (
                 <label className="slider-label-with-input">
                     <input
@@ -165,7 +165,7 @@ export default function EchoBuffs({
         {
             key: 'starryRadiance',
             name: 'Halo of Starry Radiance',
-            icon: '/assets/echo-icons/default.webp',
+            icon: '/assets/echo-icons/haloOfStarryRadiance.webp',
             custom: (
                 <label className="slider-label-with-input">
                     <input

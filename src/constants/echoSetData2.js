@@ -562,7 +562,7 @@ export const echoSets = {
         ],
         fivePiece: null,
         states: {},
-        icon: '/assets/echo-icons/default.webp'
+        icon: '/assets/echo-icons/pactOfNeonlightLeap.webp'
     },
 
     25: {
@@ -586,7 +586,7 @@ export const echoSets = {
                 ]
             }
         },
-        icon: '/assets/echo-icons/default.webp'
+        icon: '/assets/echo-icons/haloOfStarryRadiance.webp'
     },
 
     26: {
@@ -619,7 +619,7 @@ export const echoSets = {
                 ],
             },
         },
-        icon: '/assets/echo-icons/default.webp',
+        icon: '/assets/echo-icons/riteOfGildedRevelation.webp',
     }
 };
 

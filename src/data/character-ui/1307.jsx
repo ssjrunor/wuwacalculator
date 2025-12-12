@@ -158,25 +158,6 @@ export function CustomInherentSkills({
     );
 }
 
-export function bulingSequenceToggles({ nodeKey, sequenceToggles, toggleSequence, currentSequenceLevel }) {
-    if (!['6'].includes(String(nodeKey))) return null;
-
-    const requiredLevel = Number(nodeKey);
-    const isDisabled = currentSequenceLevel < requiredLevel;
-
-    return (
-        <label className="modern-checkbox" style={{ opacity: isDisabled ? 0.5 : 1 }}>
-            <input
-                type="checkbox"
-                checked={sequenceToggles[nodeKey] || false}
-                onChange={() => toggleSequence(nodeKey)}
-                disabled={isDisabled}
-            />
-            Enable
-        </label>
-    );
-}
-
 export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeStates, attributeColors }) {
     const updateState = (key, value) => {
         setCharacterRuntimeStates(prev => ({
