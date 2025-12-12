@@ -58,19 +58,29 @@ export async function uploadToDrive(accessToken, fileContent) {
 async function pruneOldBackups(accessToken) {
     accessToken = await refreshAccessTokenIfNeeded() || accessToken;
 
-    const query = encodeURIComponent(`name contains '${BACKUP_PREFIX}' and 'appDataFolder' in parents`);
-    const res = await fetch(
-        `https://www.googleapis.com/drive/v3/files?q=${query}&spaces=appDataFolder&fields=files(id,createdTime)&orderBy=createdTime desc`,
-        {
+    const fetchFiles = async (query) => {
+        const encoded = encodeURIComponent(query);
+        const res = await fetch(
+            `https://www.googleapis.com/drive/v3/files?q=${encoded}&spaces=appDataFolder&fields=files(id,createdTime,name)&orderBy=createdTime desc`,
+            { headers: { Authorization: `Bearer ${accessToken}` } }
+        );
+        const data = await res.json();
+        return data.files || [];
+    };
+
+    const newBackups = await fetchFiles(`name contains '${BACKUP_PREFIX}' and 'appDataFolder' in parents`);
+    const legacyBackups = await fetchFiles(`name contains 'wuwacalculator-sync-' and 'appDataFolder' in parents`);
+
+    // Remove legacy backups entirely to avoid double retention and stale payloads
+    for (const file of legacyBackups) {
+        await fetch(`https://www.googleapis.com/drive/v3/files/${file.id}`, {
+            method: 'DELETE',
             headers: { Authorization: `Bearer ${accessToken}` }
-        }
-    );
+        });
+    }
 
-    const data = await res.json();
-    const files = data.files || [];
-
-    if (files.length > MAX_BACKUPS) {
-        const toDelete = files.slice(MAX_BACKUPS);
+    if (newBackups.length > MAX_BACKUPS) {
+        const toDelete = newBackups.slice(MAX_BACKUPS);
         for (const file of toDelete) {
             await fetch(`https://www.googleapis.com/drive/v3/files/${file.id}`, {
                 method: 'DELETE',
