@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/appStatusModal.css';
 
 const data = {
-    lastUpdated: '09-12-2025',
+    lastUpdated: '14-12-2025',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
     patchVersion: '3.0.3 (Beta)',
