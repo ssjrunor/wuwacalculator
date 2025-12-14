@@ -10,8 +10,7 @@ const weaponListUrl = 'https://api.hakush.in/ww/data/weapon.json';
 const weaponDetailBase = 'https://api.hakush.in/ww/data/en/weapon/';
 const outputPath = path.resolve(__dirname, '../data/weaponDetails.json');
 
-// --- toggle this ---
-const SKIP_EXISTING = true;
+const SKIP_EXISTING = false;
 
 async function fetchWeaponDetails() {
     try {

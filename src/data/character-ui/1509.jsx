@@ -130,9 +130,10 @@ export function lynaeSequenceToggles({
                                           toggleSequence,
                                           currentSequenceLevel,
                                           setCharacterRuntimeStates,
+                                         characterRuntimeStates,
                                           charId
                                       }) {
-    const validKeys = ['6'];
+    const validKeys = ['3', '6'];
     if (!validKeys.includes(String(nodeKey))) return null;
 
     const requiredLevel = Number(nodeKey);
@@ -164,6 +165,51 @@ export function lynaeSequenceToggles({
                 className="sequence-dropdown"
                 width="80px"
             />
+        );
+    }
+
+    if (String(nodeKey) === '3') {
+        const currentValue =
+            characterRuntimeStates?.[charId]?.sequenceToggles?.premixedHue ?? 0;
+
+        return (
+            <div className="sequence-checkbox-group">
+                <div
+                    className="slider-label-with-input"
+                    style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+                >
+                    <label htmlFor={'premixedHue'} style={{ fontWeight: 'bold' }}>
+                        Premixed Hue
+                    </label>
+                    <input
+                        id={'premixedHue'}
+                        type="number"
+                        className="character-level-input"
+                        step="1"
+                        min="0"
+                        max="25"
+                        style={{ width: '70px' }}
+                        value={currentValue}
+                        disabled={isDisabled}
+                        onChange={(e) => {
+                            const val = Math.max(
+                                0,
+                                Math.min(25, Number(e.target.value) || 0)
+                            );
+                            setCharacterRuntimeStates((prev) => ({
+                                ...prev,
+                                [charId]: {
+                                    ...(prev[charId] ?? {}),
+                                    sequenceToggles: {
+                                        ...(prev[charId]?.sequenceToggles ?? {}),
+                                        premixedHue: val
+                                    }
+                                }
+                            }));
+                        }}
+                    />
+                </div>
+            </div>
         );
     }
 
@@ -208,13 +254,32 @@ export function buffUI({ activeStates, toggleState }) {
                 </div>
                 <div className="echo-buff-effect">
                     <p>
-                        The next incoming Resonator has their All DMG Amplified by 15% and <span className="highlight">Resonance Liberation DMG</span> by <span className="highlight">25%</span> for 14s or until they are switched out.
+                        The next incoming Resonator has their All DMG Amplified by <span className="highlight">15%</span> and <span className="highlight">Resonance Liberation DMG</span> by <span className="highlight">25%</span> for 14s or until they are switched out.
                     </p>
                     <label className="modern-checkbox">
                         <input
                             type="checkbox"
                             checked={activeStates.hitTheRoad || false}
                             onChange={() => toggleState('hitTheRoad')}
+                        />
+                        Enable
+                    </label>
+                </div>
+            </div>
+
+            <div className="echo-buff">
+                <div className="echo-buff-header">
+                    <div className="echo-buff-name">S2: Into Lights' Vanishing Point</div>
+                </div>
+                <div className="echo-buff-effect">
+                    <p>
+                        Grants the incoming Resonator <span className="highlight">25%</span> All-DMG Amplification for 14s or until the Resonator is switched out.
+                    </p>
+                    <label className="modern-checkbox">
+                        <input
+                            type="checkbox"
+                            checked={activeStates.vanishingPoint || false}
+                            onChange={() => toggleState('vanishingPoint')}
                         />
                         Enable
                     </label>

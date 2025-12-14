@@ -47,10 +47,13 @@ export function applyMornyeLogic({
         skillMeta.visible = characterLevel >= 70;
     }
 
-    if (name.includes('high syntony field')) skillMeta.multiplier *= 1.4;
+    if (name.includes('high syntony field')) {
+        skillMeta.multiplier *= 1.4;
+        skillMeta.skillType = 'ultimate';
+    }
 
     if (isActiveSequence(2) && isToggleActive(2) && !mergedBuffs.__mornyeS2) {
-        mergedBuffs.critRate = Math.min(excessEr * 0.1875, 30);
+        mergedBuffs.critDmg = Math.min(excessEr * 0.2, 32);
         mergedBuffs.__mornyeS2 = true;
     }
     if (isActiveSequence(4) && name.includes('high syntony field'))
@@ -60,13 +63,11 @@ export function applyMornyeLogic({
         if (name.includes('tune rupture') && tab === 'forteCircuit') skillMeta.multiplier *= 2.6;
         if (tab === 'resonanceLiberation' && name.includes('skill')) skillMeta.multiplier *= 1.4;
     }
-    if (tab === 'resonanceLiberation') {
-        if (name.includes('skill 2 dmg')) {
-            skillMeta.label = 'Critical Protocol DMG';
-            skillMeta.visible = isActiveSequence(6)
-        }
-        if (name.includes('skill dmg')) skillMeta.visible = !isActiveSequence(6);
-    }
+
+    if (isActiveSequence(6) &&
+        tab === 'resonanceLiberation' &&
+        name.includes('skill dmg'))
+            skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 400;
 
     return {mergedBuffs, combatState, skillMeta};
 }
@@ -98,7 +99,7 @@ export const mornyeMultipliers = {
         }
     ],
     resonanceLiberation: [
-        {
+        /*{
             name: 'Skill 2 DMG',
             scaling: { atk: 0, hp: 0, def: 1, energyRegen: 0 },
             Param: [
@@ -125,7 +126,7 @@ export const mornyeMultipliers = {
                     "953.20%+3812.80%*2"
                 ]
             ]
-        },
+        },*/
         {
             name: 'High Syntony Field Healing',
             scaling: { atk: 0, hp: 0, def: 1, energyRegen: 0 },
@@ -171,8 +172,8 @@ export function mornyeBuffsLogic({
 
     mergedBuffs.def.percent += state.highSyntony ? 20 : 0;
 
-    const cr = Math.min((state.mornyeER ?? 0) * 0.1875, 30);
-    mergedBuffs.critRate += state.entropicMorning ? cr : 0;
+    const cr = Math.min((state.mornyeER ?? 0) * 0.2, 32);
+    mergedBuffs.critDmg += state.entropicMorning ? cr : 0;
 
     return { mergedBuffs };
 }

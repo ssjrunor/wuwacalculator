@@ -42,23 +42,29 @@ export function applyLynaeLogic({
         mergedBuffs.__lynaeIn2 = true;
     }
 
-    if (isActiveSequence(1) && name.includes('polychrome leap')) skillMeta.multiplier *= 3;
+    if (isActiveSequence(1) && name.includes('polychrome leap')) skillMeta.multiplier *= 2.2;
 
-    if (isActiveSequence(2) && name.includes('spectral analysis')) skillMeta.multiplier *= 1.7;
+    if (isActiveSequence(2) && !mergedBuffs.__lynaeS2) {
+        mergedBuffs.attribute.all.amplify += 25;
+        mergedBuffs.__lynaeS2 = true;
+    }
 
-    if (isActiveSequence(3) && name.includes('visual impact')) skillMeta.multiplier *= 1.55;
+    const premixedHue = characterState?.toggles?.premixedHue ?? 0;
+    if (isActiveSequence(3) && name.includes('additive color ') && premixedHue > 0)
+        skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + (55 * premixedHue);
 
     if (isActiveSequence(4) && !mergedBuffs.__lynaeS4) {
         mergedBuffs.atk.percent += 20;
         mergedBuffs.__lynaeS4 = true;
     }
 
-    if (isActiveSequence(5) && name.includes('prismatic overblast')) skillMeta.multiplier *= 1.9;
+    if (isActiveSequence(5) && name.includes('prismatic overblast')) skillMeta.multiplier *= 1.7;
 
     const colorOfSoul = characterState?.toggles?.['6_value'] ?? 0;
-    if (isActiveSequence(6) &&
-        name.includes('kaleidoscopic parade - graffiti blast'))
-        skillMeta.multiplier *= 1 + 2.5 * colorOfSoul;
+    if (isActiveSequence(6)) {
+        if (name.includes('polychrome leap') || name.includes('visual impact'))
+            skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + (30 * colorOfSoul);
+    }
 
     if (name.includes('let\'s hit the road')) {
         skillMeta.multiplier = 1;
@@ -80,6 +86,8 @@ export function lynaeBuffsLogic({
     }
 
     if (state.prismaticOverblast) mergedBuffs.attribute.all.dmgBonus += 25;
+
+    if (state.vanishingPoint) mergedBuffs.attribute.all.amplify += 25;
 
     return { mergedBuffs };
 }

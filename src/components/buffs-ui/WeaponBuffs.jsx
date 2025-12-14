@@ -93,8 +93,8 @@ export const weaponBuffs = [
         )
     },
     {
-        key: 'stayTuned',
-        name: 'Stay Tuned',
+        key: 'spectrumBlaster',
+        name: 'Spectrum Blaster',
         icon: '/assets/weapon-icons/default.webp',
         // per-rank values: R1–R5
         param: [[8, 10, 12, 14, 16]],
@@ -127,7 +127,18 @@ export const weaponBuffs = [
                 </>
             );
         }
-    }
+    },
+    {
+        key: 'starfieldCalibrator',
+        name: 'Starfield Calibrator',
+        icon: '/assets/weapon-icons/default.webp',
+        param: [[20, 25, 30, 35, 40]],
+        effect: (param = []) => (
+            <>
+                When the wielder heals Resonators, increases <span className="highlight">Crit. DMG</span> of all nearby Resonators in the team by <span className="highlight">{param[0] ?? '—'}%</span> for 4s. Effects of the same name cannot be stacked.
+            </>
+        )
+    },
 ];
 
 export const weaponBuffList = weaponBuffs;
@@ -175,7 +186,7 @@ export default function WeaponBuffs({ activeStates, setCharacterRuntimeStates, c
                         </div>
 
                         <div className="echo-buff-effect">
-                            {key === 'stayTuned'
+                            {key === 'spectrumBlaster'
                                 ? effect(paramValues, stacks)
                                 : effect(paramValues)}
                         </div>
@@ -190,7 +201,7 @@ export default function WeaponBuffs({ activeStates, setCharacterRuntimeStates, c
                                 width="80px"
                             />
 
-                            {key === 'stayTuned' && (
+                            {key === 'spectrumBlaster' && (
                                 <DropdownSelect
                                     label="Stacks"
                                     options={[0, 1, 2, 3]}

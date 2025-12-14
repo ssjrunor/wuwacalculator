@@ -103,7 +103,7 @@ export function buffUI({ activeStates, toggleState, setCharacterRuntimeStates, c
                     <div className="echo-buff-name">Outro Skill: Recursion</div>
                 </div>
                 <div className="echo-buff-effect">
-                    队伍中所有角色全伤害加深25%，持续30秒。
+                    All Resonators in the team gain <span className="highlight">25%</span> All-Type DMG Amplification for 30s.
                 </div>
                 <label className="modern-checkbox">
                     <input
@@ -120,7 +120,7 @@ export function buffUI({ activeStates, toggleState, setCharacterRuntimeStates, c
                     <div className="echo-buff-name">S2: The Entropic Morning Star</div>
                 </div>
                 <div className="echo-buff-effect">
-                    Resonators to targets with <span className="highlight">Interfered Marker</span> gains increased <span className="highlight">Crit. Rate</span>. For every <span className="highlight">1%</span> of <span className="highlight">Mornye</span>’s Energy Regen exceeding <span className="highlight">100%</span>, she gains <span className="highlight">0.1875% Crit. Rate</span>, up to <span className="highlight">30%</span>.
+                    All nearby Resonators in the team gain <span className="highlight">Crit. DMG</span> increase against targets with <span className="highlight">Interfered Marker></span>: Every <span className="highlight">1%</span> of <span className="highlight">Mornye</span>'s Energy Regen over <span className="highlight">100%</span> grants <span className="highlight">0.2% Crit. DMG</span> increase, up to <span className="highlight">32%</span>.
                 </div>
                 <label className="modern-checkbox">
                     <input

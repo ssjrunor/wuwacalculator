@@ -5,7 +5,7 @@ const skillTabs = [
     'resonanceLiberation',
     'introSkill',
     'outroSkill',
-    'stayTuned'
+    'tuneBreak'
 ];
 
 export const typeMap = {

@@ -44,16 +44,21 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
             const values = [0, 24, 30, 36, 42, 48];
             mergedBuffs.attribute.all.dmgBonus += values[rank];
         },
-        stayTuned: () => {
-            const rank  = state['stayTuned_rank'] ?? 0;
-            const stacks = state['stayTuned_stacks'] ?? 0;
+        spectrumBlaster: () => {
+            const rank  = state['spectrumBlaster_rank'] ?? 0;
+            const stacks = state['spectrumBlaster_stacks'] ?? 0;
             if (rank <= 0 || stacks <= 0) return;
             const perStackValues = [0, 8, 10, 12, 14, 16];
             const perStack = perStackValues[rank] ?? 0;
             const total = perStack * stacks;
 
             mergedBuffs.attribute.all.dmgBonus += total;
-        }
+        },
+        starfieldCalibrator: () => {
+            const rank = state['starfieldCalibrator_rank'] ?? 0;
+            const values = [0, 20, 25, 30, 35, 40];
+            mergedBuffs.critDmg += values[rank];
+        },
     };
 
     Object.keys(buffs).forEach(key => {
@@ -99,7 +104,8 @@ export function getActiveStateWeapons(activeStates) {
         wildfireMark: 21010036,
         emeraldSentence: 21020066,
         kumokiri: 21010056,
-        stayTuned: 21030046,
+        spectrumBlaster: 21030046,
+        starfieldCalibrator: 21010066,
     };
 
     return Object.entries(weaponIdMap)
