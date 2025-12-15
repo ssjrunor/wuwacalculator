@@ -144,7 +144,7 @@ export default function EchoBuffs({
                     <input
                         type="number"
                         min={0}
-                        max={50}
+                        max={15 / 0.3}
                         step={1}
                         value={neonOffTuneRate}
                         onChange={handleNeonOffTuneChange}
@@ -171,7 +171,7 @@ export default function EchoBuffs({
                     <input
                         type="number"
                         min={0}
-                        max={125}
+                        max={25 / 0.2}
                         step={1}
                         value={starryOffTuneRate}
                         onChange={handleStarryChange}
@@ -184,7 +184,7 @@ export default function EchoBuffs({
                 <>
                     When a Resonator heals an ally, every <span className="highlight">1%</span> point of{" "}
                     <span className="highlight">Off-Tune</span> Buildup Rate grants{" "}
-                    <span className="highlight">0.2% All-Attribute DMG Bonus</span> to all Resonators in the team,
+                    <span className="highlight">0.2%</span> ATK increase to all Resonators in the team,
                     up to <span className="highlight">25%</span> for 4s.
                 </>
             )

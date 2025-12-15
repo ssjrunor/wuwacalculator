@@ -570,7 +570,7 @@ export const echoSets = {
         name: 'Halo of Starry Radiance',
         desc: {
             twoPiece: 'Healing Bonus +10%',
-            fivePiece: 'When a Resonator heals an ally, every 1% points of Off-Tune Buildup Rate grants 0.2% All-Attribute DMG Bonus to all Resonators in the team, up to 25% for 4s.'
+            fivePiece: 'When a Resonator heals an ally, every 1% points of Off-Tune Buildup Rate grants 0.2% ATK increase to all Resonators in the team, up to 25% for 4s.'
         },
         twoPiece: [
             { value: 10, path: ['healingBonus'] }
@@ -579,10 +579,10 @@ export const echoSets = {
         states: {
             starryRadiance5pc: {
                 perStack: [
-                    { value: 0.2, path: ['attribute', 'all', 'dmgBonus'] }
+                    { value: 0.2, path: ['atk', 'percent'] }
                 ],
                 max: [
-                    { value: 25, path: ['attribute', 'all', 'dmgBonus'] }
+                    { value: 25, path: ['atk', 'percent'] }
                 ]
             }
         },

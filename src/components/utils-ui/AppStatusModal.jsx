@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/appStatusModal.css';
 
 const data = {
-    lastUpdated: '13-12-2025',
+    lastUpdated: '15-12-2025',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
-    patchVersion: '3.0.3 (Beta)',
+    patchVersion: '3.0.5 (Beta)',
     calculatorState: 'Somewhat fully updated for this patch.',
     coverage: [
         {

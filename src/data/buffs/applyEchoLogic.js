@@ -47,7 +47,7 @@ export function applyEchoLogic({ mergedBuffs, characterState }) {
     mergedBuffs.atk.percent += neonlightOffTune * 0.3;
 
     const starryRadiance = echo.starryRadiance ?? 0;
-    mergedBuffs.attribute.all.dmgBonus += starryRadiance * 0.2;
+    mergedBuffs.atk.percent += starryRadiance * 0.2;
 
     if (echo.hyvatia) {
         mergedBuffs.skillType.introSkill.dmgBonus += 10;
