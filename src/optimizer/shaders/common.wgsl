@@ -20,6 +20,16 @@ struct StatConstraints {
 @group(0) @binding(7)
 var<uniform> statConstraints : StatConstraints;
 
+struct Candidate {
+  dmg : f32,
+  idx : u32,
+};
+
+@group(0) @binding(9) var<storage, read_write> candidates: array<Candidate>;
+
+const REDUCE_K: u32 = 4u;
+const NEG_INF: f32 = -1.0e30;
+
 struct Params {
     baseAtk:      f32,
     baseHp:       f32,

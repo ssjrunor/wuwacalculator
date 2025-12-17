@@ -1,16 +1,16 @@
-import {shaderCode} from "../shaders/index.js";
+import { shaderCode } from "../shaders/index.js";
 
-export function createPipeline(device, layout) {
+export function createPipeline(device, layout, entryPoint = "main") {
     const shaderModule = device.createShaderModule({ code: shaderCode });
 
     return device.createComputePipeline({
         layout: device.createPipelineLayout({
-            bindGroupLayouts: [layout]
+            bindGroupLayouts: [layout],
         }),
         compute: {
             module: shaderModule,
-            entryPoint: "main"
-        }
+            entryPoint,
+        },
     });
 }
 
@@ -27,7 +27,8 @@ export function createBindGroup(device, layout, buffers) {
             { binding: 6, resource: { buffer: buffers.mainEchoBuffs } },
             { binding: 7, resource: { buffer: buffers.statConstraints } },
             { binding: 8, resource: { buffer: buffers.echoKindIds } },
-        ]
+            { binding: 9, resource: { buffer: buffers.candidates } },
+        ],
     });
 }
 
@@ -60,6 +61,9 @@ export function createBindGroupLayout(device) {
 
             { binding: 8, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "read-only-storage" } },
+
+            { binding: 9, visibility: GPUShaderStage.COMPUTE,
+                buffer: { type: "storage" } },
         ]
     });
 }

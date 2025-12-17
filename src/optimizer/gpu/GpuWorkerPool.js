@@ -1,4 +1,4 @@
-const WORKER_COUNT = 2;
+const WORKER_COUNT = Math.max(1, Math.min(4, (navigator.hardwareConcurrency ?? 4) - 1));
 
 let workers = [];
 let ready = new Set();
@@ -44,7 +44,12 @@ export function runGpuWorkerOnBatch({ combosBatch, packedContext, charId, result
     if (CANCEL) return Promise.resolve({ cancelled: true });
 
     return new Promise(resolve => {
-        queue.push({ combosBatch, packedContext, charId, resolve, resultsLimit, encodedConstraints });
+        const job = { combosBatch, packedContext, charId, resolve, resultsLimit, encodedConstraints };
+        const size = combosBatch.length;
+        let i = 0;
+        while (i < queue.length && queue[i].combosBatch.length <= size) i++;
+        queue.splice(i, 0, job);
+
         schedule();
     });
 }
@@ -80,6 +85,17 @@ function spawnWorker(index, encoded, echoes, charId, resolveInit) {
 
             schedule();
         }
+
+        if (msg.type === "workerError") {
+            busy.delete(w);
+            ready.add(w);
+
+            const job = w.currentJob;
+            w.currentJob = null;
+            if (job) job.resolve({ cancelled: true, error: msg.error });
+
+            schedule();
+        }
     };
 
     w.postMessage({ type: "init", encoded, echoes, charId });
@@ -97,13 +113,22 @@ function schedule() {
         busy.add(w);
         w.currentJob = job;
 
-        w.postMessage({
-            type: "run",
-            combos: job.combosBatch,
-            packedContext: job.packedContext,
-            charId: job.charId,
-            resultsLimit: job.resultsLimit,
-            encodedConstraints: job.encodedConstraints
-        });
+        w.postMessage(
+            {
+                type: "run",
+                combosBuf: job.combosBatch.buffer,
+                combosOffset: job.combosBatch.byteOffset,
+                combosLen: job.combosBatch.length,
+
+                ctxBuf: job.packedContext.buffer,
+                ctxOffset: job.packedContext.byteOffset,
+                ctxLen: job.packedContext.length,
+
+                charId: job.charId,
+                resultsLimit: job.resultsLimit,
+                encodedConstraints: job.encodedConstraints
+            },
+            [job.combosBatch.buffer, job.packedContext.buffer]
+        );
     }
 }

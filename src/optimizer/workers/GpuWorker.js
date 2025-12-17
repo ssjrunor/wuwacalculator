@@ -1,11 +1,14 @@
-import { createBindGroup, createPipeline, createBindGroupLayout } from "../gpu/createPipeline.js";
-import { runEchoGpuPipeline, readResults } from "../gpu/runPipeline.js";
-import { getGpuDevice } from "../gpu/getDevice.js";
-import { buildMainEchoBuffsArray } from "../encodeEchoStats.js";
+// workers/GpuWorker.js
+
+import {createBindGroup, createBindGroupLayout, createPipeline} from "../gpu/createPipeline.js";
+import {runEchoGpuPipeline} from "../gpu/runPipeline.js";
+import {getGpuDevice} from "../gpu/getDevice.js";
+import {buildMainEchoBuffsArray} from "../encodeEchoStats.js";
 
 let device = null;
 let layout = null;
-let pipeline = null;
+let pipelineMain = null;
+let pipelineReduce = null;
 
 let statsBuf = null;
 let costsBuf = null;
@@ -13,7 +16,6 @@ let setsBuf = null;
 let mainBuffsBuf = null;
 let defaultConstraintBuf = null;
 
-// Reused per-run buffers
 let combosBuf = null;
 let combosBufSize = 0;
 
@@ -25,100 +27,142 @@ let outBufSize = 0;
 
 let constraintBuf = null;
 let constraintBufSize = 0;
+
 let kindBuf = null;
+
+let candBuf = null;
+let candBufSize = 0;
+
+// Reusable MAP_READ buffer for candidate readback
+let candReadback = { buffer: null, size: 0 };
 
 let CANCEL = false;
 
 const defaultConstraints = new Float32Array([
-    1, 0,  // atk
-    1, 0,  // hp
-    1, 0,  // def
-    1, 0,  // critRate
-    1, 0,  // critDmg
-    1, 0,  // ER
-    1, 0,  // dmgBonus
-    1, 0,  // damage
+    1, 0, // atk
+    1, 0, // hp
+    1, 0, // def
+    1, 0, // critRate
+    1, 0, // critDmg
+    1, 0, // ER
+    1, 0, // dmgBonus
+    1, 0, // damage
 ]);
 
-// Small helpers to ensure capacity
+// Must match WGSL
+const WORKGROUP_SIZE = 512;
+const CYCLES_PER_INVOCATION = 8;
+const REDUCE_K = 4;
+
+// Ensure capacity helper
 function ensureStorageBuffer(existing, existingSize, neededSize, usage) {
     if (!existing || existingSize < neededSize) {
-        if (existing) {
-            existing.destroy();
-        }
-        const buf = device.createBuffer({
-            size: neededSize,
-            usage
-        });
+        if (existing) existing.destroy();
+        const buf = device.createBuffer({ size: neededSize, usage });
         return { buffer: buf, size: neededSize };
     }
     return { buffer: existing, size: existingSize };
 }
 
 async function initStatic(encoded, echoes, charId) {
-    try {
-        device = await getGpuDevice();
-        layout = createBindGroupLayout(device);
-        pipeline = createPipeline(device, layout);
+    device = await getGpuDevice();
+    layout = createBindGroupLayout(device);
 
-        // Stats buffer
-        statsBuf = device.createBuffer({
-            size: encoded.stats.byteLength,
-            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-        });
-        device.queue.writeBuffer(statsBuf, 0, encoded.stats);
+    // Create both pipelines (two entry points in the same shaderCode)
+    pipelineMain = createPipeline(device, layout, "main");
+    pipelineReduce = createPipeline(device, layout, "reduceMain");
 
-        // Costs buffer
-        costsBuf = device.createBuffer({
-            size: encoded.costs.byteLength,
-            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-        });
-        device.queue.writeBuffer(costsBuf, 0, encoded.costs);
+    // Stats buffer
+    statsBuf = device.createBuffer({
+        size: encoded.stats.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(statsBuf, 0, encoded.stats);
 
-        // Sets buffer
-        setsBuf = device.createBuffer({
-            size: encoded.sets.byteLength,
-            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-        });
-        device.queue.writeBuffer(setsBuf, 0, encoded.sets);
+    // Costs buffer
+    costsBuf = device.createBuffer({
+        size: encoded.costs.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(costsBuf, 0, encoded.costs);
 
-        const kindArr = new Int32Array(encoded.count);
-        for (let i = 0; i < encoded.count; i++) {
-            kindArr[i] = echoes[i]?.id ?? -1;
-        }
-        kindBuf = device.createBuffer({
-            size: kindArr.byteLength,
-            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-        });
-        device.queue.writeBuffer(kindBuf, 0, kindArr);
+    // Sets buffer
+    setsBuf = device.createBuffer({
+        size: encoded.sets.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(setsBuf, 0, encoded.sets);
 
-        // Main echo buffs
-        const mainArr = buildMainEchoBuffsArray(
-            Array.from({ length: encoded.count }, (_, i) => i),
-            echoes,
-            charId
-        );
-
-        mainBuffsBuf = device.createBuffer({
-            size: mainArr.byteLength,
-            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-        });
-        device.queue.writeBuffer(mainBuffsBuf, 0, mainArr);
-
-        defaultConstraintBuf = device.createBuffer({
-            size: defaultConstraints.byteLength,
-            usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
-        });
-        device.queue.writeBuffer(defaultConstraintBuf, 0, defaultConstraints);
-
-        self.postMessage({ type: "ready" });
-
-    } catch (err) {
-        self.postMessage({ type: "workerError", error: err.message });
+    // Kind/id buffer (for constraints / filtering)
+    const kindArr = new Int32Array(encoded.count);
+    for (let i = 0; i < encoded.count; i++) {
+        kindArr[i] = echoes[i]?.id ?? -1;
     }
+    kindBuf = device.createBuffer({
+        size: kindArr.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(kindBuf, 0, kindArr);
+
+    // Main echo buffs
+    const mainArr = buildMainEchoBuffsArray(
+        Array.from({ length: encoded.count }, (_, i) => i),
+        echoes,
+        charId
+    );
+
+    mainBuffsBuf = device.createBuffer({
+        size: mainArr.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(mainBuffsBuf, 0, mainArr);
+
+    // Default constraints buffer
+    defaultConstraintBuf = device.createBuffer({
+        size: defaultConstraints.byteLength,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(defaultConstraintBuf, 0, defaultConstraints);
 }
 
-self.onmessage = async e => {
+async function readCandidates(device, candidateBuf, candidateCount, reuse) {
+    const byteSize = candidateCount * 8; // Candidate = 8 bytes
+
+    let readBuffer = reuse.buffer;
+    let size = reuse.size;
+
+    if (!readBuffer || size < byteSize) {
+        if (readBuffer) readBuffer.destroy();
+        readBuffer = device.createBuffer({
+            size: byteSize,
+            usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+        });
+        size = byteSize;
+    }
+
+    const encoder = device.createCommandEncoder();
+    encoder.copyBufferToBuffer(candidateBuf, 0, readBuffer, 0, byteSize);
+    device.queue.submit([encoder.finish()]);
+
+    await readBuffer.mapAsync(GPUMapMode.READ);
+    const ab = readBuffer.getMappedRange();
+    const dv = new DataView(ab);
+
+    const out = [];
+    for (let i = 0; i < candidateCount; i++) {
+        const off = i * 8;
+        const dmg = dv.getFloat32(off, true);
+        if (dmg <= 0) continue;
+
+        const idx = dv.getUint32(off + 4, true);
+        out.push({ dmg, index: idx });
+    }
+
+    readBuffer.unmap();
+    return { out, reuse: { buffer: readBuffer, size } };
+}
+
+self.onmessage = async (e) => {
     const msg = e.data;
 
     if (msg.type === "cancel") {
@@ -128,186 +172,181 @@ self.onmessage = async e => {
 
     if (msg.type === "init") {
         CANCEL = false;
-        await initStatic(msg.encoded, msg.echoes, msg.charId);
+        try {
+            await initStatic(msg.encoded, msg.echoes, msg.charId);
+            self.postMessage({ type: "ready" });
+        } catch (err) {
+            self.postMessage({ type: "workerError", error: err?.message ?? String(err) });
+        }
         return;
     }
 
-    if (msg.type === "run") {
-        if (CANCEL) {
-            self.postMessage({ cancelled: true });
-            return;
+    if (msg.type !== "run") return;
+
+    // IMPORTANT: always resolve job promises with a type:"done" message
+    if (CANCEL) {
+        self.postMessage({ type: "done", cancelled: true, topK: [] });
+        return;
+    }
+
+    try {
+        const combos = new Int32Array(msg.combosBuf, msg.combosOffset ?? 0, msg.combosLen);
+        const packed = new Float32Array(msg.ctxBuf, msg.ctxOffset ?? 0, msg.ctxLen);
+        const comboCount = (combos.length / 5) | 0;
+        const constraints = msg.encodedConstraints;
+
+        const combosPerWorkgroup = WORKGROUP_SIZE * CYCLES_PER_INVOCATION;
+        const workgroupsTotal = Math.ceil(comboCount / combosPerWorkgroup);
+        const candidateCount = workgroupsTotal * REDUCE_K * 8;
+
+        // Candidates buffer (STORAGE | COPY_SRC)
+        {
+            const res = ensureStorageBuffer(
+                candBuf,
+                candBufSize,
+                candidateCount,
+                GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
+            );
+            candBuf = res.buffer;
+            candBufSize = res.size;
         }
 
-        try {
-            const combos = msg.combos;  // Int32Array
-            const packed = msg.packedContext;
-            const comboCount = combos.length / 5;
-            const constraints = msg.encodedConstraints; // Float32Array
+        // Combos buffer (STORAGE | COPY_DST)
+        {
+            const neededSize = combos.byteLength;
+            const res = ensureStorageBuffer(
+                combosBuf,
+                combosBufSize,
+                neededSize,
+                GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
+            );
+            combosBuf = res.buffer;
+            combosBufSize = res.size;
 
-
-            // Combos buffer (STORAGE)
-            {
-                const neededSize = combos.byteLength;
-                const res = ensureStorageBuffer(
-                    combosBuf,
-                    combosBufSize,
-                    neededSize,
-                    GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-                );
-                combosBuf = res.buffer;
-                combosBufSize = res.size;
-
-                device.queue.writeBuffer(combosBuf, 0, combos);
-            }
-
-            // Context buffer (UNIFORM)
-            {
-                const neededSize = packed.byteLength;
-                const res = ensureStorageBuffer(
-                    ctxBuf,
-                    ctxBufSize,
-                    neededSize,
-                    GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
-                );
-                ctxBuf = res.buffer;
-                ctxBufSize = res.size;
-
-                device.queue.writeBuffer(ctxBuf, 0, packed);
-            }
-
-            // Output buffer (STORAGE | COPY_SRC)
-            {
-                const neededSize = comboCount * 4; // 1 float (4 bytes) per combo
-                const res = ensureStorageBuffer(
-                    outBuf,
-                    outBufSize,
-                    neededSize,
-                    GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
-                );
-                outBuf = res.buffer;
-                outBufSize = res.size;
-            }
-
-            // Constraints buffer (UNIFORM)
-            if (constraints) {
-                const neededSize = constraints.byteLength;
-                const res = ensureStorageBuffer(
-                    constraintBuf,
-                    constraintBufSize,
-                    neededSize,
-                    GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
-                );
-                constraintBuf = res.buffer;
-                constraintBufSize = res.size;
-
-                device.queue.writeBuffer(constraintBuf, 0, constraints);
-            } else {
-                constraintBuf = defaultConstraintBuf;
-            }
-
-            const group = createBindGroup(device, layout, {
-                echoStats: statsBuf,
-                echoCosts: costsBuf,
-                echoSets: setsBuf,
-                combos: combosBuf,
-                context: ctxBuf,
-                outputBuffer: outBuf,
-                mainEchoBuffs: mainBuffsBuf,
-                statConstraints: constraintBuf,
-                echoKindIds: kindBuf
-            });
-
-            await runEchoGpuPipeline({
-                device,
-                pipeline,
-                bindGroup: group,
-                comboCount
-            });
-
-            let results = await readResults(device, outBuf, comboCount);
-
-            // -------------------------------------------------------
-            // Local top-K selection as before
-            // -------------------------------------------------------
-            if (comboCount <= msg.resultsLimit) {
-                const topCombos = [];
-                for (let i = 0; i < comboCount; i++) {
-                    const dmg = results[i];
-                    if (dmg <= 0) continue;
-
-                    const base = i * 5;
-                    topCombos.push({
-                        dmg,
-                        ids: [
-                            combos[base],
-                            combos[base + 1],
-                            combos[base + 2],
-                            combos[base + 3],
-                            combos[base + 4],
-                        ],
-                    });
-                }
-
-                self.postMessage({ type: "done", topK: topCombos });
-                return;
-            }
-
-            const K = 4;
-            let localTop = [];
-
-            for (let i = 0; i < comboCount; i++) {
-                const dmg = results[i];
-
-                if (localTop.length < K) {
-                    localTop.push({ dmg, localIndex: i });
-                    localTop.sort((a, b) => b.dmg - a.dmg);
-                    continue;
-                }
-
-                if (dmg > localTop[K - 1].dmg) {
-                    localTop[K - 1] = { dmg, localIndex: i };
-                    localTop.sort((a, b) => b.dmg - a.dmg);
-                }
-            }
-
-            const bestBySet = new Map();
-
-            for (const entry of localTop) {
-                const i = entry.localIndex;
-                const dmg = entry.dmg;
-
-                const base = i * 5;
-                const ids = [
-                    combos[base],
-                    combos[base+1],
-                    combos[base+2],
-                    combos[base+3],
-                    combos[base+4],
-                ];
-
-                const key = ids.slice().sort((a,b)=>a-b).join(',');
-
-                const prev = bestBySet.get(key);
-                if (!prev || dmg > prev.dmg) {
-                    bestBySet.set(key, { dmg, ids });
-                }
-            }
-
-            const topCombos = [...bestBySet.values()];
-
-            results = null;
-
-            self.postMessage({
-                type: "done",
-                topK: topCombos
-            });
-
-            localTop.length = 0;
-
-            await device.queue.onSubmittedWorkDone();
-
-        } catch (err) {
-            self.postMessage({ type: "workerError", error: err.message });
+            device.queue.writeBuffer(combosBuf, 0, combos);
         }
+
+        // Context buffer (UNIFORM | COPY_DST)
+        {
+            const neededSize = packed.byteLength;
+            const res = ensureStorageBuffer(
+                ctxBuf,
+                ctxBufSize,
+                neededSize,
+                GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
+            );
+            ctxBuf = res.buffer;
+            ctxBufSize = res.size;
+
+            device.queue.writeBuffer(ctxBuf, 0, packed);
+        }
+
+        // Output buffer (STORAGE | COPY_SRC)
+        {
+            const neededSize = comboCount * 4;
+            const res = ensureStorageBuffer(
+                outBuf,
+                outBufSize,
+                neededSize,
+                GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
+            );
+            outBuf = res.buffer;
+            outBufSize = res.size;
+        }
+
+        // Constraints buffer (UNIFORM | COPY_DST) or default
+        if (constraints) {
+            const neededSize = constraints.byteLength;
+            const res = ensureStorageBuffer(
+                constraintBuf,
+                constraintBufSize,
+                neededSize,
+                GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
+            );
+            constraintBuf = res.buffer;
+            constraintBufSize = res.size;
+            device.queue.writeBuffer(constraintBuf, 0, constraints);
+        } else {
+            constraintBuf = defaultConstraintBuf;
+        }
+
+        // Bind group (must include binding 9 = candidates)
+        const group = createBindGroup(device, layout, {
+            echoStats: statsBuf,
+            echoCosts: costsBuf,
+            echoSets: setsBuf,
+            combos: combosBuf,
+            context: ctxBuf,
+            outputBuffer: outBuf,
+            mainEchoBuffs: mainBuffsBuf,
+            statConstraints: constraintBuf,
+            echoKindIds: kindBuf,
+            candidates: candBuf,
+        });
+
+        // Main compute pass
+        await runEchoGpuPipeline({
+            device,
+            pipeline: pipelineMain,
+            bindGroup: group,
+            comboCount,
+        });
+
+        // Reduction pass: chunk dispatch to avoid 65535 limit
+        {
+            const encoder = device.createCommandEncoder();
+            const pass = encoder.beginComputePass();
+            pass.setPipeline(pipelineReduce);
+            pass.setBindGroup(0, group);
+
+            const MAX_WG = 65535;
+            let remaining = workgroupsTotal;
+            while (remaining > 0) {
+                const chunk = Math.min(MAX_WG, remaining);
+                pass.dispatchWorkgroups(chunk);
+                remaining -= chunk;
+            }
+
+            pass.end();
+            device.queue.submit([encoder.finish()]);
+        }
+
+        const { out: cand, reuse } = await readCandidates(
+            device,
+            candBuf,
+            workgroupsTotal * REDUCE_K,
+            candReadback
+        );
+        candReadback = reuse;
+
+        // Build topK from candidates
+        cand.sort((a, b) => b.dmg - a.dmg);
+
+        const bestBySet = new Map();
+
+        for (const { dmg, index } of cand) {
+            if (bestBySet.size >= msg.resultsLimit * 8) break;
+
+            const base = index * 5;
+            const ids = [
+                combos[base],
+                combos[base + 1],
+                combos[base + 2],
+                combos[base + 3],
+                combos[base + 4],
+            ];
+
+            const key = ids.slice().sort((x, y) => x - y).join(",");
+            const prev = bestBySet.get(key);
+            if (!prev || dmg > prev.dmg) bestBySet.set(key, { dmg, ids });
+        }
+
+        const topK = [...bestBySet.values()]
+            .sort((a, b) => b.dmg - a.dmg)
+            .slice(0, msg.resultsLimit);
+
+        self.postMessage({ type: "done", cancelled: false, topK });
+    } catch (err) {
+        self.postMessage({ type: "workerError", error: err?.message ?? String(err) });
     }
 };
