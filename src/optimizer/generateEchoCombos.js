@@ -383,3 +383,93 @@ export function* generateEchoPermutationBatches2({
     const leftover = flush();
     if (leftover) yield leftover;
 }
+
+export function* generateEchoCombinationBatches({
+                                                     echoes,
+                                                     maxCost = 12,
+                                                     maxSize = 5,
+                                                     batchSize = 5000,
+                                                     lockedEchoId = null,
+                                                 }) {
+    const n = echoes.length;
+    const costArr = echoes.map(e => e.cost || 0);
+
+    // Map locked ID → index in echoes[]
+    const lockedIndex =
+        lockedEchoId == null
+            ? null
+            : echoes.findIndex(e => e.id === lockedEchoId);
+
+    // Early exit if locked echo alone already breaks cost
+    if (
+        lockedIndex != null &&
+        lockedIndex !== -1 &&
+        costArr[lockedIndex] > maxCost
+    ) {
+        return;
+    }
+
+    // current COMBINATION (indices into echoes[])
+    const combo = new Int32Array(maxSize);
+
+    // batching buffer
+    const batchCapacity = batchSize * maxSize;
+    let scratch = new Int32Array(batchCapacity);
+    let cursor = 0;
+
+    function flush() {
+        if (cursor > 0) {
+            const out = scratch.slice(0, cursor * maxSize);
+            cursor = 0;
+            return out;
+        }
+    }
+
+    function* emitCombo() {
+        const offset = cursor * maxSize;
+        scratch.set(combo, offset);
+        cursor++;
+
+        if (cursor >= batchSize) {
+            yield scratch.slice(0, cursor * maxSize);
+            cursor = 0;
+        }
+    }
+
+    /**
+     * depth: how many picks we’ve placed so far (0..maxSize)
+     * start: next index in echoes[] we’re allowed to use (enforces strictly increasing → combinations)
+     * costSum: current total cost
+     * hasLocked: whether lockedIndex is already in this combo
+     */
+    function* dfs(depth, start, costSum, hasLocked) {
+        if (depth === maxSize) {
+            if (
+                lockedIndex != null &&
+                lockedIndex !== -1 &&
+                !hasLocked
+            ) {
+                return;
+            }
+
+            yield* emitCombo();
+            return;
+        }
+
+        for (let i = start; i < n; i++) {
+            const newCost = costSum + costArr[i];
+            if (newCost > maxCost) continue;
+
+            combo[depth] = i;
+            const nextHasLocked =
+                hasLocked || (lockedIndex != null && i === lockedIndex);
+
+            yield* dfs(depth + 1, i + 1, newCost, nextHasLocked);
+        }
+    }
+
+    yield* dfs(0, 0, 0, false);
+
+    const leftover = flush();
+    if (leftover) yield leftover;
+}

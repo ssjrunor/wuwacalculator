@@ -1,8 +1,6 @@
-@group(0) @binding(0) var<storage, read> echoStats: array<f32>;
-@group(0) @binding(1) var<storage, read> echoCosts: array<f32>;
+@group(0) @binding(0) var<storage, read> echoStats: array<vec4<f32>>;
 @group(0) @binding(2) var<storage, read> echoSets: array<f32>;
 @group(0) @binding(3) var<storage, read> combos: array<i32>;
-@group(0) @binding(5) var<storage, read_write> outDamage: array<f32>;
 @group(0) @binding(6) var<storage, read> mainEchoBuffs: array<f32>;
 @group(0) @binding(8) var<storage, read> echoKindIds: array<i32>;
 
@@ -67,14 +65,14 @@ struct Params {
     comboCount:   f32,
     charId:       f32,
     sequence:     f32,
-    pad2:         f32,
+    lockedEchoIndex: f32,
     pad3:         f32,
 };
 
 @group(0) @binding(4)
 var<uniform> params : Params;
 
-const STATS_PER_ECHO : u32 = 20u;
+const STATS_VEC4S_PER_ECHO : u32 = 5u;
 const ECHOS_PER_COMBO: u32 = 5u;
 const BUFFS_PER_ECHO : u32 = 15u;
 

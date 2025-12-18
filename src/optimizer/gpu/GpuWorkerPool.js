@@ -1,4 +1,4 @@
-const WORKER_COUNT = Math.max(1, Math.min(4, (navigator.hardwareConcurrency ?? 4) - 1));
+const WORKER_COUNT = 1;
 
 let workers = [];
 let ready = new Set();

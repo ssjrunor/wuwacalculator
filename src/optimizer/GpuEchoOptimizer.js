@@ -11,6 +11,8 @@ export async function runGpuEchoOptimizer({
                                               charId,
                                               encodedConstraints,
                                               echoes,
+                                              mainFactor = 1,
+                                              lockedIndex = -1,
                                           }) {
     const TARGET_COMBOS_PER_JOB = 250_000;
     const TARGET_INTS_PER_JOB = TARGET_COMBOS_PER_JOB * 5;
@@ -34,6 +36,7 @@ export async function runGpuEchoOptimizer({
             ...ctxObj,
             comboCount,
             charId,
+            lockedEchoIndex: lockedIndex,
         });
 
         const combosBatch =
@@ -86,13 +89,13 @@ export async function runGpuEchoOptimizer({
         const { cancelled, comboCount } = await runOneJob(merged);
         if (cancelled) return { cancelled: true };
 
-        totalProcessed += comboCount;
+        totalProcessed += comboCount * mainFactor;
 
         const now = performance.now();
         const elapsedSinceLast = now - lastUpdateTime;
 
         if (elapsedSinceLast > 0) {
-            const speed = comboCount / elapsedSinceLast;
+            const speed = (comboCount * mainFactor) / elapsedSinceLast;
             avgSpeed = (avgSpeed * speedSamples + speed) / (speedSamples + 1);
             speedSamples++;
             lastUpdateTime = now;

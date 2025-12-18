@@ -2,8 +2,7 @@ import {runGpuEchoOptimizer} from "./GpuEchoOptimizer.js";
 import {generateEchoContext} from "./echoOptimizerContext.js";
 import {cancelGpuWorkers, initWorkerPool, resetGpuCancel, resetWorkerPool,} from "./gpu/GpuWorkerPool.js";
 import {
-    generateEchoComboBatches,
-    generateEchoPermutationBatches,
+    generateEchoCombinationBatches,
     generateEchoPermutationBatches2
 } from "./generateEchoCombos.js";
 import {buildStatConstraintArray, encodeEchoStats} from "./encodeEchoStats.js";
@@ -32,7 +31,18 @@ export const EchoOptimizer = {
         const encoded = encodeEchoStats(filtered);
         await initWorkerPool(encoded, filtered, form.charId);
 
-        const batchSize = Math.min(form.combinations, 120000);
+        const lockedRequested = form.lockedEchoId != null;
+        const lockedIndex = !lockedRequested
+            ? -1
+            : filtered.findIndex(e => e.id === form.lockedEchoId);
+        if (lockedRequested && lockedIndex === -1) {
+            return [];
+        }
+        const mainFactor = lockedIndex === -1 ? 5 : 1;
+        const batchSize = Math.min(
+            Math.ceil(form.combinations / mainFactor),
+            120000
+        );
 
         if (form.onBatchSize) {
             form.onBatchSize(batchSize);
@@ -44,7 +54,15 @@ export const EchoOptimizer = {
 
         const encodedConstraints = buildStatConstraintArray(form.constraints);
 
-        const batchGen = generateEchoPermutationBatches2({
+        const batchGen = lockedIndex === -1
+            ? generateEchoCombinationBatches({
+                echoes: filtered,
+                maxCost: 12,
+                maxSize: 5,
+                batchSize,
+                lockedEchoId: null,
+            })
+            : generateEchoPermutationBatches2({
             echoes: filtered,
             maxCost: 12,
             maxSize: 5,
@@ -61,7 +79,9 @@ export const EchoOptimizer = {
             encoded,
             ctxObj,
             charId: form.charId,
-            encodedConstraints
+            encodedConstraints,
+            mainFactor,
+            lockedIndex
         });
     }
 };

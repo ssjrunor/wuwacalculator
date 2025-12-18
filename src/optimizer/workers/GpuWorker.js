@@ -8,10 +8,8 @@ import {buildMainEchoBuffsArray} from "../encodeEchoStats.js";
 let device = null;
 let layout = null;
 let pipelineMain = null;
-let pipelineReduce = null;
 
 let statsBuf = null;
-let costsBuf = null;
 let setsBuf = null;
 let mainBuffsBuf = null;
 let defaultConstraintBuf = null;
@@ -22,9 +20,6 @@ let combosBufSize = 0;
 let ctxBuf = null;
 let ctxBufSize = 0;
 
-let outBuf = null;
-let outBufSize = 0;
-
 let constraintBuf = null;
 let constraintBufSize = 0;
 
@@ -32,6 +27,9 @@ let kindBuf = null;
 
 let candBuf = null;
 let candBufSize = 0;
+
+let bindGroup = null;
+let bindGroupBuffers = null;
 
 // Reusable MAP_READ buffer for candidate readback
 let candReadback = { buffer: null, size: 0 };
@@ -64,13 +62,32 @@ function ensureStorageBuffer(existing, existingSize, neededSize, usage) {
     return { buffer: existing, size: existingSize };
 }
 
+function getBindGroup(buffers) {
+    if (!bindGroupBuffers) {
+        bindGroup = createBindGroup(device, layout, buffers);
+        bindGroupBuffers = { ...buffers };
+        return bindGroup;
+    }
+
+    const keys = Object.keys(buffers);
+    for (const key of keys) {
+        if (bindGroupBuffers[key] !== buffers[key]) {
+            bindGroup = createBindGroup(device, layout, buffers);
+            bindGroupBuffers = { ...buffers };
+            break;
+        }
+    }
+
+    return bindGroup;
+}
+
 async function initStatic(encoded, echoes, charId) {
     device = await getGpuDevice();
     layout = createBindGroupLayout(device);
+    bindGroup = null;
+    bindGroupBuffers = null;
 
-    // Create both pipelines (two entry points in the same shaderCode)
     pipelineMain = createPipeline(device, layout, "main");
-    pipelineReduce = createPipeline(device, layout, "reduceMain");
 
     // Stats buffer
     statsBuf = device.createBuffer({
@@ -78,13 +95,6 @@ async function initStatic(encoded, echoes, charId) {
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
     device.queue.writeBuffer(statsBuf, 0, encoded.stats);
-
-    // Costs buffer
-    costsBuf = device.createBuffer({
-        size: encoded.costs.byteLength,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-    });
-    device.queue.writeBuffer(costsBuf, 0, encoded.costs);
 
     // Sets buffer
     setsBuf = device.createBuffer({
@@ -146,16 +156,19 @@ async function readCandidates(device, candidateBuf, candidateCount, reuse) {
 
     await readBuffer.mapAsync(GPUMapMode.READ);
     const ab = readBuffer.getMappedRange();
-    const dv = new DataView(ab);
+    const f32 = new Float32Array(ab);
+    const u32 = new Uint32Array(ab);
 
     const out = [];
     for (let i = 0; i < candidateCount; i++) {
-        const off = i * 8;
-        const dmg = dv.getFloat32(off, true);
+        const base = i * 2;
+        const dmg = f32[base];
         if (dmg <= 0) continue;
 
-        const idx = dv.getUint32(off + 4, true);
-        out.push({ dmg, index: idx });
+        const packed = u32[base + 1];
+        const mainPos = packed >>> 29;
+        const index = packed & 0x1fffffff;
+        out.push({ dmg, index, mainPos });
     }
 
     readBuffer.unmap();
@@ -197,14 +210,14 @@ self.onmessage = async (e) => {
 
         const combosPerWorkgroup = WORKGROUP_SIZE * CYCLES_PER_INVOCATION;
         const workgroupsTotal = Math.ceil(comboCount / combosPerWorkgroup);
-        const candidateCount = workgroupsTotal * REDUCE_K * 8;
+        const candidateCount = workgroupsTotal * REDUCE_K;
 
         // Candidates buffer (STORAGE | COPY_SRC)
         {
             const res = ensureStorageBuffer(
                 candBuf,
                 candBufSize,
-                candidateCount,
+                candidateCount * 8,
                 GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
             );
             candBuf = res.buffer;
@@ -241,19 +254,6 @@ self.onmessage = async (e) => {
             device.queue.writeBuffer(ctxBuf, 0, packed);
         }
 
-        // Output buffer (STORAGE | COPY_SRC)
-        {
-            const neededSize = comboCount * 4;
-            const res = ensureStorageBuffer(
-                outBuf,
-                outBufSize,
-                neededSize,
-                GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
-            );
-            outBuf = res.buffer;
-            outBufSize = res.size;
-        }
-
         // Constraints buffer (UNIFORM | COPY_DST) or default
         if (constraints) {
             const neededSize = constraints.byteLength;
@@ -271,45 +271,24 @@ self.onmessage = async (e) => {
         }
 
         // Bind group (must include binding 9 = candidates)
-        const group = createBindGroup(device, layout, {
+        const group = getBindGroup({
             echoStats: statsBuf,
-            echoCosts: costsBuf,
             echoSets: setsBuf,
             combos: combosBuf,
             context: ctxBuf,
-            outputBuffer: outBuf,
             mainEchoBuffs: mainBuffsBuf,
             statConstraints: constraintBuf,
             echoKindIds: kindBuf,
             candidates: candBuf,
         });
 
-        // Main compute pass
+        // Main compute pass (includes reduction)
         await runEchoGpuPipeline({
             device,
             pipeline: pipelineMain,
             bindGroup: group,
             comboCount,
         });
-
-        // Reduction pass: chunk dispatch to avoid 65535 limit
-        {
-            const encoder = device.createCommandEncoder();
-            const pass = encoder.beginComputePass();
-            pass.setPipeline(pipelineReduce);
-            pass.setBindGroup(0, group);
-
-            const MAX_WG = 65535;
-            let remaining = workgroupsTotal;
-            while (remaining > 0) {
-                const chunk = Math.min(MAX_WG, remaining);
-                pass.dispatchWorkgroups(chunk);
-                remaining -= chunk;
-            }
-
-            pass.end();
-            device.queue.submit([encoder.finish()]);
-        }
 
         const { out: cand, reuse } = await readCandidates(
             device,
@@ -324,17 +303,18 @@ self.onmessage = async (e) => {
 
         const bestBySet = new Map();
 
-        for (const { dmg, index } of cand) {
+        for (const { dmg, index, mainPos } of cand) {
             if (bestBySet.size >= msg.resultsLimit * 8) break;
 
             const base = index * 5;
-            const ids = [
-                combos[base],
-                combos[base + 1],
-                combos[base + 2],
-                combos[base + 3],
-                combos[base + 4],
-            ];
+            const ids = new Array(5);
+            ids[0] = combos[base + mainPos];
+            let outPos = 1;
+            for (let j = 0; j < 5; j++) {
+                if (j === mainPos) continue;
+                ids[outPos] = combos[base + j];
+                outPos++;
+            }
 
             const key = ids.slice().sort((x, y) => x - y).join(",");
             const prev = bestBySet.get(key);

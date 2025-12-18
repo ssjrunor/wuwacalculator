@@ -73,7 +73,9 @@ fn reduceMain(
       if (winScore <= 0.0) {
         candidates[wg.x * REDUCE_K + k] = Candidate(0.0, 0u);
       } else {
-        candidates[wg.x * REDUCE_K + k] = Candidate(winScore, tmpIdx[0]);
+        let mainPos = outMainPos[tmpIdx[0]] & 7u;
+        let packedIdx = (mainPos << 29u) | tmpIdx[0];
+        candidates[wg.x * REDUCE_K + k] = Candidate(winScore, packedIdx);
       }
     }
 

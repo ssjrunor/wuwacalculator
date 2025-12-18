@@ -1,6 +1,5 @@
 export async function createGpuBuffers({
                                            echoStats,
-                                           echoCosts,
                                            echoSets,
                                            combos,
                                            gpuContexts,
@@ -17,12 +16,6 @@ export async function createGpuBuffers({
     });
     device.queue.writeBuffer(echoStatsBuffer, 0, echoStats);
 
-    const echoCostsBuffer = device.createBuffer({
-        size: echoCosts.byteLength,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-    });
-    device.queue.writeBuffer(echoCostsBuffer, 0, echoCosts);
-
     const echoSetsBuffer = device.createBuffer({
         size: echoSets.byteLength,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
@@ -37,14 +30,9 @@ export async function createGpuBuffers({
 
     const contextBuffer = device.createBuffer({
         size: gpuContexts.byteLength,
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
     device.queue.writeBuffer(contextBuffer, 0, gpuContexts);
-
-    const outputBuffer = device.createBuffer({
-        size: (combos.length / 5) * 4, // 4 bytes per float
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
-    });
 
     const mainEchoBuffsBuffer = device.createBuffer({
         size: mainEchoBuffs.byteLength,
@@ -66,11 +54,9 @@ export async function createGpuBuffers({
 
     return {
         echoStats: echoStatsBuffer,
-        echoCosts: echoCostsBuffer,
         echoSets: echoSetsBuffer,
         combos: combosBuffer,
         context: contextBuffer,
-        outputBuffer,
         mainEchoBuffs: mainEchoBuffsBuffer,
         statConstraints: statConstraintsBuffer,
         echoKindIds: echoKindIdsBuffer,

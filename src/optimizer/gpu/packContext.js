@@ -41,9 +41,9 @@ export function packGpuContext(ctx) {
 
     data[i++] = ctx.charId       ?? 0;
     data[i++] = ctx.sequence     ?? 0;
+    data[i++] = ctx.lockedEchoIndex ?? -1;
 
-    // pads
-    data[i++] = 0; // pad2
+    // pad
     data[i++] = 0; // pad3
 
     return data;

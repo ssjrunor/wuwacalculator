@@ -19,11 +19,9 @@ export function createBindGroup(device, layout, buffers) {
         layout,
         entries: [
             { binding: 0, resource: { buffer: buffers.echoStats } },
-            { binding: 1, resource: { buffer: buffers.echoCosts } },
             { binding: 2, resource: { buffer: buffers.echoSets } },
             { binding: 3, resource: { buffer: buffers.combos } },
             { binding: 4, resource: { buffer: buffers.context } },
-            { binding: 5, resource: { buffer: buffers.outputBuffer } },
             { binding: 6, resource: { buffer: buffers.mainEchoBuffs } },
             { binding: 7, resource: { buffer: buffers.statConstraints } },
             { binding: 8, resource: { buffer: buffers.echoKindIds } },
@@ -38,9 +36,6 @@ export function createBindGroupLayout(device) {
             { binding: 0, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "read-only-storage" } },
 
-            { binding: 1, visibility: GPUShaderStage.COMPUTE,
-                buffer: { type: "read-only-storage" } },
-
             { binding: 2, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "read-only-storage" } },
 
@@ -49,9 +44,6 @@ export function createBindGroupLayout(device) {
 
             { binding: 4, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "uniform" } },
-
-            { binding: 5, visibility: GPUShaderStage.COMPUTE,
-                buffer: { type: "storage" } },
 
             { binding: 6, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "read-only-storage" } },
