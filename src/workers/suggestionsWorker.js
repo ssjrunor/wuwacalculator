@@ -1,5 +1,5 @@
-import {runSetSuggestor} from "../suggestions/setPlan-suggestion/suggestSetPlan.js";
-import {runMainStatSuggestor} from "../suggestions/mainStat-suggestion/suggestMainStat.js";
+import {runSetSuggestor} from "@/features/suggestions/core/setPlan-suggestion/suggestSetPlan.js";
+import {runMainStatSuggestor} from "@/features/suggestions/core/mainStat-suggestion/suggestMainStat.js";
 
 self.onmessage = (event) => {
     const { type, payload, options } = event.data;

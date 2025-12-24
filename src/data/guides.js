@@ -151,56 +151,81 @@ export const guides = [
         ]
     },
     {
-        category: 'Echo Generator',
+        category: 'Random Echoes',
         guides: [
             {
-                title: 'Using the Echo Generator',
+                title: 'Generating Random Echoes',
                 type: 'article',
-                shortDesc: 'Automatically generate randomized or optimized Echo builds for testing and theorycrafting.',
+                shortDesc: 'Generate ranked Echo builds using set filters, main echo focus, and stat-weighted scoring.',
                 content: `
-                  <p>The <strong>Echo Generator</strong> lets you create randomized or goal-driven Echo configurations instantly. I'm not sure what you'd use it for, but it's there I guess.</p>
-            
-                  <h4>1. Overview</h4>
-                  <p>Instead of crafting each Echo by hand, the generator produces full 5-Echo loadouts automatically. You can control the generation bias, roll quality, energy regeneration goals, and other parameters to shape how results are produced.</p>
-            
-                  <h4>2. Key Settings</h4>
-                  <ul>
-                    <li><strong>Main Echo:</strong> By default, main echo is random until set.</li>
-                    <li><strong>Target Skill:</strong> The skill you want the echoes' stats tailored to. By default it's the first skill (Usually Stage 1 under <strong>Normal Attack</strong>)</li>
-                    <li><strong>Iterations:</strong> How many simulations the generator runs when searching for optimal results.</li>
-                    <li><strong>Bias:</strong> A 0–1 scale that determines how much the algorithm favors desirable stats.</li>
-                    <li><strong>Roll Quality:</strong> A weighted random factor controlling how close each generated substat is to its maximum value.</li>
-                    <li><strong>Target Energy Regen:</strong> Ensures the generated set meets a minimum desired Energy Regen percentage.</li>
-                    <li><strong>Set Filters:</strong> Restrict generation to specific Sonata sets or allow random combinations.</li>
-                  </ul>
-            
-                  <h4>3. How It Works</h4>
-                  <p>The generator uses controlled randomness with bias and roll quality multipliers to build complete Echo sets, calculating total stats and scoring them using the same <strong>Build Scoring</strong> system found under that guide category.</p>
-                  <ul>
-                    <li>Each Echo’s <em>main stat</em> is selected according to valid combinations per cost tier.</li>
-                    <li>After each iteration, total build score and energy balance are computed to pick the best configuration.</li>
-                  </ul>
-            
-                  <h4>4. Generating Builds</h4>
-                  <p>Click <strong>Regenerate</strong> to start (over).  
-                  Once done, the top-performing Echo set is displayed, including cost, set, and overall Build Score.</p>
-                  <p>You can then <strong>Equip</strong> the generated set directly on the current character.</p>
-            
-                  <h4>5. Interpreting Results</h4>
-                  <p>The generator displays the final set’s <strong>Build Score</strong> identical to what’s used in the Scoring system.  
-                  This makes it easy to compare the generated build to your current equipped set or presets.</p>
-                        
-                  <h4>6. Tips</h4>
-                  <ul>
-                    <li>Try running with different biases and roll qualities to explore realistic vs. perfect-roll scenarios.</li>
-                    <li>Use the generator to find breakpoints for Energy Regen or damage stats that match your target playstyle.</li>
-                    <li>Results vary depending on your current character’s stat weights — the same parameters may produce very different results across characters.</li>
-                  </ul>
-            
-                  <p>In the future, <strong>Target Skill</strong> will be updated to support <strong>Total Rotation</strong> dmg.</p>
-                `
-            }
-        ]
+              <p>
+                The <strong>Random Echo Generator</strong> lives in the <strong>Suggestions</strong> tab and creates
+                full 5-Echo loadouts, then ranks them using the same damage engine as the main optimizer.
+              </p>
+
+              <h4>1. Where to find it</h4>
+              <ul>
+                <li>Open the <strong>Suggestions</strong> tab in the left pane.</li>
+                <li>Switch to the <strong>Random Echoes</strong> view.</li>
+              </ul>
+
+              <h4>2. Quick start</h4>
+              <ol>
+                <li>Choose a <strong>Target Skill</strong> (the skill the generator will optimize damage for).</li>
+                <li>Optionally pick a <strong>Main Echo</strong> to focus the main slot around.</li>
+                <li>Set <strong>Bias</strong> and <strong>Roll Quality</strong> to shape how “good” the rolls look.</li>
+                <li>If you care about rotations, set a <strong>Target Energy Regen</strong> (e.g. 120–150%).</li>
+                <li>Adjust any <strong>Sonata plans</strong> if you want specific 2p/5p setups.</li>
+                <li>Click <strong>Regenerate</strong> to roll a batch of builds.</li>
+              </ol>
+
+              <h4>3. Key settings</h4>
+              <ul>
+                <li>
+                  <strong>Target Skill</strong> –
+                  The skill used for scoring. Stat weights and damage are computed around this skill.
+                </li>
+                <li>
+                  <strong>Main Echo Focus</strong> –
+                  Tells the generator which Echo (and cost) should sit in the main slot. Leave empty for fully free combos.
+                </li>
+                <li>
+                  <strong>Bias</strong> (0–1) –
+                  Controls how often “desirable” stats (based on your stat weights) show up on substats.
+                  Low bias = more scuffed, realistic rolls. High bias = more cracked, min-maxed rolls.
+                </li>
+                <li>
+                  <strong>Roll Quality</strong> (0–1) –
+                  Controls how close each substat roll is to its max tier. Low = low/mid rolls, high = near-perfect rolls.
+                </li>
+                <li>
+                  <strong>Target Energy Regen</strong> –
+                  The generator tries to meet or slightly exceed this ER across the full 5-Echo set.
+                </li>
+                <li>
+                  <strong>Sonata Plan</strong> –
+                  Restrict generation to specific 2p/5p combinations (for example “2p+2p”, "2pc+3pc" or a full 5p),
+                  or leave it open to let the generator mix sets freely.
+                </li>
+              </ul>
+
+              <h4>4. Reading the results</h4>
+              <ul>
+                <li>Each row is a full 5-Echo set with its <strong>damage</strong> and/or <strong>Build Score</strong>.</li>
+                <li>You can inspect a selected result to see per-Echo main/sub stats and Sonata set breakdown.</li>
+                <li>Use the <strong>Apply</strong> button to apply that build to the current character.</li>
+              </ul>
+
+              <h4>5. Practical tips</h4>
+              <ul>
+                <li>Try low bias + mid roll quality to simulate “realistic” farming results.</li>
+                <li>Try high bias + high roll quality to see your theoretical ceiling for a given build.</li>
+                <li>Change the target skill (e.g. Basic vs Liberation) to see how priorities shift.</li>
+                <li>Use the ER target when planning rotation-heavy teams or characters that feel starved for ult uptime.</li>
+              </ul>
+            `,
+            },
+        ],
     },
     {
         category: 'Echo Presets',

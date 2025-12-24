@@ -6475,6 +6475,22 @@
           "ElementPower": 0,
           "HardnessLv": 10000,
           "ToughLv": 22500
+        },
+        "28002302": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            15750,
+            18900,
+            22050,
+            25200,
+            28350
+          ],
+          "Energy": 393,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15750
         }
       }
     },
@@ -11651,15 +11667,15 @@
   {
     "id": "6000174",
     "Id": 6000174,
-    "Code": "T01-",
+    "Code": "W36-",
     "Name": "Tremor Warrior",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31074_UI.T_IconMonsterHead_31074_UI",
     "Skill": {
-      "Desc": "Transform into a Tremor Warrior and viciously attack forward enemies, dealing {0} Electro DMG\n\nCD: {1}s.",
-      "SimpleDesc": "Transform into a Tremor Warrior, dealing Electro DMG.",
+      "Desc": "Transform into a Tremor Warrior and viciously attack enemies in the front, dealing {0} Electro DMG.\n\nCD: {1}s.",
+      "SimpleDesc": "Transform into a Tremor Warrior to attack enemies, dealing Electro DMG.",
       "Param": [
         [
           "114.00%",
@@ -11716,7 +11732,7 @@
             ]
           },
           "5": {
-            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Desc": "When healing a Resonator in the team, every {0} of Off-Tune Buildup Rate grants a {1} ATK increase to all Resonators in the team for {3}s, up to {2}. Effects of the same name cannot be stacked.",
             "Param": [
               "1%",
               "0.2%",
@@ -11739,14 +11755,14 @@
   {
     "id": "6000175",
     "Id": 6000175,
-    "Code": "T01-",
+    "Code": "R10-",
     "Name": "Flora Drone",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31077_UI.T_IconMonsterHead_31077_UI",
     "Skill": {
-      "Desc": "Summon a Flora Drone, dealing {0} Aero DMG to enemies and healing Resonators within range by {1} of their HP plus an additional {2} HP.\n\nCD: {3}s",
+      "Desc": "Summon a Flora Drone, dealing {0} Aero DMG to enemies and healing Resonators within range by {1} of their Max HP plus an additional {2} HP.\n\nCD: {3}s",
       "SimpleDesc": "Summon a Flora Drone, dealing Aero DMG to enemies and healing Resonators.",
       "Param": [
         [
@@ -11830,7 +11846,7 @@
             ]
           },
           "5": {
-            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -11853,7 +11869,7 @@
             ]
           },
           "5": {
-            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0} for {2}s, stacking up to {1} times. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
             "Param": [
               "10%",
               "3",
@@ -11876,15 +11892,15 @@
   {
     "id": "6000176",
     "Id": 6000176,
-    "Code": "T01-",
+    "Code": "R11-",
     "Name": "Mining Drone",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31078_UI.T_IconMonsterHead_31078_UI",
     "Skill": {
-      "Desc": "Transform into a Mining Drone, dealing {0} Havoc DMG 2 times.\nCD: {1}s.",
-      "SimpleDesc": "Transform into a Mining Drone, dealing Havoc DMG to enemies.",
+      "Desc": "Transform into a Mining Drone to attack enemies, dealing {0} Havoc DMG twice.\nCD: {1}s.",
+      "SimpleDesc": "Transform into a Mining Drone to attack enemies, dealing Havoc DMG.",
       "Param": [
         [
           "57.00%",
@@ -11941,7 +11957,7 @@
             ]
           },
           "5": {
-            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Desc": "When healing a Resonator in the team, every {0} of Off-Tune Buildup Rate grants a {1} ATK increase to all Resonators in the team for {3}s, up to {2}. Effects of the same name cannot be stacked.",
             "Param": [
               "1%",
               "0.2%",
@@ -11964,7 +11980,7 @@
             ]
           },
           "5": {
-            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0} for {2}s, stacking up to {1} times. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
             "Param": [
               "10%",
               "3",
@@ -11987,15 +12003,15 @@
   {
     "id": "6000177",
     "Id": 6000177,
-    "Code": "T01-",
-    "Name": "Goespider Type-S4",
+    "Code": "R12-",
+    "Name": "Geospider S4",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31079_UI.T_IconMonsterHead_31079_UI",
     "Skill": {
-      "Desc": "Summon a Geospider S4, dealing {0} and {1} Spectro DMG to enemies once.\n\nCD: {1}s.",
-      "SimpleDesc": "Summon a Geospider S4, dealing Spectro DMG to enemies.",
+      "Desc": "Summon a Geospider S4 to attack enemies, dealing an instance of {0} Spectro DMG and an instance of {1} Spectro DMG.\n\nCD: {2}s.",
+      "SimpleDesc": "Summon a Geospider S4 to attack enemies, dealing Spectro DMG.",
       "Param": [
         [
           "28.80%",
@@ -12073,7 +12089,7 @@
             ]
           },
           "5": {
-            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -12096,7 +12112,7 @@
             ]
           },
           "5": {
-            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Desc": "When healing a Resonator in the team, every {0} of Off-Tune Buildup Rate grants a {1} ATK increase to all Resonators in the team for {3}s, up to {2}. Effects of the same name cannot be stacked.",
             "Param": [
               "1%",
               "0.2%",
@@ -12119,7 +12135,7 @@
   {
     "id": "6000178",
     "Id": 6000178,
-    "Code": "T01-",
+    "Code": "W37-",
     "Name": "Zip Zap",
     "Type": "",
     "Intensity": "",
@@ -12127,7 +12143,7 @@
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31082_UI.T_IconMonsterHead_31082_UI",
     "Skill": {
       "Desc": "Summon a Zip Zap to launch spinning attacks at enemies, dealing {0} Electro DMG 5 times.\n\nCD: {1}s.",
-      "SimpleDesc": "Summon a Zip Zap, dealing Electro DMG to enemies.",
+      "SimpleDesc": "Summon a Zip Zap to attack enemies, dealing Electro DMG.",
       "Param": [
         [
           "14.40%",
@@ -12184,7 +12200,7 @@
             ]
           },
           "5": {
-            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -12207,7 +12223,7 @@
             ]
           },
           "5": {
-            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0} for {2}s, stacking up to {1} times. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
             "Param": [
               "10%",
               "3",
@@ -12230,15 +12246,15 @@
   {
     "id": "6000179",
     "Id": 6000179,
-    "Code": "T01-",
+    "Code": "R57-",
     "Name": "Twin Nova: Nebulous Cannon",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32049_UI.T_IconMonsterHead_32049_UI",
     "Skill": {
-      "Desc": "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing {0} Spectro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Spectro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill results in both Nebulous Cannon and Collapsar Blade skills being unleashed in quick succession back and forth, but the DMG Bonus from the Echo in the main slot remains unchanged.\n- Damage dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use restored every {9}s.",
-      "SimpleDesc": "Transform into a Twin Nova: Nebulous Cannon to attack enemies, dealing Spectro DMG to enemies.\n\nEquipping this Echo in the main slot grants Spectro and Basic Attack Bonuses to the equipped Resonator.\n\nEquipping Twin Nova: Nebulous Cannon at the same time grants special Echo Skill effects.",
+      "Desc": "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing {0} Spectro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Spectro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill unleashes both Nebulous Cannon and Collapsar Blade skills in quick succession, but the DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use added every {9}s.",
+      "SimpleDesc": "Transform into Twin Nova: Nebulous Cannon to launch slashes at enemies, dealing Spectro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains Spectro and Basic Attack Bonuses.\n\nEquipping Twin Nova: Collapsar Blade at the same time grants special Echo Skill effects.",
       "Param": [
         [
           "44.73%",
@@ -12345,7 +12361,7 @@
             ]
           },
           "5": {
-            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0} for {2}s, stacking up to {1} times. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
             "Param": [
               "10%",
               "3",
@@ -12365,22 +12381,22 @@
     "IntensityCode": 1,
     "MonsterInfo": 320000490,
     "Phantom": {
-      "Name": "Phantom Twin Nova: Nebulous Cannon",
+      "Name": "Phantom: Twin Nova - Nebulous Cannon",
       "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_32049_UI.T_IconMonsterGoods_SG_32049_UI"
     }
   },
   {
     "id": "6000180",
     "Id": 6000180,
-    "Code": "T01-",
+    "Code": "R58-",
     "Name": "Twin Nova: Collapsar Blade",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32050_UI.T_IconMonsterHead_32050_UI",
     "Skill": {
-      "Desc": "Transform into a Twin Nova: Collapsar Blade to rapid fire at enemies for 5s, with each attack dealing {0} Electro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Electro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Nebulous Cannon is equipped in another slot on the Resonator:\n- Casting Echo Skill unleashes both Nebulous Cannon and Collapsar Blade skills in quick succession back and forth, but the DMG Bonus from the Echo in the main slot remains unchanged.\n- Damage dealt by Twin Nova: Collapsar Blade's becomes Spectro DMG.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n- .-\nThis skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use restored every {9}s.",
-      "SimpleDesc": "Transform into a Twin Nova: Collapsar Blade to attack enemies, dealing Electro DMG.\n\n\nEquipping this Echo in the main slot grants Electro and Basic Attack Bonuses to the equipped Resonator.\n\nEquipping Twin Nova: Nebulous Cannon at the same time grants special Echo Skill effects.",
+      "Desc": "Transform into Twin Nova: Collapsar Blade to rapidly fire at enemies for 5s, with each attack dealing {0} Electro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Electro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Nebulous Cannon is equipped in another slot on the Resonator:\n- Casting Echo Skill unleashes both Nebulous Cannon and Collapsar Blade skills in quick succession, but is still considered performing the same Echo Skill.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG. The Electro DMG Bonus gained from equipping it in the main slot is turned into Spectro DMG Bonus.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n- This skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use added every {9}s.",
+      "SimpleDesc": "Transform into Twin Nova: Collapsar Blade to fire at enemies, dealing Electro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains Electro and Basic Attack Bonuses.\n\nEquipping Twin Nova: Nebulous Cannon at the same time grants special Echo Skill effects.",
       "Param": [
         [
           "1.12%",
@@ -12503,7 +12519,7 @@
             ]
           },
           "5": {
-            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0} for {2}s, stacking up to {1} times. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
             "Param": [
               "10%",
               "3",
@@ -12523,22 +12539,22 @@
     "IntensityCode": 1,
     "MonsterInfo": 320000500,
     "Phantom": {
-      "Name": "Phantom Twin Nova: Collapsar Blade",
+      "Name": "Phantom: Twin Nova - Collapsar Blade",
       "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_32050_UI.T_IconMonsterGoods_SG_32050_UI"
     }
   },
   {
     "id": "6000181",
     "Id": 6000181,
-    "Code": "T01-",
+    "Code": "R59-",
     "Name": "Flora Reindeer",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32051_UI.T_IconMonsterHead_32051_UI",
     "Skill": {
-      "Desc": "Summon a Flora Reindeer, dealing {0} Aero DMG to enemies within a large range.\n\nCD: {1}s.",
-      "SimpleDesc": "Summon a Flora Reindeer, dealing Aero DMG to enemies.",
+      "Desc": "Summon a Flora Reindeer to attack enemies within a large range, dealing {0} Aero DMG.\n\nCD: {1}s.",
+      "SimpleDesc": "Summon a Flora Reindeer to attack enemies, dealing Aero DMG.",
       "Param": [
         [
           "107.00%",
@@ -12595,7 +12611,7 @@
             ]
           },
           "5": {
-            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0} for {2}s, stacking up to {1} times. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
             "Param": [
               "10%",
               "3",
@@ -12618,15 +12634,15 @@
   {
     "id": "6000182",
     "Id": 6000182,
-    "Code": "T01-",
+    "Code": "R60-",
     "Name": "Mining Reindeer",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32052_UI.T_IconMonsterHead_32052_UI",
     "Skill": {
-      "Desc": "Summon a Mining Reindeer for a charged attack on enemies, dealing {0} Electro DMG.\n\n CD: {1}s.",
-      "SimpleDesc": "Summon a Mining Reindeer, dealing Electro DMG to enemies.",
+      "Desc": "Summon a Mining Reindeer to launch a charged attack at enemies, dealing {0} Electro DMG.\n\n CD: {1}s.",
+      "SimpleDesc": "Summon a Mining Reindeer to attack enemies, dealing Electro DMG.",
       "Param": [
         [
           "132.00%",
@@ -12683,7 +12699,7 @@
             ]
           },
           "5": {
-            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -12706,14 +12722,14 @@
   {
     "id": "6000183",
     "Id": 6000183,
-    "Code": "T01-",
+    "Code": "R61-",
     "Name": "Ironhoof",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32053_UI.T_IconMonsterHead_32053_UI",
     "Skill": {
-      "Desc": "Summon an Ironhoof to charge at enemies, dealing {0} Fusion DMG. At the end of the charge, it unleashes a goring attack that deals {1} Fusion DMG three times and {2} Fusion DMG once.\n\nCD: {3}s.",
+      "Desc": "Transform into an Ironhoof to charge at enemies, dealing {0} Fusion DMG. At the end of the charge, unleash a goring attack that deals {1} Fusion DMG 3 times and {2} Fusion DMG once.\n\nCD: {3}s.",
       "SimpleDesc": "Transform into an Ironhoof to charge at enemies, dealing Fusion DMG.",
       "Param": [
         [
@@ -12813,7 +12829,7 @@
             ]
           },
           "5": {
-            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -12836,15 +12852,15 @@
   {
     "id": "6000184",
     "Id": 6000184,
-    "Code": "T01-",
+    "Code": "R62-",
     "Name": "Spacetrek Explorer",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32054_UI.T_IconMonsterHead_32054_UI",
     "Skill": {
-      "Desc": "Summon a Spacetrek Explorer, which grants nearby active Resonators in the team a shield equal to {0} of the summoner's HP, lasting {1}s.\n\nCD: {2}s",
-      "SimpleDesc": "Summon a Spacetrek Explorer that grants shields according to the summoner.",
+      "Desc": "Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to {0} of the summoner's Max HP for {1}s.\n\nCD: {2}s",
+      "SimpleDesc": "Summon a Spacetrek Explorer to grant a Shield to Resonators.",
       "Param": [
         [
           "10%",
@@ -12889,7 +12905,7 @@
             ]
           },
           "5": {
-            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Desc": "When healing a Resonator in the team, every {0} of Off-Tune Buildup Rate grants a {1} ATK increase to all Resonators in the team for {3}s, up to {2}. Effects of the same name cannot be stacked.",
             "Param": [
               "1%",
               "0.2%",
@@ -12912,7 +12928,7 @@
   {
     "id": "6000185",
     "Id": 6000185,
-    "Code": "T01-",
+    "Code": "R63-",
     "Name": "Sabercat Reaver",
     "Type": "",
     "Intensity": "",
@@ -12920,7 +12936,7 @@
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32055_UI.T_IconMonsterHead_32055_UI",
     "Skill": {
       "Desc": "Summon a Sabercat Reaver to attack enemies, dealing {0} Fusion DMG.\n\nCD: {1}s.",
-      "SimpleDesc": "Summon a Sabercat Reaver Drake, dealing Fusion DMG to enemies.",
+      "SimpleDesc": "Summon a Sabercat Reaver to attack enemies, dealing Fusion DMG.",
       "Param": [
         [
           "107.00%",
@@ -12977,7 +12993,7 @@
             ]
           },
           "5": {
-            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -13000,7 +13016,7 @@
             ]
           },
           "5": {
-            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Desc": "When healing a Resonator in the team, every {0} of Off-Tune Buildup Rate grants a {1} ATK increase to all Resonators in the team for {3}s, up to {2}. Effects of the same name cannot be stacked.",
             "Param": [
               "1%",
               "0.2%",
@@ -13023,7 +13039,7 @@
   {
     "id": "6000186",
     "Id": 6000186,
-    "Code": "T01-",
+    "Code": "R64-",
     "Name": "Sabercat Prowler",
     "Type": "",
     "Intensity": "",
@@ -13031,7 +13047,7 @@
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32056_UI.T_IconMonsterHead_32056_UI",
     "Skill": {
       "Desc": "Summon a Sabercat Prowler to fire beams at enemies, dealing {0} Havoc DMG.\n\nCD: {1}s.",
-      "SimpleDesc": "Summon a Sabercat Prowler, dealing Havoc DMG to enemies.",
+      "SimpleDesc": "Summon a Sabercat Prowler to attack enemies, dealing Havoc DMG.",
       "Param": [
         [
           "107.00%",
@@ -13088,7 +13104,7 @@
             ]
           },
           "5": {
-            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -13111,7 +13127,7 @@
             ]
           },
           "5": {
-            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Desc": "When healing a Resonator in the team, every {0} of Off-Tune Buildup Rate grants a {1} ATK increase to all Resonators in the team for {3}s, up to {2}. Effects of the same name cannot be stacked.",
             "Param": [
               "1%",
               "0.2%",
@@ -13134,7 +13150,7 @@
   {
     "id": "6000187",
     "Id": 6000187,
-    "Code": "T01-",
+    "Code": "W73-",
     "Name": "Frostbite Coleoid",
     "Type": "",
     "Intensity": "",
@@ -13199,7 +13215,7 @@
             ]
           },
           "5": {
-            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Desc": "When healing a Resonator in the team, every {0} of Off-Tune Buildup Rate grants a {1} ATK increase to all Resonators in the team for {3}s, up to {2}. Effects of the same name cannot be stacked.",
             "Param": [
               "1%",
               "0.2%",
@@ -13222,14 +13238,14 @@
   {
     "id": "6000188",
     "Id": 6000188,
-    "Code": "T01-",
+    "Code": "W74-",
     "Name": "Windlash Coleoid",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32058_UI.T_IconMonsterHead_32058_UI",
     "Skill": {
-      "Desc": "Transform into a Windlash Coleoid to kick enemies, dealing {0} Aero DMG\n\nCD: {1}s.",
+      "Desc": "Transform into a Windlash Coleoid to kick enemies, dealing {0} Aero DMG.\n\nCD: {1}s.",
       "SimpleDesc": "Transform into a Windlash Coleoid to kick enemies, dealing Aero DMG.",
       "Param": [
         [
@@ -13287,7 +13303,7 @@
             ]
           },
           "5": {
-            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0} for {2}s, stacking up to {1} times. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
             "Param": [
               "10%",
               "3",
@@ -13310,15 +13326,15 @@
   {
     "id": "6000189",
     "Id": 6000189,
-    "Code": "T01-",
+    "Code": "R65-",
     "Name": "Hyvatia",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34021_UI.T_IconMonsterHead_34021_UI",
     "Skill": {
-      "Desc": "Summon Hyvatia to appear in in mid-air and emit lasers at enemies, dealing {0} Spectro DMG damage to enemies each time for ten times.\n\nCasting Outro Skill within {1}s  immediately afterwards increases the DMG Bonus of the Intro Skill of the Incoming Resonator by {2} for {3}s.\n\nCD: {4}s.",
-      "SimpleDesc": "Summon Hyvatia, dealing Spectro DMG to enemies and increasing Intro Skill All-Attribute DMG for the next incoming Resonator.",
+      "Desc": "Summon Hyvatia in mid-air to fire lasers at enemies, dealing {0} Spectro DMG 10 times.\n\nCasting Outro Skill within {1}s after summoning Hyvatia grants {2} All-Attribute DMG Bonus to the Intro Skill of the incoming Resonator for {3}s.\n\nCD: {4}s.",
+      "SimpleDesc": "Summon Hyvatia to attack enemies, dealing Spectro DMG and granting All-Attribute DMG Bonus to the Intro Skill of the incoming Resonator.",
       "Param": [
         [
           "15.20%",
@@ -13390,7 +13406,7 @@
             ]
           },
           "5": {
-            "Desc": "After casting Outro Skill, additionally increases ATK of the next Resonator entering with Intro Skill by {1} up to {2} for {3}s or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -13413,7 +13429,7 @@
             ]
           },
           "5": {
-            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0}, stacking up to {1} times for {2}s. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
+            "Desc": "Dealing Basic Attack DMG increases Spectro DMG by {0} for {2}s, stacking up to {1} times. With {1} stacks, casting Resonance Liberation grants {3} Basic Attack DMG Bonus.",
             "Param": [
               "10%",
               "3",
@@ -13436,15 +13452,15 @@
   {
     "id": "6000190",
     "Id": 6000190,
-    "Code": "T01-",
+    "Code": "R66-",
     "Name": "Reactor Husk",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34022_UI.T_IconMonsterHead_34022_UI",
     "Skill": {
-      "Desc": "Transform into the Reactor Husk, jumping into the air and unleashing a heavy slash that deals {0} Fusion DMG to enemies.\n\nThe Resonator with this Echo equipped in their main slot gain {1} Energy Regen.\n\nCD: {4}s.",
-      "SimpleDesc": "Transform into the Reactor Husk, dealing Fusion DMG.\n\nThe Resonator with this Echo equipped in their main slot gains Energy Regen.",
+      "Desc": "Transform into Reactor Husk, jumping into the air and unleashing a heavy slash that deals {0} Fusion DMG to enemies.\n\nThe Resonator with this Echo equipped in their main slot gain {1} Energy Regen.\n\nCD: {4}s.",
+      "SimpleDesc": "Transform into Reactor Husk to attack enemies, dealing Fusion DMG.\n\nThe Resonator with this Echo equipped in their main slot gains Energy Regen.",
       "Param": [
         [
           "195.00%",
@@ -13516,7 +13532,7 @@
             ]
           },
           "5": {
-            "Desc": "When a Resonator heals an ally, every {0} points of Off-Tune Buildup Rate grants {1} All-Attribute DMG Bonus to all Resonators in the team, up to {2} for {3}s.",
+            "Desc": "When healing a Resonator in the team, every {0} of Off-Tune Buildup Rate grants a {1} ATK increase to all Resonators in the team for {3}s, up to {2}. Effects of the same name cannot be stacked.",
             "Param": [
               "1%",
               "0.2%",

@@ -1,0 +1,244 @@
+.compact-root {
+    display: flex;
+    gap: 1rem;
+}
+
+/* LEFT SIDE */
+
+.compact-left {
+    width: 210px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.compact-root .header-icon {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-self: center;
+    aspect-ratio: 1;
+    z-index: unset;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.compact-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.compact-id .name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.compact-id .meta {
+    text-align: center;
+    font-size: 0.75rem;
+    opacity: 0.65;
+}
+
+.preset-section label {
+    font-size: 0.7rem;
+    opacity: 0.55;
+}
+
+.compact-root .custom-select {
+    margin: unset;
+    width: unset !important;
+}
+
+/* RIGHT SIDE */
+
+.compact-right {
+    flex: 1;
+}
+
+.compact-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    height: 100%;
+}
+
+/* CARDS */
+
+.compact-card {
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    margin: unset;
+    gap: 0.45rem;
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+}
+
+/* TOGGLES */
+
+.compact-root .custom-select.small {
+    padding: 3px 7px;
+}
+.toggle.off {
+    opacity: 0.45;
+}
+
+/* SUB TEXT */
+
+.sub,
+.sub-title {
+    font-size: 0.65rem;
+    opacity: 0.55;
+}
+
+.sub.off {
+    opacity: 0.35;
+}
+
+/* DIALS */
+
+.dial-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+}
+
+.dial {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dial div {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.dial.small {
+    width: 26px;
+    height: 26px;
+}
+
+.dial-row.small span {
+    font-size: 0.7rem;
+}
+
+/* BUTTONS */
+
+.mini-btn {
+    padding: 0.35rem !important;
+    border-radius: 8px !important;
+    font-size: 0.7rem !important;
+}
+
+.compact-root .divider {
+    height: 1px;
+    margin: 0.3rem 0;
+}
+
+/* ROW LABELS */
+
+.mini-pill-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.mini-pill-row label,
+.mini-pill-row-input label {
+    font-size: 0.7rem;
+    opacity: 0.55;
+}
+
+.mini-pill {
+    padding: 0.2rem 0.4rem !important;
+    border-radius: 7px !important;
+    font-size: 0.7rem !important;
+    width: 100% !important;
+    text-align: unset !important;
+    cursor: auto !important;
+}
+
+.mini-pill-row-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mini-pill-input {
+    padding: 0.2rem 0.4rem;
+    border-radius: 7px;
+    font-size: 0.7rem;
+}
+
+.mini-pill.off {
+    opacity: 0.4;
+}
+
+/* MODE SWITCH */
+
+.mode-switch {
+    display: flex;
+    border-radius: 50px !important;
+    padding: unset !important;
+    overflow: hidden;
+    margin-top: 0.4rem;
+}
+
+.mode-switch .btn-primary {
+    border-radius: unset !important;
+}
+
+.optimizer-toggle {
+    flex: 1;
+    padding: 0.35rem;
+    text-align: center;
+    font-size: 0.7rem;
+    opacity: 0.65;
+    cursor: pointer;
+}
+
+.optimizer-toggle.active {
+    border: unset;
+    font-weight: 600;
+    opacity: 1;
+    cursor: default;
+}
+
+.optimizer-toggle.active:hover {
+    transform: unset;
+}
+
+.optimizer-navigate {
+    margin-top: auto;
+}
+
+.toggle.custom-select.small .toggle-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.compact-card .section-title-row {
+    margin: unset;
+}
+
+.preset-section.image-art {
+    margin-top: auto;
+}

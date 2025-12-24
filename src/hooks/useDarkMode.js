@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { getPersistentValue, setPersistentValue, usePersistentState } from "./usePersistentState.js";
-import { cropAndCompressImage } from "../pages/calculator.jsx";
+import { cropAndCompressImage } from "@/pages/Calculator.jsx";
 import backgroundImageUrl from "/assets/backgrounds/wallpaperflare1.jpg";
 import { saveImage, loadImage } from "../utils/imageCache.js";
 

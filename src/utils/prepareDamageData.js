@@ -1,5 +1,5 @@
 import { computeSkillDamage, getSkillData } from "./computeSkillDamage.js";
-import { getHardcodedMultipliers } from "../data/character-behaviour";
+import { getHardcodedMultipliers } from "../data/characters/behavior";
 import { calculateAeroErosionDamage, calculateSpectroFrazzleDamage } from "./damageCalculator.js";
 import { elementToAttribute } from "./attributeHelpers.js";
 import { echoAttackMultipliers, echoElements } from "../data/echoes/echoMultipliers";

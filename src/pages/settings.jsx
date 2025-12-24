@@ -1,15 +1,15 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {HelpCircle, History, Info, Moon, Settings, Sparkle, Sun} from "lucide-react";
+import {HelpCircle, History, Info, Moon, Settings as SettingsIcon, Sparkle, Sun} from "lucide-react";
 import {getSyncData, restoreFromDrive, uploadToDrive} from "../utils/driveSync.js";
-import NotificationToast from "../components/utils-ui/NotificationToast.jsx";
-import ConfirmationModal from "../components/utils-ui/ConfirmationModal.jsx";
-import ImportOverviewMini from "../components/utils-ui/ImportOverviewMini.jsx";
+import NotificationToast from "../components/common/NotificationToast.jsx";
+import ConfirmationModal from "../components/common/ConfirmationModal.jsx";
+import ImportOverviewMini from "../components/common/ImportOverviewMini.jsx";
 import {getPersistentValue, setPersistentValue, usePersistentState} from "../hooks/usePersistentState.js";
 import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
-import {cropAndCompressImage} from "./calculator.jsx";
+import {cropAndCompressImage} from "@/pages/Calculator.jsx";
 import {loadImage} from "../utils/imageCache.js";
-import PlainModal from "../components/utils-ui/PlainModal.jsx";
+import PlainModal from "../components/common/PlainModal.jsx";
 
 const FONT_LINKS = {
     Onest: 'https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap',
@@ -30,7 +30,7 @@ const localStorageDataMap = {
     "All Data": "_",
 };
 
-export default function Setting(props) {
+export default function Settings(props) {
     const fileInputRef = useRef(null);
     const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
@@ -583,7 +583,7 @@ export default function Setting(props) {
                             onClick={() => setShowDropdown(prev => !prev)}
                         >
                             <div className="icon-slot">
-                                <Settings size={24} className="settings-icon" stroke="currentColor" />
+                                <SettingsIcon size={24} className="settings-icon" stroke="currentColor" />
                             </div>
                             <div className="label-slot">
                                 <span className="label-text">Settings</span>

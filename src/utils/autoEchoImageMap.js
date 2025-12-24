@@ -1,4 +1,4 @@
-import { echoes } from '../json-data-scripts/getEchoes.js';
+import { echoes } from '../data/ingest/getEchoes.js';
 import { echoSets } from '../constants/echoSetData2.js';
 import { setIconMap } from '../constants/echoSetData2.js';
 

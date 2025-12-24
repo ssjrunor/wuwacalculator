@@ -1,5 +1,5 @@
-import {echoSets, stateToSetId} from "../../constants/echoSetData2.js";
-import {normalizeLegacyEchoStats} from "../../utils/echoHelper.js";
+import {echoSets, stateToSetId} from "@/constants/echoSetData2.js";
+import {normalizeLegacyEchoStats} from "@/utils/echoHelper.js";
 
 export const elementMap = {
     1: 'glacio',
@@ -140,10 +140,46 @@ function getStateEntries(stateCfg, stacks) {
     return Array.isArray(max) ? max.slice() : null;
 }
 
+function normalizeSetCounts(raw) {
+    if (!raw) return {};
+
+    // Case 1: already in object form {3:2, 20:3}
+    if (!Array.isArray(raw) && typeof raw === "object") {
+        return raw;
+    }
+
+    // Case 2: array form [{setId, count, modifiedAt}, ...]
+    if (Array.isArray(raw)) {
+        const map = {};
+
+        for (const entry of raw) {
+            if (!entry) continue;
+
+            const id = Number(entry.setId);
+            if (!Number.isFinite(id)) continue;
+
+            const c = Number(entry.count ?? 0);
+
+            // if you care about modifiedAt, you could store objects,
+            // but for applySetEffect we only need the final count
+            if (!Number.isFinite(c)) continue;
+
+            // if the same setId appears multiple times, keep the biggest count
+            map[id] = Math.max(map[id] ?? 0, c);
+        }
+
+        return map;
+    }
+
+    return {};
+}
+
 export function applyEchoSetBuffLogic({ mergedBuffs, setCounts }) {
     if (!mergedBuffs || !setCounts) return mergedBuffs;
 
-    for (const [setIdStr, rawCount] of Object.entries(setCounts)) {
+    const normalizedSetCounts = normalizeSetCounts(setCounts);
+
+    for (const [setIdStr, rawCount] of Object.entries(normalizedSetCounts)) {
         const setId = Number(setIdStr);
         const cfg   = echoSets[setId];
         if (!cfg) continue;
@@ -151,12 +187,10 @@ export function applyEchoSetBuffLogic({ mergedBuffs, setCounts }) {
         const count     = Number(rawCount) || 0;
         const maxPieces = cfg.setMax ?? 5;
 
-        // 2-piece static buffs
         if (count >= 2 && Array.isArray(cfg.twoPiece)) {
             applyBuffArray(mergedBuffs, cfg.twoPiece);
         }
 
-        // Full-set static buffs (3p / 5p) – non-toggle, non-stacking
         if (count >= maxPieces && Array.isArray(cfg.fivePiece)) {
             applyBuffArray(mergedBuffs, cfg.fivePiece);
         }
@@ -169,16 +203,17 @@ export function applySetEffect({
                                    mergedBuffs,
                                    characterState,
                                    combatState,
-                                   setCounts = {}
+                                   setCounts = {},
                                }) {
     if (!mergedBuffs) return mergedBuffs;
 
     const activeStates = characterState?.activeStates ?? {};
+    const normalizedSetCounts = normalizeSetCounts(setCounts);
 
     // Walk all sets and apply state-based effects when you have the full set
     for (const [setIdStr, cfg] of Object.entries(echoSets)) {
         const setId  = Number(setIdStr);
-        const count  = Number(setCounts?.[setId] ?? 0);
+        const count  = Number(normalizedSetCounts[setId] ?? 0);
         const setMax = cfg.setMax ?? 5;
 
         if (count < setMax || !cfg.states) continue;
@@ -186,7 +221,6 @@ export function applySetEffect({
         for (const [stateKey, stateCfg] of Object.entries(cfg.states)) {
             let stacks = activeStates[stateKey];
 
-            // Off / undefined → no buff
             if (!stacks) continue;
             if (typeof stacks !== "number") stacks = 1;
 
@@ -208,33 +242,37 @@ export function applySetEffect({
         }
     }
 
-    // Flamewing’s Shadow 3p synergy:
-    // When both P1 & P2 states are active and you actually have the set,
-    // gain +16% Fusion DMG.
+    // Flamewing’s Shadow 3p synergy
     {
-        const flameCount = Number(setCounts?.[22] ?? 0);
+        const flameCount = Number(normalizedSetCounts[22] ?? 0);
         const flameCfg   = echoSets[22];
 
         if (flameCfg && flameCount >= (flameCfg.setMax ?? 3)) {
             const p1 = activeStates.flamewingsShadow2pcP1;
             const p2 = activeStates.flamewingsShadow2pcP2;
             if (p1 && p2) {
-                applyBuffByPath(mergedBuffs, ['attribute', 'fusion', 'dmgBonus'], 16);
+                applyBuffByPath(
+                    mergedBuffs,
+                    ['attribute', 'fusion', 'dmgBonus'],
+                    16
+                );
             }
         }
     }
 
-    // Tidebreaking Courage 5p “all attributes +30% at >= 250% ER”
-    // (static +15% ATK 5p is in echoSets[14].fivePiece and applied in applyEchoSetBuffLogic)
+    // Tidebreaking Courage 5p ER check
     {
-        const tideCount = Number(setCounts?.[14] ?? 0);
+        const tideCount = Number(normalizedSetCounts[14] ?? 0);
         const tideCfg   = echoSets[14];
 
         if (tideCfg && tideCount >= (tideCfg.setMax ?? 5)) {
             const er = Number(mergedBuffs.energyRegen ?? 0);
             if (er >= 150) {
-                // attribute.all gets folded into element buckets later in getFinalStats
-                applyBuffByPath(mergedBuffs, ['attribute', 'all', 'dmgBonus'], 30);
+                applyBuffByPath(
+                    mergedBuffs,
+                    ['attribute', 'all', 'dmgBonus'],
+                    30
+                );
             }
         }
     }
@@ -787,17 +825,14 @@ export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterS
         }
     };
 
-    // Always-on buffs
     if (always) {
         applyBuffMap(always);
     }
 
-    // Toggleable buffs (simple stat buffs)
     if (toggleable && activeStates?.mainEchoToggle && toggleable.buffs) {
         applyBuffMap(toggleable.buffs);
     }
 
-    // Stackable buffs
     if (stackable) {
         const stackKey = stackable.key ?? "mainEchoStacks";
         const currentStacks = Math.min(
@@ -814,9 +849,56 @@ export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterS
         }
     }
 
-    // Special-case: 6000106 extra Aero for specific chars
     if (
         mainEcho.id === "6000106" &&
+        (charId === "1409" || charId === "1406" || charId === "1408")
+    ) {
+        applyStatToMerged(mergedBuffs, "aero", 10);
+    }
+
+    return mergedBuffs;
+}
+
+export function applyTheoreticalMainEchoBuffs({ echoId, mergedBuffs, charId }) {
+    if (!echoId || !mergedBuffs) return mergedBuffs;
+
+    const config = mainEchoBuffs?.[String(echoId)];
+    if (!config) return mergedBuffs;
+
+    const { always, toggleable, stackable } = config;
+
+    const applyBuffMap = (buffs) => {
+        if (!buffs) return;
+        for (const [stat, val] of Object.entries(buffs)) {
+            if (stat === "element") {
+                for (const elem of Object.values(elementMap)) {
+                    applyStatToMerged(mergedBuffs, elem, val);
+                }
+            } else {
+                applyStatToMerged(mergedBuffs, stat, val);
+            }
+        }
+    };
+
+    if (always) {
+        applyBuffMap(always);
+    }
+
+    if (toggleable?.buffs) {
+        applyBuffMap(toggleable.buffs);
+    }
+
+    if (stackable?.buffsPerStack) {
+        const maxStacks = stackable.max ?? 1;
+        const totalBuffs = {};
+        for (const [stat, perStackVal] of Object.entries(stackable.buffsPerStack)) {
+            totalBuffs[stat] = (totalBuffs[stat] ?? 0) + perStackVal * maxStacks;
+        }
+        applyBuffMap(totalBuffs);
+    }
+
+    if (
+        String(echoId) === "6000106" &&
         (charId === "1409" || charId === "1406" || charId === "1408")
     ) {
         applyStatToMerged(mergedBuffs, "aero", 10);

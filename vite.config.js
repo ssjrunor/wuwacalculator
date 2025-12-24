@@ -8,6 +8,11 @@ export default defineConfig({
       exclude: [/workers\/.+\.js$/],
     }),
   ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
 
   worker: {
     format: 'es',

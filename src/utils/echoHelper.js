@@ -1,8 +1,17 @@
 import {getWeight, getWeightObj} from "../constants/charStatWeights.js";
-import {echoes} from "../json-data-scripts/getEchoes.js";
+import {echoes} from "../data/ingest/getEchoes.js";
 import {makeBaseBuffs, makeModBuffs} from "./getUnifiedStatPool.js";
+import {applyStatToMerged} from "../data/buffs/setEffect.js";
 
-export const formatStatKey = (key) => {
+export const formatStatKey = (key, compact) => {
+    if (compact) {
+        switch (key) {
+            case "resonanceSkill": return "Res. Skill";
+            case "resonanceLiberation": return "Res. Liberation";
+            case "heavyAtk": return "Heavy Atk";
+            case "basicAtk": return "Basic Atk";
+        }
+    }
     return statLabelMap[key] ?? key;
 };
 
@@ -610,9 +619,6 @@ export function normalizeLegacyEchoStats(legacyStats = {}) {
     return out;
 }
 
-/**
- * Collect stats from equipped echoes and return them in the unified format.
- */
 export function getEchoStatsFromEquippedEchoes(equippedEchoes = []) {
     const legacy = {};
 
@@ -629,4 +635,79 @@ export function getEchoStatsFromEquippedEchoes(equippedEchoes = []) {
     }
 
     return normalizeLegacyEchoStats(legacy);
+}
+
+function remove(totalEchoStats, newBuffs) {
+    for (const [key, total] of Object.entries(totalEchoStats)) {
+        if (!total) continue;
+        switch (key) {
+            case 'atkFlat': {
+                newBuffs.atk = newBuffs.atk ?? { percent: 0, flat: 0 };
+                newBuffs.atk.flat = (newBuffs.atk.flat ?? 0) - total;
+                break;
+            }
+            case 'hpFlat': {
+                newBuffs.hp = newBuffs.hp ?? { percent: 0, flat: 0 };
+                newBuffs.hp.flat = (newBuffs.hp.flat ?? 0) - total;
+                break;
+            }
+            case 'defFlat': {
+                newBuffs.def = newBuffs.def ?? { percent: 0, flat: 0 };
+                newBuffs.def.flat = (newBuffs.def.flat ?? 0) - total;
+                break;
+            }
+            default: {
+                applyStatToMerged(newBuffs, key, -total);
+                break;
+            }
+        }
+    }
+}
+
+export function removeEchoArrayFromBuffs(mergedBuffs, echoes) {
+    if (!mergedBuffs || !Array.isArray(echoes)) return mergedBuffs ?? {};
+
+    const newBuffs = structuredClone(mergedBuffs);
+
+    const totalEchoStats = {};
+
+    for (const echo of echoes) {
+        if (!echo) continue;
+
+        for (const [key, rawVal] of Object.entries(echo.mainStats ?? {})) {
+            const value = Number(rawVal ?? 0);
+            if (!value) continue;
+            totalEchoStats[key] = (totalEchoStats[key] ?? 0) + value;
+        }
+
+        for (const [key, rawVal] of Object.entries(echo.subStats ?? {})) {
+            const value = Number(rawVal ?? 0);
+            if (!value) continue;
+            totalEchoStats[key] = (totalEchoStats[key] ?? 0) + value;
+        }
+    }
+
+    remove(totalEchoStats, newBuffs)
+
+    return newBuffs;
+}
+
+export function removeMainStatsFromBuffs(mergedBuffs, echoData) {
+    if (!mergedBuffs || !Array.isArray(echoData)) return mergedBuffs ?? {};
+
+    const newBuffs = structuredClone(mergedBuffs);
+    const totalMainStats = {};
+
+    for (const echo of echoData) {
+        if (!echo || !echo.mainStats) continue;
+
+        for (const [key, value] of Object.entries(echo.mainStats)) {
+            if (value == null) continue;
+            totalMainStats[key] = (totalMainStats[key] ?? 0) + Number(value);
+        }
+    }
+
+    remove(totalMainStats, newBuffs)
+
+    return newBuffs;
 }

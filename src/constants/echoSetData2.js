@@ -649,6 +649,10 @@ export const echoSetMap = Object.fromEntries(
     ])
 );
 
+export const echoSetById = echoSetMap;
+
+export const echoSetList = Object.values(echoSetMap);
+
 export const setPieceTypeMap = Object.fromEntries(
     Object.entries(echoSets).map(([setId, set]) => {
         const validPieces = [];
@@ -668,6 +672,3 @@ export const DEFAULT_THREE_PIECE_SETS = Object.entries(setPieceTypeMap)
     .filter(([, pieces]) => pieces.includes(3))
     .map(([setId]) => Number(setId))
     .sort((a, b) => a - b);
-
-/*
-console.log(DEFAULT_FIVE_PIECE_SETS, DEFAULT_THREE_PIECE_SETS)*/

@@ -1,5 +1,5 @@
-import {getCharacterOverride, skillMetaBuffsLogic} from "../data/character-behaviour/index.js";
-import {getWeaponOverride} from "../data/weapon-behaviour/index.js";
+import {getCharacterOverride, skillMetaBuffsLogic} from "../data/characters/behavior/index.js";
+import {getWeaponOverride} from "../data/weapons/behavior/index.js";
 import {calculateSupportEffect} from "./supportCalculator.js";
 import {calculateDamage} from "./damageCalculator.js";
 import {elementToAttribute} from './attributeHelpers.js';
@@ -38,7 +38,7 @@ export function computeSkillDamage({
     const label = entry.label;
     let skillType = entry.detail?.toLowerCase?.() || '';
 
-    if (!['basic', 'heavy', 'skill', 'ultimate', 'intro', 'outro', 'echoSkill', 'stayTuned'].includes(skillType)) {
+    if (!['basic', 'heavy', 'skill', 'ultimate', 'intro', 'outro', 'echoSkill', 'tuneBreak'].includes(skillType)) {
         const label = entry.label?.toLowerCase?.() ?? '';
 
         if (entry.tab === 'echoAttacks' || label.includes('echo attacks')) {
@@ -55,7 +55,7 @@ export function computeSkillDamage({
             skillType = 'intro';
         } else if (entry.tab === 'outroSkill') {
             skillType = 'outro';
-        } else if (entry.tab === 'stayTuned') {
+        } else if (entry.tab === 'tuneBreak') {
             skillType = 'tuneRupture';
             element = '';
         } else {

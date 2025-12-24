@@ -1,27 +1,27 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import Split from 'split.js';
-import {fetchCharacters} from '../json-data-scripts/wutheringFetch';
+import {fetchCharacters} from '@/data/ingest/wutheringFetch';
 import characterStatesRaw from '../data/characterStates.json';
-import '../styles';
-import SkillsModal from '../components/character-ui/SkillsModal.jsx';
+import '@/styles';
+import SkillsModal from '../features/characters/ui/SkillsModal.jsx';
 import CharacterSelector, {
     applyTraceBuff,
     createEmptyTraceBuffs,
     traceIcons
-} from '../components/character-ui/CharacterSelector.jsx';
-import CharacterStats from '../components/CharacterStats';
-import DamageSection from '../components/DamageSection';
-import WeaponPane, {mapExtraStatToCombat} from '../components/weapon-pane/WeaponPane.jsx';
-import EnemyPane from '../components/enemy-ui/EnemyPane.jsx';
-import BuffsPane, {getResolvedTeamRotations} from "../components/buffs-ui/BuffsPane.jsx";
-import CustomBuffsPane from '../components/custom-buffs-ui/CustomBuffsPane.jsx';
-import ToolbarIconButton, {ToolbarSidebarButton} from '../components/utils-ui/ToolbarIconButton.jsx';
+} from '../features/characters/ui/CharacterSelector.jsx';
+import CharacterStats from '@/features/characters/ui/CharacterStats.jsx';
+import DamageSection from '@/features/calculator/ui/DamageSection.jsx';
+import WeaponPane, {mapExtraStatToCombat} from '../features/weapons/ui/WeaponPane.jsx';
+import EnemyPane from '../features/enemy/ui/EnemyPane.jsx';
+import BuffsPane, {getResolvedTeamRotations} from "../features/buffs/ui/BuffsPane.jsx";
+import CustomBuffsPane from '../features/buffs/ui/CustomBuffsPane.jsx';
+import ToolbarIconButton, {ToolbarSidebarButton} from '../components/common/ToolbarIconButton.jsx';
 import {attributeColors, attributeIcons, elementToAttribute} from '../utils/attributeHelpers';
 import {getFinalStats} from '../utils/getStatsForLevel';
 import {getUnifiedStatPool, makeBaseBuffs, makeModBuffs} from '../utils/getUnifiedStatPool';
 import {getPersistentValue, setPersistentValue, usePersistentState} from '../hooks/usePersistentState';
-import {getBuffsLogic, getCharacterOverride} from '../data/character-behaviour';
-import ChangelogModal from '../components/utils-ui/GuideModal.jsx';
+import {getBuffsLogic, getCharacterOverride} from '../data/characters/behavior';
+import ChangelogModal from '../components/common/GuideModal.jsx';
 import {
     HelpCircle,
     History,
@@ -38,13 +38,13 @@ import {
     Activity
 } from 'lucide-react';
 import {useNavigate} from 'react-router-dom';
-import {fetchWeapons} from '../json-data-scripts/fetchWeapons';
-import {getWeaponOverride} from '../data/weapon-behaviour';
+import {fetchWeapons} from '@/data/ingest/fetchWeapons';
+import {getWeaponOverride} from '../data/weapons/behavior';
 import {applyEchoLogic} from '../data/buffs/applyEchoLogic';
 import {applyWeaponBuffLogic} from "../data/buffs/weaponBuffs.js";
-import RotationsPane from "../components/rotations-ui/RotationsPane.jsx";
-import EchoesPane from '../components/echoes-pane-ui/EchoesPane.jsx';
-import {echoes} from "../json-data-scripts/getEchoes.js";
+import RotationsPane from "../features/rotations/ui/RotationsPane.jsx";
+import EchoesPane from '../features/echoes/ui/EchoesPane.jsx';
+import {echoes} from "@/data/ingest/getEchoes.js";
 import {
     applyEchoSetBuffLogic,
     applyMainEchoBuffLogic,
@@ -52,25 +52,26 @@ import {
     computeNebulousCollapsarStates
 } from "../data/buffs/setEffect.js";
 import {getEchoStatsFromEquippedEchoes, getSetCounts, normalizeLegacyEchoStats} from "../utils/echoHelper.js";
-import CharacterOverviewPane from "../components/overview-ui/CharacterOverview.jsx";
+import CharacterOverviewPane from "../features/overview/ui/CharacterOverview.jsx";
 import {isEqual} from "lodash";
-import {getMainRotationTotals, getTeamRotationTotal} from "../components/rotations-ui/Rotations.jsx";
-import NotificationToast from "../components/utils-ui/NotificationToast.jsx";
-import {changelog} from "./changelog.jsx";
-import ConfirmationModal from "../components/utils-ui/ConfirmationModal.jsx";
-import {deepCompareEchoArrays, getEchoPresetById, syncAllPresetsForRuntime} from "../state/echoPresetStore.js";
+import {getMainRotationTotals, getTeamRotationTotal} from "../features/rotations/ui/Rotations.jsx";
+import NotificationToast from "../components/common/NotificationToast.jsx";
+import {changelog} from "@/pages/Changelog.jsx";
+import ConfirmationModal from "../components/common/ConfirmationModal.jsx";
+import {deepCompareEchoArrays, getEchoPresetById, syncAllPresetsForRuntime} from "@/state/echoPresetStore.js";
 import {useGoogleAuth} from "../hooks/useGoogleAuth.js";
-import {getCuteMessage} from "../components/utils-ui/cuteMessages.jsx";
+import {getCuteMessage} from "../components/common/cuteMessages.jsx";
 import {getSkillData} from "../utils/computeSkillDamage.js";
 import {getAllSkillLevelsWithEcho, getEffectiveSkillLevels, prepareDamageData} from "../utils/prepareDamageData.js";
 import {buildRotation, getSkillDamageCache} from "../utils/skillDamageCache.js";
 import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
-import EchoBagMenu from "../components/echo-bag-ui/EchoBagMenu.jsx";
-import {getEchoBag} from "../state/echoBagStore.js";
-import Optimizer from "../components/optimizer-ui/Optimizer.jsx";
+import EchoBagMenu from "../features/echoes/ui/EchoBagMenu.jsx";
+import {getEchoBag} from "@/state/echoBagStore.js";
+import Optimizer from "@/features/optimizer/ui/Optimizer.jsx";
 import {Tooltip} from "antd";
-import SuggestionsPane from "../components/suggestions-ui/SuggestionsPane.jsx";
-import AppStatusModal from "../components/utils-ui/AppStatusModal.jsx";
+import SuggestionsPane from "@/features/suggestions/ui/SuggestionsPane.jsx";
+import AppStatusModal from "../components/common/AppStatusModal.jsx";
+import {defaultRandGen} from "@/features/suggestions/core/randomEchoes/lib/constants.js";
 
 export const defaultTraceBuffs = {
     // main stats: only percent is used, flat stays 0
@@ -113,7 +114,7 @@ export default function Calculator(props) {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-12-07 17:45';
+    const LATEST_CHANGELOG_VERSION = '2025-12-24 15:32';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
@@ -150,7 +151,7 @@ export default function Calculator(props) {
     const currentAttribute = elementToAttribute[activeCharacter?.attribute] ?? '';
     const currentSliderColor = attributeColors[currentAttribute] ?? '#888';
     const attributeIconPath = attributeIcons[currentAttribute] ?? '';
-    const defaultSliderValues = { normalAttack: 1, resonanceSkill: 1, forteCircuit: 1, resonanceLiberation: 1, introSkill: 1, stayTuned: 1, sequence: 0 };
+    const defaultSliderValues = { normalAttack: 1, resonanceSkill: 1, forteCircuit: 1, resonanceLiberation: 1, introSkill: 1, tuneBreak: 1, sequence: 0 };
     const defaultCustomBuffs = { atkFlat: 0, hpFlat: 0, defFlat: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, critRate: 0, critDmg: 0, energyRegen: 0, healingBonus: 0, basicAtk: 0, heavyAtk: 0, resonanceSkill: 0, resonanceLiberation: 0, aero: 0, glacio: 0, spectro: 0, fusion: 0, electro: 0, havoc: 0 };
     const defaultCombatState = { enemyLevel: enemyLevel ?? 100, enemyRes: enemyRes ?? 20, critRate: 0, critDmg: 0, weaponBaseAtk: 0, spectroFrazzle: 0, havocBane: 0, electroFlare: 0, aeroErosion: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, energyRegen: 0 };
     const [characterState, setCharacterState] = useState({ activeStates: {} });
@@ -199,10 +200,10 @@ export default function Calculator(props) {
             setTeam(profile.Team ?? [resolvedCharId, null, null]);
             setBaseCharacterState(state ?? null);
             setCharacterLevel(profile.CharacterLevel ?? 1);
-            if (profile.SkillLevels && !profile.SkillLevels.stayTuned) {
+            if (profile.SkillLevels && !profile.SkillLevels.tuneBreak) {
                 profile.SkillLevels = {
                     ...profile.SkillLevels,
-                    stayTuned: 1,
+                    tuneBreak: 1,
                 }
             }
             setSliderValues(profile.SkillLevels ?? defaultSliderValues);
@@ -969,17 +970,6 @@ export default function Calculator(props) {
         const tab = skillTabs[0];
         const currentLevels = allSkillLevels?.[tab];
         if (!currentLevels) return;
-
-        const defaultRandGen = {
-            poolSize: 50,
-            bias: 0.5,
-            rollQuality: 0.3,
-            targetEnergyRegen: 0,
-            setId: [],
-            mainEcho: null,
-            level: currentLevels[0],
-            tab,
-        };
 
         const defaultOptimizer = {
             level: currentLevels[0],
@@ -1873,8 +1863,8 @@ const darkIcons = toolbarIconNames.map(name => `/assets/icons/dark/${name}.png`)
 const lightIcons = toolbarIconNames.map(name => `/assets/icons/light/${name}.png`);
 
 const skillIconPaths = traceIcons.flatMap(name => [
-    `/assets/skill-icons/light/${name}.webp?v=light`,
-    `/assets/skill-icons/dark/${name}.webp?v=dark`
+    `/assets/skills/icons/light/${name}.webp?v=light`,
+    `/assets/skills/icons/dark/${name}.webp?v=dark`
 ]);
 
 const baseImages = [
@@ -1990,7 +1980,7 @@ function getHighlightKeywords(character) {
     return result;
 }
 
-const skillTabs = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill', 'outroSkill', 'stayTuned', 'echoAttacks', 'negativeEffect'];
+const skillTabs = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill', 'outroSkill', 'tuneBreak', 'echoAttacks', 'negativeEffect'];
 
 export async function cropAndCompressImage(
     fileOrUrl,
