@@ -6,12 +6,16 @@ import PrivacyPolicy from '@/pages/PrivacyPolicy.jsx';
 import TermsOfService from '@/pages/TermsOfService.jsx';
 import Guides from '@/pages/Guides.jsx';
 import { useSEO } from '@/hooks/useSEO.js';
+import Calculator from '@/pages/Calculator.jsx';
+import Settings from '@/pages/Settings.jsx';
+
 import { getPersistentValue, setPersistentValue, usePersistentState } from '@/hooks/usePersistentState.js';
 import { refreshAccessTokenIfNeeded } from '@/utils/googleAuth.js';
 import { useGoogleAuth } from '@/hooks/useGoogleAuth.js';
 import useDarkMode from '@/hooks/useDarkMode.js';
 import PlainModal from '@/components/common/PlainModal.jsx';
 import { DotArtGallery, TrollButtonsLayer } from '@/constants/trolling.jsx';
+import Changelog from "@/pages/Changelog.jsx";
 
 const GA_ID = 'G-W502BDD62S';
 
