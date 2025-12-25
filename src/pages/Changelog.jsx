@@ -737,5 +737,24 @@ export const changelog = [
             'Buff & stat handling were rebuilt into a unified "buff path" pipeline.',
             'New in-app Calculator Status window shows coverage, known issues, and patch info.',
         ],
+    },
+    {
+        date: '15/12/2025',
+        patchVersion: '3.0',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `Echo Generator has been fixed and improved, with updated set filters, main echo focus, and ER targets.`,
+            },
+            {
+                type: 'paragraph',
+                content: `All characters have been updated for the current patch.`,
+            },
+            {
+                type: 'paragraph',
+                content: `All 3.0 icons and assets have been added.`,
+            },
+        ],
+        shortDesc: `3.0 status update + Echo Generator fixes (〜^∇^)〜`,
     }
 ];

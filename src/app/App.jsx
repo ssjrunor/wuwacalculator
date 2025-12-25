@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import Calculator from '@/pages/Calculator.jsx';
 import Info from '@/pages/Info.jsx';
 import NotFound from '@/pages/NotFound.jsx';
-import Settings from '@/pages/Settings.jsx';
 import PrivacyPolicy from '@/pages/PrivacyPolicy.jsx';
 import TermsOfService from '@/pages/TermsOfService.jsx';
-import Changelog from '@/pages/Changelog.jsx';
 import Guides from '@/pages/Guides.jsx';
 import { useSEO } from '@/hooks/useSEO.js';
 import { getPersistentValue, setPersistentValue, usePersistentState } from '@/hooks/usePersistentState.js';
