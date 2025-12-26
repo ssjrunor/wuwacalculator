@@ -140,25 +140,35 @@ export default function EchoBuffs({
             name: 'Pact of Neonlight Leap',
             icon: '/assets/echo-icons/pactOfNeonlightLeap.webp',
             custom: (
-                <label className="slider-label-with-input">
-                    <input
-                        type="number"
-                        min={0}
-                        max={15 / 0.3}
-                        step={1}
-                        value={neonOffTuneRate}
-                        onChange={handleNeonOffTuneChange}
-                        style={{ width: "5rem", textAlign: "right" }}
-                        className="character-level-input"
-                    />
-                </label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <label className="modern-checkbox">
+                        Enable
+                        <input
+                            type="checkbox"
+                            checked={activeStates?.neonlightLeapToggle || false}
+                            onChange={() => toggleState("neonlightLeapToggle")}
+                        />
+                    </label>
+
+                    <label className="slider-label-with-input">
+                        Tune Break Boost
+                        <input
+                            type="number"
+                            min={0}
+                            max={15 / 0.3}
+                            step={1}
+                            value={neonOffTuneRate}
+                            onChange={handleNeonOffTuneChange}
+                            style={{ width: "5rem", textAlign: "right" }}
+                            className="character-level-input"
+                        />
+                    </label>
+                </div>
+
             ),
             effect: (
                 <>
-                    After casting <span className="highlight">Outro Skill</span>, additionally increases{" "}
-                    <span className="highlight">ATK</span> of the next Resonator entering with{" "}
-                    <span className="highlight">Intro Skill</span> by <span className="highlight">0.3%</span> up to{" "}
-                    <span className="highlight">15%</span> for 15s or until the Resonator is switched out.
+                    Casting <span className="highlight">Outro Skill</span> increases the ATK of the incoming Resonator who casts Intro Skill by <span className="highlight">15%</span>. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by <span className="highlight">0.3%</span>, up to <span className="highlight">15%</span>.
                 </>
             )
         },

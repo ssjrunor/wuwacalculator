@@ -95,8 +95,7 @@ export const weaponBuffs = [
     {
         key: 'spectrumBlaster',
         name: 'Spectrum Blaster',
-        icon: '/assets/weapon-icons/default.webp',
-        // per-rank values: R1–R5
+        icon: '/assets/weapon-icons/21030046.webp',
         param: [[8, 10, 12, 14, 16]],
         effect: (param = [], stacks = 0) => {
             const perStack = param[0] ?? '—';
@@ -131,7 +130,7 @@ export const weaponBuffs = [
     {
         key: 'starfieldCalibrator',
         name: 'Starfield Calibrator',
-        icon: '/assets/weapon-icons/default.webp',
+        icon: '/assets/weapon-icons/21010066.webp',
         param: [[20, 25, 30, 35, 40]],
         effect: (param = []) => (
             <>

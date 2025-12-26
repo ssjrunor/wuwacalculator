@@ -46,6 +46,8 @@ export function applyEchoLogic({ mergedBuffs, characterState }) {
     const neonlightOffTune = echo.neonlightOffTune ?? 0;
     mergedBuffs.atk.percent += neonlightOffTune * 0.3;
 
+    if (echo.neonlightLeapToggle) mergedBuffs.atk.percent += 15;
+
     const starryRadiance = echo.starryRadiance ?? 0;
     mergedBuffs.atk.percent += starryRadiance * 0.2;
 
