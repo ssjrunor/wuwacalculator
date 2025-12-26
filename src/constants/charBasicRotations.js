@@ -601,5 +601,21 @@ const defaultRotationEntries = {
             { name: "Sawring - Eradication DMG", multiplier: 1 },
         ],
         link: 'https://www.prydwen.gg/wuthering-waves/characters/chisa'
+    },
+    '1509': {
+        entries: [
+            { name: "Time to Show Some Colors! DMG", multiplier: 1 },
+            { name: "Prismatic Overblast DMG", multiplier: 1 },
+            { name: "Basic Attack - To a Vivid Tomorrow! DMG", multiplier: 1 },
+            { name: "Lynae-Style Palettes DMG", multiplier: 1 },
+            { name: "Basic Attack - Spark Collision Lv. 3 DMG", multiplier: 1 },
+            { name: "Basic Attack - Polychrome Leap 1", multiplier: 1 },
+            { name: "Basic Attack - Polychrome Leap 2", multiplier: 1 },
+            { name: "Basic Attack - Polychrome Leap 3", multiplier: 1 },
+            { name: "Kaleidoscopic Parade - Mid-air Heavy Attack DMG", multiplier: 1 },
+            { name: "Basic Attack - Visual Impact DMG", multiplier: 1 },
+            { name: "Let's Hit the Road DMG", multiplier: 1 },
+        ],
+        link: 'https://www.prydwen.gg/wuthering-waves/characters/lynae'
     }
 };
