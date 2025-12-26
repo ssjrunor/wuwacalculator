@@ -240,11 +240,11 @@ export default function EchoBuffs({
         {
             key: 'hyvatia',
             name: 'Hyvatia',
-            icon: '/assets/echo-icons/default.webp',
+            icon: '/assets/echo-icons/hyvatia.webp',
             className: 'blackify',
             effect: (
                 <>
-                    Casting Outro Skill within 15s immediately afterwards increases the DMG Bonus of the Intro Skill of the Incoming Resonator by <span className="highlight">10.00%</span> for 15s.
+                    Casting <span className="highlight">Outro Skill</span> within 15s after summoning <span className="highlight">Hyvatia</span> grants <span className="highlight">10.00%</span> All-Attribute DMG Bonus to the next Resonator using <span className="highlight">Intro Skill</span> for 15s.
                 </>
             )
         },

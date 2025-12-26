@@ -4,41 +4,17 @@ import { setIconMap } from "@/constants/echoSetData2.js";
 export function applyEchoLogic({ mergedBuffs, characterState }) {
     const echo = characterState?.activeStates ?? {};
 
-    if (echo.rejuvenatingGlow) {
-        mergedBuffs.atk.percent += 15;
-    }
-
-    if (echo.moonlitClouds) {
-        mergedBuffs.atk.percent += 22.5;
-    }
-
-    if (echo.impermanenceHeron) {
-        mergedBuffs.attribute.all.dmgBonus += 12;
-    }
-
-    if (echo.bellBorne) {
-        mergedBuffs.attribute.all.dmgBonus += 10;
-    }
-
-    if (echo.fallacy) {
-        mergedBuffs.atk.percent += 10;
-    }
-
-    if (echo.midnightVeil) {
-        mergedBuffs.attribute.havoc.dmgBonus += 15;
-    }
-
-    if (echo.empyreanAnthem) {
-        mergedBuffs.atk.percent += 20;
-    }
-
-    if (echo.gustsOfWelkin) {
-        mergedBuffs.attribute.aero.dmgBonus += 15;
-    }
-
-    if (echo.clawprint) {
-        mergedBuffs.attribute.fusion.dmgBonus += 15;
-    }
+    if (echo.rejuvenatingGlow) mergedBuffs.atk.percent += 15;
+    if (echo.moonlitClouds) mergedBuffs.atk.percent += 22.5;
+    if (echo.impermanenceHeron) mergedBuffs.attribute.all.dmgBonus += 12;
+    if (echo.bellBorne) mergedBuffs.attribute.all.dmgBonus += 10;
+    if (echo.fallacy) mergedBuffs.atk.percent += 10;
+    if (echo.midnightVeil) mergedBuffs.attribute.havoc.dmgBonus += 15;
+    if (echo.empyreanAnthem) mergedBuffs.atk.percent += 20;
+    if (echo.gustsOfWelkin) mergedBuffs.attribute.aero.dmgBonus += 15;
+    if (echo.clawprint) mergedBuffs.attribute.fusion.dmgBonus += 15;
+    if (echo.neonlightLeapToggle) mergedBuffs.atk.percent += 15;
+    if (echo.hyvatia) mergedBuffs.attribute.all.dmgBonus += 10;
 
     const lawOfHarmonyStack = echo.lawOfHarmony ?? 0;
     mergedBuffs.skillType.echoSkill.dmgBonus += 8 * lawOfHarmonyStack;
@@ -46,14 +22,8 @@ export function applyEchoLogic({ mergedBuffs, characterState }) {
     const neonlightOffTune = echo.neonlightOffTune ?? 0;
     mergedBuffs.atk.percent += neonlightOffTune * 0.3;
 
-    if (echo.neonlightLeapToggle) mergedBuffs.atk.percent += 15;
-
     const starryRadiance = echo.starryRadiance ?? 0;
     mergedBuffs.atk.percent += starryRadiance * 0.2;
-
-    if (echo.hyvatia) {
-        mergedBuffs.skillType.introSkill.dmgBonus += 10;
-    }
 
     return mergedBuffs;
 }
