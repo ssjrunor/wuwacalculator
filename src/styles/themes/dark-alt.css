@@ -154,10 +154,6 @@
     color: lightgoldenrodyellow !important;
 }
 
-.dark-alt .echo-buff-icon.blackify {
-    filter: none;
-}
-
 .dark-alt .echo-slot-icon.empty-slot {
     background-color: #444;
     opacity: 0.5;

@@ -250,7 +250,6 @@ export default function EchoBuffs({
         },
     ];
 
-    // if some other file still relies on echoBuffList export, sync it
     echoBuffList.length = 0;
     echoBuffList.push(...echoBuffs);
 

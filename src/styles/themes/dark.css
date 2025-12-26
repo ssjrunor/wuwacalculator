@@ -253,3 +253,10 @@
 .dark-alt .echo-slot-icon-wrapper .header-icon {
     border-color: rgba(68, 68, 68, 0.23) !important;
 }
+
+.scarlet-nebula .echo-buff-icon.blackify,
+.cosmic-rainbow .echo-buff-icon.blackify,
+.dark .echo-buff-icon.blackify,
+.dark-alt .echo-buff-icon.blackify {
+    filter: none;
+}

@@ -55,10 +55,6 @@
     filter: brightness(0) saturate(100%);
 }
 
-.dark .echo-buff-icon.blackify {
-    filter: none;
-}
-
 .echo-buff-controls {
     display: flex;
     flex-wrap: wrap;
