@@ -1,14 +1,14 @@
 export const ECHO_OPTIMIZER_MAX_COST = 12;
 export const ECHO_OPTIMIZER_MAX_SIZE = 5;
 export const ECHO_OPTIMIZER_BATCH_SIZE_DEFAULT = 5000;
-export const ECHO_OPTIMIZER_BATCH_SIZE_CAP = 120000;
-export const ECHO_OPTIMIZER_JOB_TARGET_COMBOS_GPU = 250000;
+export const ECHO_OPTIMIZER_BATCH_SIZE_CAP = 10000000;
+export const ECHO_OPTIMIZER_JOB_TARGET_COMBOS_GPU = 10000000;
 
 export const OPTIMIZER_ECHOS_PER_COMBO = 5;
 export const OPTIMIZER_STATS_PER_ECHO = 20;
 export const OPTIMIZER_MAIN_ECHO_BUFFS_PER_ECHO = 15;
 export const OPTIMIZER_SET_SLOTS = 32;
-export const OPTIMIZER_CONTEXT_FLOATS = 32;
+export const OPTIMIZER_CONTEXT_FLOATS = 36;
 
 export const OPTIMIZER_WORKER_COUNT_GPU = 1;
 const detectedCores = typeof navigator !== "undefined"
@@ -23,8 +23,9 @@ const cpuJobTarget = 25000 + OPTIMIZER_WORKER_COUNT_CPU * 5000;
 export const ECHO_OPTIMIZER_JOB_TARGET_COMBOS_CPU = Math.min(75000, cpuJobTarget);
 
 export const OPTIMIZER_WORKGROUP_SIZE = 512;
-export const OPTIMIZER_CYCLES_PER_INVOCATION = 8;
-export const OPTIMIZER_REDUCE_K = 4;
+export const OPTIMIZER_CYCLES_PER_INVOCATION = 1024;
+export const OPTIMIZER_REDUCE_K = 8;
+export const OPTIMIZER_ENABLE_TIMING_LOGS = false;
 
 export const OPTIMIZER_FLAG_BASIC = 1 << 0;
 export const OPTIMIZER_FLAG_HEAVY = 1 << 1;

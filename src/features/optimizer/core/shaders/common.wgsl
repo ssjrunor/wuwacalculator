@@ -1,8 +1,10 @@
 @group(0) @binding(0) var<storage, read> echoStats: array<vec4<f32>>;
 @group(0) @binding(2) var<storage, read> echoSets: array<f32>;
-@group(0) @binding(3) var<storage, read> combos: array<i32>;
+@group(0) @binding(3) var<storage, read> comboIndexMap: array<i32>;
+@group(0) @binding(5) var<storage, read> echoCosts: array<f32>;
 @group(0) @binding(6) var<storage, read> mainEchoBuffs: array<f32>;
 @group(0) @binding(8) var<storage, read> echoKindIds: array<i32>;
+@group(0) @binding(10) var<storage, read> comboBinom: array<u32>;
 
 struct StatConstraints {
     atkRange      : vec2<f32>,
@@ -66,7 +68,12 @@ struct Params {
     charId:       f32,
     sequence:     f32,
     lockedEchoIndex: f32,
-    pad3:         f32,
+    comboMode:    f32,
+    comboN:       f32,
+    comboMaxCost: f32,
+    comboK:       f32,
+    comboBaseIndex: f32,
+    pad:          f32,
 };
 
 @group(0) @binding(4)
@@ -76,7 +83,7 @@ const STATS_VEC4S_PER_ECHO : u32 = 5u;
 const ECHOS_PER_COMBO: u32 = 5u;
 const BUFFS_PER_ECHO : u32 = 15u;
 
-const CYCLES_PER_INVOCATION : u32 = 8u;
+const CYCLES_PER_INVOCATION : u32 = 1536u;
 
 fn in_range(val: f32, range: vec2<f32>) -> bool {
     if (range.x > range.y) {

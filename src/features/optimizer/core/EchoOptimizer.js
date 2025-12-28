@@ -2,8 +2,7 @@ import {runEchoOptimizer} from "./runEchoOptimizer.js";
 import {generateEchoContext} from "./echoOptimizerContext.js";
 import {cancelWorkers, initWorkerPool, resetCancel, resetWorkerPool,} from "./worker/OptimizerWorkerPool.js";
 import {
-    generateEchoCombinationBatches,
-    generateEchoPermutationBatches2
+    generateEchoCombinationBatches
 } from "./generateEchoCombos.js";
 import {
     buildEchoKindIdArray,
@@ -12,6 +11,7 @@ import {
     encodeEchoStats
 } from "./encodeEchoStats.js";
 import {prepareGpuContext} from "./prepareGpuContext.js";
+import {buildCombinadicIndexing} from "./gpu/combinadic.js";
 import {
     ECHO_OPTIMIZER_BATCH_SIZE_CAP,
     ECHO_OPTIMIZER_JOB_TARGET_COMBOS_CPU,
@@ -136,21 +136,28 @@ export const EchoOptimizer = {
             form.onContext(ctxObj);
         }
 
-        const batchGen = lockedIndex === -1
+        const comboIndexing = enableGpu
+            ? buildCombinadicIndexing({
+                echoes: filtered,
+                maxSize: ECHO_OPTIMIZER_MAX_SIZE,
+                lockedEchoId: form.lockedEchoId,
+            })
+            : null;
+
+        const comboCount = comboIndexing?.totalCombos ?? 0;
+        if (enableGpu && comboCount <= 0) {
+            return [];
+        }
+
+        const batchGen = !enableGpu
             ? generateEchoCombinationBatches({
                 echoes: filtered,
                 maxCost: ECHO_OPTIMIZER_MAX_COST,
                 maxSize: ECHO_OPTIMIZER_MAX_SIZE,
                 batchSize,
-                lockedEchoId: null,
+                lockedEchoId: form.lockedEchoId ?? null,
             })
-            : generateEchoPermutationBatches2({
-            echoes: filtered,
-            maxCost: ECHO_OPTIMIZER_MAX_COST,
-            maxSize: ECHO_OPTIMIZER_MAX_SIZE,
-                batchSize,
-                lockedEchoId: form.lockedEchoId,
-        });
+            : null;
 
         const statConstraints = buildStatConstraintArray(form.constraints);
 
@@ -158,15 +165,19 @@ export const EchoOptimizer = {
             encoded,
             mainEchoBuffs,
             echoKindIds,
+            comboIndexing,
             backend
         });
 
         return await runEchoOptimizer({
             echoes: filtered,
             comboBatchGenerator: batchGen,
+            comboIndexing,
             resultsLimit: form.resultsLimit,
             onProgress: form.onProgress,
-            combinations: form.combinations,
+            combinations: enableGpu ? comboCount : form.combinations,
+            progressCombinations: enableGpu ? form.combinations : form.combinations,
+            comboMaxCost: ECHO_OPTIMIZER_MAX_COST,
             ctxObj,
             charId: form.charId,
             encodedConstraints: statConstraints,
@@ -174,6 +185,7 @@ export const EchoOptimizer = {
             lockedIndex,
             targetCombosPerJob,
             mergeBatches: enableGpu,
+            useComboIndexing: enableGpu,
         });
     }
 };

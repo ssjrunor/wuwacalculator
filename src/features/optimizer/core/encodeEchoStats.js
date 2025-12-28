@@ -21,11 +21,13 @@ export function encodeEchoStats(echoes) {
 
     const stats = new Float32Array(count * statCount);
     const sets  = new Float32Array(count);
+    const costs = new Float32Array(count);
 
     for (let i = 0; i < count; i++) {
         const e = echoes[i];
 
         sets[i]  = e.selectedSet ?? 0;
+        costs[i] = e.cost ?? 0;
 
         const base = i * statCount;
 
@@ -42,6 +44,7 @@ export function encodeEchoStats(echoes) {
     return {
         stats,
         sets,
+        costs,
         count
     };
 }

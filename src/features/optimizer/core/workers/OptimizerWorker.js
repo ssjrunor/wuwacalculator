@@ -1,29 +1,30 @@
 // workers/OptimizerWorker.js
 
-import { createBindGroup, createBindGroupLayout, createPipeline } from "../gpu/createPipeline.js";
+import { createBindGroup, createBindGroupLayout, createPipeline, createReduceBindGroup, createReducePipeline } from "../gpu/createPipeline.js";
 import { runEchoGpuPipeline } from "../gpu/runPipeline.js";
 import { getGpuDevice } from "../gpu/getDevice.js";
 import { computeDamageForCombo } from "../cpu/computeDamage.js";
 import { createCpuScratch } from "../cpu/scratch.js";
+import { unrankCombinadic } from "../gpu/combinadic.js";
 import {
     OPTIMIZER_CYCLES_PER_INVOCATION,
     OPTIMIZER_DEFAULT_CONSTRAINTS,
     OPTIMIZER_ECHOS_PER_COMBO,
     OPTIMIZER_REDUCE_K,
+    OPTIMIZER_ENABLE_TIMING_LOGS,
     OPTIMIZER_WORKGROUP_SIZE
 } from "../optimizerConfig.js";
 
 let device = null;
 let layout = null;
 let pipelineMain = null;
+let pipelineReduce = null;
+let reduceLayout = null;
 
 let statsBuf = null;
 let setsBuf = null;
 let mainBuffsBuf = null;
 let defaultConstraintBuf = null;
-
-let combosBuf = null;
-let combosBufSize = 0;
 
 let ctxBuf = null;
 let ctxBufSize = 0;
@@ -32,9 +33,15 @@ let constraintBuf = null;
 let constraintBufSize = 0;
 
 let kindBuf = null;
+let comboIndexMapBuf = null;
+let comboBinomBuf = null;
+let echoCostsBuf = null;
 
 let candBuf = null;
 let candBufSize = 0;
+let candReduceBuf = null;
+let candReduceBufSize = 0;
+let reduceParamsBuf = null;
 
 let bindGroup = null;
 let bindGroupBuffers = null;
@@ -49,6 +56,7 @@ let activeConstraints = null;
 let encodedData = null;
 let mainEchoBuffs = null;
 let echoKindIds = null;
+let comboIndexing = null;
 let cpuScratch = null;
 
 const defaultConstraints = OPTIMIZER_DEFAULT_CONSTRAINTS;
@@ -87,13 +95,16 @@ function getBindGroup(buffers) {
     return bindGroup;
 }
 
-async function initGpu(encoded, mainEchoBuffsArray, echoKindIdsArray) {
+async function initGpu(encoded, mainEchoBuffsArray, echoKindIdsArray, comboIndexingData) {
     device = await getGpuDevice();
     layout = createBindGroupLayout(device);
     bindGroup = null;
     bindGroupBuffers = null;
 
     pipelineMain = createPipeline(device, layout, "main");
+    const reduce = createReducePipeline(device);
+    pipelineReduce = reduce.pipeline;
+    reduceLayout = reduce.layout;
 
     // Stats buffer
     statsBuf = device.createBuffer({
@@ -116,6 +127,13 @@ async function initGpu(encoded, mainEchoBuffsArray, echoKindIdsArray) {
     });
     device.queue.writeBuffer(kindBuf, 0, echoKindIdsArray);
 
+    // Echo costs buffer
+    echoCostsBuf = device.createBuffer({
+        size: encoded.costs.byteLength,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    device.queue.writeBuffer(echoCostsBuf, 0, encoded.costs);
+
     // Main echo buffs buffer
     mainBuffsBuf = device.createBuffer({
         size: mainEchoBuffsArray.byteLength,
@@ -129,6 +147,20 @@ async function initGpu(encoded, mainEchoBuffsArray, echoKindIdsArray) {
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     });
     device.queue.writeBuffer(defaultConstraintBuf, 0, defaultConstraints);
+
+    if (comboIndexingData) {
+        comboIndexMapBuf = device.createBuffer({
+            size: comboIndexingData.indexMap.byteLength,
+            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        });
+        device.queue.writeBuffer(comboIndexMapBuf, 0, comboIndexingData.indexMap);
+
+        comboBinomBuf = device.createBuffer({
+            size: comboIndexingData.binom.byteLength,
+            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        });
+        device.queue.writeBuffer(comboBinomBuf, 0, comboIndexingData.binom);
+    }
 }
 
 async function readCandidates(device, candidateBuf, candidateCount, reuse) {
@@ -171,6 +203,8 @@ async function readCandidates(device, candidateBuf, candidateCount, reuse) {
     return { out, reuse: { buffer: readBuffer, size } };
 }
 
+// beginReadCandidates removed; using readCandidates directly.
+
 self.onmessage = async (e) => {
     const msg = e.data;
 
@@ -186,9 +220,10 @@ self.onmessage = async (e) => {
             encodedData = msg.encoded;
             mainEchoBuffs = msg.mainEchoBuffs;
             echoKindIds = msg.echoKindIds;
+            comboIndexing = msg.comboIndexing ?? null;
 
             if (backend === "gpu") {
-                await initGpu(encodedData, mainEchoBuffs, echoKindIds);
+                await initGpu(encodedData, mainEchoBuffs, echoKindIds, comboIndexing);
             } else {
                 cpuScratch = createCpuScratch();
             }
@@ -199,7 +234,7 @@ self.onmessage = async (e) => {
         return;
     }
 
-    if (msg.type !== "run") return;
+    if (msg.type !== "run" && msg.type !== "runIndexed") return;
 
     // IMPORTANT: always resolve job promises with a type:"done" message
     if (CANCEL) {
@@ -208,18 +243,21 @@ self.onmessage = async (e) => {
     }
 
     try {
-        const combos = new Int32Array(msg.combosBuf, msg.combosOffset ?? 0, msg.combosLen);
         const packed = new Float32Array(msg.ctxBuf, msg.ctxOffset ?? 0, msg.ctxLen);
-        const comboCount = (combos.length / OPTIMIZER_ECHOS_PER_COMBO) | 0;
+        const comboCount = msg.comboCount ?? 0;
+        const comboBaseIndex = msg.comboBaseIndex ?? 0;
+        const tStart = OPTIMIZER_ENABLE_TIMING_LOGS ? performance.now() : 0;
         if (msg.encodedConstraints) {
             activeConstraints = msg.encodedConstraints;
         }
         const constraints = activeConstraints ?? defaultConstraints;
 
         if (backend !== "gpu") {
+            const combos = new Int32Array(msg.combosBuf, msg.combosOffset ?? 0, msg.combosLen);
+            const cpuComboCount = (combos.length / OPTIMIZER_ECHOS_PER_COMBO) | 0;
             const bestBySet = new Map();
 
-            for (let index = 0; index < comboCount; index++) {
+            for (let index = 0; index < cpuComboCount; index++) {
                 if (CANCEL) {
                     self.postMessage({ type: "done", cancelled: true, topK: [] });
                     return;
@@ -292,6 +330,11 @@ self.onmessage = async (e) => {
             return;
         }
 
+        if (!comboIndexing) {
+            self.postMessage({ type: "workerError", error: "Missing combo indexing data." });
+            return;
+        }
+
         const combosPerWorkgroup = WORKGROUP_SIZE * CYCLES_PER_INVOCATION;
         const workgroupsTotal = Math.ceil(comboCount / combosPerWorkgroup);
         const candidateCount = workgroupsTotal * REDUCE_K;
@@ -306,21 +349,6 @@ self.onmessage = async (e) => {
             );
             candBuf = res.buffer;
             candBufSize = res.size;
-        }
-
-        // Combos buffer (STORAGE | COPY_DST)
-        {
-            const neededSize = combos.byteLength;
-            const res = ensureStorageBuffer(
-                combosBuf,
-                combosBufSize,
-                neededSize,
-                GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-            );
-            combosBuf = res.buffer;
-            combosBufSize = res.size;
-
-            device.queue.writeBuffer(combosBuf, 0, combos);
         }
 
         // Context buffer (UNIFORM | COPY_DST)
@@ -358,12 +386,14 @@ self.onmessage = async (e) => {
         const group = getBindGroup({
             echoStats: statsBuf,
             echoSets: setsBuf,
-            combos: combosBuf,
+            comboIndexMap: comboIndexMapBuf,
             context: ctxBuf,
             mainEchoBuffs: mainBuffsBuf,
             statConstraints: constraintBuf,
             echoKindIds: kindBuf,
             candidates: candBuf,
+            comboBinom: comboBinomBuf,
+            echoCosts: echoCostsBuf,
         });
 
         // Main compute pass (includes reduction)
@@ -373,14 +403,59 @@ self.onmessage = async (e) => {
             bindGroup: group,
             comboCount,
         });
+        const tComputeDone = OPTIMIZER_ENABLE_TIMING_LOGS ? performance.now() : 0;
+
+        let candSourceBuf = candBuf;
+        let candCount = workgroupsTotal * REDUCE_K;
+
+        if (candCount > REDUCE_K) {
+            const reduceGroups = Math.ceil(candCount / 256);
+            const reduceOutCount = reduceGroups * REDUCE_K;
+            const reduceOutBytes = reduceOutCount * 8;
+
+            if (!candReduceBuf || candReduceBufSize < reduceOutBytes) {
+                if (candReduceBuf) candReduceBuf.destroy();
+                candReduceBuf = device.createBuffer({
+                    size: reduceOutBytes,
+                    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC,
+                });
+                candReduceBufSize = reduceOutBytes;
+            }
+
+            if (!reduceParamsBuf) {
+                reduceParamsBuf = device.createBuffer({
+                    size: 16,
+                    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+                });
+            }
+            device.queue.writeBuffer(reduceParamsBuf, 0, new Uint32Array([candCount, 0, 0, 0]));
+
+            const reduceGroup = createReduceBindGroup(device, reduceLayout, {
+                input: candBuf,
+                output: candReduceBuf,
+                params: reduceParamsBuf,
+            });
+
+            const encoder = device.createCommandEncoder();
+            const pass = encoder.beginComputePass();
+            pass.setPipeline(pipelineReduce);
+            pass.setBindGroup(0, reduceGroup);
+            pass.dispatchWorkgroups(reduceGroups);
+            pass.end();
+            device.queue.submit([encoder.finish()]);
+
+            candSourceBuf = candReduceBuf;
+            candCount = reduceOutCount;
+        }
 
         const { out: cand, reuse } = await readCandidates(
             device,
-            candBuf,
-            workgroupsTotal * REDUCE_K,
+            candSourceBuf,
+            candCount,
             candReadback
         );
         candReadback = reuse;
+        const tReadDone = OPTIMIZER_ENABLE_TIMING_LOGS ? performance.now() : 0;
 
         // Build topK from candidates
         cand.sort((a, b) => b.dmg - a.dmg);
@@ -390,55 +465,69 @@ self.onmessage = async (e) => {
         for (const { dmg, index, mainPos } of cand) {
             if (bestBySet.size >= msg.resultsLimit * 8) break;
 
-            const base = index * OPTIMIZER_ECHOS_PER_COMBO;
-            const mainId = combos[base + mainPos];
+            const globalIndex = index + comboBaseIndex;
+            const ids = unrankCombinadic(globalIndex, comboIndexing, OPTIMIZER_ECHOS_PER_COMBO);
+            const mainId = ids[mainPos];
             let a;
             let b;
             let c;
             let d;
             switch (mainPos) {
                 case 0:
-                    a = combos[base + 1];
-                    b = combos[base + 2];
-                    c = combos[base + 3];
-                    d = combos[base + 4];
+                    a = ids[1];
+                    b = ids[2];
+                    c = ids[3];
+                    d = ids[4];
                     break;
                 case 1:
-                    a = combos[base + 0];
-                    b = combos[base + 2];
-                    c = combos[base + 3];
-                    d = combos[base + 4];
+                    a = ids[0];
+                    b = ids[2];
+                    c = ids[3];
+                    d = ids[4];
                     break;
                 case 2:
-                    a = combos[base + 0];
-                    b = combos[base + 1];
-                    c = combos[base + 3];
-                    d = combos[base + 4];
+                    a = ids[0];
+                    b = ids[1];
+                    c = ids[3];
+                    d = ids[4];
                     break;
                 case 3:
-                    a = combos[base + 0];
-                    b = combos[base + 1];
-                    c = combos[base + 2];
-                    d = combos[base + 4];
+                    a = ids[0];
+                    b = ids[1];
+                    c = ids[2];
+                    d = ids[4];
                     break;
                 default:
-                    a = combos[base + 0];
-                    b = combos[base + 1];
-                    c = combos[base + 2];
-                    d = combos[base + 3];
+                    a = ids[0];
+                    b = ids[1];
+                    c = ids[2];
+                    d = ids[3];
                     break;
             }
+
+            if (mainId == null || a == null || b == null || c == null || d == null) {
+                continue;
+            }
+
             const key = makeSortedKey5BigInt(mainId, a, b, c, d);
             const prev = bestBySet.get(key);
             if (!prev || dmg > prev.dmg) {
-                const ids = buildIds(mainId, a, b, c, d);
-                bestBySet.set(key, { dmg, ids });
+                bestBySet.set(key, { dmg, ids: [mainId, a, b, c, d] });
             }
         }
 
         const topK = [...bestBySet.values()]
             .sort((a, b) => b.dmg - a.dmg)
             .slice(0, msg.resultsLimit);
+
+        if (OPTIMIZER_ENABLE_TIMING_LOGS) {
+            const tEnd = performance.now();
+            console.log(
+                `[optimizer-worker] gpu batch start=${comboBaseIndex.toLocaleString()} count=${comboCount.toLocaleString()} ` +
+                `compute=${(tComputeDone - tStart).toFixed(2)}ms readback=${(tReadDone - tComputeDone).toFixed(2)}ms ` +
+                `post=${(tEnd - tReadDone).toFixed(2)}ms total=${(tEnd - tStart).toFixed(2)}ms`
+            );
+        }
 
         self.postMessage({ type: "done", cancelled: false, topK });
     } catch (err) {

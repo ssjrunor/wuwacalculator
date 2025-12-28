@@ -3,6 +3,56 @@ struct ComboEval {
     mainPos: u32,
 };
 
+fn buildEchoIds(index: u32) -> array<i32, 5> {
+    var out: array<i32, 5>;
+    for (var i: u32 = 0u; i < 5u; i = i + 1u) {
+        out[i] = -1;
+    }
+
+    let comboN = u32(params.comboN);
+    let comboK = u32(params.comboK);
+    let binomStride = 6u;
+
+    var remainingK = comboK;
+    var start: u32 = 0u;
+    var rank: u32 = index;
+
+    for (var pos: u32 = 0u; pos < comboK; pos = pos + 1u) {
+        let remainingN = comboN - start;
+        let total = comboBinom[remainingN * binomStride + remainingK];
+        var low: u32 = 0u;
+        var high: u32 = remainingN - remainingK + 1u;
+
+        loop {
+            if (low >= high) { break; }
+            let mid = (low + high) / 2u;
+            let right = comboBinom[(remainingN - mid) * binomStride + remainingK];
+            let left = total - right;
+            if (rank < left) {
+                high = mid;
+            } else {
+                low = mid + 1u;
+            }
+        }
+
+        let t = select(0u, low - 1u, low > 0u);
+        let right = comboBinom[(remainingN - t) * binomStride + remainingK];
+        let prefix = total - right;
+        rank = rank - prefix;
+
+        let i = start + t;
+        out[pos] = comboIndexMap[i];
+        remainingK = remainingK - 1u;
+        start = i + 1u;
+    }
+
+    if (i32(params.lockedEchoIndex) >= 0 && comboK < 5u) {
+        out[4] = i32(params.lockedEchoIndex);
+    }
+
+    return out;
+}
+
 fn computeDamageForCombo(index: u32) -> ComboEval {
     let comboCount = u32(params.comboCount);
     if (index >= comboCount) {
@@ -14,13 +64,19 @@ fn computeDamageForCombo(index: u32) -> ComboEval {
     let lockedIndex : i32 = i32(params.lockedEchoIndex);
 
     // -------------------------
-    // Load 5 echo indices
+    // Build 5 echo indices from DP-unrank
     // -------------------------
-    var echoIds: array<i32, 5>;
-    let baseOffset = index * ECHOS_PER_COMBO;
+    let comboIndex = u32(params.comboBaseIndex) + index;
+    var echoIds: array<i32, 5> = buildEchoIds(comboIndex);
 
+    var totalCost: f32 = 0.0;
     for (var i: u32 = 0u; i < 5u; i = i + 1u) {
-        echoIds[i] = combos[baseOffset + i];
+        let id = echoIds[i];
+        if (id < 0) { continue; }
+        totalCost += echoCosts[u32(id)];
+    }
+    if (totalCost > params.comboMaxCost) {
+        return ComboEval(0.0, 0u);
     }
 
     // -------------------------
@@ -335,11 +391,11 @@ fn computeDamageForCombo(index: u32) -> ComboEval {
 
     var bonusBaseTotal: f32 = bonusBase;
     if (elementId == 0.0) { bonusBaseTotal += aeroSet;    }
-    if (elementId == 1.0) { bonusBaseTotal += glacioSet;  }
-    if (elementId == 2.0) { bonusBaseTotal += fusionSet;  }
-    if (elementId == 3.0) { bonusBaseTotal += spectroSet; }
-    if (elementId == 4.0) { bonusBaseTotal += havocSet;   }
-    if (elementId == 5.0) { bonusBaseTotal += electroSet; }
+    else if (elementId == 1.0) { bonusBaseTotal += glacioSet;  }
+    else if (elementId == 2.0) { bonusBaseTotal += fusionSet;  }
+    else if (elementId == 3.0) { bonusBaseTotal += spectroSet; }
+    else if (elementId == 4.0) { bonusBaseTotal += havocSet;   }
+    else if (elementId == 5.0) { bonusBaseTotal += electroSet; }
 
     if (hasBasic)    { bonusBaseTotal += basicSet; }
     if (hasHeavy)    { bonusBaseTotal += heavySet; }
@@ -384,11 +440,11 @@ fn computeDamageForCombo(index: u32) -> ComboEval {
         }
 
         if (elementId == 0.0) { bonus += mainAero;    }
-        if (elementId == 1.0) { bonus += mainGlac;    }
-        if (elementId == 2.0) { bonus += mainFus;     }
-        if (elementId == 3.0) { bonus += mainSpec;    }
-        if (elementId == 4.0) { bonus += mainHav;     }
-        if (elementId == 5.0) { bonus += mainElec;    }
+        else if (elementId == 1.0) { bonus += mainGlac;    }
+        else if (elementId == 2.0) { bonus += mainFus;     }
+        else if (elementId == 3.0) { bonus += mainSpec;    }
+        else if (elementId == 4.0) { bonus += mainHav;     }
+        else if (elementId == 5.0) { bonus += mainElec;    }
 
         if (hasBasic)    { bonus += mainBasic; }
         if (hasHeavy)    { bonus += mainHeavy; }
