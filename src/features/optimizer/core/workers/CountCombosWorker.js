@@ -11,7 +11,8 @@ self.onmessage = e => {
         echoes,
         maxCost = ECHO_OPTIMIZER_MAX_COST,
         maxSize = ECHO_OPTIMIZER_MAX_SIZE,
-        lockedEchoId = null
+        lockedEchoId = null,
+        countMode = "rows"
     } = e.data;
 
     const n = echoes.length;
@@ -44,6 +45,26 @@ self.onmessage = e => {
     //   - no lock: picking maxSize echoes from all
     //   - lock:    picking (maxSize - 1) from "others"
     const maxK = lockedIndex === -1 ? maxSize : maxSize - 1;
+
+    const combinadicCount = (nVal, kVal) => {
+        if (kVal < 0 || kVal > nVal) return 0;
+        let num = 1;
+        let den = 1;
+        for (let i = 1; i <= kVal; i++) {
+            num *= (nVal - (kVal - i));
+            den *= i;
+        }
+        return Math.floor(num / den);
+    };
+
+    if (countMode === "combinadic") {
+        const nAvail = lockedIndex === -1 ? n : n - 1;
+        const k = lockedIndex === -1 ? maxSize : maxSize - 1;
+        const combos = combinadicCount(nAvail, k);
+        const totalRows = lockedIndex === -1 ? combos * maxSize : combos;
+        self.postMessage({ total: totalRows });
+        return;
+    }
 
     // dp[k][c] = number of ways to pick k echoes (combinations)
     //            from the available pool with total cost exactly c.
@@ -97,19 +118,13 @@ self.onmessage = e => {
         }
     }
 
-    // Now map "unique sets" → "rows emitted by the generator".
-    //
-    // generateEchoPermutationBatches2 does:
-    //   - no lock  → for each set, emit maxSize permutations (each echo as main)
-    //   - with lock → for each set, emit exactly 1 permutation (locked main)
     let totalRows;
     if (lockedIndex === -1) {
         totalRows = comboCount * maxSize;
     } else {
-        totalRows = comboCount; // one row per set
+        totalRows = comboCount;
     }
 
-    // total    = rows the GPU will actually evaluate
-    // combos   = number of distinct echo sets (combinatorial count)
-    self.postMessage({ total: totalRows });
+    const total = countMode === "combos" ? comboCount : totalRows;
+    self.postMessage({ total });
 };

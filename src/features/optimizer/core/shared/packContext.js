@@ -45,7 +45,13 @@ export function packOptimizerContext(ctx) {
     data[i++] = ctx.sequence     ?? 0;
     data[i++] = ctx.lockedEchoIndex ?? -1;
 
-    data[i++] = 0; // pad3
+    data[i++] = ctx.comboMode ?? 0;
+    data[i++] = ctx.comboN ?? 0;
+    data[i++] = ctx.comboMaxCost ?? 0;
+    data[i++] = ctx.comboK ?? 0;
+    data[i++] = ctx.comboBaseIndex ?? 0;
+
+    data[i++] = 0; // pad
 
     return data;
 }

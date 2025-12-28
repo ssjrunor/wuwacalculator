@@ -23,7 +23,7 @@ export function accumulateSkillStatBonus(skillType, stats, skillMetaBonus = 0, b
 
 export default function EchoOptimizerRow({
                                              echoData,
-                                             setPlan,
+                                             setPlan = [],
                                              statTotals = {},
                                              mergedBuffs,
                                              skill,
@@ -36,7 +36,7 @@ export default function EchoOptimizerRow({
                                              keywords,
                                              sequence = 0
                                          }) {
-    const entries = setPlan.flatMap(s => {
+    const entries = (setPlan ?? []).flatMap(s => {
         const validPieces = setPieceTypeMap[s.setId] || [];
         const activePieces = validPieces.filter(piece => s.count >= piece);
 

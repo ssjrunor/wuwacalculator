@@ -40,7 +40,7 @@ export function resetWorkerPool() {
     lastConstraintsRef = null;
 }
 
-export function initWorkerPool({ encoded, mainEchoBuffs, echoKindIds, backend }) {
+export function initWorkerPool({ encoded, mainEchoBuffs, echoKindIds, comboIndexing, backend }) {
     if (initPromise && activeBackend === backend) return initPromise;
     if (initPromise && activeBackend !== backend) {
         resetWorkerPool();
@@ -50,7 +50,7 @@ export function initWorkerPool({ encoded, mainEchoBuffs, echoKindIds, backend })
     initPromise = new Promise(resolve => {
         const count = WORKER_COUNT[backend] ?? OPTIMIZER_WORKER_COUNT_GPU;
         for (let i = 0; i < count; i++) {
-            spawnWorker(i, encoded, mainEchoBuffs, echoKindIds, backend, resolve);
+            spawnWorker(i, encoded, mainEchoBuffs, echoKindIds, comboIndexing, backend, resolve);
         }
     });
 
@@ -81,7 +81,33 @@ export function runWorkerOnBatch({ combosBatch, packedContext, resultsLimit, enc
     });
 }
 
-function spawnWorker(index, encoded, mainEchoBuffs, echoKindIds, backend, resolveInit) {
+export function runWorkerOnIndexRange({ comboStart, comboCount, packedContext, resultsLimit, encodedConstraints }) {
+    if (CANCEL) return Promise.resolve({ cancelled: true });
+
+    return new Promise(resolve => {
+        const shouldSendConstraints = encodedConstraints && encodedConstraints !== lastConstraintsRef;
+        if (shouldSendConstraints) {
+            lastConstraintsRef = encodedConstraints;
+        }
+        const job = {
+            comboStart,
+            comboCount,
+            packedContext,
+            resolve,
+            resultsLimit,
+            encodedConstraints: shouldSendConstraints ? encodedConstraints : null,
+            indexed: true
+        };
+        const size = comboCount;
+        let i = 0;
+        while (i < queue.length && (queue[i].comboCount ?? 0) <= size) i++;
+        queue.splice(i, 0, job);
+
+        schedule();
+    });
+}
+
+function spawnWorker(index, encoded, mainEchoBuffs, echoKindIds, comboIndexing, backend, resolveInit) {
     const w = new Worker(
         new URL("../workers/OptimizerWorker.js", import.meta.url),
         { type: "module" }
@@ -130,6 +156,7 @@ function spawnWorker(index, encoded, mainEchoBuffs, echoKindIds, backend, resolv
         encoded,
         mainEchoBuffs,
         echoKindIds,
+        comboIndexing,
         backend,
     });
 }
@@ -146,21 +173,40 @@ function schedule() {
         busy.add(w);
         w.currentJob = job;
 
-        w.postMessage(
-            {
-                type: "run",
-                combosBuf: job.combosBatch.buffer,
-                combosOffset: job.combosBatch.byteOffset,
-                combosLen: job.combosBatch.length,
+        if (job.indexed) {
+            w.postMessage(
+                {
+                    type: "runIndexed",
+                    comboStart: job.comboStart,
+                    comboCount: job.comboCount,
+                    comboBaseIndex: job.comboStart,
 
-                ctxBuf: job.packedContext.buffer,
-                ctxOffset: job.packedContext.byteOffset,
-                ctxLen: job.packedContext.length,
+                    ctxBuf: job.packedContext.buffer,
+                    ctxOffset: job.packedContext.byteOffset,
+                    ctxLen: job.packedContext.length,
 
-                resultsLimit: job.resultsLimit,
-                encodedConstraints: job.encodedConstraints
-            },
-            [job.combosBatch.buffer, job.packedContext.buffer]
-        );
+                    resultsLimit: job.resultsLimit,
+                    encodedConstraints: job.encodedConstraints
+                },
+                [job.packedContext.buffer]
+            );
+        } else {
+            w.postMessage(
+                {
+                    type: "run",
+                    combosBuf: job.combosBatch.buffer,
+                    combosOffset: job.combosBatch.byteOffset,
+                    combosLen: job.combosBatch.length,
+
+                    ctxBuf: job.packedContext.buffer,
+                    ctxOffset: job.packedContext.byteOffset,
+                    ctxLen: job.packedContext.length,
+
+                    resultsLimit: job.resultsLimit,
+                    encodedConstraints: job.encodedConstraints
+                },
+                [job.combosBatch.buffer, job.packedContext.buffer]
+            );
+        }
     }
 }

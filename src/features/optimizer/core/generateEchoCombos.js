@@ -8,7 +8,8 @@ export function countEchoCombos({
                                     echoes,
                                     maxCost = ECHO_OPTIMIZER_MAX_COST,
                                     maxSize = ECHO_OPTIMIZER_MAX_SIZE,
-                                    lockedEchoId = null
+                                    lockedEchoId = null,
+                                    countMode = "rows"
                                 }) {
     return new Promise(resolve => {
         const worker = new Worker(
@@ -20,7 +21,7 @@ export function countEchoCombos({
             worker.terminate();
         };
 
-        worker.postMessage({ echoes, maxCost, maxSize, lockedEchoId });
+        worker.postMessage({ echoes, maxCost, maxSize, lockedEchoId, countMode });
     });
 }
 

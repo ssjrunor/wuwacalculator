@@ -12,6 +12,7 @@ export function useComboCounter({
                                     mainStatFilter,
                                     mainEcho,
                                     filtered,
+                                    enableGpu,
                                     // setters
                                     setFiltered,
                                     setPendingCombinations,
@@ -44,6 +45,7 @@ export function useComboCounter({
                 maxCost: 12,
                 maxSize: 5,
                 lockedEchoId,
+                countMode: enableGpu ? "combinadic" : "rows",
             });
 
             if (currentRun !== runId) return;

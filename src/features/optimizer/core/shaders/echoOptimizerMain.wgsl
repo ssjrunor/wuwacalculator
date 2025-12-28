@@ -53,7 +53,7 @@ fn main(
 
         workgroupBarrier();
 
-        var stride: u32 = 256u;
+    var stride: u32 = 256u;
         loop {
             if (stride == 0u) { break; }
 

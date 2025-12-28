@@ -226,12 +226,13 @@ export default function Optimizer({
                 echoes: filtered,
                 maxCost: 12,
                 maxSize: 5,
-                lockedEchoId: mainEchoId
+                lockedEchoId: mainEchoId,
+                countMode: enableGpu ? "combinadic" : "rows"
             });
             setCombinations(total);
             setPendingCombinations(false);
         })();
-    }, [activeCharacter, level]);
+    }, [activeCharacter, level, enableGpu]);
 
     useEffect(() => {
         setOptimizerResults([]);
@@ -251,6 +252,7 @@ export default function Optimizer({
         mainStatFilter,
         mainEcho,
         filtered,
+        enableGpu,
         setFiltered,
         setPendingCombinations,
         setCombinations,

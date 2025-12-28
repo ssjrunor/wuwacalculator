@@ -1,16 +1,20 @@
-import {runWorkerOnBatch} from "./worker/OptimizerWorkerPool.js";
+import {runWorkerOnBatch, runWorkerOnIndexRange} from "./worker/OptimizerWorkerPool.js";
 import {TopKHeap} from "./optimizerUtils.js";
 import {packOptimizerContext} from "./shared/packContext.js";
 import {
     ECHO_OPTIMIZER_JOB_TARGET_COMBOS_GPU,
-    OPTIMIZER_ECHOS_PER_COMBO
+    OPTIMIZER_ECHOS_PER_COMBO,
+    OPTIMIZER_ENABLE_TIMING_LOGS
 } from "./optimizerConfig.js";
 
 export async function runEchoOptimizer({
     comboBatchGenerator,
+    comboIndexing,
     resultsLimit,
     onProgress,
     combinations,
+    progressCombinations,
+    comboMaxCost = 0,
     ctxObj,
     charId,
     encodedConstraints,
@@ -19,7 +23,9 @@ export async function runEchoOptimizer({
     lockedIndex = -1,
     targetCombosPerJob = ECHO_OPTIMIZER_JOB_TARGET_COMBOS_GPU,
     mergeBatches = true,
+    useComboIndexing = false,
 }) {
+    const totalForProgress = progressCombinations ?? combinations;
     const targetIntsPerJob = targetCombosPerJob * OPTIMIZER_ECHOS_PER_COMBO;
 
     let totalProcessed = 0;
@@ -35,6 +41,7 @@ export async function runEchoOptimizer({
     let pendingInts = 0;
 
     const runOneJob = async (intsArray) => {
+        const t0 = OPTIMIZER_ENABLE_TIMING_LOGS ? performance.now() : 0;
         const comboCount = (intsArray.length / OPTIMIZER_ECHOS_PER_COMBO) | 0;
 
         const packedContext = packOptimizerContext({
@@ -42,6 +49,11 @@ export async function runEchoOptimizer({
             comboCount,
             charId,
             lockedEchoIndex: lockedIndex,
+            comboMode: 0,
+            comboN: 0,
+            comboMaxCost: 0,
+            comboK: 0,
+            comboBaseIndex: 0,
         });
 
         const combosBatch =
@@ -55,6 +67,57 @@ export async function runEchoOptimizer({
             resultsLimit,
             encodedConstraints,
         });
+        if (OPTIMIZER_ENABLE_TIMING_LOGS) {
+            const t1 = performance.now();
+            console.log(`[optimizer] cpu-batch ${comboCount.toLocaleString()} combos in ${(t1 - t0).toFixed(2)}ms`);
+        }
+
+        if (!r || r.cancelled) {
+            return { cancelled: true, comboCount: 0 };
+        }
+
+        if (r.topK) {
+            for (const { dmg, ids } of r.topK) {
+                if (dmg <= 0) continue;
+
+                const key = makeSortedKey5BigInt(ids[0], ids[1], ids[2], ids[3], ids[4]);
+                const prev = globalBestBySet.get(key);
+
+                if (prev == null || dmg > prev) {
+                    globalBestBySet.set(key, dmg);
+                    topResults.push({ dmg, ids });
+                }
+            }
+        }
+
+        return { cancelled: false, comboCount };
+    };
+
+    const runIndexedJob = async (comboStart, comboCount, comboIndexingData) => {
+        const t0 = OPTIMIZER_ENABLE_TIMING_LOGS ? performance.now() : 0;
+        const packedContext = packOptimizerContext({
+            ...ctxObj,
+            comboCount,
+            charId,
+            lockedEchoIndex: lockedIndex,
+            comboMode: 2,
+            comboN: comboIndexingData.comboN,
+            comboMaxCost,
+            comboK: comboIndexingData.comboK,
+            comboBaseIndex: comboStart,
+        });
+
+        const r = await runWorkerOnIndexRange({
+            comboStart,
+            comboCount,
+            packedContext,
+            resultsLimit,
+            encodedConstraints,
+        });
+        if (OPTIMIZER_ENABLE_TIMING_LOGS) {
+            const t1 = performance.now();
+            console.log(`[optimizer] gpu-index ${comboCount.toLocaleString()} combos in ${(t1 - t0).toFixed(2)}ms`);
+        }
 
         if (!r || r.cancelled) {
             return { cancelled: true, comboCount: 0 };
@@ -92,13 +155,13 @@ export async function runEchoOptimizer({
 
         let remainingMs = Infinity;
         if (avgSpeed > 0) {
-            const combosLeft = combinations - totalProcessed;
+            const combosLeft = totalForProgress - totalProcessed;
             remainingMs = combosLeft / avgSpeed; // ms
         }
 
         if (onProgress) {
             onProgress({
-                progress: totalProcessed / combinations,
+                progress: totalProcessed / totalForProgress,
                 elapsedMs: now - startTime,
                 remainingMs,
                 processed: totalProcessed,
@@ -132,6 +195,29 @@ export async function runEchoOptimizer({
 
         return { cancelled: false };
     };
+
+    if (useComboIndexing && comboIndexing) {
+        let start = 0;
+        while (start < combinations) {
+            const count = Math.min(targetCombosPerJob, combinations - start);
+            const { cancelled, comboCount } = await runIndexedJob(start, count, comboIndexing);
+            if (cancelled) {
+                return { cancelled: true, results: [] };
+            }
+            applyProgress(comboCount);
+            start += count;
+        }
+
+        return topResults.sorted().map(({ dmg, ids }) => {
+            const uids = ids.map((idx) => {
+                if (idx < 0) return null;
+                const echo = echoes?.[idx];
+                return echo?.uid ?? null;
+            });
+
+            return { ids, uids, damage: dmg };
+        });
+    }
 
     for (const batch of comboBatchGenerator) {
         const b =
