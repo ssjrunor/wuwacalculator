@@ -35,7 +35,7 @@ export function applyLynaeLogic({
     }
 
     const stacks = characterState?.activeStates?.lynaeTuneBreakBoost ?? 0;
-    const bonus = Math.min(stacks * 0.12, 0.12 * 50) * combatState?.tuneStrain;
+    const bonus = Math.min(stacks * 0.12, 0.12 * 50) * (combatState?.tuneStrain ?? 0);
     if (!mergedBuffs.__lynaTuneStrain) {
         mergedBuffs.attribute.all.dmgBonus += bonus;
         mergedBuffs.__lynaTuneStrain = true;
