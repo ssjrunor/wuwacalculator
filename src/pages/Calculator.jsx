@@ -998,23 +998,22 @@ export default function Calculator(props) {
             level: currentLevels[0],
             tab
         };
-        const defaultRandGenSettings = { ...defaultRandGen };
-        const defaultSuggestion = { ...defaultRandGen };
+        const defaultSuggestions = { ...defaultRandGen, level: currentLevels[0], tab };
 
         setCharacterRuntimeStates(prev => {
             const runtime = prev?.[charId] ?? {};
             const nextRuntime = { ...runtime };
             let changed = false;
-            if (!nextRuntime.randGenSettings || !isEqual(nextRuntime.randGenSettings, defaultRandGenSettings)) {
-                nextRuntime.randGenSettings = defaultRandGenSettings;
+            if (!nextRuntime?.randGenSettings?.level) {
+                nextRuntime.randGenSettings = defaultSuggestions;
                 changed = true;
             }
-            if (!nextRuntime.optimizerSettings || !isEqual(nextRuntime.optimizerSettings, defaultOptimizer)) {
+            if (!nextRuntime?.optimizerSettings?.level) {
                 nextRuntime.optimizerSettings = defaultOptimizer;
                 changed = true;
             }
-            if (!nextRuntime.suggestionSettings || !isEqual(nextRuntime.suggestionSettings, defaultSuggestion)) {
-                nextRuntime.suggestionSettings = defaultSuggestion;
+            if (!nextRuntime?.suggestionSettings?.level) {
+                nextRuntime.suggestionSettings = defaultSuggestions;
                 changed = true;
             }
             if (!isEqual(nextRuntime.groupedSkillOptions, stableGroupedSkillOptions)) {

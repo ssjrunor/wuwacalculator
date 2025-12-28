@@ -38,7 +38,7 @@ export function applyMornyeLogic({
     }
 
     const stacks = characterState?.activeStates?.mornyeTuneBreakBoost ?? 0;
-    const bonus = Math.min(stacks * 0.12, 0.12 * 50) * combatState?.tuneStrain;
+    const bonus = Math.min(stacks * 0.12, 0.12 * 50) * (combatState?.tuneStrain ?? 0);
     if (!mergedBuffs.__mornyeTuneStrain) {
         mergedBuffs.attribute.all.dmgBonus += bonus;
         mergedBuffs.__mornyeTuneStrain = true;
