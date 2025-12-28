@@ -9,10 +9,10 @@ export function buildCombinadicTable(n, kMax = 5) {
     const out = new Uint32Array((n + 1) * stride);
 
     for (let i = 0; i <= n; i++) {
-        out[i * stride + 0] = 1;
+        out[i * stride] = 1;
     }
     for (let k = 1; k <= kMax; k++) {
-        out[0 * stride + k] = 0;
+        out[k] = 0;
     }
 
     for (let i = 1; i <= n; i++) {
