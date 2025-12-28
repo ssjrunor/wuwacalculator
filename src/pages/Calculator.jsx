@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import Split from 'split.js';
 import {fetchCharacters} from '@/data/ingest/wutheringFetch';
 import characterStatesRaw from '../data/characterStates.json';
@@ -97,6 +97,14 @@ export const defaultTraceBuffs = {
     // UI / bookkeeping only
     activeNodes: {}
 };
+
+function useStableValue(value) {
+    const ref = useRef(value);
+    if (!isEqual(ref.current, value)) {
+        ref.current = value;
+    }
+    return ref.current;
+}
 
 export default function Calculator(props) {
     const [characters, setCharacters] = useState([]);
@@ -371,17 +379,22 @@ export default function Calculator(props) {
 
     useEffect(() => {
         if (!charId) return;
-        const existing = characterRuntimeStates?.[charId]?.rotationEntries ?? [];
-        const isEqual = JSON.stringify(existing) === JSON.stringify(rotationEntries);
-        if (!isEqual) {
-            setCharacterRuntimeStates(prev => ({
+        if (!rotationEntries.length) return;
+
+        setCharacterRuntimeStates(prev => {
+            const runtime = prev?.[charId];
+            if (!runtime) return prev;
+            const existing = runtime.rotationEntries ?? [];
+            if (isEqual(existing, rotationEntries)) return prev;
+
+            return {
                 ...prev,
                 [charId]: {
-                    ...(prev[charId] ?? {}),
+                    ...runtime,
                     rotationEntries
                 }
-            }));
-        }
+            };
+        });
     }, [rotationEntries, charId]);
 
     const handleCharacterSelect = (char) => {
@@ -612,7 +625,7 @@ export default function Calculator(props) {
         charId
     })
 
-    mergedBuffs.attribute.all.defIgnore += 2 * combatState.havocBane;
+    mergedBuffs.attribute.all.defIgnore += 2 * (combatState.havocBane ?? 0);
 
     if (overrideLogic && typeof overrideLogic === 'function') {
         const charId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
@@ -645,7 +658,9 @@ export default function Calculator(props) {
         }
     }
 
-    let finalStats = getFinalStats(activeCharacter, baseCharacterState, characterLevel, mergedBuffs, combatState);
+    const finalStats = useStableValue(
+        getFinalStats(activeCharacter, baseCharacterState, characterLevel, mergedBuffs, combatState)
+    );
 
     useEffect(() => {
         if (!activeCharacter) return;
@@ -654,10 +669,24 @@ export default function Calculator(props) {
             activeCharacter.Id ?? activeCharacter.id ?? activeCharacter.link;
 
         setCharacterRuntimeStates(prev => {
-            const prevChar = prev[charId];
+            const runtime = prev?.[charId];
+            const needsSync = !runtime ||
+                runtime.Name !== activeCharacter.displayName ||
+                runtime.Id !== charId ||
+                runtime.Attribute !== activeCharacter.attribute ||
+                runtime.WeaponType !== (activeCharacter.weaponType ?? 0) ||
+                !isEqual(runtime.Stats, baseCharacterState?.Stats ?? {}) ||
+                runtime.CharacterLevel !== characterLevel ||
+                !isEqual(runtime.SkillLevels, sliderValues) ||
+                !isEqual(runtime.TraceNodeBuffs, traceNodeBuffs) ||
+                !isEqual(runtime.CustomBuffs, customBuffs) ||
+                !isEqual(runtime.CombatState, combatState) ||
+                !isEqual(runtime.FinalStats, finalStats);
+
+            if (!needsSync) return prev;
 
             const updatedChar = {
-                ...(prevChar ?? {}),
+                ...(runtime ?? {}),
                 Name: activeCharacter.displayName,
                 Id: charId,
                 Attribute: activeCharacter.attribute,
@@ -671,20 +700,12 @@ export default function Calculator(props) {
                 FinalStats: finalStats,
             };
 
-            const same = prevChar && Object.keys(updatedChar).every(key => {
-                const prevVal = prevChar[key];
-                const newVal = updatedChar[key];
-
-                return typeof prevVal === "object" && typeof newVal === "object"
-                    ? JSON.stringify(prevVal) === JSON.stringify(newVal)
-                    : prevVal === newVal;
-            });
-
-            if (same) return prev;
+            if (runtime && isEqual(runtime, updatedChar)) return prev;
             return { ...prev, [charId]: updatedChar };
         });
     }, [
         activeCharacter,
+        baseCharacterState?.Stats,
         characterLevel,
         sliderValues,
         traceNodeBuffs,
@@ -704,70 +725,47 @@ export default function Calculator(props) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    const stableTeamRotation = useStableValue(teamRotation);
     useEffect(() => {
-        if (!teamRotation) return;
+        if (!charId) return;
+        if (!stableTeamRotation) return;
 
-        const existing = characterRuntimeStates?.[charId]?.teamRotation ?? {};
-        if (!isEqual(existing, teamRotation)) {
-            setCharacterRuntimeStates(prev => ({
+        setCharacterRuntimeStates(prev => {
+            const runtime = prev?.[charId];
+            if (!runtime) return prev;
+            const runtimeTeamRotation = runtime.teamRotation ?? {};
+            if (isEqual(runtimeTeamRotation, stableTeamRotation)) return prev;
+
+            return {
                 ...prev,
                 [charId]: {
-                    ...(prev[charId] ?? {}),
-                    teamRotation
+                    ...runtime,
+                    teamRotation: stableTeamRotation
                 }
-            }));
-        }
-
-    }, [characterRuntimeStates]);
+            };
+        });
+    }, [stableTeamRotation, charId]);
 
     useEffect(() => {
         if (!charId) return;
 
-        const runtime = characterRuntimeStates?.[charId];
-        if (!runtime) return;
+        setCharacterRuntimeStates(prev => {
+            const runtime = prev?.[charId];
+            if (!runtime) return prev;
+            if (runtime.teamRotationSummary) return prev;
 
-        const hasSummary = !!runtime.teamRotationSummary;
-
-        if (!hasSummary) {
-            const teamRotationSummary = {
-                name: runtime.Name ?? '',
-                total: { normal: 0, crit: 0, avg: 0 },
-            };
-
-            setCharacterRuntimeStates(prev => ({
+            return {
                 ...prev,
                 [charId]: {
-                    ...(prev[charId] ?? {}),
-                    teamRotationSummary
-                }
-            }));
-        }
-    }, [characterRuntimeStates]);
-
-    useEffect(() => {
-        const charId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
-        const cache = characterRuntimeStates?.[charId]?.allSkillResults ?? [];
-
-        setRotationEntries(prev => {
-            const updated = prev.map(entry => {
-                const skill = cache.find(s => s.name === entry.label && s.tab === entry.tab);
-                const isVisible = skill?.visible !== false;
-                return { ...entry, visible: isVisible };
-            });
-
-            if (charId && characterRuntimeStates?.[charId]) {
-                setCharacterRuntimeStates(prevStates => ({
-                    ...prevStates,
-                    [charId]: {
-                        ...prevStates[charId],
-                        rotationEntries: updated
+                    ...runtime,
+                    teamRotationSummary: {
+                        name: runtime.Name ?? '',
+                        total: { normal: 0, crit: 0, avg: 0 },
                     }
-                }));
-            }
-
-            return updated;
+                }
+            };
         });
-    }, [sliderValues, charId]);
+    }, [charId]);
 
     const keywords = getHighlightKeywords(activeCharacter);
 
@@ -936,23 +934,48 @@ export default function Calculator(props) {
         getAllSkillLevels,
     });
 
-    const skillResults = [...charSkillResults, ...echoSkillResults, ...negativeEffects];
-    useEffect(() => {
-        setCharacterRuntimeStates(prev => {
-            const prevChar = prev?.[charId] ?? {};
-            const prevResults = prevChar.allSkillResults ?? [];
-            if (JSON.stringify(prevResults) === JSON.stringify(skillResults)) return prev;
-
-            return {
-                ...prev,
-                [charId]: {
-                    ...prevChar,
-                    allSkillResults: skillResults,
-                },
-            };
-        });
+    const skillResults = useStableValue([...charSkillResults, ...echoSkillResults, ...negativeEffects]);
+    const groupedSkillOptions = useMemo(() => {
+        const groups = {};
+        for (const skill of (skillResults ?? []).filter(s => s.visible)) {
+            const tab = skill.tab ?? "unknown";
+            if (!groups[tab]) groups[tab] = [];
+            groups[tab].push({
+                name: skill.name,
+                type: skill.supportLabel || skill.skillType,
+                tab,
+                visible: skill.visible,
+                element: skill.element ?? null,
+            });
+        }
+        return groups;
     }, [skillResults]);
+    const stableGroupedSkillOptions = useStableValue(groupedSkillOptions);
+    const rotationPresetData = useMemo(() => {
+        if (!charId) return { entries: [], builtRotations: [] };
+        if (!activeCharacter) return { entries: [], builtRotations: [] };
+        const rotationData = getDefaultRotationEntries(charId);
+        const entries = rotationData?.entries ?? [];
+        const defaultRotationData = buildRotation(charId, stableGroupedSkillOptions);
+        const builtRotations = defaultRotationData?.builtRotations ?? [];
+        return { entries, builtRotations };
+    }, [charId, activeCharacter, stableGroupedSkillOptions]);
+    const builtRotations = useStableValue(rotationPresetData.builtRotations ?? []);
+    const presetEntries = rotationPresetData.entries ?? [];
+    useEffect(() => {
+        if (!charId) return;
+        if (!rotationEntries.length) return;
 
+        const updated = rotationEntries.map(entry => {
+            const skill = (skillResults ?? []).find(s => s.name === entry.label && s.tab === entry.tab);
+            const isVisible = skill?.visible !== false;
+            return { ...entry, visible: isVisible };
+        });
+
+        if (isEqual(rotationEntries, updated)) return;
+
+        setRotationEntries(updated);
+    }, [skillResults, charId, rotationEntries]);
     const skillLevels = getAllSkillLevels(charId, activeCharacter, skillTabs);
     const allSkillLevels = getAllSkillLevelsWithEcho({
         charId,
@@ -974,84 +997,54 @@ export default function Calculator(props) {
         const defaultOptimizer = {
             level: currentLevels[0],
             tab
-        }
-
-        const defaultSuggestion = defaultRandGen;
-
-        const allSkillResults =
-            skillResults ??
-            characterRuntimeStates[charId]?.allSkillResults ??
-            getSkillDamageCache();
-
-        const groupedSkillOptions = (() => {
-            const groups = {};
-            for (const skill of allSkillResults.filter(s => s.visible)) {
-                const tab = skill.tab ?? "unknown";
-                if (!groups[tab]) groups[tab] = [];
-                groups[tab].push({
-                    name: skill.name,
-                    type: skill.supportLabel || skill.skillType,
-                    tab,
-                    visible: skill.visible,
-                    element: skill.element ?? null,
-                });
-            }
-            return groups;
-        })();
-
-        const rotationData = getDefaultRotationEntries(charId);
-        const entries = rotationData?.entries ?? [];
-        const defaultRotationData = buildRotation(charId, groupedSkillOptions);
-        const builtRotations = defaultRotationData?.builtRotations ?? [];
+        };
+        const defaultRandGenSettings = { ...defaultRandGen };
+        const defaultSuggestion = { ...defaultRandGen };
 
         setCharacterRuntimeStates(prev => {
-            const prevChar = prev?.[charId] ?? {};
-            const newChar = { ...prevChar };
-
+            const runtime = prev?.[charId] ?? {};
+            const nextRuntime = { ...runtime };
             let changed = false;
-
-            if (!newChar.randGenSettings?.level) {
-                newChar.randGenSettings = defaultRandGen;
+            if (!nextRuntime.randGenSettings || !isEqual(nextRuntime.randGenSettings, defaultRandGenSettings)) {
+                nextRuntime.randGenSettings = defaultRandGenSettings;
+                changed = true;
+            }
+            if (!nextRuntime.optimizerSettings || !isEqual(nextRuntime.optimizerSettings, defaultOptimizer)) {
+                nextRuntime.optimizerSettings = defaultOptimizer;
+                changed = true;
+            }
+            if (!nextRuntime.suggestionSettings || !isEqual(nextRuntime.suggestionSettings, defaultSuggestion)) {
+                nextRuntime.suggestionSettings = defaultSuggestion;
+                changed = true;
+            }
+            if (!isEqual(nextRuntime.groupedSkillOptions, stableGroupedSkillOptions)) {
+                nextRuntime.groupedSkillOptions = stableGroupedSkillOptions;
                 changed = true;
             }
 
-            if (!newChar.optimizerSettings?.level) {
-                newChar.optimizerSettings = defaultOptimizer;
-                changed = true;
-            }
-
-            if (!newChar.suggestionSettings?.level) {
-                newChar.suggestionSettings = defaultSuggestion;
-                changed = true;
-            }
-
-            if (JSON.stringify(newChar.groupedSkillOptions) !== JSON.stringify(groupedSkillOptions)) {
-                newChar.groupedSkillOptions = groupedSkillOptions;
-                changed = true;
-            }
-
-            const existingRotation = newChar.rotationEntries ?? [];
+            const existingRotation = nextRuntime.rotationEntries ?? [];
             const hasNoRotation = existingRotation.length === 0;
-            const hasPreset =
-                Array.isArray(entries) && entries.length > 0 && builtRotations.length > 0;
-            if (hasNoRotation && hasPreset && !newChar._rotationInitialized) {
-                setRotationEntries(builtRotations);
-                newChar.rotationEntries = rotationEntries;
-                newChar._rotationInitialized = true;
+            const hasPreset = Array.isArray(presetEntries) && presetEntries.length > 0 && builtRotations.length > 0;
+            if (hasNoRotation && hasPreset && !nextRuntime._rotationInitialized) {
+                if (!isEqual(rotationEntries, builtRotations)) {
+                    setRotationEntries(builtRotations);
+                }
+                nextRuntime.rotationEntries = builtRotations;
+                nextRuntime._rotationInitialized = true;
                 changed = true;
-            } else if (!hasNoRotation && hasPreset) {
-                newChar._rotationInitialized = true;
+            } else if (!hasNoRotation && hasPreset && !nextRuntime._rotationInitialized) {
+                nextRuntime._rotationInitialized = true;
+                changed = true;
             }
 
             if (!changed) return prev;
 
             return {
                 ...prev,
-                [charId]: newChar,
+                [charId]: nextRuntime,
             };
         });
-
-    }, [charId, skillTabs, allSkillLevels, skillResults]);
+    }, [charId, skillTabs, allSkillLevels, stableGroupedSkillOptions, builtRotations, presetEntries.length, rotationEntries]);
 
     const [selectedSet, setSelectedSet] = useState(null);
     const [selectedCost, setSelectedCost] = useState(null);

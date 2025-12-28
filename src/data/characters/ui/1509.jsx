@@ -4,7 +4,7 @@ import DropdownSelect from '@/components/common/DropdownSelect.jsx';
 import {attributeColors} from "@/utils/attributeHelpers.js";
 import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
 
-export default function LynaeUI({ activeStates, toggleState }) {
+export default function LynaeUI({ setCharacterRuntimeStates, charId, activeStates }) {
     return (
         <div className="status-toggles">
             <div className="status-toggle-box">
@@ -21,6 +21,36 @@ export default function LynaeUI({ activeStates, toggleState }) {
                         />
                         Enable
                     </label>
+                </div>
+            </div>
+
+            <div className="status-toggle-box">
+                <h4 className={'highlight'} style={{ fontSize: '18px'}}>Spectral Analysis</h4>
+                <div>
+                    <p>
+                        Responding to Tune Strain - Interfered: For each stack of Tune Strain - Interfered on the target, each point of <span className="highlight">Lynae</span>'s Tune Break Boost increases her total DMG against that target by <span className="highlight">0.12%</span>.
+                    </p>
+                    Tune Break Boost
+                    <input
+                        type="number"
+                        className="character-level-input"
+                        min="0"
+                        max="50"
+                        value={activeStates.lynaeTuneBreakBoost ?? 0}
+                        onChange={(e) => {
+                            const val = Math.max(0, Math.min(50, Number(e.target.value) || 0));
+                            setCharacterRuntimeStates(prev => ({
+                                ...prev,
+                                [charId]: {
+                                    ...(prev[charId] ?? {}),
+                                    activeStates: {
+                                        ...(prev[charId]?.activeStates ?? {}),
+                                        lynaeTuneBreakBoost: val
+                                    }
+                                }
+                            }));
+                        }}
+                    />
                 </div>
             </div>
         </div>

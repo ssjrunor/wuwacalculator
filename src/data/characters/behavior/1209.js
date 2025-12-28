@@ -37,6 +37,13 @@ export function applyMornyeLogic({
         skillMeta.scaling = { atk: 0, hp: 0, def: 1, energyRegen: 0 };
     }
 
+    const stacks = characterState?.activeStates?.mornyeTuneBreakBoost ?? 0;
+    const bonus = Math.min(stacks * 0.12, 0.12 * 50) * combatState?.tuneStrain;
+    if (!mergedBuffs.__mornyeTuneStrain) {
+        mergedBuffs.attribute.all.dmgBonus += bonus;
+        mergedBuffs.__mornyeTuneStrain = true;
+    }
+
     const dmgVuln = Math.min(excessEr * 0.25, 40);
     if (isToggleActiveLocal('interferedMarker')) mergedBuffs.attribute.all.dmgVuln += dmgVuln;
 

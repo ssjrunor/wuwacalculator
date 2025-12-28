@@ -34,6 +34,14 @@ export function applyLynaeLogic({
         skillMeta.visible = false;
     }
 
+    const stacks = characterState?.activeStates?.lynaeTuneBreakBoost ?? 0;
+    const bonus = Math.min(stacks * 0.12, 0.12 * 50) * combatState?.tuneStrain;
+    if (!mergedBuffs.__lynaTuneStrain) {
+        mergedBuffs.attribute.all.dmgBonus += bonus;
+        mergedBuffs.__lynaTuneStrain = true;
+    }
+
+
     if (isToggleActiveLocal('prismaticOverblast') && !mergedBuffs.__prismaticOverblast) {
         mergedBuffs.attribute.all.dmgBonus += 25;
         mergedBuffs.__prismaticOverblast = true;

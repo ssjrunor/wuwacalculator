@@ -19,71 +19,102 @@ export default function EnemyPane({
         setCombatState(prev => ({ ...prev, enemyRes: clamped }));
     };
 
-    const handleDebuffChange = (key, val) => {
-        const clamped = Math.min(60, Math.max(0, Number(val)));
+    const handleDebuffChange = (key, val, max = 60) => {
+        const clamped = Math.min(max, Math.max(0, Number(val)));
         setCombatState(prev => ({ ...prev, [key]: clamped }));
     };
 
     return (
-        <div className="character-settings">
-            <h3>Enemy Settings</h3>
+        <div className="character-settings enemy-pane">
+            <h2 className="enemy-title">Enemy Settings</h2>
 
-            <div className="slider-group">
-                <div className="slider-label-with-input">
-                    <label htmlFor="enemy-level">Enemy Level</label>
+            <div className="echo-buff">
+                <h3 className="enemy-subtitle">Base Config</h3>
+                <div className="slider-group">
+                    <div className="slider-label-with-input">
+                        <label htmlFor="enemy-level">Enemy Level</label>
+                        <input
+                            id="enemy-level"
+                            type="number"
+                            min="1"
+                            max="120"
+                            className="character-level-input"
+                            value={enemyLevel}
+                            onChange={(e) => handleLevelChange(e.target.value)}
+                        />
+                    </div>
                     <input
-                        id="enemy-level"
-                        type="number"
+                        type="range"
                         min="1"
                         max="120"
-                        className="character-level-input"
                         value={enemyLevel}
                         onChange={(e) => handleLevelChange(e.target.value)}
+                        style={{
+                            '--slider-color': '#777777',
+                            '--slider-fill': `${((enemyLevel - 1) / 119) * 100}%`
+                        }}
                     />
                 </div>
-                <input
-                    type="range"
-                    min="1"
-                    max="120"
-                    value={enemyLevel}
-                    onChange={(e) => handleLevelChange(e.target.value)}
-                    style={{
-                        '--slider-color': '#777777',
-                        '--slider-fill': `${((enemyLevel - 1) / 119) * 100}%`
-                    }}
-                />
-            </div>
 
-            <div className="slider-group">
-                <div className="slider-label-with-input">
-                    <label htmlFor="enemy-res">Enemy Resistance</label>
+                <div className="slider-group">
+                    <div className="slider-label-with-input">
+                        <label htmlFor="enemy-res">Enemy Resistance</label>
+                        <input
+                            id="enemy-res"
+                            type="number"
+                            min="0"
+                            max="100"
+                            className="character-level-input"
+                            value={enemyRes}
+                            onChange={(e) => handleResChange(e.target.value)}
+                        />
+                        <span>%</span>
+                    </div>
                     <input
-                        id="enemy-res"
-                        type="number"
+                        type="range"
                         min="0"
                         max="100"
-                        className="character-level-input"
                         value={enemyRes}
                         onChange={(e) => handleResChange(e.target.value)}
+                        style={{
+                            '--slider-color': '#777777',
+                            '--slider-fill': `${(enemyRes / 100) * 100}%`
+                        }}
                     />
-                    <span>%</span>
                 </div>
-                <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={enemyRes}
-                    onChange={(e) => handleResChange(e.target.value)}
-                    style={{
-                        '--slider-color': '#777777',
-                        '--slider-fill': `${(enemyRes / 100) * 100}%`
-                    }}
-                />
             </div>
 
-            <div style={{ marginTop: '50px' }}>
-                <h4></h4>
+            <div className="echo-buff">
+                <h3 className="enemy-subtitle">Tunability</h3>
+                <div className="slider-group">
+                    <div className="slider-label-with-input">
+                        <label htmlFor="enemy-level">Tune Strain - Interfered</label>
+                        <input
+                            id="tune-strain-interfered"
+                            type="number"
+                            min="0"
+                            max="10000"
+                            className="character-level-input"
+                            value={combatState.tuneStrain ?? 0}
+                            onChange={(e) => handleDebuffChange('tuneStrain', e.target.value, 10000)}
+                        />
+                    </div>
+                    <input
+                        type="range"
+                        min="0"
+                        max="10000"
+                        value={combatState.tuneStrain ?? 0}
+                        onChange={(e) => handleDebuffChange('tuneStrain', e.target.value, 10000)}
+                        style={{
+                            '--slider-color': '#d3d3d3',
+                            '--slider-fill': `${((combatState.tuneStrain ?? 0) / 10000) * 100}%`
+                        }}
+                    />
+                </div>
+            </div>
 
+            <div className="echo-buff">
+                <h3 className="enemy-subtitle">Negative Effects</h3>
                 <div className="slider-group">
                     <div className="slider-label-with-input">
                         <label htmlFor="spectro-frazzle">Spectro Frazzle</label>

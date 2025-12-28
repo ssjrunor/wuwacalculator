@@ -147,7 +147,33 @@
     font-size: 18px;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 10px;
+    margin: unset;
+}
+
+.enemy-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.enemy-pane .echo-buff {
+    padding: 0.5rem 0.75rem;
+}
+
+.enemy-title {
+    font-weight: bold;
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+.enemy-subtitle {
+    font-weight: bold;
+    text-align: left !important;
+    margin: 0.5rem 0 !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.55rem;
+    border: rgba(131, 131, 131, 0.34) solid 1px;
+    background-color: rgba(136, 136, 136, 0.04);
 }
 
 .character-level-input {
