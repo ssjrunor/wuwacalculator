@@ -24,9 +24,7 @@ export function applyMornyeLogic({
     const tab = skillMeta.tab ?? '';
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
 
-    if (tab === 'normalAttack') skillMeta.skillType = 'basic';
-    if (tab === 'resonanceSkill') skillMeta.skillType = 'skill';
-
+    if (name.includes('syntony field')) skillMeta.skillType = 'ultimate';
     const excessEr = mergedBuffs.energyRegen ?? 0;
     const bonusCr = Math.min(excessEr * .5, 80);
     const bonusCd = Math.min(excessEr, 160);
