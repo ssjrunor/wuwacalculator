@@ -2,7 +2,7 @@ import React from "react";
 import { highlightKeywordsInText } from "@/constants/echoSetData.jsx";
 import { echoSetById, echoSetList, setPieceTypeMap, setIconMap } from "@/constants/echoSetData2.js";
 import {typeMap} from "@/constants/skillTabs.js";
-import {applySpecialBuffs} from "@/features/optimizer/core/echoOptimizerContext.js";
+import {applySpecialBuffs} from "@/features/optimizer/core/context/echoContext.js";
 import {Tooltip} from "antd";
 import {formatDescription} from "@/utils/echoHelper.js";
 import {normalizedSkillTypeNames} from "@/features/rotations/ui/Rotations.jsx";
@@ -33,7 +33,7 @@ export default function EchoOptimizerRow({
                                              finalStats,
                                              skillMeta = {},
                                              charId = null,
-                                             keywords,
+                                             rotationMode,
                                              sequence = 0
                                          }) {
     const entries = (setPlan ?? []).flatMap(s => {
@@ -394,9 +394,9 @@ export default function EchoOptimizerRow({
 
             <div className="col cd echo-buff">{(stats.cd ?? 0).toFixed(1)}</div>
 
-            <div className="col bonus echo-buff">{stats.bonus.toFixed(1)}</div>
+            {!rotationMode && <div className="col bonus echo-buff">{stats.bonus.toFixed(1)}</div>}
 
-            <div className="col amp echo-buff">{stats.amp.toFixed(1)}</div>
+            {!rotationMode && <div className="col amp echo-buff">{stats.amp.toFixed(1)}</div>}
 
             <div className="col dmg echo-buff avg">{Math.floor(damage)}</div>
 

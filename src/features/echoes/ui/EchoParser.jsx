@@ -300,9 +300,7 @@ const EchoParser = ({
                     minDiff = diff;
                     bestMatch = label;
                 }
-            } catch (err) {
-                continue;
-            }
+            } catch (err) {}
         }
 
         return bestMatch;

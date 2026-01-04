@@ -21,7 +21,7 @@ export function applyVerinaLogic({
     };
 
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
 
     if (tab === 'forteCircuit') {

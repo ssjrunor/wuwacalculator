@@ -15,7 +15,7 @@ export function applyJinhsiLogic({
         ...skillMeta
     };
 
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
 
     if (!mergedBuffs.__jinhsiInherent1 && characterLevel >= 50) {

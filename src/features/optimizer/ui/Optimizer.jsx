@@ -1,25 +1,26 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
-import {ctxObj, EchoOptimizer} from "@/features/optimizer/core/EchoOptimizer.js";
+import {
+    computeEchoStatsFromIds,
+    countEchoCombos,
+    ctxObj,
+    EchoFilters,
+    EchoOptimizer,
+    getDefaultMainStatFilter,
+    groupEchoSetsByPiece,
+    resolveEchoesFromIds,
+} from "@/features/optimizer/core/misc/index.js";
 import {getEchoBag} from "@/state/echoBagStore.js";
 import {getSetPlanFromEchoes} from "@/data/buffs/setEffect.js";
 import { setIconMap } from "@/constants/echoSetData2.js";
 import {getEchoScores, getTop5SubstatScoreDetails} from "@/utils/echoHelper.js";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";
 import {attributeColors, elementToAttribute} from "@/utils/attributeHelpers.js";
-import {EchoFilters} from "@/features/optimizer/core/EchoFilters.js";
-import {countEchoCombos} from "@/features/optimizer/core/generateEchoCombos.js";
 import ExpandableSection from "@/components/common/Expandable.jsx";
 import CharacterMenu from "@/features/characters/ui/CharacterMenu.jsx";
 import SkillMenu, {tabDisplayOrder} from "@/features/rotations/ui/SkillMenu.jsx";
 import {CharacterOptionsPanel} from "./CharacterOptionsPanel.jsx";
 import {EchoOptimizerControlBox} from "./EchoOptimizerControlBox.jsx";
-import {groupEchoSetsByPiece} from "@/features/optimizer/core/setSolver.js";
 import EchoOptimizerRow from "./EchoOptimizerRow.jsx";
-import {
-    computeEchoStatsFromIds,
-    getDefaultMainStatFilter,
-    resolveEchoesFromIds
-} from "@/features/optimizer/core/optimizerUtils.js";
 import {echoes as allEchoes} from "@/data/ingest/getEchoes.js";
 import EchoMenu from "@/features/echoes/ui/EchoMenu.jsx";
 import {useComboCounter} from "./useComboCounter.js";
@@ -27,13 +28,8 @@ import GuidesModal from "@/components/common/GuideModal.jsx";
 import PlainModal from "@/components/common/PlainModal.jsx";
 import {modalContent} from "./modalContent.jsx";
 import {getGroupedSkillOptions} from "@/utils/prepareDamageData.js";
-import {
-    buildMainStatPoolForSuggestor,
-    generateMainStatsContext
-} from "@/features/suggestions/core/mainStat-suggestion/ctx-builder.js";
-import {runMainStatSuggestor} from "@/features/suggestions/core/mainStat-suggestion/suggestMainStat.js";
-import {runSetSuggestor} from "@/features/suggestions/core/setPlan-suggestion/suggestSetPlan.js";
 import {detectWebGPUSupport} from "@/features/optimizer/core/gpu/getDevice.js";
+import OptimizerRules from "./OptimizerRules.jsx";
 
 const HEADER_TITLES = [
     "Set",
@@ -55,6 +51,7 @@ export default function Optimizer({
                                       charId,
                                       setCharacterRuntimeStates,
                                       characterRuntimeStates,
+                                      rotationEntries,
                                       characters,
                                       activeCharacter,
                                       baseCharacterState,
@@ -117,7 +114,7 @@ export default function Optimizer({
 
     const level = optimizer?.level ?? null;
     const tab = optimizer?.tab ?? "";
-    const useSplash = generalOptimizerSettings?.useSplash ?? false;
+    const useSplash = generalOptimizerSettings?.useSplash ?? true;
     const enableGpu = generalOptimizerSettings?.enableGpu ?? false;
     const entry = {
         label: level?.Name,
@@ -126,7 +123,23 @@ export default function Optimizer({
     };
     const skill = skillResults
         ?.find(skill => (skill.name === level?.label || skill.name === level?.Name) && skill.tab === tab) ?? {};
+
     const statWeight = skill.statWeight ?? skill.custSkillMeta?.statWeight ?? {};
+    const rotationTotals = runtime?.rotationSummary?.totals ?? {};
+    const hasRotationEntries = rotationEntries.length > 0;
+    const rotationMode = optimizer?.rotationMode && hasRotationEntries;
+    const displaySkill = rotationMode
+        ? {
+            ...skill,
+            name: "Total Rotation DMG",
+            label: "Total Rotation DMG",
+            avg: rotationTotals.avg ?? 0,
+            normal: rotationTotals.normal ?? 0,
+            crit: rotationTotals.crit ?? 0
+        }
+        : skill;
+    const displaySkillAvg = displaySkill?.avg ?? 1;
+    const displaySkillType = displaySkill?.skillType;
 
     const mainStatFilter = optimizer.mainStatFilter ?? getDefaultMainStatFilter(statWeight, charId);
 
@@ -147,12 +160,28 @@ export default function Optimizer({
         setExpandedTabs((prev) => ({...prev, [key]: !prev[key]}));
 
     const groupedSkillOptions = React.useMemo(() => {
-        return getGroupedSkillOptions({ skillResults });
-    }, [skillResults]);
+        const groups = getGroupedSkillOptions({ skillResults });
+        if (hasRotationEntries) {
+            if (!groups.combo) groups.combo = [];
+            groups.combo.unshift({
+                name: "Total Rotation DMG",
+                type: "combo",
+                tab: "combo",
+                visible: true,
+                element: null,
+            });
+        }
+        return groups;
+    }, [skillResults, hasRotationEntries]);
 
     const handleAddSkill = (skill) => {
+        if (skill?.tab === "combo") {
+            updateOptimizerSettings({ rotationMode: true });
+            setShowSkillOptions(false);
+            return;
+        }
         const newTab = skill?.tab;
-        updateOptimizerSettings({ tab: newTab });
+        updateOptimizerSettings({ tab: newTab, rotationMode: false });
 
         const match = allSkillLevels?.[newTab]?.find(
             (l) => l?.label?.includes(skill?.name) || l?.Name?.includes(skill?.name)
@@ -189,10 +218,23 @@ export default function Optimizer({
         echoBag,
         keepPercent,
         setOptions,
-        mainStatFilter
+        mainStatFilter,
+        rotationMode
     }));
-    const [currentBag, setCurrentBag] = useState([...filtered]);
     const [currentContext, setCurrentContext] = useState({...ctxObj});
+
+    useEffect(() => {
+        if (!hasRotationEntries && activeCharacter) {
+            updateOptimizerSettings({ rotationMode: false });
+        }
+    }, [hasRotationEntries, activeCharacter]);
+
+    useEffect(() => {
+        if (!generalOptimizerSettings.shownRules) {
+            setRulesOpen(true);
+            generalOptimizerSettings.shownRules = true;
+        }
+    }, []);
 
     useEffect(() => {
         setForm({
@@ -208,16 +250,18 @@ export default function Optimizer({
             equippedEchoes: echoData,
             statWeight,
             resultsLimit,
-            baseDmg: skill?.avg ?? 1,
-            skillType: skill.skillType,
-            lockedEchoId: mainEchoId
+            baseDmg: displaySkillAvg,
+            skillType: displaySkillType,
+            lockedEchoId: mainEchoId,
+            sequence: runtime?.SkillLevels.sequence
         });
         const filtered = EchoFilters.getFilteredEchoes({
             statWeight,
             echoBag,
             keepPercent,
             setOptions,
-            mainStatFilter
+            mainStatFilter,
+            rotationMode
         });
         setFiltered(filtered);
         setPendingCombinations(true);
@@ -241,10 +285,13 @@ export default function Optimizer({
     const [pendingCombinations, setPendingCombinations] = useState(false);
     const [batchSize, setBatchSize] = useState(null);
     const comboTimer = useRef(null);
+    const comboRunRef = useRef(0);
+    const [rulesOpen, setRulesOpen] = useState(false);
 
     const ComboCounter = useComboCounter({
         countEchoCombos,
         comboTimerRef: comboTimer,
+        comboRunRef,
         statWeight,
         echoBag,
         keepPercent,
@@ -258,6 +305,7 @@ export default function Optimizer({
         setCombinations,
         updateGeneralOptimizerSettings,
         updateOptimizerSettings,
+        rotationMode
     });
 
     function handleStatLimitChange(statKey, field, valueStr) {
@@ -309,6 +357,12 @@ export default function Optimizer({
             setModalOpen(true);
             return;
         }
+        if (!enableGpu && !generalOptimizerSettings.gpuAsked) {
+            setUiModalContent(modalContent.firstTimeOptimizer);
+            setModalOpen(true);
+            updateGeneralOptimizerSettings({gpuAsked: true});
+            return;
+        }
         if (!form) return;
         setIsLoading(true);
         setProgress({
@@ -319,7 +373,6 @@ export default function Optimizer({
             speed: 0
         });
         setSuccess(false);
-        setCurrentBag([...filtered]);
         const results = await EchoOptimizer.optimize({
             ...form,
             filtered,
@@ -329,6 +382,10 @@ export default function Optimizer({
             constraints: statLimits,
             sequence: runtime?.SkillLevels.sequence,
             enableGpu,
+            rotationMode,
+            rotationEntries,
+            skillResults,
+            allSkillLevels,
             onProgress: ({ progress, elapsedMs, remainingMs, processed, speed }) =>
                 setProgress(prev => ({
                     ...prev,
@@ -346,6 +403,18 @@ export default function Optimizer({
         if (!results || wasCancelled) {
             setIsLoading(false);
             setSuccess(false);
+            if (results?.error) {
+                setUiModalContent(
+                    <div>
+                        <h2>Optimizer error</h2>
+                        <p>The optimizer was cancelled due to an internal error.</p>
+                        <pre style={{ whiteSpace: "pre-wrap" }}>
+                            {String(results.error)}
+                        </pre>
+                    </div>
+                );
+                setModalOpen(true);
+            }
             return;
         }
         const resultList = Array.isArray(results) ? results : results.results;
@@ -407,6 +476,7 @@ export default function Optimizer({
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+    const rotationExclude = rotationMode ? ["∑ BNS%", "∑ AMP%"] : [];
 
     if (!activeCharacter || !form) return null;
 
@@ -415,6 +485,10 @@ export default function Optimizer({
 
             <PlainModal modalOpen={modalOpen} setModalOpen={setModalOpen} width="800px">
                 {uiModalContent}
+            </PlainModal>
+
+            <PlainModal modalOpen={rulesOpen} setModalOpen={setRulesOpen} width="900px">
+                <OptimizerRules />
             </PlainModal>
 
             <GuidesModal
@@ -484,6 +558,7 @@ export default function Optimizer({
                     success={success}
                     cancelled={cancelled}
                     openGuide={openGuide}
+                    openRules={() => setRulesOpen(true)}
                 />
             )}
                 <div className="optimizer-details">
@@ -499,7 +574,7 @@ export default function Optimizer({
                                 menuOpen={menuOpen}
                                 setMenuOpen={setMenuOpen}
                                 runtime={runtime}
-                                skill={skill}
+                                skill={displaySkill}
                                 setShowSkillOptions={setShowSkillOptions}
                                 useSplash={useSplash}
                                 updateGeneralOptimizerSettings={updateGeneralOptimizerSettings}
@@ -516,9 +591,10 @@ export default function Optimizer({
                                 charIdForm={form.charId}
                                 mergedBuffs={mergedBuffs}
                                 finalStats={runtime?.finalStats ?? finalStats}
-                                skillMeta={skill?.custSkillMeta ?? {}}
+                                skillMeta={displaySkill?.custSkillMeta ?? {}}
                                 echoBag={echoBag}
                                 enableGpu={enableGpu}
+                                rotationMode={rotationMode}
                             />
                         </div>
                     </ExpandableSection>
@@ -526,11 +602,13 @@ export default function Optimizer({
                         <div className="echo-buff results-container">
                             <div className="fixed-header rotation-item">
                                 <div className="optimizer-result-item header">
-                                    {HEADER_TITLES.map(title => (
-                                        <div key={title} className="col">
-                                            {title}
-                                        </div>
-                                    ))}
+                                    {HEADER_TITLES
+                                        .filter(title => !(new Set(rotationExclude)).has(title))
+                                        .map(title => (
+                                            <div key={title} className="col">
+                                                {title}
+                                            </div>
+                                        ))}
                                 </div>
                                 <EchoOptimizerRow
                                     echoData={echoData}
@@ -538,13 +616,14 @@ export default function Optimizer({
                                     mergedBuffs={mergedBuffs}
                                     runtime={runtime}
                                     finalStats={runtime?.finalStats ?? finalStats}
-                                    skill={skill}
+                                    skill={displaySkill}
                                     onClick={() => setResEchoes(echoData)}
-                                    damage={skill.avg}
+                                    damage={displaySkill.avg}
                                     base={true}
-                                    skillMeta={skill?.custSkillMeta ?? {}}
+                                    skillMeta={displaySkill?.custSkillMeta ?? {}}
                                     charId={charId}
                                     keywords={keywords}
+                                    rotationMode={rotationMode}
                                 />
                             </div>
 
@@ -562,12 +641,13 @@ export default function Optimizer({
                                                     setPlan={setPlan}
                                                     statTotals={statTotals}
                                                     mergedBuffs={mergedBuffs}
-                                                    skill={skill}
+                                                    skill={displaySkill}
                                                     damage={res.damage}
                                                     onClick={() => setResEchoes(echoObjs)}
                                                     charId={form.charId}
                                                     keywords={keywords}
                                                     sequence={runtime?.SkillLevels.sequence}
+                                                    rotationMode={rotationMode}
                                                 />
                                             );
                                         })}
@@ -649,6 +729,7 @@ export default function Optimizer({
                     setSuccess={setSuccess}
                     cancelled={cancelled}
                     openGuide={openGuide}
+                    openRules={() => setRulesOpen(true)}
                     isWide={isWide}
                 />
             )}

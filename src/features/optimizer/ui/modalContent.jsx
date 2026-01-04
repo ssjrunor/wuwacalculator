@@ -198,4 +198,45 @@ export const modalContent = {
             </p>
         </div>
     ),
+    firstTimeOptimizer: (
+        <div>
+            <h2>Hey... 𐔌՞ ܸ.ˬ.ܸ՞𐦯</h2>
+
+            <p>
+                Quick heads up before you hit <span className="highlight">Run</span>:
+                the compute engine is currently set to <strong>CPU</strong>.
+                CPU mode works everywhere… but it’s also the{" "}
+                <strong>“this might take a while”</strong> option.
+            </p>
+
+            <p>
+                If your device supports it, switching to <strong>GPU (WebGPU)</strong> is{" "}
+                <strong>dramatically faster</strong> and makes big search runs feel instant-ish.
+                It won’t break anything if it doesn’t work, you can always flip back to CPU.
+            </p>
+
+            <p style={{ marginTop: "0.75rem" }}>
+                <strong>Recommended:</strong>
+            </p>
+            <ul>
+                <li>
+                    Try <strong>GPU</strong> first. If it runs, you’re living in the future.
+                </li>
+                <li>
+                    If GPU fails or isn’t supported, CPU will still work (just slower).
+                </li>
+            </ul>
+
+            <p
+                style={{
+                    marginTop: "1rem",
+                    fontStyle: "italic",
+                    fontSize: "0.9rem",
+                }}
+            >
+                TL;DR: GPU is the turbo button. Give it a shot. Worst case, you fall back to CPU and
+                still get good builds.
+            </p>
+        </div>
+    ),
 };

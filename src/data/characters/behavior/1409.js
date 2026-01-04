@@ -24,7 +24,7 @@ export function applyCartethyiaLogic({
     };
     skillMeta.scaling = { atk: 0, hp: 1, def: 0, energyRegen: 0 };
 
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
 
     if (tab === 'normalAttack') {

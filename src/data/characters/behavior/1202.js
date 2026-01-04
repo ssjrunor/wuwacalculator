@@ -14,7 +14,7 @@ export function applyChixiaLogic({
         amplify: skillMeta?.amplify ?? 0,
         ...skillMeta
     };
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
 
     if (name === 'leaping flames') {

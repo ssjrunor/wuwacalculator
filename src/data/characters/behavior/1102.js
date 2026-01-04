@@ -14,7 +14,7 @@ export function applySanhuaLogic({
         ...skillMeta
     };
 
-    const name = skillMeta.name.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
 
     const isBurstAttack = [
         'glacier burst damage',

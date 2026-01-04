@@ -1,16 +1,18 @@
 import {
     OPTIMIZER_CYCLES_PER_INVOCATION,
     OPTIMIZER_WORKGROUP_SIZE
-} from "../optimizerConfig.js";
+} from "../misc/index.js";
 
 export async function runEchoGpuPipeline({
                                              device,
                                              pipeline,
                                              bindGroup,
-                                             comboCount
+                                             comboCount,
+                                             workgroupSize,
+                                             cyclesPerInvocation
                                          }) {
-    const WORKGROUP_SIZE = OPTIMIZER_WORKGROUP_SIZE;
-    const CYCLES_PER_INVOCATION = OPTIMIZER_CYCLES_PER_INVOCATION;
+    const WORKGROUP_SIZE = workgroupSize ?? OPTIMIZER_WORKGROUP_SIZE;
+    const CYCLES_PER_INVOCATION = cyclesPerInvocation ?? OPTIMIZER_CYCLES_PER_INVOCATION;
 
     const invocationsNeeded = Math.ceil(comboCount / CYCLES_PER_INVOCATION);
 
@@ -19,7 +21,6 @@ export async function runEchoGpuPipeline({
     const MAX_WG = 65535;
 
     let remaining = totalWorkgroups;
-    let offset = 0;
 
     while (remaining > 0) {
         const thisBatch = Math.min(remaining, MAX_WG);
@@ -35,7 +36,6 @@ export async function runEchoGpuPipeline({
 
         device.queue.submit([encoder.finish()]);
 
-        offset += thisBatch;
         remaining -= thisBatch;
     }
 }

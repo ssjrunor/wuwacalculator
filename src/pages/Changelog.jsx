@@ -757,4 +757,23 @@ export const changelog = [
         ],
         shortDesc: `3.0 status update + Echo Generator fixes (〜^∇^)〜`,
     }
+    ,
+    {
+        date: '03/01/2026',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `Happy 2026~! Optimizer GPU runs are now wildly faster (single-skill up to ~900M combos/sec on capable GPUs) and use less memory.`
+            },
+            {
+                type: 'paragraph',
+                content: `Suggestions picked up combo/rotation handling, so the Randomizer and friends can respect your rotation context.`
+            },
+            {
+                type: 'paragraph',
+                content: `Mornye should behave correctly in the optimizer now; Suggestions fix is still cooking.`
+            }
+        ],
+        shortDesc: `New year tune-up: faster optimizer + rotation-ready Suggestions (〜^∇^)〜`
+    }
 ];

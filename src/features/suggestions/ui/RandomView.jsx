@@ -94,6 +94,7 @@ export default function RandomView({
                                        onSelectRandBuild,
                                        setCharacterRuntimeStates,
                                        runRandomizer,
+                                       setShowToast
                                       }) {
     const [showInspectModal, setShowInspectModal] = useState(false);
     const [showConfigModal, setShowConfigModal] = useState(false);
@@ -128,6 +129,7 @@ export default function RandomView({
                                         equippedEchoes: selectedEchoes,
                                     },
                                 }));
+                                setShowToast(true);
                             }}
                     >
                         Apply
@@ -144,7 +146,16 @@ export default function RandomView({
                     </button>
                 </div>
                 {randomResults.map((plan, index) => {
+                    const current = haveSameMainStats(echoData, plan?.echoes || []);
+                    const substatTotals = buildSubstatTotals(plan?.echoes ?? []);
+                    const groupedSubstats = groupSubstatTotalsByLabel(substatTotals);
+                    const visibleSubstats = groupedSubstats.slice(0, 6);
+                    const hiddenSubstatCount = Math.max(
+                        0,
+                        groupedSubstats.length - visibleSubstats.length,
+                    );
                     const isSelected = index === randomResultsIndex;
+                    const onSelect = onSelectRandBuild;
                     const avg = plan.damage ?? null;
                     let diffPercent = baseDamage
                         ? ((avg / baseDamage) - 1) * 100
@@ -162,15 +173,6 @@ export default function RandomView({
                         .slice()
                         .sort((a, b) => (b.cost ?? 0) - (a.cost ?? 0));
 
-                    const current = haveSameMainStats(echoData, plan?.echoes || []);
-                    const substatTotals = buildSubstatTotals(plan?.echoes ?? []);
-                    const groupedSubstats = groupSubstatTotalsByLabel(substatTotals);
-                    const visibleSubstats = groupedSubstats.slice(0, 6);
-                    const hiddenSubstatCount = Math.max(
-                        0,
-                        groupedSubstats.length - visibleSubstats.length,
-                    );
-
                     return (
                         <div
                             key={index}
@@ -181,7 +183,7 @@ export default function RandomView({
                                 '--slider-color': currentSliderColor,
                                 '--lower-opac': withOpacity(currentSliderColor)
                             }}
-                            onClick={() => onSelectRandBuild(index)}
+                            onClick={() => onSelect(index)}
                         >
                             <div className="main-stat-rows">
                                 <div className="main-stat-header">
@@ -294,6 +296,7 @@ export default function RandomView({
                 getImageSrc={getImageSrc}
                 characterRuntimeStates={characterRuntimeStates}
                 setCharacterRuntimeStates={setCharacterRuntimeStates}
+                setShowToast={setShowToast}
             />
             <RandomConfigModal
                 open={showConfigModal}
@@ -325,7 +328,8 @@ function RandomInspectModal({
                                 charId,
                                 getImageSrc,
                                 characterRuntimeStates,
-                                setCharacterRuntimeStates
+                                setCharacterRuntimeStates,
+                                setShowToast
 }) {
     const [isClosing, setIsClosing] = useState(false);
     const maxScore = getTop5SubstatScoreDetails(charId).total;
@@ -385,6 +389,7 @@ function RandomInspectModal({
                                         equippedEchoes: echoes,
                                     },
                                 }));
+                                setShowToast(true);
                                 handleClose();
                             }}
                         >

@@ -123,6 +123,7 @@ export function prepareDamageData({
                 echoSkillResults.push({
                     name: skillMeta.label ?? label,
                     skillType: "echoSkill",
+                    skillId: skillMeta.skillId ?? null,
                     tags,
                     element: echoElement ?? result.skillMeta?.element,
                     normal,
@@ -168,6 +169,7 @@ export function prepareDamageData({
                 name: skillMeta.label ?? level.label ?? level.Name,
                 tab,
                 skillType: result.skillMeta?.skillType ?? "basic",
+                skillId: result.skillMeta?.skillId ?? null,
                 statWeight: skillMeta.statWeight ?? {},
                 normal,
                 crit,

@@ -22,7 +22,8 @@ export default function DamageSection({
                                       }) {
     if (!skillResults?.length) return null;
 
-    const formatNumber = (num) => {
+    const formatNumber = (raw) => {
+        const num = Math.floor(raw);
         if (num >= 1e9) return (num / 1e9).toFixed(1) + "B";
         if (num >= 1e6) return (num / 1e6).toFixed(1) + "M";
         return num.toLocaleString();
@@ -31,7 +32,7 @@ export default function DamageSection({
     const getSubHitFormula = (hits, type) => {
         if (!hits || hits.length === 0) return "";
         return hits.map(hit => {
-            const val = Math.round(hit[type]);
+            const val = Math.floor(hit[type]);
             return hit.count > 1
                 ? `${val.toLocaleString()} × ${hit.count}`
                 : `${val.toLocaleString()}`;
@@ -71,21 +72,21 @@ export default function DamageSection({
                 </div>
                 <div
                     className="damage-tooltip-wrapper"
-                    data-tooltip={skill.subHits?.length > 0 ? getSubHitFormula(skill.subHits, "normal") : skill.normal.toLocaleString()}
+                    data-tooltip={skill.subHits?.length > 0 ? getSubHitFormula(skill.subHits, "normal") : Math.floor(skill.normal).toLocaleString()}
                     style={{ color: displayColor, fontWeight: "bold" }}
                 >
                     {formatNumber(skill.normal)}
                 </div>
                 <div
                     className="damage-tooltip-wrapper"
-                    data-tooltip={skill.subHits?.length > 0 ? getSubHitFormula(skill.subHits, "crit") : skill.crit.toLocaleString()}
+                    data-tooltip={skill.subHits?.length > 0 ? getSubHitFormula(skill.subHits, "crit") : Math.floor(skill.crit).toLocaleString()}
                     style={{ color: displayColor, fontWeight: "bold" }}
                 >
                     {formatNumber(skill.crit)}
                 </div>
                 <div
                     className="damage-tooltip-wrapper"
-                    data-tooltip={skill.subHits?.length > 0 ? getSubHitFormula(skill.subHits, "avg") : skill.avg.toLocaleString()}
+                    data-tooltip={skill.subHits?.length > 0 ? getSubHitFormula(skill.subHits, "avg") : Math.floor(skill.avg).toLocaleString()}
                     style={{ color: displayColor, fontWeight: "bold" }}
                 >
                     {formatNumber(skill.avg)}

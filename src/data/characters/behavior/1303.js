@@ -17,7 +17,7 @@ export function applyYuanwuLogic({
 
     skillMeta.scaling = { atk: 0, hp: 0, def: 1, energyRegen: 0 };
 
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
 
     if (tab === 'normalAttack') {

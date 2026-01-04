@@ -20,7 +20,7 @@ export function applyZaniLogic({
     };
 
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
     const ember = characterState?.activeStates?.ember ?? 0;
 

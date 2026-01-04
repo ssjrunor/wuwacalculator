@@ -1,5 +1,5 @@
 import React, {useMemo} from "react";
-import {computeEchoStatsFromIds, resolveIdsFromEchoes} from "@/features/optimizer/core/optimizerUtils.js";
+import {computeEchoStatsFromIds, resolveIdsFromEchoes} from "@/features/optimizer/core/misc/utils.js";
 import {accumulateSkillStatBonus} from "./EchoOptimizerRow.jsx";
 import {
     Legend,
@@ -11,7 +11,7 @@ import {
     ResponsiveContainer,
     Tooltip
 } from "recharts";
-import {applySpecialBuffs} from "@/features/optimizer/core/echoOptimizerContext.js";
+import {applySpecialBuffs} from "@/features/optimizer/core/context/echoContext.js";
 
 export default function StatProfileCard({
                                             resEchoes,
@@ -22,7 +22,8 @@ export default function StatProfileCard({
                                             skillMeta,
                                             mergedBuffs,
                                             finalStats,
-                                            sequence
+                                            sequence,
+                                            rotationMode
                                     }) {
     const resIds = resolveIdsFromEchoes(resEchoes);
     const { statTotals } = computeEchoStatsFromIds(resIds, echoBag, currentContext, charIdForm);
@@ -93,15 +94,24 @@ export default function StatProfileCard({
     );
 
     const statProfileData = useMemo(
-        () => [
-            { stat: "ATK", current: currentStats.atk,           candidate: candidateStats.atk         },
-            { stat: "HP",  current: currentStats.hp,            candidate: candidateStats.hp          },
-            { stat: "DEF", current: currentStats.def,           candidate: candidateStats.def         },
-            { stat: "ER%", current: currentStats.energyRegen,   candidate: candidateStats.energyRegen },
-            { stat: "CR%", current: currentStats.critRate,      candidate: candidateStats.critRate    },
-            { stat: "CD%", current: currentStats.critDmg,       candidate: candidateStats.critDmg     },
-            { stat: "BNS%", current: currentStats.bonus,        candidate: candidateStats.bonus       },
-        ],
+        () => {
+            return rotationMode ? [
+                {stat: "ATK", current: currentStats.atk, candidate: candidateStats.atk},
+                {stat: "HP", current: currentStats.hp, candidate: candidateStats.hp},
+                {stat: "DEF", current: currentStats.def, candidate: candidateStats.def},
+                {stat: "ER%", current: currentStats.energyRegen, candidate: candidateStats.energyRegen},
+                {stat: "CR%", current: currentStats.critRate, candidate: candidateStats.critRate},
+                {stat: "CD%", current: currentStats.critDmg, candidate: candidateStats.critDmg},
+            ] : [
+                {stat: "ATK", current: currentStats.atk, candidate: candidateStats.atk},
+                {stat: "HP", current: currentStats.hp, candidate: candidateStats.hp},
+                {stat: "DEF", current: currentStats.def, candidate: candidateStats.def},
+                {stat: "ER%", current: currentStats.energyRegen, candidate: candidateStats.energyRegen},
+                {stat: "CR%", current: currentStats.critRate, candidate: candidateStats.critRate},
+                {stat: "CD%", current: currentStats.critDmg, candidate: candidateStats.critDmg},
+                {stat: "BNS%", current: currentStats.bonus, candidate: candidateStats.bonus},
+            ]
+        },
         [currentStats, candidateStats]
     );
 
