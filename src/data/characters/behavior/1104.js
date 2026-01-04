@@ -14,7 +14,7 @@ export function applyLingyangLogic({
         ...skillMeta
     };
 
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
 
     if (name.includes('glorious plunge damage')) {
         skillMeta.skillType = 'heavy';

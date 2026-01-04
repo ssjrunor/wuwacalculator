@@ -1,6 +1,7 @@
 import React from "react";
 
 export const tabDisplayOrder = [
+    'combo',
     'normalAttack',
     'resonanceSkill',
     'forteCircuit',
@@ -12,6 +13,7 @@ export const tabDisplayOrder = [
 ];
 
 const tabDisplayNames = {
+    combo: 'Combo',
     normalAttack: 'Normal Attack',
     resonanceSkill: 'Resonance Skill',
     forteCircuit: 'Forte Circuit',
@@ -37,6 +39,7 @@ export const skillTypeIconMap = {
 };
 
 export const skillTypeLabelMap = {
+    combo: 'Combo',
     basic: 'Basic Attack',
     skill: 'Resonance Skill',
     heavy: 'Heavy Attack',

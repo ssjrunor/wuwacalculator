@@ -1,5 +1,5 @@
 // useComboCounter.js
-import {EchoFilters} from "@/features/optimizer/core/EchoFilters.js";
+import {EchoFilters} from "@/features/optimizer/core/misc/EchoFilters.js";
 
 export function useComboCounter({
                                     countEchoCombos,
@@ -19,6 +19,7 @@ export function useComboCounter({
                                     setCombinations,
                                     updateGeneralOptimizerSettings,
                                     updateOptimizerSettings,
+                                    rotationMode
                                 }) {
     let currentRun = 0;
 
@@ -62,6 +63,7 @@ export function useComboCounter({
             keepPercent,
             setOptions,
             mainStatFilter,
+            rotationMode,
             ...overrides,
         };
     }

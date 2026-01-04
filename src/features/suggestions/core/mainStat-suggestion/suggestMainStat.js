@@ -1,9 +1,10 @@
-import {computeMainStatDamage} from "./compute.js";
-import {buildMainStatPoolForSuggestor, generateMainStatsContext} from "./ctx-builder.js";
+import {computeMainStatDamage, computeRotationMainStatDamage} from "./compute.js";
+import {buildMainStatPoolForSuggestor, generateMainStatsContext, generateRotationContexts} from "./ctx-builder.js";
 
 
 export function suggestMainStats({
                                      ctx,
+                                     rotationContexts = null,
                                      charId,
                                      statWeight = {},
                                      mainStatFilter = null,
@@ -16,13 +17,25 @@ export function suggestMainStats({
     const pool = buildMainStatPoolForSuggestor({ statWeight, charId, mainStatFilter });
     const results = [];
 
+    const isRotationMode = rotationContexts && rotationContexts.length > 0;
+
     // running aggregate of all chosen main stats for the current path
     const currentStats = {};
     // indices into `pool` for the current path
     const currentIndices = [];
 
     function maybeInsertResult(costUsed) {
-        const avgDamage = computeMainStatDamage({...ctx, sequence}, currentStats, null, true);
+        let avgDamage;
+        if (isRotationMode) {
+            // Rotation mode: evaluate against all rotation contexts
+            avgDamage = computeRotationMainStatDamage(
+                rotationContexts.map(({ ctx, weight }) => ({ ctx: { ...ctx, sequence }, weight })),
+                currentStats,
+            );
+        } else {
+            // Single skill mode
+            avgDamage = computeMainStatDamage({...ctx, sequence}, currentStats);
+        }
 
         const echoes = currentIndices.map(idx => {
             const opt = pool[idx];
@@ -36,6 +49,7 @@ export function suggestMainStats({
             damage: avgDamage,
             totalCost: costUsed,
             echoes,
+            isRotation: isRotationMode,
         });
 
         results.sort((a, b) => b.damage - a.damage);
@@ -78,7 +92,21 @@ export function suggestMainStats({
 }
 
 export function runMainStatSuggestor(form, options = {}) {
-    const ctx = generateMainStatsContext(form);
+    const rotationMode = form.rotationMode && form.rotationEntries?.length > 0;
+
+    let ctx = null;
+    let rotationContexts = null;
+
+    if (rotationMode) {
+        rotationContexts = generateRotationContexts(form);
+        // If rotation context building failed, fall back to single skill
+        if (!rotationContexts || rotationContexts.length === 0) {
+            ctx = generateMainStatsContext(form);
+            rotationContexts = null;
+        }
+    } else {
+        ctx = generateMainStatsContext(form);
+    }
 
     const statWeight =
         form.statWeight ??
@@ -88,6 +116,7 @@ export function runMainStatSuggestor(form, options = {}) {
 
     return suggestMainStats({
         ctx,
+        rotationContexts,
         charId: form.charId,
         statWeight,
         mainStatFilter: form.mainStatFilter,

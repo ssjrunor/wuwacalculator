@@ -19,7 +19,7 @@ export function applyLupaLogic({
         return state?.[value];
     };
 
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
 
     if (local('wildfireBanner') && !mergedBuffs.__wildfireBanner) {
         mergedBuffs.atk.percent += 12;

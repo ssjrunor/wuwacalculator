@@ -22,7 +22,7 @@ export function applyZhezhiLogic({
         amplify: skillMeta?.amplify ?? 0
     };
 
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
 
     if (characterState?.activeStates?.zenith && !mergedBuffs.__zhezhiZenithApplied) {

@@ -63,6 +63,9 @@ const namespaceMap = {
     ],
     misc: [
         'googleTokens', 'cookieNoticeDismissed'
+    ],
+    cache: [
+        'suggestionCache'
     ]
     /*charStates: [
         'characterRuntimeStates'

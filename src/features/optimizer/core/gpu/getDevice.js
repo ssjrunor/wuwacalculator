@@ -17,6 +17,7 @@ export async function getGpuDevice() {
     const adapterLimits = gpuAdapter.limits;
 
     const requiredLimits = {
+        maxStorageBuffersPerShaderStage: Math.min(adapterLimits.maxStorageBuffersPerShaderStage, 10),
         maxStorageBufferBindingSize: adapterLimits.maxStorageBufferBindingSize,
         maxComputeWorkgroupSizeX: adapterLimits.maxComputeWorkgroupSizeX,
         maxComputeWorkgroupSizeY: adapterLimits.maxComputeWorkgroupSizeY,

@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
+import {usePersistentState} from "@/hooks/usePersistentState.js";
 import NotificationToast from "@/components/common/NotificationToast.jsx";
 import GuidesModal from "@/components/common/GuideModal.jsx";
 import ConfirmationModal from "@/components/common/ConfirmationModal.jsx";
@@ -31,6 +32,7 @@ export default function SuggestionsPane({
                                             suggestionsPaneSettings,
                                             setSuggestionsPaneSettings,
                                             keywords,
+                                            rotationEntries
                                         }) {
     const runtime = characterRuntimeStates[charId] ?? {};
     const echoData = runtime?.equippedEchoes ?? [];
@@ -39,6 +41,7 @@ export default function SuggestionsPane({
         echoData.length === 0 ||
         echoData.every(e => e == null);
 
+    const randGen = characterRuntimeStates?.[charId]?.randGenSettings;
     const suggestionSettings = runtime?.suggestionSettings ?? {};
     const updateSuggestionsPersonalSettings = (patch) => {
         const charId = activeCharacter.Id ?? activeCharacter.id ?? activeCharacter.link;
@@ -82,9 +85,9 @@ export default function SuggestionsPane({
 
     const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
-        icon: null,
-        message: null,
-        color: null
+        message: 'Applied Successfully~! (〜^∇^)〜',
+        icon: '✔',
+        color: { light: 'green', dark: 'limegreen' },
     });
 
     const [showConfirm, setShowConfirm] = useState(false);
@@ -115,8 +118,25 @@ export default function SuggestionsPane({
         detail: level?.Type ?? tab,
         tab
     };
-    const skill = skillResults
+
+    const rotationTotals = runtime?.rotationSummary?.totals ?? {};
+    const hasRotationEntries = rotationEntries.length > 0;
+    const rotationMode = suggestionSettings?.rotationMode && hasRotationEntries;
+
+    const base = skillResults
         ?.find(skill => (skill.name === level?.label || skill.name === level?.Name) && skill.tab === tab) ?? {};
+
+    const skill = rotationMode
+        ? {
+            ...base,
+            name: "Total Rotation DMG",
+            label: "Total Rotation DMG",
+            avg: rotationTotals.avg ?? 0,
+            normal: rotationTotals.normal ?? 0,
+            crit: rotationTotals.crit ?? 0
+        }
+        : base;
+
     const statWeight = skill.statWeight ?? skill.custSkillMeta?.statWeight ?? {};
 
     const [isRunning, setIsRunning] = useState(false);
@@ -133,6 +153,71 @@ export default function SuggestionsPane({
     const bestMainStatsPlan = mainStatResults[selectedMainStatIndex];
     const bestSetPlan = setSuggestions?.results?.[selectedPlanIndex];
 
+    const [suggestionCache, setSuggestionCache] = usePersistentState('suggestionCache', {});
+    const suggestionCacheRef = useRef(suggestionCache);
+    const loadedFromCacheRef = useRef(false);
+
+    useEffect(() => {
+        suggestionCacheRef.current = suggestionCache;
+    }, [suggestionCache]);
+
+    const cacheKey = React.useMemo(() => {
+        const hashParts = (parts) => {
+            let h = 5381;
+            for (const part of parts) {
+                const s = String(part ?? "");
+                for (let i = 0; i < s.length; i++) {
+                    h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
+                }
+            }
+            return h >>> 0;
+        };
+
+        const echoSig = echoData?.map(e => {
+            if (!e) return 'null';
+            return [
+                e.id ?? 'null',
+                e.cost ?? '',
+                e.mainStat ?? '',
+                e.mainStatValue ?? '',
+                e.secondStat ?? '',
+                e.secondStatValue ?? '',
+                e.sonpieces?.id ?? e.setId ?? ''
+            ].join('|');
+        }) ?? [];
+
+        const rotationSig = rotationMode
+            ? rotationEntries?.map(e => `${e?.label}|${e?.tab}|${e?.multiplier ?? 1}`) ?? []
+            : [];
+
+        const skillResultsSig = rotationMode
+            ? skillResults?.map(s => `${s?.skillId ?? s?.name}|${s?.avg ?? ''}`) ?? []
+            : [];
+
+        const parts = [
+            'c', charId ?? '',
+            'ln', level?.Name ?? '',
+            'lt', level?.Type ?? '',
+            'sk', skill?.skillId ?? skill?.name ?? '',
+            'rot', rotationMode ? 1 : 0,
+            ...echoSig,
+            ...rotationSig,
+            ...skillResultsSig,
+        ];
+
+        const hash = hashParts(parts).toString(16);
+        return `sc-${hash}`;
+    }, [
+        charId,
+        echoData,
+        rotationMode,
+        rotationEntries,
+        skillResults,
+        skill?.skillId,
+        skill?.name,
+        level?.Name,
+        level?.Type,
+    ]);
 
     function run(type = 'mainStats') {
         if (noEchoes) return;
@@ -150,7 +235,11 @@ export default function SuggestionsPane({
             equippedEchoes: echoData,
             statWeight,
             skillType: skill.skillType,
-            sequence: runtime?.SkillLevels.sequence
+            sequence: runtime?.SkillLevels.sequence,
+            rotationMode,
+            rotationEntries,
+            skillResults,
+            allSkillLevels,
         };
 
         const nonNullCount = echoData.reduce(
@@ -179,8 +268,6 @@ export default function SuggestionsPane({
         }
     }
 
-    const randGen = characterRuntimeStates?.[charId]?.randGenSettings;
-
     async function runRandomizer() {
         const form = {
             charId,
@@ -195,7 +282,12 @@ export default function SuggestionsPane({
             resultsLimit: 8,
             baseDmg: skill?.avg ?? 1,
             skillType: skill.skillType,
-            lockedEchoId: null
+            lockedEchoId: null,
+            rotationMode,
+            rotationEntries,
+            skillResults,
+            allSkillLevels,
+            sequence: runtime?.SkillLevels?.sequence,
         }
 
         const result = await runEchoGenerator({
@@ -206,21 +298,66 @@ export default function SuggestionsPane({
             targetEnergyRegen: randGen.targetEnergyRegen,
             setId: randGen.setId ?? null,
         })
-
         setRandomResults(result?.results ?? []);
     }
 
+    function runSuggestions() {
+        run("mainStats");
+        run("setPlans");
+    }
+
+    // Store results in cache after they're computed (via useEffect to capture state updates)
     useEffect(() => {
-        if (!activeCharacter || !level) return;
-        run('mainStats');
-        run('setPlans');
-    }, [activeCharacter, level, echoData]);
+        // Skip if we just loaded these values from cache
+        if (loadedFromCacheRef.current) {
+            loadedFromCacheRef.current = false;
+            return;
+        }
+
+        if (!cacheKey) return;
+        if (mainStatResults.length > 0 || setSuggestions) {
+            setSuggestionCache(prev => {
+                const entries = Object.entries(prev);
+                // Limit cache to 10 entries (LRU-style: remove oldest if over limit)
+                const MAX_CACHE_ENTRIES = 10;
+                const newCache = entries.length >= MAX_CACHE_ENTRIES
+                    ? Object.fromEntries(entries.slice(-MAX_CACHE_ENTRIES + 1))
+                    : { ...prev };
+
+                newCache[cacheKey] = {
+                    mainStats: mainStatResults,
+                    setPlans: setSuggestions,
+                };
+                return newCache;
+            });
+        }
+    }, [mainStatResults, setSuggestions, cacheKey, setSuggestionCache]);
 
     useEffect(() => {
-        if (!activeCharacter || !level) return;
-        runRandomizer();
-    }, [activeCharacter, level]);
+        if (!activeCharacter) return;
+/*
+        const cached = cacheKey ? suggestionCacheRef.current[cacheKey] : null;
 
+        // Use cached results if payload unchanged
+        if (cached?.mainStats && cached?.setPlans) {
+            loadedFromCacheRef.current = true;
+            setMainStatResults(cached.mainStats);
+            setSetSuggestions(cached.setPlans);
+            return;
+        }
+*/
+
+        const t = setTimeout(runSuggestions, 1);
+        return () => clearTimeout(t);
+    }, [activeCharacter, level, echoData, rotationMode, cacheKey]);
+
+    useEffect(() => {
+        if (!activeCharacter) return;
+        const t = setTimeout(() => {
+            runRandomizer();
+        }, 1);
+        return () => clearTimeout(t);
+    }, [activeCharacter, level, rotationMode]);
 
     const [showSkillOptions, setShowSkillOptions] = useState(false);
     const [isClosingSkillMenu, setIsClosingSkillMenu] = useState(false);
@@ -231,12 +368,28 @@ export default function SuggestionsPane({
         setExpandedTabs((prev) => ({...prev, [key]: !prev[key]}));
 
     const groupedSkillOptions = React.useMemo(() => {
-        return getGroupedSkillOptions({ skillResults });
-    }, [skillResults]);
+        const groups = getGroupedSkillOptions({ skillResults });
+        if (hasRotationEntries) {
+            if (!groups.combo) groups.combo = [];
+            groups.combo.unshift({
+                name: "Total Rotation DMG",
+                type: "combo",
+                tab: "combo",
+                visible: true,
+                element: null,
+            });
+        }
+        return groups;
+    }, [skillResults, hasRotationEntries]);
 
     const handleAddSkill = (skill) => {
+        if (skill?.tab === "combo") {
+            updateSuggestionsPersonalSettings({ rotationMode: true });
+            setShowSkillOptions(false);
+            return;
+        }
         const newTab = skill?.tab;
-        updateSuggestionsPersonalSettings({ tab: newTab });
+        updateSuggestionsPersonalSettings({ tab: newTab, rotationMode: false });
 
         const match = allSkillLevels?.[newTab]?.find(
             (l) => l?.label?.includes(skill?.name) || l?.Name?.includes(skill?.name)
@@ -346,6 +499,7 @@ export default function SuggestionsPane({
                     setData={setData}
                 />
             )}
+
             {viewMode === 'random' && (
                 <RandomView
                     currentSliderColor={currentSliderColor}
@@ -365,6 +519,7 @@ export default function SuggestionsPane({
                     setCharacterRuntimeStates={setCharacterRuntimeStates}
                     characterRuntimeStates={characterRuntimeStates}
                     runRandomizer={runRandomizer}
+                    setShowToast={setShowToast}
                 />
             )}
 
@@ -398,7 +553,7 @@ export default function SuggestionsPane({
                 charId={charId}
                 getImageSrc={getImageSrc}
                 setCharacterRuntimeStates={setCharacterRuntimeStates}
-                rerun={() => run(viewMode === 'mainStats' ? 'setPlans' : 'mainStats')}
+                setShowToast={setShowToast}
             />
 
             {showConfirm && (
@@ -424,7 +579,7 @@ export function SuggestionsModal({
                                   charId,
                                   getImageSrc,
                                   setCharacterRuntimeStates,
-                                  rerun,
+                                     setShowToast
                               }) {
     const [isClosing, setIsClosing] = useState(false);
 
@@ -469,6 +624,7 @@ export function SuggestionsModal({
                                         equippedEchoes: echoData,
                                     },
                                 }));
+                                setShowToast(true);
                                 handleClose();
                             }}
                         >

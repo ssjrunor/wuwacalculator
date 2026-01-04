@@ -1,9 +1,9 @@
 import {
     buildEchoKindIdArray,
     encodeEchoStats,
-} from "@/features/optimizer/core/encodeEchoStats.js";
-import { computeDamageForCombo } from "@/features/optimizer/core/cpu/computeDamage.js";
-import { OPTIMIZER_MAIN_ECHO_BUFFS_PER_ECHO } from "@/features/optimizer/core/optimizerConfig.js";
+    OPTIMIZER_MAIN_ECHO_BUFFS_PER_ECHO,
+} from "@/features/optimizer/core/misc/index.js";
+import {computeDamageForCombo} from "@/features/optimizer/core/cpu/computeDamage.js";
 
 export function buildZeroMainEchoBuffs(count) {
     return new Float32Array(count * OPTIMIZER_MAIN_ECHO_BUFFS_PER_ECHO);

@@ -21,7 +21,7 @@ export function applyBulingLogic({
         amplify: skillMeta?.amplify ?? 0,
     };
 
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
 

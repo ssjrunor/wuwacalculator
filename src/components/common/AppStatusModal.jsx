@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/appStatusModal.css';
 
 const data = {
-    lastUpdated: '24-12-2025',
+    lastUpdated: '03-01-2026',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
     patchVersion: '3.0',
@@ -11,7 +11,7 @@ const data = {
     coverage: [
         {
             title: 'Note',
-            desc: 'HELLO EVERYONE!\nThe Echo Randomizer got a little upgrade and a new home. It now lives in the Suggestions tab and uses the same damage engine as the main optimizer, with some other stuff baked in. Results should look more like “real” builds now... still random though, just smarter.',
+            desc: 'HELLO EVERYONE & HAPPY NEW YEAR!\nOptimizer runs are now much faster on GPU (single-skill jumps from ~40M combos/sec to ~900M on capable devices) and memory usage has been trimmed. Speed still depends on your hardware and the GPU path. Suggestions now include combo/rotation handling alongside the Randomizer’s home in the Suggestions tab. Also, Mornye should work correctly in the optimizer; Suggestions fix is still pending.',
         },
         {
             title: 'Character Coverage',
@@ -35,12 +35,13 @@ const data = {
         },
     ],
     knownIssues: [
-        "Mornye still isn't working well on the optimizer or suggestions.",
+        "Mornye is fixed in the optimizer but still not working in Suggestions.",
         "That's kinda it tbh.",
     ],
     recentChanges: [
-        "Echo Randomizer rebuilt and moved into the Suggestions tab.",
-        "3.0 icons/assets added and character/weapon data updated for the current patch.",
+        "Optimizer GPU path now massively faster for single-skill runs (~900M combos/sec on capable GPUs) with memory optimizations.",
+        "Suggestions now handle combo/rotation inputs alongside the Randomizer in the Suggestions tab.",
+        "Mornye behaves correctly in the optimizer (Suggestions fix pending).",
     ],
 };
 

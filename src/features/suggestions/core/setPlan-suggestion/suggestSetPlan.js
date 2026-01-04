@@ -1,18 +1,25 @@
-import {generateSetPlanContext} from "./ctx-builder.js";
-import {computeSetPlanDamage} from "./compute.js";
+import {generateSetPlanContext, generateRotationSetPlanContexts} from "./ctx-builder.js";
+import {computeSetPlanDamage, computeRotationSetPlanDamage} from "./compute.js";
 import {DEFAULT_FIVE_PIECE_SETS, DEFAULT_THREE_PIECE_SETS} from "@/constants/echoSetData2.js";
 import {isSetPlanFeasible} from "./utils.js";
 
 export function suggestSetPlans({
                                     ctx,
+                                    rotationContexts = null,
                                     fivePieceSets = [],
                                     threePieceSets = [],
                                     topK = 10,
                                     exhaustive = false,
                                 }) {
     const results = [];
+    const isRotationMode = rotationContexts && rotationContexts.length > 0;
 
-    const baseDmg = computeSetPlanDamage(ctx, {}, null);
+    // Compute damage function based on mode
+    const computeDamage = isRotationMode
+        ? (setPlan) => computeRotationSetPlanDamage(rotationContexts, setPlan)
+        : (setPlan) => computeSetPlanDamage(ctx, setPlan);
+
+    const baseDmg = computeDamage({});
     const baseAvg =
         baseDmg && typeof baseDmg.avgDamage === "number"
             ? baseDmg.avgDamage
@@ -30,13 +37,13 @@ export function suggestSetPlans({
     for (const { id, type } of allSets) {
         if (type === "5pc") {
             const plan2 = { [id]: 2 };
-            const dmg2 = computeSetPlanDamage(ctx, plan2, null);
+            const dmg2 = computeDamage(plan2);
             if (dmg2 && typeof dmg2.avgDamage === "number") {
                 pieceBaselines.set(`${id}:2`, dmg2.avgDamage);
             }
         } else if (type === "3pc") {
             const plan3 = { [id]: 3 };
-            const dmg3 = computeSetPlanDamage(ctx, plan3, null);
+            const dmg3 = computeDamage(plan3);
             if (dmg3 && typeof dmg3.avgDamage === "number") {
                 pieceBaselines.set(`${id}:3`, dmg3.avgDamage);
             }
@@ -44,7 +51,7 @@ export function suggestSetPlans({
     }
 
     function maybeInsert(setPlan, totalPieces) {
-        const dmg = computeSetPlanDamage(ctx, setPlan, null);
+        const dmg = computeDamage(setPlan);
         if (!dmg || typeof dmg.avgDamage !== "number") return;
 
         const avg = dmg.avgDamage;
@@ -143,7 +150,22 @@ export function suggestSetPlans({
 }
 
 export function runSetSuggestor(form, options = {}) {
-    const ctx      = generateSetPlanContext(form);
+    const rotationMode = form.rotationMode && form.rotationEntries?.length > 0;
+
+    let ctx = null;
+    let rotationContexts = null;
+
+    if (rotationMode) {
+        rotationContexts = generateRotationSetPlanContexts(form);
+        // If rotation context building failed, fall back to single skill
+        if (!rotationContexts || rotationContexts.length === 0) {
+            ctx = generateSetPlanContext(form);
+            rotationContexts = null;
+        }
+    } else {
+        ctx = generateSetPlanContext(form);
+    }
+
     const current  = form.equippedEchoes ?? [];
 
     const fivePieceSets  = options.fivePieceSets  ?? DEFAULT_FIVE_PIECE_SETS;
@@ -157,6 +179,7 @@ export function runSetSuggestor(form, options = {}) {
 
     const { baseAvg, results } = suggestSetPlans({
         ctx,
+        rotationContexts,
         fivePieceSets,
         threePieceSets,
         topK,
@@ -171,5 +194,6 @@ export function runSetSuggestor(form, options = {}) {
     return {
         baseAvg,
         results: filtered,
+        isRotation: rotationMode,
     };
 }

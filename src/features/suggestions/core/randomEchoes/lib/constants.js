@@ -17,4 +17,5 @@ export const defaultRandGen = {
     targetEnergyRegen: 0,
     setId: [],
     mainEcho: null,
+    rotationMode: true
 };

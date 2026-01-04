@@ -18,7 +18,7 @@ export function applySkLogic({
     };
 
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
 
     if (tab === 'forteCircuit') {
@@ -124,7 +124,7 @@ export function SKBuffsLogic({
     const state = characterState?.activeStates ?? {};
     const critRate = Math.min(state.innerEnergy * 0.05, 12.5);
     const critDmg = Math.min(state.innerEnergy * 0.1, 25);
-    const name = activeCharacter?.displayName?.toLowerCase();
+    const name = activeCharacter?.displayName?.toLowerCase() ?? '';
     const isRover = name.includes("rover");
 
     if (isRover && state.gravitation) {

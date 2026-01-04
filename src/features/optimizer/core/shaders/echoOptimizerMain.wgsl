@@ -18,20 +18,49 @@ fn main(
     let lid = lid3.x;
     let comboCount = u32(params.comboCount);
     let baseIndex = (wg.x * 512u + lid) * CYCLES_PER_INVOCATION;
+    let comboN = u32(params.comboN);
+    let comboK = u32(params.comboK);
 
     var best: f32 = NEG_INF;
     var bestIndex: u32 = 0u;
     var bestMain: u32 = 0u;
 
-    for (var j: u32 = 0u; j < CYCLES_PER_INVOCATION; j = j + 1u) {
-        let idx = baseIndex + j;
-        if (idx >= comboCount) { break; }
+    if (baseIndex < comboCount) {
+        var idx: u32 = baseIndex;
+        var combo = buildComboIndices(comboBaseIndexU32() + idx);
 
-        let eval = computeDamageForCombo(idx);
-        if (eval.dmg > best) {
-            best = eval.dmg;
-            bestIndex = idx;
-            bestMain = eval.mainPos;
+        for (var j: u32 = 0u; j < CYCLES_PER_INVOCATION; j = j + 1u) {
+            if (idx >= comboCount) { break; }
+
+            let echoIds = comboIndicesToEchoIds(combo);
+            let eval = computeDamageForEchoIds(echoIds);
+            if (eval.dmg > best) {
+                best = eval.dmg;
+                bestIndex = idx;
+                bestMain = eval.mainPos;
+            }
+
+            idx = idx + 1u;
+            if (j + 1u >= CYCLES_PER_INVOCATION || idx >= comboCount) { break; }
+
+            var advanced: bool = false;
+            var i: i32 = i32(comboK) - 1;
+            loop {
+                if (i < 0) { break; }
+                let ui = u32(i);
+                let maxVal = comboN - comboK + ui;
+                if (combo[ui] < maxVal) {
+                    combo[ui] = combo[ui] + 1u;
+                    for (var t: u32 = ui + 1u; t < comboK; t = t + 1u) {
+                        combo[t] = combo[t - 1u] + 1u;
+                    }
+                    advanced = true;
+                    break;
+                }
+                i = i - 1;
+            }
+
+            if (!advanced) { break; }
         }
     }
 

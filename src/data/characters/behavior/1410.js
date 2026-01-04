@@ -21,7 +21,7 @@ export function applyIunoLogic({
         amplify: skillMeta?.amplify ?? 0,
     };
 
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
 
     if (tab === 'forteCircuit' || name.includes('arc beyond the edge') || name.includes('moonbow')) {
