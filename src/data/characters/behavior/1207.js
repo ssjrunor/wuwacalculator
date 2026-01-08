@@ -67,7 +67,7 @@ export function applyLupaLogic({
 
     if (isToggleActive(1) && isActiveSequence(1)) {
         if (!mergedBuffs.__lupSeq1) {
-            mergedBuffs.critRate += 25;
+            mergedBuffs.critRate += 20;
             mergedBuffs.__lupSeq1 = true;
         }
     } else {
@@ -75,9 +75,9 @@ export function applyLupaLogic({
     }
 
     const seq2Value = characterState?.toggles?.['2_value'] ?? 0;
-    if (isActiveSequence(2) && seq2Value > 0) {
+    if (isActiveSequence(2)) {
         if (!mergedBuffs.__lupSeq2) {
-            mergedBuffs.fusion = (mergedBuffs.fusion ?? 0) + (seq2Value * 20);
+            mergedBuffs.attribute.fusion.dmgBonus += (seq2Value * 20);
             mergedBuffs.__lupSeq2 = true;
         }
     } else {
