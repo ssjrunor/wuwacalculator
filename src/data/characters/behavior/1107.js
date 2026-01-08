@@ -11,7 +11,7 @@ export function applyCarlottaLogic({
         multiplier: skillMeta?.multiplier ?? 1,
         amplify: skillMeta?.amplify ?? 0,
         ...skillMeta };
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
     if (tab === 'forteCircuit' || tab === 'resonanceLiberation') { skillMeta.skillType = 'skill';
     } else if (skillMeta.tab === 'outroSkill') {

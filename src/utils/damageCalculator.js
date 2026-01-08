@@ -237,7 +237,7 @@ export function calculateDamage({
             scalingDef: scaling?.def ?? 0,
             scalingER: scaling?.energyRegen ?? 0,
             multiplier,
-            flatDmg: flat ?? 0,
+            flatDmg: (flat ?? 0) + (combatState.flatDmg ?? 0) + (mergedBuffs?.flatDmg ?? 0),
             resMult,
             defMult,
             dmgReductionTotal,
@@ -251,9 +251,9 @@ export function calculateDamage({
     }
 
     return {
-        normal: Math.floor(normal),
-        crit: Math.floor(crit),
-        avg: Math.floor(avg),
+        normal,
+        crit,
+        avg,
     };
 }
 

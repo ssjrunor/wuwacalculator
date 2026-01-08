@@ -10,6 +10,76 @@ import {getEchoSetSkillMeta} from "../data/set-behaviour/index.js";
 import {applyWeaponSkillMetaBuffLogic} from "../data/buffs/weaponBuffs.js";
 import {typeMap} from "../constants/skillTabs.js";
 
+const SKILLTYPE_FLAG_MAP = {
+    basic: 1 << 0,
+    heavy: 1 << 1,
+    skill: 1 << 2,
+    ultimate: 1 << 3,
+    outro: 1 << 4,
+    intro: 1 << 5,
+    echoSkill: 1 << 6,
+    coord: 1 << 7,
+    aeroErosion: 1 << 8,
+    spectroFrazzle: 1 << 9,
+    tuneRupture: 1 << 10,
+};
+
+const ELEMENT_ID_MAP = {
+    aero: 0,
+    glacio: 1,
+    fusion: 2,
+    spectro: 3,
+    havoc: 4,
+    electro: 5,
+    physical: 6,
+    none: 7,
+};
+
+function normalizeSkillPart(part) {
+    return (part ?? "").toString().trim().toLowerCase();
+}
+
+function buildSkillTypeMask(skillType) {
+    const arr = Array.isArray(skillType) ? skillType : [skillType];
+    let mask = 0;
+    for (const t of arr) {
+        const flag = SKILLTYPE_FLAG_MAP[t];
+        if (flag) {
+            mask |= flag;
+        }
+    }
+    // 15 bits reserved for skill type flags
+    return mask & 0x7fff;
+}
+
+function buildElementId(element) {
+    const normalized = normalizeSkillPart(element);
+    const id = ELEMENT_ID_MAP[normalized];
+    if (typeof id === "number") return id & 0x7;
+    return ELEMENT_ID_MAP.none;
+}
+
+function buildSkillId({ label, skillType, tab, element }) {
+    const mask = buildSkillTypeMask(skillType);
+    const elementId = buildElementId(element);
+    const key = `${normalizeSkillPart(tab)}|${normalizeSkillPart(label)}`;
+    let hash = 5381;
+    for (let i = 0; i < key.length; i++) {
+        hash = ((hash << 5) + hash + key.charCodeAt(i)) >>> 0; // djb2 32-bit unsigned
+    }
+    // Upper bits for hash over tab+label (14 bits), middle 3 bits for element, lower 15 for skill type flags
+    const hash14 = hash & 0x3fff;
+    return (((hash14 << 18) >>> 0) | (elementId << 15) | mask) >>> 0;
+}
+
+export function getSkillTypeMaskFromSkillId(skillId) {
+    return skillId & 0x7fff;
+}
+
+export function getElementIdFromSkillId(skillId) {
+    return (skillId >>> 15) & 0x7;
+}
+
 export function computeSkillDamage({
                                        entry,
                                        levelData,
@@ -221,6 +291,13 @@ export function computeSkillDamage({
 
     const tag = skillMeta.tags?.[0];
     const isSupportSkill = tag === 'healing' || tag === 'shielding';
+
+    skillMeta.skillId = buildSkillId({
+        label: skillMeta.name ?? entry.label,
+        skillType: skillMeta.skillType,
+        tab,
+        element: skillMeta.element ?? element
+    });
 
     if (returnContextOnly) {
         const ctx = calculateDamage({

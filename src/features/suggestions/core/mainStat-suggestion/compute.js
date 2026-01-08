@@ -1,57 +1,14 @@
-// ----------------------
-// Helpers
-// ----------------------
+// Main stat suggestion damage computation
+// Uses shared damage core for character-specific logic
 
-import {SKILLTYPE_FLAGS} from "@/features/optimizer/core/prepareGpuContext.js";
+import {
+    calc1206ErToAtk,
+    calc1306CritConversion,
+    calc1209Conversion,
+    computeAvgDamage,
+} from "@/features/optimizer/core/cpu/damageCore.js";
 
-function inRange(val, range) {
-    if (!range) return true; // no constraint
-    const { min = -Infinity, max = Infinity } = range;
-    if (min > max) return true; // treat invalid as "no constraint"
-    return val >= min && val <= max;
-}
-
-function passesConstraints({
-                               finalAtk,
-                               finalHp,
-                               finalDef,
-                               critRate,
-                               critDmg,
-                               finalER,
-                               dmgBonus,
-                               damage,
-                               constraints
-                           }) {
-    if (!constraints) return true;
-
-    const {
-        atk,
-        hp,
-        def,
-        critRate: cr,
-        critDmg: cd,
-        er,
-        dmgBonus: db,
-        damage: dmgRange
-    } = constraints;
-
-    if (!inRange(finalAtk,   atk))       return false;
-    if (!inRange(finalHp,    hp))        return false;
-    if (!inRange(finalDef,   def))       return false;
-    if (!inRange(critRate,   cr))        return false;
-    if (!inRange(critDmg,    cd))        return false;
-    if (!inRange(finalER,    er))        return false;
-    if (!inRange(dmgBonus,   db))        return false;
-    return inRange(damage, dmgRange);
-}
-
-export function computeMainStatDamage(
-    params,
-    mainStats,
-    constraints = null,
-    returnScalar = false
-) {
-    // ----- unpack (same as you have) -----
+export function computeMainStatDamage(params, mainStats) {
     const {
         baseAtk = 0,
         baseHp = 0,
@@ -59,16 +16,16 @@ export function computeMainStatDamage(
         baseER = 0,
 
         finalAtk: baseFinalAtk = 0,
-        finalHp:  baseFinalHp  = 0,
+        finalHp: baseFinalHp = 0,
         finalDef: baseFinalDef = 0,
 
         scalingAtk = 0,
-        scalingHp  = 0,
+        scalingHp = 0,
         scalingDef = 0,
-        scalingER  = 0,
+        scalingER = 0,
 
         multiplier = 0,
-        flatDmg    = 0,
+        flatDmg = 0,
 
         resMult = 1,
         defMult = 1,
@@ -78,10 +35,11 @@ export function computeMainStatDamage(
         dmgAmplify = 1,
 
         critRate = 0,
-        critDmg  = 1,
+        critDmg = 1,
 
-        elementId   = 0,
+        elementId = 0,
         skillTypeId = 0,
+        skillId = 0,
 
         charId = 0,
         sequence = 0,
@@ -89,155 +47,85 @@ export function computeMainStatDamage(
 
     const {
         atkPercent = 0, atkFlat = 0,
-        hpPercent  = 0, hpFlat  = 0,
+        hpPercent = 0, hpFlat = 0,
         defPercent = 0, defFlat = 0,
 
         critRate: critRateFromStats = 0,
-        critDmg:  critDmgFromStats  = 0,
+        critDmg: critDmgFromStats = 0,
 
         energyRegen = 0,
-        aero    = 0,
-        glacio  = 0,
-        fusion  = 0,
+        aero = 0,
+        glacio = 0,
+        fusion = 0,
         spectro = 0,
-        havoc   = 0,
+        havoc = 0,
         electro = 0,
     } = mainStats || {};
 
-    // element + skill bonuses (same as before)
-    let elementBonus = 0;
-    switch (elementId) {
-        case 0: elementBonus += aero;    break;
-        case 1: elementBonus += glacio;  break;
-        case 2: elementBonus += fusion;  break;
-        case 3: elementBonus += spectro; break;
-        case 4: elementBonus += havoc;   break;
-        case 5: elementBonus += electro; break;
-    }
+    // Element bonus via array lookup (branchless)
+    const elemBonuses = [aero, glacio, fusion, spectro, havoc, electro];
+    const elemIdx = Math.max(0, Math.min(5, elementId | 0));
+    const elementBonus = elemBonuses[elemIdx];
 
     const dmgBonusTotal = dmgBonus + elementBonus / 100;
 
-    // final stats
-    let finalER = baseER + (energyRegen);
+    // Final stats
+    const finalER = baseER + energyRegen;
+    const finalHp = baseHp * (hpPercent / 100) + hpFlat + baseFinalHp;
+    const finalDef = baseDef * (defPercent / 100) + defFlat + baseFinalDef;
 
-    let finalAtk =
-        baseAtk * (atkPercent / 100) + atkFlat + baseFinalAtk;
+    // ATK with 1206 conversion
+    let finalAtk = baseAtk * (atkPercent / 100) + atkFlat + baseFinalAtk;
+    finalAtk += calc1206ErToAtk(charId, finalER);
 
-    const finalHp =
-        baseHp * (hpPercent / 100) + hpFlat + baseFinalHp;
-
-    const finalDef =
-        baseDef * (defPercent / 100) + defFlat + baseFinalDef;
-
-    // Brant ER → ATK
-    if (charId === 1206) {
-        const erOver = Math.max(0, finalER - 150);
-        finalAtk += Math.min(erOver * 20, 2600);
-    }
-
+    // Crit totals with 1306 conversion
     let critRateTotal = critRate + critRateFromStats / 100;
-    let critDmgTotal  = critDmg  + critDmgFromStats  / 100;
+    let critDmgTotal = critDmg + critDmgFromStats / 100;
+    critDmgTotal += calc1306CritConversion(charId, sequence, critRateTotal);
 
-    if (charId === 1306) {
-        let bonusCd = 0;
-        if (sequence >= 2) {
-            const excess = critRateTotal >= 1 ? (critRateTotal - 1) : 0;
-            bonusCd += Math.min(1, excess * 2);
-        }
-        if (sequence >= 6) {
-            const excess = critRateTotal >= 1.5 ? (critRateTotal - 1.5) : 0;
-            bonusCd += Math.min(0.5, excess * 2);
-        }
-        critDmgTotal += bonusCd;
-    }
+    // 1209 conversions
+    const conv1209 = calc1209Conversion(charId, finalER, skillId);
+    critRateTotal += conv1209.critRateBonus;
+    critDmgTotal += conv1209.critDmgBonus;
 
-    let dmgVuln = 0;
-    if (charId === 1209) {
-        const erOver = Math.max(0, finalER - 100);
-        dmgVuln += Math.min(erOver * 1.25, 40);
-        if (skillTypeId & SKILLTYPE_FLAGS.ultimate) {
-            critRateTotal += Math.min(erOver / 2, 80) / 100;
-            critDmgTotal += Math.min(erOver, 160) / 100;
-        }
-    }
-
+    // Scaled value
     const scaled =
         finalAtk * scalingAtk +
-        finalHp  * scalingHp +
+        finalHp * scalingHp +
         finalDef * scalingDef +
-        finalER  * scalingER;
+        finalER * scalingER;
 
-    // flat dmg only case
-    if (multiplier === 0 && scalingAtk === 0 && flatDmg > 0) {
-        const damage = flatDmg;
-        const passed = passesConstraints({
-            finalAtk,
-            finalHp,
-            finalDef,
-            critRate: critRateTotal,
-            critDmg: critDmgTotal,
-            finalER,
-            dmgBonus: dmgBonusTotal,
-            damage,
-            constraints,
-        });
-        const result = passed ? damage : 0;
-        if (returnScalar) return result;
+    // Flat damage only case - computeAvgDamage handles this correctly now
 
-        return {
-            avgDamage: result,
-            baseDamage: damage,
-            finalAtk,
-            finalHp,
-            finalDef,
-            finalER,
-            critRateTotal,
-            critDmgTotal,
-            dmgBonusTotal,
-            passedConstraints: passed
-        };
-    }
-
-    const baseDamage =
-        (scaled * multiplier + flatDmg) *
-        resMult *
-        defMult *
-        (dmgReductionTotal + dmgVuln / 100) *
-        dmgBonusTotal *
-        dmgAmplify;
-
-    const critHit  = baseDamage * critDmgTotal;
-    let avgDamage =
-        critRateTotal * critHit +
-        (1 - critRateTotal) * baseDamage;
-    if (critRateTotal >= 1) avgDamage = critHit;
-
-    const passed = passesConstraints({
-        finalAtk,
-        finalHp,
-        finalDef,
-        critRate: critRateTotal,
-        critDmg: critDmgTotal,
-        finalER,
+    // Use shared damage computation
+    return computeAvgDamage({
+        scaled,
+        multiplier,
+        flatDmg,
+        resMult,
+        defMult,
+        dmgReduction: dmgReductionTotal,
         dmgBonus: dmgBonusTotal,
-        damage: avgDamage,
-        constraints,
-    });
-
-    const result = passed ? avgDamage : 0;
-
-    if (returnScalar) return result;
-
-    return {
-        avgDamage: Math.floor(result),
-        baseDamage,
-        finalAtk,
-        finalHp,
-        finalDef,
-        finalER,
+        dmgAmplify,
         critRateTotal,
         critDmgTotal,
-        dmgBonusTotal,
-        passedConstraints: passed
-    };
+        dmgVuln: conv1209.dmgVuln,
+    });
+}
+
+/**
+ * Compute total damage across multiple rotation contexts
+ * Returns sum of (damage * multiplier) to match buildRotationBreakdown totals
+ */
+export function computeRotationMainStatDamage(rotationContexts, mainStats) {
+    if (!rotationContexts || !rotationContexts.length) return 0;
+
+    let totalWeightedDamage = 0;
+
+    for (const { ctx, weight } of rotationContexts) {
+        const result = computeMainStatDamage(ctx, mainStats);
+        totalWeightedDamage += result * weight;
+    }
+
+    return totalWeightedDamage;
 }

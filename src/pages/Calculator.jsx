@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
 import Split from 'split.js';
 import {fetchCharacters} from '@/data/ingest/wutheringFetch';
 import characterStatesRaw from '../data/characterStates.json';
@@ -21,7 +21,6 @@ import {getFinalStats} from '../utils/getStatsForLevel';
 import {getUnifiedStatPool, makeBaseBuffs, makeModBuffs} from '../utils/getUnifiedStatPool';
 import {getPersistentValue, setPersistentValue, usePersistentState} from '../hooks/usePersistentState';
 import {getBuffsLogic, getCharacterOverride} from '../data/characters/behavior';
-import ChangelogModal from '../components/common/GuideModal.jsx';
 import {
     HelpCircle,
     History,
@@ -67,9 +66,7 @@ import {getAllSkillLevelsWithEcho, getEffectiveSkillLevels, prepareDamageData} f
 import {buildRotation, getSkillDamageCache} from "../utils/skillDamageCache.js";
 import {getDefaultRotationEntries} from "../constants/charBasicRotations.js";
 import EchoBagMenu from "../features/echoes/ui/EchoBagMenu.jsx";
-import {getEchoBag} from "@/state/echoBagStore.js";
 import Optimizer from "@/features/optimizer/ui/Optimizer.jsx";
-import {Tooltip} from "antd";
 import SuggestionsPane from "@/features/suggestions/ui/SuggestionsPane.jsx";
 import AppStatusModal from "../components/common/AppStatusModal.jsx";
 import {defaultRandGen} from "@/features/suggestions/core/randomEchoes/lib/constants.js";
@@ -115,16 +112,14 @@ export default function Calculator(props) {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2025-12-24 15:32';
+    const LATEST_CHANGELOG_VERSION = '2026-01-03 22:15';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
-    const [characterLevel, setCharacterLevel] = useState(1);
     const {
         theme,
         setTheme,
         isDark,
-        variant
     } = props;
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
@@ -136,10 +131,6 @@ export default function Calculator(props) {
     const [characterRuntimeStates, setCharacterRuntimeStates] = usePersistentState('characterRuntimeStates', {});
     const [enemyLevel, setEnemyLevel] = usePersistentState('enemyLevel', 100);
     const [enemyRes, setEnemyRes] = usePersistentState('enemyRes', 20);
-    const [customBuffs, setCustomBuffs] = useState({});
-    const [traceNodeBuffs, setTraceNodeBuffs] = useState({});
-    const [combatState, setCombatState] = useState({});
-    const [sliderValues, setSliderValues] = useState({});
     const [menuOpen, setMenuOpen] = useState(false);
     const [skillsModalOpen, setSkillsModalOpen] = useState(false);
     const [activeSkillTab, setActiveSkillTab] = useState('normalAttack');
@@ -157,12 +148,127 @@ export default function Calculator(props) {
     const defaultCombatState = { enemyLevel: enemyLevel ?? 100, enemyRes: enemyRes ?? 20, critRate: 0, critDmg: 0, weaponBaseAtk: 0, spectroFrazzle: 0, havocBane: 0, electroFlare: 0, aeroErosion: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, energyRegen: 0 };
     const [characterState, setCharacterState] = useState({ activeStates: {} });
     const [showDropdown, setShowDropdown] = useState(false);
-    const [team, setTeam] = useState([activeCharacterId ?? null, null, null]);
     const [moveToolbarToSidebar, setMoveToolbarToSidebar] = useState(false);
     const [weapons, setWeapons] = useState({});
     const charId = activeCharacterId ?? activeCharacter?.id ?? activeCharacter?.link;
     const runtime = characterRuntimeStates[charId];
-    const [rotationEntries, setRotationEntries] = useState([]);
+    const updateRuntimeForChar = useCallback((id, updater) => {
+        if (!id) return;
+        setCharacterRuntimeStates(prev => {
+            const prevChar = prev?.[id] ?? {};
+            const nextChar = typeof updater === 'function'
+                ? updater(prevChar)
+                : { ...prevChar, ...updater };
+            if (isEqual(prevChar, nextChar)) return prev;
+            return {
+                ...prev,
+                [id]: nextChar
+            };
+        });
+    }, [setCharacterRuntimeStates]);
+    const rotationEntries = runtime?.rotationEntries ?? [];
+    const setRotationEntries = useCallback((nextOrUpdater) => {
+        if (!charId) return;
+        updateRuntimeForChar(charId, prevChar => {
+            const prevEntries = Array.isArray(prevChar.rotationEntries) ? prevChar.rotationEntries : [];
+            const nextEntries =
+                typeof nextOrUpdater === 'function' ? nextOrUpdater(prevEntries) : nextOrUpdater;
+            if (isEqual(prevEntries, nextEntries)) return prevChar;
+            return {
+                ...prevChar,
+                rotationEntries: nextEntries
+            };
+        });
+    }, [charId, updateRuntimeForChar, defaultCombatState]);
+    const team = Array.isArray(runtime?.Team) ? runtime.Team : [activeCharacterId ?? null, null, null];
+    const characterLevel = runtime?.CharacterLevel ?? 1;
+    const sliderValues = runtime?.SkillLevels ?? defaultSliderValues;
+    const traceNodeBuffs = runtime?.TraceNodeBuffs ?? runtime?.TemporaryBuffs ?? defaultTraceBuffs;
+    const customBuffs = runtime?.CustomBuffs ?? defaultCustomBuffs;
+    const combatState = {
+        ...defaultCombatState,
+        ...(runtime?.CombatState ?? {}),
+        enemyLevel,
+        enemyRes
+    };
+    const setTeam = useCallback((nextOrUpdater) => {
+        if (!charId) return;
+        updateRuntimeForChar(charId, prevChar => {
+            const prevTeam = Array.isArray(prevChar.Team) ? prevChar.Team : [activeCharacterId ?? null, null, null];
+            const nextTeam =
+                typeof nextOrUpdater === 'function' ? nextOrUpdater(prevTeam) : nextOrUpdater;
+            if (isEqual(prevTeam, nextTeam)) return prevChar;
+            return {
+                ...prevChar,
+                Team: nextTeam
+            };
+        });
+    }, [charId, activeCharacterId, updateRuntimeForChar]);
+    const setCharacterLevel = useCallback((nextOrUpdater) => {
+        if (!charId) return;
+        updateRuntimeForChar(charId, prevChar => {
+            const prevLevel = prevChar.CharacterLevel ?? 1;
+            const nextLevel =
+                typeof nextOrUpdater === 'function' ? nextOrUpdater(prevLevel) : nextOrUpdater;
+            if (prevLevel === nextLevel) return prevChar;
+            return {
+                ...prevChar,
+                CharacterLevel: nextLevel
+            };
+        });
+    }, [charId, updateRuntimeForChar]);
+    const setSliderValues = useCallback((nextOrUpdater) => {
+        if (!charId) return;
+        updateRuntimeForChar(charId, prevChar => {
+            const prevValues = prevChar.SkillLevels ?? defaultSliderValues;
+            const nextValues =
+                typeof nextOrUpdater === 'function' ? nextOrUpdater(prevValues) : nextOrUpdater;
+            if (isEqual(prevValues, nextValues)) return prevChar;
+            return {
+                ...prevChar,
+                SkillLevels: nextValues
+            };
+        });
+    }, [charId, updateRuntimeForChar]);
+    const setTraceNodeBuffs = useCallback((nextOrUpdater) => {
+        if (!charId) return;
+        updateRuntimeForChar(charId, prevChar => {
+            const prevBuffs = prevChar.TraceNodeBuffs ?? defaultTraceBuffs;
+            const nextBuffs =
+                typeof nextOrUpdater === 'function' ? nextOrUpdater(prevBuffs) : nextOrUpdater;
+            if (isEqual(prevBuffs, nextBuffs)) return prevChar;
+            return {
+                ...prevChar,
+                TraceNodeBuffs: nextBuffs
+            };
+        });
+    }, [charId, updateRuntimeForChar]);
+    const setCustomBuffs = useCallback((nextOrUpdater) => {
+        if (!charId) return;
+        updateRuntimeForChar(charId, prevChar => {
+            const prevBuffs = prevChar.CustomBuffs ?? defaultCustomBuffs;
+            const nextBuffs =
+                typeof nextOrUpdater === 'function' ? nextOrUpdater(prevBuffs) : nextOrUpdater;
+            if (isEqual(prevBuffs, nextBuffs)) return prevChar;
+            return {
+                ...prevChar,
+                CustomBuffs: nextBuffs
+            };
+        });
+    }, [charId, updateRuntimeForChar]);
+    const setCombatState = useCallback((nextOrUpdater) => {
+        if (!charId) return;
+        updateRuntimeForChar(charId, prevChar => {
+            const prevState = prevChar.CombatState ?? defaultCombatState;
+            const nextState =
+                typeof nextOrUpdater === 'function' ? nextOrUpdater(prevState) : nextOrUpdater;
+            if (isEqual(prevState, nextState)) return prevChar;
+            return {
+                ...prevChar,
+                CombatState: nextState
+            };
+        });
+    }, [charId, updateRuntimeForChar]);
     const equippedEchoes = characterRuntimeStates?.[charId]?.equippedEchoes ?? [];
     const echoStats = getEchoStatsFromEquippedEchoes(equippedEchoes);
     const [showSubHits, setShowSubHits] = usePersistentState('showSubHits', false);
@@ -196,77 +302,86 @@ export default function Calculator(props) {
 
             const profile = characterRuntimeStates[resolvedCharId] ?? {};
             const state = characterStates.find(c => String(c.Id) === String(foundChar.link));
-            if (profile.Team && !profile.Team[0]) {
-                profile.Team[0] = resolvedCharId;
+            const nextTeam = Array.isArray(profile.Team) ? [...profile.Team] : [resolvedCharId, null, null];
+            if (!nextTeam[0]) {
+                nextTeam[0] = resolvedCharId;
             }
-            setTeam(profile.Team ?? [resolvedCharId, null, null]);
             setBaseCharacterState(state ?? null);
-            setCharacterLevel(profile.CharacterLevel ?? 1);
-            if (profile.SkillLevels && !profile.SkillLevels.tuneBreak) {
-                profile.SkillLevels = {
+            const nextCharacterLevel = profile.CharacterLevel ?? 1;
+            const nextSkillLevels = profile.SkillLevels
+                ? {
                     ...profile.SkillLevels,
-                    tuneBreak: 1,
+                    tuneBreak: profile.SkillLevels.tuneBreak ?? 1,
                 }
-            }
-            setSliderValues(profile.SkillLevels ?? defaultSliderValues);
-            setTraceNodeBuffs(profile.TraceNodeBuffs ?? profile.TemporaryBuffs ?? defaultTraceBuffs);
-            profile.TraceNodeBuffs = profile.TraceNodeBuffs ?? profile.TemporaryBuffs ?? defaultTraceBuffs;
-            setCustomBuffs(profile.CustomBuffs ?? defaultCustomBuffs);
+                : defaultSliderValues;
+            const nextTraceNodeBuffs = profile.TraceNodeBuffs ?? profile.TemporaryBuffs ?? defaultTraceBuffs;
+            const nextCustomBuffs = profile.CustomBuffs ?? defaultCustomBuffs;
 
 
             const defaultWeapon = Object.values(weaponData)
                 .filter(w => w.Type === weaponType)
                 .sort((a, b) => (b.Rarity ?? 0) - (a.Rarity ?? 0))[0];
 
-            if (defaultWeapon) {
-                const hasWeapon = profile.CombatState?.weaponId != null;
+            const extraCombatKeys = [
+                'weaponId', 'weaponLevel', 'weaponBaseAtk', 'weaponStat',
+                'weaponRarity', 'weaponEffect', 'weaponEffectName', 'weaponParam', 'weaponRank',
+                'atkPercent', 'defPercent', 'hpPercent', 'energyRegen'
+            ];
+            const cleaned = [
+                ...Object.keys(defaultCombatState),
+                ...extraCombatKeys
+            ];
+            const cleanedCombatState = Object.fromEntries(
+                Object.entries(profile.CombatState ?? {}).filter(([key]) => cleaned.includes(key))
+            );
+            const hasWeapon = cleanedCombatState?.weaponId != null;
+            let nextCombatState = {
+                ...defaultCombatState,
+                ...cleanedCombatState,
+                enemyLevel,
+                enemyRes
+            };
+
+            if (defaultWeapon && !hasWeapon) {
                 const levelData = defaultWeapon.Stats?.["0"]?.["1"] ?? defaultWeapon.Stats?.["0"]?.["0"];
                 const baseAtk = levelData?.[0]?.Value ?? 0;
                 const stat = levelData?.[1] ?? null;
                 const mappedStat = mapExtraStatToCombat(stat);
-                const extraCombatKeys = [
-                    'weaponId', 'weaponLevel', 'weaponBaseAtk', 'weaponStat',
-                    'weaponRarity', 'weaponEffect', 'weaponEffectName', 'weaponParam', 'weaponRank',
-                    'atkPercent', 'defPercent', 'hpPercent', 'energyRegen'
-                ];
-                const cleaned = [
-                    ...Object.keys(defaultCombatState),
-                    ...extraCombatKeys
-                ];
-                profile.CombatState = Object.fromEntries(
-                    Object.entries(profile.CombatState ?? {}).filter(([key]) => cleaned.includes(key))
-                );
-                setCombatState(prev => ({
-                    ...defaultCombatState,
-                    ...(profile.CombatState ?? {}),
-                    enemyLevel: prev.enemyLevel,
-                    enemyRes: prev.enemyRes,
-                    ...(hasWeapon ? {} : {
-                        weaponId: defaultWeapon.Id,
-                        weaponLevel: 1,
-                        weaponBaseAtk: baseAtk,
-                        weaponStat: stat,
-                        weaponRarity: defaultWeapon.Rarity ?? 1,
-                        weaponEffect: defaultWeapon.Effect ?? null,
-                        weaponEffectName: defaultWeapon.EffectName ?? null,
-                        weaponParam: defaultWeapon.Param ?? [],
-                        weaponRank: 1,
-                        atkPercent: 0,
-                        defPercent: 0,
-                        hpPercent: 0,
-                        critRate: 0,
-                        critDmg: 0,
-                        energyRegen: 0,
-                        ...mappedStat
-                    })
-                }));
+                nextCombatState = {
+                    ...nextCombatState,
+                    weaponId: defaultWeapon.Id,
+                    weaponLevel: 1,
+                    weaponBaseAtk: baseAtk,
+                    weaponStat: stat,
+                    weaponRarity: defaultWeapon.Rarity ?? 1,
+                    weaponEffect: defaultWeapon.Effect ?? null,
+                    weaponEffectName: defaultWeapon.EffectName ?? null,
+                    weaponParam: defaultWeapon.Param ?? [],
+                    weaponRank: 1,
+                    atkPercent: 0,
+                    defPercent: 0,
+                    hpPercent: 0,
+                    critRate: 0,
+                    critDmg: 0,
+                    energyRegen: 0,
+                    ...mappedStat
+                };
             }
             const rawEntries = Array.isArray(profile.rotationEntries) ? profile.rotationEntries : [];
             const normalizedEntries = rawEntries.map(entry => ({
                 ...entry,
                 createdAt: entry.createdAt ?? Date.now() + Math.random()
             }));
-            setRotationEntries(normalizedEntries);
+            updateRuntimeForChar(resolvedCharId, prevChar => ({
+                ...prevChar,
+                Team: nextTeam,
+                CharacterLevel: nextCharacterLevel,
+                SkillLevels: nextSkillLevels,
+                TraceNodeBuffs: nextTraceNodeBuffs,
+                CustomBuffs: nextCustomBuffs,
+                CombatState: nextCombatState,
+                rotationEntries: normalizedEntries
+            }));
         });
     }, []);
 
@@ -371,21 +486,6 @@ export default function Calculator(props) {
         return () => window.removeEventListener('resize', handleResize);
     }, [mainMode]);
 
-    useEffect(() => {
-        if (!charId) return;
-        const existing = characterRuntimeStates?.[charId]?.rotationEntries ?? [];
-        const isEqual = JSON.stringify(existing) === JSON.stringify(rotationEntries);
-        if (!isEqual) {
-            setCharacterRuntimeStates(prev => ({
-                ...prev,
-                [charId]: {
-                    ...(prev[charId] ?? {}),
-                    rotationEntries
-                }
-            }));
-        }
-    }, [rotationEntries, charId]);
-
     const handleCharacterSelect = (char) => {
         if (activeCharacter && charId) {
             const currentCharId = charId;
@@ -413,34 +513,38 @@ export default function Calculator(props) {
 
         const newMainId = char.Id ?? char.id ?? char.link;
         const cached = characterRuntimeStates[newMainId] ?? {};
-
-        if (!cached.Team || !cached.Team[0]) {
-            cached.Team = [newMainId, null, null];
+        const normalizedTeam = Array.isArray(cached.Team) ? [...cached.Team] : [newMainId, null, null];
+        if (!normalizedTeam[0]) {
+            normalizedTeam[0] = newMainId;
         }
 
-        setTeam(cached.Team);
+        const normalizedSkillLevels = cached?.SkillLevels
+            ? {
+                ...cached.SkillLevels,
+                tuneBreak: cached.SkillLevels.tuneBreak ?? 1,
+            }
+            : defaultSliderValues;
+        const normalizedTraceNodeBuffs = cached?.TraceNodeBuffs ?? cached?.TemporaryBuffs ?? defaultTraceBuffs;
+        const normalizedCustomBuffs = cached?.CustomBuffs ?? defaultCustomBuffs;
+
         const safeRotation = Array.isArray(cached.rotationEntries) ? cached.rotationEntries : [];
-        setRotationEntries(safeRotation.map(entry => ({
+        const normalizedRotation = safeRotation.map(entry => ({
             ...entry,
             multiplier: typeof entry.multiplier === 'number' ? entry.multiplier : 1,
             createdAt: entry.createdAt ?? Date.now() + Math.random()
-        })));
+        }));
 
         setActiveCharacter(char);
         setActiveCharacterId(newMainId);
         setBaseCharacterState(
             cached?.Stats ? { Stats: cached.Stats } : characterStates.find(c => String(c.Id) === String(newMainId)) ?? null
         );
-        setCharacterLevel(cached?.CharacterLevel ?? 1);
-        setSliderValues(cached?.SkillLevels ?? defaultSliderValues);
-        setTraceNodeBuffs(cached?.TraceNodeBuffs ?? cached?.TemporaryBuffs ?? defaultTraceBuffs);
-        setCustomBuffs(cached?.CustomBuffs ?? defaultCustomBuffs);
 
         const cachedCombatState = {
             ...defaultCombatState,
             ...(cached?.CombatState ?? {}),
-            enemyLevel: combatState.enemyLevel,
-            enemyRes: combatState.enemyRes
+            enemyLevel,
+            enemyRes
         };
 
         const alreadyHasWeapon = cachedCombatState?.weaponId != null;
@@ -478,7 +582,16 @@ export default function Calculator(props) {
             }
         }
 
-        setCombatState(cachedCombatState);
+        updateRuntimeForChar(newMainId, prevChar => ({
+            ...prevChar,
+            Team: normalizedTeam,
+            CharacterLevel: cached?.CharacterLevel ?? 1,
+            SkillLevels: normalizedSkillLevels,
+            TraceNodeBuffs: normalizedTraceNodeBuffs,
+            CustomBuffs: normalizedCustomBuffs,
+            CombatState: cachedCombatState,
+            rotationEntries: normalizedRotation
+        }));
         setMenuOpen(false);
     };
 
@@ -751,23 +864,11 @@ export default function Calculator(props) {
         const cache = characterRuntimeStates?.[charId]?.allSkillResults ?? [];
 
         setRotationEntries(prev => {
-            const updated = prev.map(entry => {
+            return prev.map(entry => {
                 const skill = cache.find(s => s.name === entry.label && s.tab === entry.tab);
                 const isVisible = skill?.visible !== false;
                 return { ...entry, visible: isVisible };
             });
-
-            if (charId && characterRuntimeStates?.[charId]) {
-                setCharacterRuntimeStates(prevStates => ({
-                    ...prevStates,
-                    [charId]: {
-                        ...prevStates[charId],
-                        rotationEntries: updated
-                    }
-                }));
-            }
-
-            return updated;
         });
     }, [sliderValues, charId]);
 
@@ -845,42 +946,43 @@ export default function Calculator(props) {
         setCustomBuffs(defaultCustomBuffs);
         setTraceNodeBuffs(defaultTraceBuffs);
         setCharacterLevel(1);
-        setRotationEntries([]);
         setTeam([activeId ?? null, null, null]);
+        setRotationEntries([]);
 
-        setCombatState(prev => {
-            const weaponId = prev.weaponId;
-            const weapon = weapons?.[weaponId];
+        const weaponId = combatState.weaponId;
+        const weapon = weapons?.[weaponId];
+        let resetCombatState;
 
-            if (weapon) {
-                const levelData = weapon.Stats?.["0"]?.["1"] ?? weapon.Stats?.["0"]?.["0"];
-                const baseAtk = levelData?.[0]?.Value ?? 0;
-                const stat = levelData?.[1] ?? null;
-                const mappedStat = mapExtraStatToCombat(stat);
+        if (weapon) {
+            const levelData = weapon.Stats?.["0"]?.["1"] ?? weapon.Stats?.["0"]?.["0"];
+            const baseAtk = levelData?.[0]?.Value ?? 0;
+            const stat = levelData?.[1] ?? null;
+            const mappedStat = mapExtraStatToCombat(stat);
 
-                return {
-                    ...defaultCombatState,
-                    enemyLevel: prev.enemyLevel,
-                    enemyRes: prev.enemyRes,
-                    weaponId,
-                    weaponLevel: 1,
-                    weaponRank: 1,
-                    weaponBaseAtk: baseAtk,
-                    weaponStat: stat,
-                    weaponRarity: weapon.Rarity ?? 1,
-                    weaponEffect: weapon.Effect ?? null,
-                    weaponEffectName: weapon.EffectName ?? null,
-                    weaponParam: weapon.Param ?? [],
-                    ...mappedStat
-                };
-            }
-
-            return {
+            resetCombatState = {
                 ...defaultCombatState,
-                enemyLevel: prev.enemyLevel,
-                enemyRes: prev.enemyRes
+                enemyLevel: combatState.enemyLevel,
+                enemyRes: combatState.enemyRes,
+                weaponId,
+                weaponLevel: 1,
+                weaponRank: 1,
+                weaponBaseAtk: baseAtk,
+                weaponStat: stat,
+                weaponRarity: weapon.Rarity ?? 1,
+                weaponEffect: weapon.Effect ?? null,
+                weaponEffectName: weapon.EffectName ?? null,
+                weaponParam: weapon.Param ?? [],
+                ...mappedStat
             };
-        });
+        } else {
+            resetCombatState = {
+                ...defaultCombatState,
+                enemyLevel: combatState.enemyLevel,
+                enemyRes: combatState.enemyRes
+            };
+        }
+
+        setCombatState(resetCombatState);
         setPopupMessage({
             message: 'Success~! (〜^∇^)〜',
             icon: '✔',
@@ -971,7 +1073,6 @@ export default function Calculator(props) {
             allSkillLevels,
             rotationEntries
         );
-        console.log(summary);
         setCharacterRuntimeStates(prev => {
             const runtime = prev?.[charId] ?? {};
             if (isEqual(runtime.rotationSummary, summary)) return prev;
@@ -997,7 +1098,8 @@ export default function Calculator(props) {
 
         const defaultOptimizer = {
             level: currentLevels[0],
-            tab
+            tab,
+            rotationMode: true
         }
 
         const defaultSuggestion = { ...defaultRandGen, level: currentLevels[0], tab };
@@ -1059,8 +1161,7 @@ export default function Calculator(props) {
             const hasPreset =
                 Array.isArray(entries) && entries.length > 0 && builtRotations.length > 0;
             if (hasNoRotation && hasPreset && !newChar._rotationInitialized) {
-                setRotationEntries(builtRotations);
-                newChar.rotationEntries = rotationEntries;
+                newChar.rotationEntries = builtRotations;
                 newChar._rotationInitialized = true;
                 changed = true;
             } else if (!hasNoRotation && hasPreset) {
@@ -1170,7 +1271,9 @@ export default function Calculator(props) {
 
         for (const [nodeId, node] of Object.entries(activeCharacter.raw.SkillTrees ?? {})) {
             if (!activeNodes[nodeId]) continue;
+/*
             if (node.NodeType !== 4) continue;
+*/
 
             const skillName = node.Skill?.Name;
             if (!skillName) continue;
@@ -1591,22 +1694,16 @@ export default function Calculator(props) {
                                 />
                             ) : mainMode === 'optimizer' ? (
                                 <Optimizer
-                                    echoId={echoes}
+                                    rotationEntries={rotationEntries}
                                     charId={charId}
-                                    characterState={characterState}
-                                    setCharacterState={setCharacterState}
                                     characterRuntimeStates={characterRuntimeStates}
                                     setCharacterRuntimeStates={setCharacterRuntimeStates}
                                     characters={characters}
                                     activeCharacter={activeCharacter}
-                                    getAllSkillLevels={getAllSkillLevels}
-                                    skillTabs={skillTabs}
                                     baseCharacterState={baseCharacterState}
                                     mergedBuffs={mergedBuffs}
                                     allSkillLevels={allSkillLevels}
                                     skillResults={skillResults}
-                                    onEquipPreset={onEquipPreset}
-                                    onEquipBag={onEquipBag}
                                     getImageSrc={getImageSrc}
                                     optimizerResults={optimizerResults}
                                     setOptimizerResults={setOptimizerResults}
@@ -1619,8 +1716,6 @@ export default function Calculator(props) {
                                     generalOptimizerSettings={generalOptimizerSettings}
                                     setGeneralOptimizerSettings={setGeneralOptimizerSettings}
                                     switchLeftPane={switchLeftPane}
-                                    weapons={weapons}
-                                    setCombatState={setCombatState}
                                     finalStats={finalStats}
                                     keywords={keywords}
                                 />
@@ -1758,36 +1853,19 @@ export default function Calculator(props) {
                                         {leftPaneView === 'suggestions-ui' && (
                                             <SuggestionsPane
                                                 currentSliderColor={currentSliderColor}
-                                                echoId={echoes}
                                                 charId={charId}
-                                                characterState={characterState}
-                                                setCharacterState={setCharacterState}
                                                 characterRuntimeStates={characterRuntimeStates}
                                                 setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                                characters={characters}
                                                 activeCharacter={activeCharacter}
-                                                getAllSkillLevels={getAllSkillLevels}
-                                                skillTabs={skillTabs}
                                                 baseCharacterState={baseCharacterState}
                                                 mergedBuffs={mergedBuffs}
                                                 allSkillLevels={allSkillLevels}
                                                 skillResults={skillResults}
-                                                onEquipPreset={onEquipPreset}
-                                                onEquipBag={onEquipBag}
                                                 getImageSrc={getImageSrc}
-                                                rarityMap={rarityMap}
-                                                triggerRef={triggerRef}
-                                                menuOpen={menuOpen}
-                                                setMenuOpen={setMenuOpen}
-                                                menuRef={menuRef}
-                                                handleCharacterSelect={handleCharacterSelect}
                                                 suggestionsPaneSettings={suggestionsPaneSettings}
                                                 setSuggestionsPaneSettings={setSuggestionsPaneSettings}
-                                                switchLeftPane={switchLeftPane}
-                                                weapons={weapons}
-                                                setCombatState={setCombatState}
-                                                finalStats={finalStats}
                                                 keywords={keywords}
+                                                rotationEntries={rotationEntries}
 
                                             />
                                         )}

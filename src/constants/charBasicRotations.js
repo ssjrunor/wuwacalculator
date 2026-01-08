@@ -33,7 +33,7 @@ const defaultRotationEntries = {
             { name: "Basic Attack - Seraphic Execution Stage 3 DMG", multiplier: 2 },
             { name: "Basic Attack - Seraphic Execution Stage 4 DMG", multiplier: 2 },
             { name: "Basic Attack - Seraphic Execution Stage 5 DMG", multiplier: 2 },
-            { name: "Ashen Pursuit DMG", multiplier: 2 },
+            { name: "Ashen Pursuit DMG", multiplier: 1 },
         ],
         link: 'https://www.prydwen.gg/wuthering-waves/characters/galbrena'
     },
@@ -48,7 +48,7 @@ const defaultRotationEntries = {
             { name: "Resonance Skill - Undying Sunlight: Leap DMG", multiplier: 1 },
             { name: "Resonance Skill - Undying Sunlight: Plunge DMG", multiplier: 1 },
             { name: "Sublime is the Sun - Sunborne DMG", multiplier: 9 },
-            { name: "Sublime is the Sun - Everbright Protector DMG", multiplier: 2 },
+            { name: "Sublime is the Sun - Everbright Protector DMG", multiplier: 1 },
         ],
         link: 'https://www.prydwen.gg/wuthering-waves/characters/augusta'
     },

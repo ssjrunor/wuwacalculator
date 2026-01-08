@@ -7,7 +7,7 @@ export function applyWeaponLogic({
                                  }) {
 
     const def = parseFloat(currentParamValues[0]);
-    const cd = parseFloat(currentParamValues[0]);
+    const cd = parseFloat(currentParamValues[4]);
 
     mergedBuffs.def.percent += def;
 

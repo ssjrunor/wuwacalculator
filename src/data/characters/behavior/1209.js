@@ -20,18 +20,15 @@ export function applyMornyeLogic({
         amplify: skillMeta?.amplify ?? 0,
     };
 
-    const name = skillMeta.name?.toLowerCase();
+    const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
 
-    if (tab === 'normalAttack') skillMeta.skillType = 'basic';
-    if (tab === 'resonanceSkill') skillMeta.skillType = 'skill';
-
-    const excessEr = mergedBuffs.energyRegen ?? 0;
-    const bonusCr = Math.min(excessEr * .5, 80);
-    const bonusCd = Math.min(excessEr, 160);
+    if (name.includes('syntony field')) skillMeta.skillType = 'ultimate';
+    const erOver = Math.max(0, (mergedBuffs.energyRegen ?? 0));
+    const bonusCr = Math.min(erOver * .5, 80);
+    const bonusCd = Math.min(erOver, 160);
     if (tab === 'resonanceLiberation') {
-        skillMeta.skillType = 'ultimate';
         skillMeta.skillCritRate = (skillMeta.skillCritRate ?? 0) + bonusCr;
         skillMeta.skillCritDmg = (skillMeta.skillCritDmg ?? 0) + bonusCd;
         skillMeta.scaling = { atk: 0, hp: 0, def: 1, energyRegen: 0 };
@@ -44,7 +41,7 @@ export function applyMornyeLogic({
         mergedBuffs.__mornyeTuneStrain = true;
     }
 
-    const dmgVuln = Math.min(excessEr * 0.25, 40);
+    const dmgVuln = Math.min(erOver * 0.25, 40);
     if (isToggleActiveLocal('interferedMarker')) mergedBuffs.attribute.all.dmgVuln += dmgVuln;
 
     if (isToggleActiveLocal('recursion')) mergedBuffs.attribute.all.amplify += 25;
@@ -62,7 +59,7 @@ export function applyMornyeLogic({
     }
 
     if (isActiveSequence(2) && isToggleActive(2) && !mergedBuffs.__mornyeS2) {
-        mergedBuffs.critDmg = Math.min(excessEr * 0.2, 32);
+        mergedBuffs.critDmg = Math.min(erOver * 0.2, 32);
         mergedBuffs.__mornyeS2 = true;
     }
     if (isActiveSequence(4) && name.includes('high syntony field'))
@@ -172,8 +169,8 @@ export function mornyeBuffsLogic({
                                        mergedBuffs, characterState
                                    }) {
     const state = characterState?.activeStates ?? {};
-
-    const dmgVuln = Math.min((state.mornyeER ?? 0) * 0.25, 40);
+    const excessEr = (state.mornyeER ?? 100) - 100;
+    const dmgVuln = Math.min(excessEr * 0.25, 40);
 
     mergedBuffs.attribute.all.dmgVuln += state.interferedMarker ? dmgVuln : 0;
 

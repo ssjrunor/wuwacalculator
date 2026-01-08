@@ -68,6 +68,8 @@ export default function MainStatsView({
                     <>
                         {mainStatResults.map((plan, index) => {
                             const isSelected = index === selectedMainStatIndex;
+                            const onSelect = onSelectMainStat;
+                            const current = haveSameMainStats(echoData, plan?.echoes || []);
                             const avg = plan.damage ?? null;
                             let diffPercent = baseDamage
                                 ? ((avg / baseDamage) - 1) * 100
@@ -85,8 +87,6 @@ export default function MainStatsView({
                                 .slice()
                                 .sort((a, b) => (b.cost ?? 0) - (a.cost ?? 0));
 
-                            const current = haveSameMainStats(echoData, plan?.echoes || []);
-
                             return (
                                 <div
                                     key={index}
@@ -97,7 +97,7 @@ export default function MainStatsView({
                                         '--slider-color': currentSliderColor,
                                         '--lower-opac': withOpacity(currentSliderColor)
                                     }}
-                                    onClick={() => onSelectMainStat(index)}
+                                    onClick={() => onSelect(index)}
                                 >
                                     <div className="main-stat-rows">
                                         <div className="main-stat-header">

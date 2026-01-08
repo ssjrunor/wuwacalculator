@@ -4,9 +4,9 @@ import AllowedSetDropdown from "./EchoSetSelector.jsx";
 import {Info, X} from "lucide-react";
 import Select from 'react-select';
 import StatProfileCard from "./StatProfileCard.jsx";
-import {STAT_LIST} from "@/features/optimizer/core/encodeEchoStats.js";
 import {Tooltip} from "antd";
-import {mainStatsFilters} from "@/features/optimizer/core/optimizerUtils.js";
+import {mainStatsFilters} from "@/features/optimizer/core/misc/utils.js";
+import {STAT_LIST} from "@/features/optimizer/core/misc/index.js";
 
 export function CharacterOptionsPanel({
                                           activeCharacter,
@@ -37,7 +37,8 @@ export function CharacterOptionsPanel({
                                           handleStatLimitChange,
                                           statLimits,
                                           echoBag,
-                                          enableGpu
+                                          enableGpu,
+                                          rotationMode
 }) {
     const rarity = rarityMap[charId];
     const displayName = activeCharacter.displayName.toUpperCase();
@@ -140,7 +141,7 @@ export function CharacterOptionsPanel({
                         </div>
 
 
-                        <div className="dial-row">Target Skill</div>
+                        <div className="dial-row">Target Job</div>
                         <div className="toggle custom-select small"
                              onClick={() => setShowSkillOptions(true)}
                         >{skill?.name ? ' ◉ ' + skill?.name : "Target Skill"}</div>
@@ -247,6 +248,7 @@ export function CharacterOptionsPanel({
                             finalStats={finalStats}
                             echoBag={echoBag}
                             sequence={sequence}
+                            rotationMode={rotationMode}
                         />
                         <p className="analytics-note" style={{ marginTop: 'auto' }}>
                             This chart compares your current build and the selected optimizer result

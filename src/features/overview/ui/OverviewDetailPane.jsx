@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react';
-import { highlightKeywordsInText } from '@/constants/echoSetData.jsx';
-import { setIconMap } from '@/constants/echoSetData2.js';
+import React, {useRef, useState} from 'react';
+import {highlightKeywordsInText} from '@/constants/echoSetData.jsx';
+import {setIconMap} from '@/constants/echoSetData2.js';
 import {imageCache} from '@/pages/Calculator.jsx';
 import {
     formatStatKey,
@@ -8,15 +8,15 @@ import {
     getEchoStatsFromEquippedEchoes,
     getTop5SubstatScoreDetails
 } from '@/utils/echoHelper.js';
-import { statIconMap } from '@/features/characters/ui/CharacterStats.jsx';
-import { attributeColors } from '@/utils/attributeHelpers.js';
+import {statIconMap} from '@/features/characters/ui/CharacterStats.jsx';
+import {attributeColors} from '@/utils/attributeHelpers.js';
 import {formatStatValue} from "@/features/weapons/ui/WeaponPane.jsx";
 import {getActiveStateWeapons} from "@/data/buffs/weaponBuffs.js";
 import weaponsRaw from '@/data/weapons.json';
 import {getActiveEchoes} from "@/data/buffs/applyEchoLogic.js";
 import {getEquippedEchoesScoreDetails} from "@/features/echoes/ui/EchoesPane.jsx";
 import {downloadFixedSizePNG} from "@/utils/ScreenshotUtil.js";
-import {Download, Camera} from 'lucide-react';
+import {Camera, Download} from 'lucide-react';
 import NotificationToast from "@/components/common/NotificationToast.jsx";
 import GuidesModal from "@/components/common/GuideModal.jsx";
 import ConfirmationModal from "@/components/common/ConfirmationModal.jsx";
@@ -95,8 +95,7 @@ export default function OverviewDetailPane({
     const getMainStatTotal = (objOrNumber) => {
         if (objOrNumber && typeof objOrNumber === 'object') {
             const base  = objOrNumber.base ?? 0;
-            const total = objOrNumber.final ?? base;
-            return total;
+            return objOrNumber.final ?? base;
         }
         return objOrNumber ?? 0;
     };
@@ -438,21 +437,21 @@ export default function OverviewDetailPane({
                                                     <div className="box-stat dashed-line">
                                                         <strong className="label">Normal</strong>
                                                         <div className="dash-separator" />
-                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.normal?.toLocaleString()}>
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={Math.floor(displayed?.normal)?.toLocaleString()}>
                                                             <span className="value">{formatNumber(displayed?.normal)}</span>
                                                         </div>
                                                     </div>
                                                     <div className="box-stat dashed-line">
                                                         <strong className="label">CRIT</strong>
                                                         <div className="dash-separator" />
-                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.crit?.toLocaleString()}>
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={Math.floor(displayed?.crit)?.toLocaleString()}>
                                                             <span className="value">{formatNumber(displayed?.crit)}</span>
                                                         </div>
                                                     </div>
                                                     <div className="box-stat dashed-line">
                                                         <strong className="label">AVG</strong>
                                                         <div className="dash-separator" />
-                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.avg?.toLocaleString()}>
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={Math.floor(displayed?.avg)?.toLocaleString()}>
                                                             <span className="value avg">{formatNumber(displayed?.avg)}</span>
                                                         </div>
                                                     </div>
@@ -521,21 +520,21 @@ export default function OverviewDetailPane({
                                                     <div className="box-stat dashed-line">
                                                         <strong className="label">Normal</strong>
                                                         <div className="dash-separator" />
-                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.normal?.toLocaleString()}>
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={Math.floor(displayed?.normal)?.toLocaleString()}>
                                                             <span className="value">{formatNumber(displayed?.normal)}</span>
                                                         </div>
                                                     </div>
                                                     <div className="box-stat dashed-line">
                                                         <strong className="label">CRIT</strong>
                                                         <div className="dash-separator" />
-                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.crit?.toLocaleString()}>
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={Math.floor(displayed?.crit)?.toLocaleString()}>
                                                             <span className="value">{formatNumber(displayed?.crit)}</span>
                                                         </div>
                                                     </div>
                                                     <div className="box-stat dashed-line">
                                                         <strong className="label">AVG</strong>
                                                         <div className="dash-separator" />
-                                                        <div className="damage-tooltip-wrapper" data-tooltip={displayed?.avg?.toLocaleString()}>
+                                                        <div className="damage-tooltip-wrapper" data-tooltip={Math.floor(displayed?.avg)?.toLocaleString()}>
                                                             <span className="value avg">{formatNumber(displayed?.avg)}</span>
                                                         </div>
                                                     </div>

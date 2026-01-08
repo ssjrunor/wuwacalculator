@@ -1,5 +1,5 @@
 import {Info} from "lucide-react";
-import {EchoOptimizer} from "@/features/optimizer/core/EchoOptimizer.js";
+import {EchoOptimizer} from "@/features/optimizer/core/engine/echoOptimizer.js";
 import React, {useLayoutEffect, useState} from "react";
 import {Tooltip} from "antd";
 
@@ -22,6 +22,7 @@ export function EchoOptimizerControlBox({
                                             success,
                                             cancelled,
                                             openGuide,
+                                            openRules,
                                             isWide = true,
                                         }) {
     return (
@@ -218,6 +219,7 @@ export function EchoOptimizerControlBox({
                         <div className="row-buttons">
                             <button className="btn-primary" onClick={onEquipOptimizerResult}>Equip</button>
                             <button className="btn-primary" onClick={() => openGuide('Optimizer')}>See Guide</button>
+                            <button className="btn-primary" onClick={openRules}>Rules</button>
                         </div>
                         <div className="row-buttons">
                             <button className="btn-primary" onClick={() => setOptimizerResults([])}>Clear</button>
@@ -448,6 +450,12 @@ export function EchoOptimizerControlBox({
                                     onClick={() => openGuide("Optimizer")}
                                 >
                                     See Guide
+                                </button>
+                                <button
+                                    className="btn-primary"
+                                    onClick={openRules}
+                                >
+                                    Rules
                                 </button>
                             </div>
                         </div>
