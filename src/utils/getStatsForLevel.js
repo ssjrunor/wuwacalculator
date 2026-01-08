@@ -153,6 +153,10 @@ export function getFinalStats(
         (charExtra.shieldBonus ?? 0) +
         (buffs.shieldBonus ?? 0);
 
+    const dmgBonus =
+        (buffs.dmgBonus ?? 0);
+
+
     // -------------------------
     // Final shape
     // -------------------------
@@ -175,6 +179,7 @@ export function getFinalStats(
         critDmg,
         energyRegen,
         healingBonus,
-        shieldBonus
+        shieldBonus,
+        dmgBonus
     };
 }

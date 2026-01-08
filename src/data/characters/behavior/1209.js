@@ -41,8 +41,8 @@ export function applyMornyeLogic({
         mergedBuffs.__mornyeTuneStrain = true;
     }
 
-    const dmgVuln = Math.min(erOver * 0.25, 40);
-    if (isToggleActiveLocal('interferedMarker')) mergedBuffs.attribute.all.dmgVuln += dmgVuln;
+    const dmgBonus = Math.min(erOver * 0.25, 40);
+    if (isToggleActiveLocal('interferedMarker')) mergedBuffs.dmgBonus += dmgBonus;
 
     if (isToggleActiveLocal('recursion')) mergedBuffs.attribute.all.amplify += 25;
 
@@ -170,9 +170,9 @@ export function mornyeBuffsLogic({
                                    }) {
     const state = characterState?.activeStates ?? {};
     const excessEr = (state.mornyeER ?? 100) - 100;
-    const dmgVuln = Math.min(excessEr * 0.25, 40);
+    const dmgBonus = Math.min(excessEr * 0.25, 40);
 
-    mergedBuffs.attribute.all.dmgVuln += state.interferedMarker ? dmgVuln : 0;
+    mergedBuffs.dmgBonus += state.interferedMarker ? dmgBonus : 0;
 
     mergedBuffs.attribute.all.amplify += state.recursion ? 25 : 0;
 

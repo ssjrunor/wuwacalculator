@@ -82,7 +82,8 @@ export function getUnifiedStatPool(buffSources, overrideLogic = null) {
         critDmg: 0,        // global crit
         energyRegen: 0,
         healingBonus: 0,
-        shieldBonus: 0
+        shieldBonus: 0,
+        dmgBonus: 0
     };
 
     for (const source of buffSources ?? []) {

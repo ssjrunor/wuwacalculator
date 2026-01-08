@@ -72,6 +72,7 @@ function aggregateBuffMods(finalStats, { element, skillTypes }) {
         }
     }
 
+    result.dmgBonus += finalStats.dmgBonus;
     return result;
 }
 
@@ -138,7 +139,7 @@ export function calculateDamage({
     // ---- aggregate buffs from finalStats.attribute / finalStats.skillType ----
     const {
         resShred,
-        dmgBonus: totalDmgBonus,   // total DMG% (element + skill-type)
+        dmgBonus: totalDmgBonus,
         amplify: buffAmplify,
         defIgnore,
         defShred,
