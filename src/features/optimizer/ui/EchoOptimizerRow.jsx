@@ -15,7 +15,7 @@ export function accumulateSkillStatBonus(skillType, stats, skillMetaBonus = 0, b
         const normalized = type.trim();
         const mapped = typeMap[normalized] ?? null;
         let path = 0;
-        if (mapped) path = stats.skillType ? stats.skillType[mapped][bonusType] : stats[mapped];
+        if (mapped) path = stats.skillType ? (stats.skillType?.[mapped]?.[bonusType] ?? 0) : stats[mapped];
         sum += path ?? 0;
     }
     return sum + skillMetaBonus;
@@ -74,7 +74,7 @@ export default function EchoOptimizerRow({
             skillMeta?.skillDmgBonus ?? 0
         );
         const path =
-            stats?.[skill.element] ?? stats?.attribute[skill.element]?.dmgBonus ?? 0;
+            stats?.[skill.element] ?? stats?.attribute?.[skill.element]?.dmgBonus ?? 0;
         b += path;
         return b;
     })();
@@ -100,7 +100,7 @@ export default function EchoOptimizerRow({
         cr: base ? finalStats.critRate : statTotals.cr,
         cd: base ? finalStats.critDmg : statTotals.cd +
             applySpecialBuffs({critRate: statTotals.cr, critDmg: statTotals.cd}, {}, charId, 'critDmg', sequence).critDmg,
-        bonus: (base ? bonus : (statTotals.dmgBonus ?? 0) + bonus),
+        bonus: (base ? bonus + finalStats.dmgBonus : (statTotals.dmgBonus ?? 0) + bonus),
         amp: (base ? amp : (statTotals.dmgAmp ?? 0))
     }
 

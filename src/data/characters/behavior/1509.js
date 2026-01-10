@@ -43,7 +43,7 @@ export function applyLynaeLogic({
 
 
     if (isToggleActiveLocal('prismaticOverblast') && !mergedBuffs.__prismaticOverblast) {
-        mergedBuffs.attribute.all.dmgBonus += 25;
+        mergedBuffs.dmgBonus += 24;
         mergedBuffs.__prismaticOverblast = true;
     }
     if (isToggleActiveLocal('inherent2') && !mergedBuffs.__lynaeIn2) {
@@ -94,7 +94,7 @@ export function lynaeBuffsLogic({
         mergedBuffs.skillType.resonanceLiberation.amplify += 25;
     }
 
-    if (state.prismaticOverblast) mergedBuffs.attribute.all.dmgBonus += 25;
+    if (state.prismaticOverblast) mergedBuffs.dmgBonus += 24;
 
     if (state.vanishingPoint) mergedBuffs.attribute.all.amplify += 25;
 

@@ -262,7 +262,9 @@ export function computeEchoStatsFromIds(uids, echoes, ctxObj, charId) {
             cd: (totals.critDmg || 0) + ctxObj.critDmg * 100,
             dmgBonus: (ctxObj.dmgBonus - 1) * 100,
             dmgAmp: (ctxObj.dmgAmplify - 1) * 100,
+/*
             ...totals
+*/
         }
     };
 }

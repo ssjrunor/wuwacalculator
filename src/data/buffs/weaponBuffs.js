@@ -52,7 +52,7 @@ export function applyWeaponBuffLogic({ mergedBuffs, characterState, activeCharac
             const perStack = perStackValues[rank] ?? 0;
             const total = perStack * stacks;
 
-            mergedBuffs.attribute.all.dmgBonus += total;
+            mergedBuffs.dmgBonus += total;
         },
         starfieldCalibrator: () => {
             const rank = state['starfieldCalibrator_rank'] ?? 0;

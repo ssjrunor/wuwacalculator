@@ -20,57 +20,81 @@ import {buildCombinadicIndexing} from "../combos/combinadic.js";
 
 let CANCEL = false;
 export let ctxObj = {};
-const encodedCacheByKey = new Map();
-const ENCODED_CACHE_MAX = 3;
-let encodedCacheRef = {
-    echoesRef: null,
-    charId: null,
-    entry: null,
-};
 
-function getEchoesCacheKey(echoes, charId) {
-    const parts = new Array(echoes.length);
-    for (let i = 0; i < echoes.length; i++) {
-        const e = echoes[i];
-        parts[i] = e?.uid ?? e?.id ?? "";
-    }
-    return `${charId}|${parts.join("|")}`;
+const encodedCacheByKey = new Map();
+const ENCODED_CACHE_MAX = 5;
+let encodedCacheRef = { key: null, entry: null };
+
+function stringifyStats(obj) {
+    if (!obj) return "";
+    const entries = Object.entries(obj).sort(([a], [b]) => a.localeCompare(b));
+    return entries.map(([k, v]) => `${k}:${v}`).join(",");
 }
 
-function getCachedEncoded(echoes, charId) {
-    if (encodedCacheRef.echoesRef === echoes && encodedCacheRef.charId === charId) {
+function hashEcho(echo) {
+    if (!echo) return "null";
+    const parts = [
+        echo.uid ?? "",
+        echo.id ?? "",
+        echo.cost ?? "",
+        echo.selectedSet ?? "",
+        stringifyStats(echo.mainStats),
+        stringifyStats(echo.subStats)
+    ];
+    return parts.join("|");
+}
+
+function djb2(str) {
+    let hash = 5381;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) + hash) + str.charCodeAt(i);
+    }
+    return (hash >>> 0).toString(16);
+}
+
+function buildOptimizerCacheKey({
+    echoes,
+    charId,
+    tab,
+    levelLabel,
+    rotationMode,
+    lockedEchoId
+}) {
+    const echoSig = echoes.map(hashEcho).join("~");
+    const meta = [
+        charId ?? "",
+        tab ?? "",
+        levelLabel ?? "",
+        rotationMode ? 1 : 0,
+        lockedEchoId ?? ""
+    ].join("|");
+    return `${meta}|${djb2(echoSig)}`;
+}
+
+function getCachedEncoded(cacheKey) {
+    if (encodedCacheRef.key === cacheKey) {
         return encodedCacheRef.entry;
     }
 
-    const key = getEchoesCacheKey(echoes, charId);
-    const cached = encodedCacheByKey.get(key) ?? null;
+    const cached = encodedCacheByKey.get(cacheKey) ?? null;
     if (cached) {
-        encodedCacheByKey.delete(key);
-        encodedCacheByKey.set(key, cached);
+        encodedCacheByKey.delete(cacheKey);
+        encodedCacheByKey.set(cacheKey, cached);
     }
-    encodedCacheRef = {
-        echoesRef: echoes,
-        charId,
-        entry: cached,
-    };
+    encodedCacheRef = { key: cacheKey, entry: cached };
     return cached;
 }
 
-function setCachedEncoded(echoes, charId, entry) {
-    const key = getEchoesCacheKey(echoes, charId);
-    if (encodedCacheByKey.has(key)) {
-        encodedCacheByKey.delete(key);
+function setCachedEncoded(cacheKey, entry) {
+    if (encodedCacheByKey.has(cacheKey)) {
+        encodedCacheByKey.delete(cacheKey);
     }
-    encodedCacheByKey.set(key, entry);
+    encodedCacheByKey.set(cacheKey, entry);
     if (encodedCacheByKey.size > ENCODED_CACHE_MAX) {
         const firstKey = encodedCacheByKey.keys().next().value;
         encodedCacheByKey.delete(firstKey);
     }
-    encodedCacheRef = {
-        echoesRef: echoes,
-        charId,
-        entry,
-    };
+    encodedCacheRef = { key: cacheKey, entry };
 }
 
 export const EchoOptimizer = {
@@ -89,8 +113,22 @@ export const EchoOptimizer = {
             return [];
         }
 
+        const cacheKey = buildOptimizerCacheKey({
+            echoes: filtered,
+            charId: form.charId,
+            tab: form.tab ?? form.entry?.tab ?? form.levelData?.Type ?? form.levelData?.tab,
+            levelLabel: form.levelData?.Name ?? form.levelData?.label ?? form.level?.Name ?? form.level?.label,
+            rotationMode: !!form.rotationMode,
+            lockedEchoId: form.lockedEchoId
+        });
+
         // Shared setup for both modes
-        let entry = getCachedEncoded(filtered, form.charId);
+        let entry = getCachedEncoded(cacheKey);
+        if (entry) {
+            console.log("[optimizer-cache] hit", cacheKey);
+        } else {
+            console.log("[optimizer-cache] miss", cacheKey);
+        }
         if (!entry) {
             const encoded = encodeEchoStats(filtered);
             const mainEchoBuffs = buildMainEchoBuffsArray(
@@ -100,7 +138,7 @@ export const EchoOptimizer = {
             );
             const echoKindIds = buildEchoKindIdArray(filtered);
             entry = { encoded, mainEchoBuffs, echoKindIds };
-            setCachedEncoded(filtered, form.charId, entry);
+            setCachedEncoded(cacheKey, entry);
         }
         const { encoded, mainEchoBuffs, echoKindIds } = entry;
 
@@ -110,12 +148,17 @@ export const EchoOptimizer = {
 
         const statConstraints = buildStatConstraintArray(form.constraints);
 
-        const comboIndexing = buildCombinadicIndexing({
-            echoes: filtered,
-            maxSize: ECHO_OPTIMIZER_MAX_SIZE,
-            lockedEchoIndex: lockedRequested ? lockedIndex : null,
-            lockedEchoId: lockedRequested ? form.lockedEchoId : null,
-        });
+        let comboIndexing = entry.comboIndexing ?? null;
+        if (!comboIndexing) {
+            comboIndexing = buildCombinadicIndexing({
+                echoes: filtered,
+                maxSize: ECHO_OPTIMIZER_MAX_SIZE,
+                lockedEchoIndex: lockedRequested ? lockedIndex : null,
+                lockedEchoId: lockedRequested ? form.lockedEchoId : null,
+            });
+            entry.comboIndexing = comboIndexing;
+            setCachedEncoded(cacheKey, entry);
+        }
         const comboCountPerRun = comboIndexing?.totalCombos ?? 0;
         if (comboCountPerRun <= 0) return [];
 

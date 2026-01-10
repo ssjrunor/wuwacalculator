@@ -637,6 +637,7 @@ export default function Optimizer({
                                             return (
                                                 <EchoOptimizerRow
                                                     key={i}
+                                                    finalStats={runtime?.finalStats ?? finalStats}
                                                     echoData={echoObjs}
                                                     setPlan={setPlan}
                                                     statTotals={statTotals}

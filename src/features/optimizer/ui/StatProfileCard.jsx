@@ -33,7 +33,7 @@ export default function StatProfileCard({
             statTotals,
             skillMeta?.skillDmgBonus ?? 0
         );
-        b += (statTotals?.[skill.element] ?? 0);
+        b += finalStats.dmgBonus;
         return b;
     })();
 
@@ -41,9 +41,9 @@ export default function StatProfileCard({
         let b = accumulateSkillStatBonus(
             skill.skillType,
             mergedBuffs,
-            skillMeta?.skillDmgBonus ?? 0,
-            'dmgBonus'
+            skillMeta?.skillDmgBonus ?? 0
         );
+        b += finalStats.dmgBonus;
         b += mergedBuffs.attribute[skill.element] ? mergedBuffs.attribute[skill.element].dmgBonus : 0;
         return b;
     })();

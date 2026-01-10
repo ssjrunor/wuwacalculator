@@ -6,8 +6,8 @@ export function applyEchoLogic({ mergedBuffs, characterState }) {
 
     if (echo.rejuvenatingGlow) mergedBuffs.atk.percent += 15;
     if (echo.moonlitClouds) mergedBuffs.atk.percent += 22.5;
-    if (echo.impermanenceHeron) mergedBuffs.attribute.all.dmgBonus += 12;
-    if (echo.bellBorne) mergedBuffs.attribute.all.dmgBonus += 10;
+    if (echo.impermanenceHeron) mergedBuffs.dmgBonus += 12;
+    if (echo.bellBorne) mergedBuffs.dmgBonus += 10;
     if (echo.fallacy) mergedBuffs.atk.percent += 10;
     if (echo.midnightVeil) mergedBuffs.attribute.havoc.dmgBonus += 15;
     if (echo.empyreanAnthem) mergedBuffs.atk.percent += 20;
