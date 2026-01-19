@@ -599,6 +599,9 @@ export const mainEchoBuffs = {
     '6000120': {
         always: { fusion: 12, echoSkill: 20 }
     },
+    '6000192': {
+        always: { aero: 12, echoSkill: 20 }
+    },
 
 
     '6000044': {
@@ -806,6 +809,10 @@ export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterS
     const mainEcho = equippedEchoes?.[0];
     if (!mainEcho) return mergedBuffs;
 
+    if (mainEcho.id === "6000191" && charId === "1210") {
+        applyStatToMerged(mergedBuffs, "resonanceLiberation", 20);
+    }
+
     const config = mainEchoBuffs?.[mainEcho.id];
     if (!config) return mergedBuffs;
 
@@ -862,6 +869,10 @@ export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterS
 export function applyTheoreticalMainEchoBuffs({ echoId, mergedBuffs, charId }) {
     if (!echoId || !mergedBuffs) return mergedBuffs;
 
+    if (String(echoId) === "6000191" && charId === "1210") {
+        applyStatToMerged(mergedBuffs, "resonanceLiberation", 20);
+    }
+
     const config = mainEchoBuffs?.[String(echoId)];
     if (!config) return mergedBuffs;
 
@@ -916,6 +927,9 @@ export function removeMainEchoBuffLogic({
     const activeStates = characterState?.activeStates ?? {};
     const mainEcho = equippedEchoes?.[0];
     if (!mainEcho) return mergedBuffs;
+    if (mainEcho.id === "6000191" && charId === "1210") {
+        applyStatToMerged(mergedBuffs, "resonanceLiberation", -20);
+    }
 
     const config = mainEchoBuffs?.[mainEcho.id];
     if (!config) return mergedBuffs;

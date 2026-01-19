@@ -93,21 +93,21 @@ export default function EnemyPane({
                             id="tune-strain-interfered"
                             type="number"
                             min="0"
-                            max="10000"
+                            max="3"
                             className="character-level-input"
                             value={combatState.tuneStrain ?? 0}
-                            onChange={(e) => handleDebuffChange('tuneStrain', e.target.value, 10000)}
+                            onChange={(e) => handleDebuffChange('tuneStrain', e.target.value, 3)}
                         />
                     </div>
                     <input
                         type="range"
                         min="0"
-                        max="10000"
+                        max="3"
                         value={combatState.tuneStrain ?? 0}
-                        onChange={(e) => handleDebuffChange('tuneStrain', e.target.value, 10000)}
+                        onChange={(e) => handleDebuffChange('tuneStrain', e.target.value, 3)}
                         style={{
                             '--slider-color': '#d3d3d3',
-                            '--slider-fill': `${((combatState.tuneStrain ?? 0) / 10000) * 100}%`
+                            '--slider-fill': `${((combatState.tuneStrain ?? 0) / 3) * 100}%`
                         }}
                     />
                 </div>

@@ -180,6 +180,7 @@ export function getFinalStats(
         energyRegen,
         healingBonus,
         shieldBonus,
-        dmgBonus
+        dmgBonus,
+        tuneBreakBoost: buffs.tuneBreakBoost,
     };
 }

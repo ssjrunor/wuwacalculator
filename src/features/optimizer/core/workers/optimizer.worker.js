@@ -22,7 +22,7 @@ import {
     OPTIMIZER_ROTATION_WORKGROUP_SIZE,
     OPTIMIZER_REDUCE_K,
     OPTIMIZER_ENABLE_TIMING_LOGS,
-    OPTIMIZER_WORKGROUP_SIZE,
+    OPTIMIZER_WORKGROUP_SIZE, makeSortedKey5BigInt,
 } from "../misc/index.js";
 
 let device = null;
@@ -786,7 +786,7 @@ function processCandidatesToTopK(cand, comboBaseIndex, comboIndexing, resultsLim
     cand.sort((a, b) => b.dmg - a.dmg);
 
     const bestBySet = new Map();
-    const maxCandidates = resultsLimit * 8;
+    const maxCandidates = resultsLimit * REDUCE_K;
 
     for (const { dmg, index, mainPos } of cand) {
         if (bestBySet.size >= maxCandidates) break;
@@ -809,35 +809,4 @@ function processCandidatesToTopK(cand, comboBaseIndex, comboIndexing, resultsLim
     return [...bestBySet.values()]
         .sort((a, b) => b.dmg - a.dmg)
         .slice(0, resultsLimit);
-}
-
-function makeSortedKey5BigInt(a, b, c, d, e) {
-    if (a > b) [a, b] = [b, a];
-    if (c > d) [c, d] = [d, c];
-    if (a > c) [a, c] = [c, a];
-    if (b > d) [b, d] = [d, b];
-    if (b > c) [b, c] = [c, b];
-    let e0 = e;
-    if (e0 < b) {
-        if (e0 < a) {
-            return packKey(e0, a, b, c, d);
-        }
-        return packKey(a, e0, b, c, d);
-    }
-    if (e0 < d) {
-        if (e0 < c) {
-            return packKey(a, b, e0, c, d);
-        }
-        return packKey(a, b, c, e0, d);
-    }
-    return packKey(a, b, c, d, e0);
-}
-
-function packKey(a, b, c, d, e) {
-    const A = BigInt(a >>> 0);
-    const B = BigInt(b >>> 0);
-    const C = BigInt(c >>> 0);
-    const D = BigInt(d >>> 0);
-    const E = BigInt(e >>> 0);
-    return (((((A << 32n) | B) << 32n | C) << 32n | D) << 32n) | E;
 }

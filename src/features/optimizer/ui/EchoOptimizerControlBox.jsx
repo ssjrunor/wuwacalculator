@@ -1,6 +1,6 @@
 import {Info} from "lucide-react";
 import {EchoOptimizer} from "@/features/optimizer/core/engine/echoOptimizer.js";
-import React, {useLayoutEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {Tooltip} from "antd";
 
 export function EchoOptimizerControlBox({
@@ -25,6 +25,36 @@ export function EchoOptimizerControlBox({
                                             openRules,
                                             isWide = true,
                                         }) {
+    const MIN_LIMIT = 64;
+    const MAX_LIMIT = 65536;
+    const MAX_POW = Math.log2(MAX_LIMIT / MIN_LIMIT);
+
+    const clampLimit = (val) =>
+        Math.min(MAX_LIMIT, Math.max(MIN_LIMIT, Number.isFinite(val) ? val : MIN_LIMIT));
+
+    const limitToSliderValue = (limit) => {
+        const clamped = clampLimit(limit);
+        const pow = Math.log2(clamped / MIN_LIMIT);
+        return (pow / MAX_POW) * 100;
+    };
+
+    const sliderValueToLimit = (sliderVal) => {
+        const normalized = Math.min(100, Math.max(0, Number(sliderVal)));
+        const pow = (normalized / 100) * MAX_POW;
+        const nearestPow = Math.round(pow);
+        const limit = MIN_LIMIT * Math.pow(2, nearestPow);
+        return clampLimit(limit);
+    };
+
+    useEffect(() => {
+        const clamped = clampLimit(resultsLimit);
+        const pow = Math.log2(clamped / MIN_LIMIT);
+        const corrected = clampLimit(MIN_LIMIT * Math.pow(2, Math.round(pow)));
+        if (corrected !== resultsLimit) {
+            updateGeneralOptimizerSettings({ resultsLimit: corrected });
+        }
+    }, [resultsLimit, updateGeneralOptimizerSettings]);
+
     return (
         <>
             {isWide ? (
@@ -172,15 +202,14 @@ export function EchoOptimizerControlBox({
                                     <input
                                         disabled={isLoading}
                                         type="range"
-                                        min="32"
-                                        max={32 ** 2}
-                                        step="32"
-                                        value={resultsLimit}
-                                        onChange={(e) =>
-                                            updateGeneralOptimizerSettings(
-                                                {resultsLimit: Number(e.target.value)}
-                                            )
-                                        }
+                                        min="0"
+                                        max="100"
+                                        step="1"
+                                        value={limitToSliderValue(resultsLimit)}
+                                        onChange={(e) => {
+                                            const next = sliderValueToLimit(e.target.value);
+                                            updateGeneralOptimizerSettings({ resultsLimit: next });
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -218,7 +247,7 @@ export function EchoOptimizerControlBox({
 
                         <div className="row-buttons">
                             <button className="btn-primary" onClick={onEquipOptimizerResult}>Equip</button>
-                            <button className="btn-primary" onClick={() => openGuide('Optimizer')}>See Guide</button>
+                            <button className="btn-primary" onClick={() => openGuide('Optimizer')}>Guide</button>
                             <button className="btn-primary" onClick={openRules}>Rules</button>
                         </div>
                         <div className="row-buttons">
@@ -359,21 +388,20 @@ export function EchoOptimizerControlBox({
                                         <span>{resultsLimit.toLocaleString()}</span>
                                     </div>
                                     <div className="slider-row">
-                                        <input
-                                            disabled={isLoading}
-                                            type="range"
-                                            min="32"
-                                            max={32 ** 2}
-                                            step="32"
-                                            value={resultsLimit}
-                                            onChange={(e) =>
-                                                updateGeneralOptimizerSettings({
-                                                    resultsLimit: Number(e.target.value),
-                                                })
-                                            }
-                                        />
-                                    </div>
+                                    <input
+                                        disabled={isLoading}
+                                        type="range"
+                                        min="0"
+                                        max="100"
+                                        step="1"
+                                        value={limitToSliderValue(resultsLimit)}
+                                        onChange={(e) => {
+                                            const next = sliderValueToLimit(e.target.value);
+                                            updateGeneralOptimizerSettings({ resultsLimit: next });
+                                        }}
+                                    />
                                 </div>
+                            </div>
 
                                 <div className="slider-group">
                                     <div className="slider-item">
@@ -449,7 +477,7 @@ export function EchoOptimizerControlBox({
                                     className="btn-primary"
                                     onClick={() => openGuide("Optimizer")}
                                 >
-                                    See Guide
+                                    Guide
                                 </button>
                                 <button
                                     className="btn-primary"

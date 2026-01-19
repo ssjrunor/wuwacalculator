@@ -34,10 +34,9 @@ export function applyMornyeLogic({
         skillMeta.scaling = { atk: 0, hp: 0, def: 1, energyRegen: 0 };
     }
 
-    const stacks = characterState?.activeStates?.mornyeTuneBreakBoost ?? 0;
-    const bonus = Math.min(stacks * 0.12, 0.12 * 50) * (combatState?.tuneStrain ?? 0);
-    if (!mergedBuffs.__mornyeTuneStrain) {
-        mergedBuffs.attribute.all.dmgBonus += bonus;
+    const bonus = mergedBuffs.tuneBreakBoost * (combatState?.tuneStrain ?? 0) * 0.12;
+    if (!mergedBuffs.__mornyeTuneStrain && isToggleActiveLocal('decoupling')) {
+        mergedBuffs.dmgBonus += bonus;
         mergedBuffs.__mornyeTuneStrain = true;
     }
 
@@ -46,7 +45,14 @@ export function applyMornyeLogic({
 
     if (isToggleActiveLocal('recursion')) mergedBuffs.attribute.all.amplify += 25;
 
-    if (name.includes('tune rupture') && tab === 'forteCircuit') skillMeta.skillType = 'tuneRupture';
+    if (tab === 'tuneBreak' || name.includes('tune rupture')) {
+        skillMeta.skillType = 'tuneRupture';
+        if (tab !== 'tuneBreak') {
+            skillMeta.element = 'fusion';
+            skillMeta.tuneAmp = skillMeta.multiplier ?? skillMeta.tuneAmp;
+        }
+        skillMeta.dmgType = 'tuneBreak';
+    }
 
     if (name.includes('boundedness')) {
         skillMeta.multiplier = 1.5

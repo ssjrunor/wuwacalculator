@@ -157,11 +157,12 @@ export function computeDamageForCombo({
     let critRateTotal = packedContext[OPTIMIZER_CTX_CRIT_RATE] + critRate / 100;
     let critDmgTotal = packedContext[OPTIMIZER_CTX_CRIT_DMG] + critDmg / 100;
 
-    // Character 1306: Crit conversion
     const charId = packedContext[OPTIMIZER_CTX_CHAR_ID] | 0;
     const sequence = packedContext[OPTIMIZER_CTX_SEQUENCE];
-    const crit1306 = calc1306CritConversion(charId, sequence, critRateTotal);
-    critDmgTotal += crit1306 - 0.2;
+    // Character 1306: Crit conversion (apply the -20% offset only for 1306)
+    if (charId === 1306) {
+        critDmgTotal += calc1306CritConversion(charId, sequence, critRateTotal) - 0.2;
+    }
 
     // Pre-compute scaled base (HP + DEF contribution)
     const scaledBase =
@@ -236,7 +237,7 @@ export function computeDamageForCombo({
         let finalAtk = atkBaseTerm + (baseAtk * (mainAtkP / 100)) + mainAtkF;
         finalAtk += calc1206ErToAtk(charId, finalER);
 
-        let {dmgVuln, critRateBonus, critDmgBonus} = calc1209Conversion(charId, finalER, skillId);
+        let {mornyeDmgBonus, critRateBonus, critDmgBonus} = calc1209Conversion(charId, finalER, skillId);
 
         // Flat damage only case
         if (multiplier === 0 && scalingAtk === 0 && flatDmg > 0) {
@@ -251,11 +252,14 @@ export function computeDamageForCombo({
         const baseMul =
             packedContext[OPTIMIZER_CTX_RES_MULT] *
             packedContext[OPTIMIZER_CTX_DEF_MULT] *
-            (dmgRed + dmgVuln/100) *
-            packedContext[OPTIMIZER_CTX_DMG_AMPLIFY];
+            dmgRed * packedContext[OPTIMIZER_CTX_DMG_AMPLIFY];
 
-        const base = (scaled * multiplier + flatDmg) * baseMul * dmgBonus;
+        const base = (scaled * multiplier + flatDmg) * baseMul * (dmgBonus + mornyeDmgBonus);
         const critHit = base * (critDmgTotal + critDmgBonus);
+
+/*
+        console.log('op: ', dmgBonus);
+*/
 
         // Branchless crit rate handling
         const cr = Math.max(0, Math.min(1, critRateTotal + critRateBonus));

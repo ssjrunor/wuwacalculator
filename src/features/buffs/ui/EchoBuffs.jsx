@@ -2,7 +2,7 @@ import React from 'react';
 import { attributeColors } from '@/utils/attributeHelpers.js';
 import DropdownSelect from "@/components/common/DropdownSelect.jsx";
 
-export const echoBuffList = []; // if other code imports this, we’ll fill it in later if needed
+export const echoBuffList = [];
 
 export default function EchoBuffs({
                                       activeStates,
@@ -196,6 +196,16 @@ export default function EchoBuffs({
                     <span className="highlight">Off-Tune</span> Buildup Rate grants{" "}
                     <span className="highlight">0.2%</span> ATK increase to all Resonators in the team,
                     up to <span className="highlight">25%</span> for 4s.
+                </>
+            )
+        },
+        {
+            key: 'chromaticFoam',
+            name: 'Chromatic Foam',
+            icon: '/assets/echo-icons/default.webp',
+            effect: (
+                <>
+                    Casting an <span className="highlight">Outro Skill</span> grants the incoming Resonator <span className="highlight">25%</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion DMG Bonus</span> for 15s or until they're switched out.
                 </>
             )
         },

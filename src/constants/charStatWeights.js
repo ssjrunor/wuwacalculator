@@ -440,4 +440,22 @@ const charStatWeights = {
         fusion: 1,
         healingBonus: 1
     },
+    '1510': {
+        atkPercent: 1,
+        atkFlat: 0.5,
+        energyRegen: 1,
+        critRate: 1,
+        critDmg: 1,
+        basicAtk: 1,
+        spectro: 1
+    },
+    '1210': {
+        atkPercent: 1,
+        atkFlat: 0.5,
+        energyRegen: 1,
+        critRate: 1,
+        critDmg: 1,
+        resonanceLiberation: 1,
+        fusion: 1
+    },
 };

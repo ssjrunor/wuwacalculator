@@ -112,7 +112,7 @@ export default function Calculator(props) {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2026-01-03 22:15';
+    const LATEST_CHANGELOG_VERSION = '2026-01-19 07:54';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
@@ -278,7 +278,9 @@ export default function Calculator(props) {
     const teamRotation = getResolvedTeamRotations(characterRuntimeStates[charId], characterRuntimeStates, savedRotations);
     const [savedTeamRotations, setSavedTeamRotations] = usePersistentState('globalSavedTeamRotations', []);
     const [smartFilter, setSmartFilter] = usePersistentState('smartFilter', true);
-    const [generalOptimizerSettings, setGeneralOptimizerSettings] = usePersistentState('generalOptimizerSettings', {});
+    const [generalOptimizerSettings, setGeneralOptimizerSettings] = usePersistentState('generalOptimizerSettings', {
+        resultsLimit: 128
+    });
 
     useEffect(() => {
         Promise.all([fetchCharacters(), fetchWeapons()]).then(([charData, weaponData]) => {

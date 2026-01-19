@@ -43,6 +43,8 @@ import {applyBulingLogic, bulingBuffsLogic, bulingMultipliers} from "./1307.js";
 import {applyChisaLogic, chisaBuffsLogic, chisaMultipliers} from "./1508.js";
 import {applyLynaeLogic, lynaeBuffsLogic, lynaeMultipliers} from "./1509.js";
 import {applyMornyeLogic, mornyeBuffsLogic, mornyeMultipliers} from "./1209.js";
+import {applyAemeathLogic, aemeathBuffsLogic, aemeathMultipliers} from "./1210.js";
+import {applyLuukLogic, luukBuffsLogic, luukMultipliers} from "./1510.js";
 
 const overrides = {
     '1506': {
@@ -272,10 +274,20 @@ const overrides = {
         multipliers: lynaeMultipliers,
         buffsLogic: lynaeBuffsLogic
     },
+    "1510": {
+        logic: applyLuukLogic,
+        multipliers: luukMultipliers,
+        buffsLogic: luukBuffsLogic
+    },
     "1209": {
         logic: applyMornyeLogic,
         multipliers: mornyeMultipliers,
         buffsLogic: mornyeBuffsLogic
+    },
+    "1210": {
+        logic: applyAemeathLogic,
+        multipliers: aemeathMultipliers,
+        buffsLogic: aemeathBuffsLogic
     }
 };
 

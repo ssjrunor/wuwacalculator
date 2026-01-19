@@ -149,6 +149,8 @@ export default function Optimizer({
     const maxScore = getTop5SubstatScoreDetails(charId).total;
     const echoData = runtime?.equippedEchoes ?? [];
     const [resEchoes, setResEchoes] = useState(echoData);
+    const RESULTS_PER_PAGE = 32;
+    const [pageIndex, setPageIndex] = useState(0);
 
     const [showSkillOptions, setShowSkillOptions] = useState(false);
     const [echoMenuOpen, setEchoMenuOpen] = useState(false);
@@ -200,7 +202,7 @@ export default function Optimizer({
 
     const echoBag = getEchoBag();
     const [isLoading, setIsLoading] = useState(false);
-    const resultsLimit = generalOptimizerSettings.resultsLimit ?? 32;
+    const resultsLimit = generalOptimizerSettings.resultsLimit ?? 64;
     const [progress, setProgress] = useState({
         progress: 0,
         elapsedMs: 0,
@@ -282,6 +284,41 @@ export default function Optimizer({
         setOptimizerResults([]);
     }, [activeCharacter]);
 
+    useEffect(() => {
+        setPageIndex(0);
+    }, [optimizerResults]);
+
+    const totalPages = Math.max(1, Math.ceil(resultLength / RESULTS_PER_PAGE));
+    const pageStart = pageIndex * RESULTS_PER_PAGE;
+    const pageEnd = pageStart + RESULTS_PER_PAGE;
+    const visibleResults = optimizerResults.slice(pageStart, pageEnd);
+
+    const pageItems = React.useMemo(() => {
+        const items = [];
+        if (totalPages <= 10) {
+            for (let i = 0; i < totalPages; i++) items.push(i);
+            return items;
+        }
+        if (pageIndex < 7) {
+            for (let i = 0; i < 7; i++) items.push(i);
+            items.push("...");
+            items.push(totalPages - 1);
+            return items;
+        }
+        if (pageIndex > totalPages - 8) {
+            items.push(0);
+            items.push("...");
+            for (let i = totalPages - 7; i < totalPages; i++) items.push(i);
+            return items;
+        }
+        items.push(0);
+        items.push("...");
+        for (let i = pageIndex - 2; i <= pageIndex + 2; i++) items.push(i);
+        items.push("...");
+        items.push(totalPages - 1);
+        return items;
+    }, [pageIndex, totalPages]);
+
     const [pendingCombinations, setPendingCombinations] = useState(false);
     const [batchSize, setBatchSize] = useState(null);
     const comboTimer = useRef(null);
@@ -327,7 +364,7 @@ export default function Optimizer({
     }
 
     function handleReset() {
-        updateGeneralOptimizerSettings({ keepPercent: 0, resultsLimit: 32 });
+        updateGeneralOptimizerSettings({ keepPercent: 0, resultsLimit: 64 });
         setProgress({
             progress: 0,
             elapsedMs: 0,
@@ -630,13 +667,13 @@ export default function Optimizer({
                             <div className="optimizer-results">
                                 {!isLoading ? (
                                     <>
-                                        {optimizerResults.map((res, i) => {
+                                        {visibleResults.map((res, i) => {
                                             const echoObjs = resolveEchoesFromIds(res.uids, echoBag);
                                             const { setPlan, statTotals } = computeEchoStatsFromIds(res.uids, echoBag, currentContext, form.charId);
 
                                             return (
                                                 <EchoOptimizerRow
-                                                    key={i}
+                                                    key={pageStart + i}
                                                     finalStats={runtime?.finalStats ?? finalStats}
                                                     echoData={echoObjs}
                                                     setPlan={setPlan}
@@ -652,6 +689,37 @@ export default function Optimizer({
                                                 />
                                             );
                                         })}
+                                        {totalPages > 1 && (
+                                            <div className="optimizer-pagination rotation-item sticky-footer">
+                                                <button
+                                                    className="pager-btn subtle"
+                                                    disabled={pageIndex === 0}
+                                                    onClick={() => setPageIndex((p) => Math.max(0, p - 1))}
+                                                >
+                                                    ‹
+                                                </button>
+                                                {pageItems.map((p, idx) =>
+                                                    p === "..." ? (
+                                                        <span key={`ellipsis-${idx}`} className="pager-ellipsis">…</span>
+                                                    ) : (
+                                                        <button
+                                                            key={p}
+                                                            className={`pager-btn ${p === pageIndex ? "active" : ""}`}
+                                                            onClick={() => setPageIndex(p)}
+                                                        >
+                                                            {p + 1}
+                                                        </button>
+                                                    )
+                                                )}
+                                                <button
+                                                    className="pager-btn subtle"
+                                                    disabled={pageIndex >= totalPages - 1}
+                                                    onClick={() => setPageIndex((p) => Math.min(totalPages - 1, p + 1))}
+                                                >
+                                                    ›
+                                                </button>
+                                            </div>
+                                        )}
                                     </>
                                 ) : (
                                     <div className="fancy-loader-container">

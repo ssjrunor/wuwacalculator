@@ -43,12 +43,15 @@ export function applySetEffectsFast(s, skillMask = 0) {
     const s24_2 = has2(s[24]);
     const s25_5 = has5(s[25]);
     const s26_2 = has2(s[26]);   const s26_5 = has5(s[26]);
+    const s27_2 = has2(s[27]);   const s27_5 = has5(s[27]);
+    const s28_2 = has2(s[28]);
+    const s29_2 = has2(s[29]);   const s29_5 = has5(s[29]);
 
     return {
         glacio: 10 * s1_2 + 30 * s1_5 + 12 * s10_2 + 22.5 * s10_5,
-        fusion: 10 * s2_2 + 30 * s2_5 + 10 * s18_2 + 15 * s18_5 + 16 * s22_3,
+        fusion: 10 * s2_2 + 30 * s2_5 + 10 * s18_2 + 15 * s18_5 + 16 * s22_3 + 10 * s27_2 + 20 * s27_5 + 10 * s28_2,
         electro: 10 * s3_2 + 30 * s3_5,
-        aero: 10 * s4_2 + 30 * s4_5 + 10 * s16_2 + 30 * s16_5 + 10 * s17_2 + 30 * s17_5,
+        aero: 10 * s4_2 + 30 * s4_5 + 10 * s16_2 + 30 * s16_5 + 10 * s17_2 + 30 * s17_5 + 10 * s29_2 + 15 * s29_5,
         spectro: 10 * s5_2 + 30 * s5_5 + 10 * s11_2 + 15 * s11_5 + 10 * s24_2 + 10 * s26_2 + 30 * s26_5,
         havoc: 10 * s6_2 + 30 * s6_5 + 10 * s12_2,
         atkP: 15 * s7_5 + 10 * s9_2 + 20 * s9_5 + 20 * s13_5 + 15 * s14_5 + 30 * s20_3 + 20 * s23_3 + 25 * s25_5,
@@ -58,7 +61,8 @@ export function applySetEffectsFast(s, skillMask = 0) {
         defP: 0,
         defF: 0,
         critRate: 20 * s11_5 + 10 * s17_5 + 20 * s19_3 + 20 * s22_3 *
-            (((skillMask & (SKILL_MASK.HEAVY | SKILL_MASK.ECHO_SKILL)) !== 0) ? 1 : 0),
+            (((skillMask & (SKILL_MASK.HEAVY | SKILL_MASK.ECHO_SKILL)) !== 0) ? 1 : 0) + 20 * s27_5
+            + (((skillMask & SKILL_MASK.ECHO_SKILL) !== 0) ? 1 : 0) * s29_5,
         critDmg: 20 * s20_3,
         er: 0,
         erSetBonus: 10 * s8_2 + 10 * s13_2 + 10 * s14_2,

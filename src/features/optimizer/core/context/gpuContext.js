@@ -46,6 +46,10 @@ export function prepareGpuContext({
     const elementIdFromSkillId = hasSkillId ? getElementIdFromSkillId(skillId) : -1;
     const skillTypeMaskFromSkillId = hasSkillId ? getSkillTypeMaskFromSkillId(skillId) : 0;
 
+
+/*
+    console.log();
+*/
     return {
         baseAtk: finalStatsBase.atk.base,
         baseHp: finalStatsBase.hp.base,

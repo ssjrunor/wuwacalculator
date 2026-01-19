@@ -96,7 +96,10 @@ export function calculateDamage({
                                     skillCritRate = 0,
                                     fixedDmg = null,
                                     skillDmgTaken = 0,
-                                    returnContextOnly = false
+                                    returnContextOnly = false,
+                                    baseTuneRup,
+    dmgType,
+                                    skillMeta
                                 }) {
     if (fixedDmg) {
         const normal = Math.max(1, Math.floor(fixedDmg));
@@ -178,12 +181,6 @@ export function calculateDamage({
     const dmgTakenTotalPercent = (skillDmgTaken ?? 0) + (dmgVuln ?? 0);
     const dmgReductionTotal = 1 + dmgTakenTotalPercent / 100;
 
-    // ---- damage bonus (total DMG%) ----
-    // totalDmgBonus already includes:
-    //  - base element DMG% from character
-    //  - attribute buffs (all + element)
-    //  - skill-type DMG% buffs (all + specific)
-    // We just add any extra per-skill DMG% params on top.
     const elementBonusPercent =
         (totalDmgBonus ?? 0) +
         (skillDmgBonus ?? 0);
@@ -196,7 +193,7 @@ export function calculateDamage({
 
     const special = 1 + 0; // placeholder for any future special multiplier
 
-    const normal =
+    let normal =
         baseDmg *
         resMult *
         defMult *
@@ -221,9 +218,9 @@ export function calculateDamage({
     const critRate = totalCritRatePercent / 100;
     const critDmg = totalCritDmgPercent / 100;
 
-    const crit = normal * critDmg;
+    let crit = normal * critDmg;
 
-    const avg = critRate >= 1
+    let avg = critRate >= 1
         ? crit
         : (crit * critRate) + (normal * (1 - critRate));
 
@@ -249,6 +246,23 @@ export function calculateDamage({
             normalBase: baseDmg,
             avg
         };
+    }
+
+/*
+    if (skillMeta.name.includes('Finale DMG')) console.log('non op: ', dmgBonus)
+*/
+
+    if (dmgType === 'tuneBreak') {
+        const bonus = 1 +
+            ((finalStats.skillType?.tuneRupture?.dmgBonus ?? 0) + (finalStats.tuneBreakBoost ?? 10)) / 100;
+        normal = baseTuneRup * resMult *
+            defMult *
+            dmgReductionTotal * 14 * bonus;
+        crit = normal * (skillMeta.tuneBreakCd ?? 1);
+        const cr = (skillMeta.tuneBreakCr ?? 0)
+        avg = cr >= 1
+            ? crit
+            : (crit * cr) + (normal * (1 - cr));
     }
 
     return {

@@ -7,9 +7,18 @@ export default function DropdownSelect({
                                            onChange,
                                            disabled = false,
                                            className = '',
-                                           width = '60px'
+                                           width = '80px',
+                                           locked = false,
+    text = ''
                                        }) {
     const [isOpen, setIsOpen] = useState(false);
+    const normalizedOptions = (options ?? []).map((opt) => {
+        if (typeof opt === 'object') {
+            return { label: opt.label ?? opt.value, value: opt.value };
+        }
+        return { label: opt, value: opt };
+    });
+    const stringValue = value === undefined || value === null ? '' : String(value);
 
     return (
         <div
@@ -24,8 +33,13 @@ export default function DropdownSelect({
             <div className="select-container">
                 <select
                     className="custom-select small"
-                    value={value}
-                    onChange={(e) => onChange(Number(e.target.value))}
+                    value={stringValue}
+                    onChange={(e) => {
+                        const selected = normalizedOptions.find(
+                            (opt) => String(opt.value ?? '') === e.target.value
+                        );
+                        onChange(selected?.value ?? e.target.value);
+                    }}
                     onFocus={() => setIsOpen(true)}
                     onBlur={() => setIsOpen(false)}
                     disabled={disabled}
@@ -33,12 +47,20 @@ export default function DropdownSelect({
                         cursor: !disabled ? 'pointer' : 'not-allowed'
                     }}
                 >
-                    {options.map((opt) => (
-                        <option key={opt} value={opt}>{opt}</option>
+                    {normalizedOptions.map((opt) => (
+                        <option key={String(opt.value ?? opt.label)} value={String(opt.value ?? '')}>
+                            {opt.label}
+                        </option>
                     ))}
                 </select>
                 <span className="dropdown-arrow">▼</span>
             </div>
+            { locked && (
+                <span style={{ fontSize: '12px', color: 'gray' }}>
+                                {text}
+                            </span>
+            )}
+
         </div>
     );
 }

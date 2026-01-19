@@ -15,6 +15,7 @@ export function applyEchoLogic({ mergedBuffs, characterState }) {
     if (echo.clawprint) mergedBuffs.attribute.fusion.dmgBonus += 15;
     if (echo.neonlightLeapToggle) mergedBuffs.atk.percent += 15;
     if (echo.hyvatia) mergedBuffs.attribute.all.dmgBonus += 10;
+    if (echo.chromaticFoam) mergedBuffs.attribute.fusion.dmgBonus += 25;
 
     const lawOfHarmonyStack = echo.lawOfHarmony ?? 0;
     mergedBuffs.skillType.echoSkill.dmgBonus += 8 * lawOfHarmonyStack;
@@ -43,7 +44,8 @@ export function getActiveEchoes(activeStates = {}) {
         lawOfHarmony: 'Law of Harmony',
         neonlightLeap: 'Pact of Neonlight Leap',
         starryRadiance: 'Halo of Starry Radiance',
-        hyvatia: 'Hyvatia'
+        hyvatia: 'Hyvatia',
+        chromaticFoam: 'Chromatic Foam',
     };
 
     const result = [];

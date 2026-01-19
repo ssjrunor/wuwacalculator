@@ -1,5 +1,6 @@
 export * from "../engine/echoOptimizer.js";
 export * from "../engine/run.js";
+export * from "../engine/shared.js";
 export * from "../engine/rotationOptimizer.js";
 export * from "../combos/batches.js";
 export * from "../combos/combinadic.js";

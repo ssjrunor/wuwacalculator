@@ -12,9 +12,12 @@ import {
     runWorkerOnRotationBatch,
     setWorkerLockedEchoIndex,
     setWorkerRotationContext,
-    TopKHeap,
-    makeSortedKey5BigInt,
 } from "../misc/index.js";
+import {
+    createProgressTracker,
+    createResultCollector,
+    flushPendingBatches,
+} from "./shared.js";
 
 function findLevelData(allSkillLevels, tab, label) {
     const levelList = allSkillLevels?.[tab];
@@ -237,45 +240,16 @@ async function runRotationGpuPath({
     const comboCountPerRun = comboIndexing?.totalCombos ?? 0;
     const targetCombosPerJob = ECHO_OPTIMIZER_JOB_TARGET_COMBOS_ROTATION_GPU;
     const totalForProgress = combinations ?? (comboCountPerRun * mainFactor * runCount);
-    let totalProcessed = 0;
-    const startTime = performance.now();
-    let lastUpdateTime = startTime;
-    let avgSpeed = 0;
-    let speedSamples = 0;
+    const applyProgress = createProgressTracker({
+        totalForProgress,
+        mainFactor,
+        onProgress,
+    });
 
     // Keep a larger candidate pool to handle deduplication across batches
     const oversample = 8;
-    const candidateLimit = Math.min(Math.max(resultsLimit * oversample, resultsLimit), 512);
-    const jobResultsLimit = Math.min(Math.max(resultsLimit * 2, resultsLimit), 128);
-
-    const topResults = new TopKHeap(candidateLimit);
-    const globalBestBySet = new Map();
-
-    const applyProgress = (comboDelta) => {
-        totalProcessed += comboDelta * mainFactor;
-        const now = performance.now();
-        const elapsedSinceLast = now - lastUpdateTime;
-        if (elapsedSinceLast > 0) {
-            const speed = (comboDelta * mainFactor) / elapsedSinceLast;
-            avgSpeed = (avgSpeed * speedSamples + speed) / (speedSamples + 1);
-            speedSamples++;
-            lastUpdateTime = now;
-        }
-        let remainingMs = Infinity;
-        if (avgSpeed > 0) {
-            const combosLeft = totalForProgress - totalProcessed;
-            remainingMs = combosLeft / avgSpeed;
-        }
-        if (onProgress) {
-            onProgress({
-                progress: totalProcessed / totalForProgress,
-                elapsedMs: now - startTime,
-                remainingMs,
-                processed: totalProcessed,
-                speed: avgSpeed * 1000,
-            });
-        }
-    };
+    const jobResultsLimit = Math.min(Math.max(resultsLimit * 2, resultsLimit), 65536);
+    const resultCollector = createResultCollector({ resultsLimit, oversample });
 
     const lockedRuns =
         Array.isArray(lockedIndices) && lockedIndices.length
@@ -318,13 +292,7 @@ async function runRotationGpuPath({
 
             if (r.topK) {
                 for (const { dmg, ids } of r.topK) {
-                    if (dmg <= 0) continue;
-                    const key = makeSortedKey5BigInt(ids[0], ids[1], ids[2], ids[3], ids[4]);
-                    const prev = globalBestBySet.get(key);
-                    if (prev == null || dmg > prev) {
-                        globalBestBySet.set(key, dmg);
-                        topResults.push({ dmg, ids });
-                    }
+                    resultCollector.push({ dmg, ids });
                 }
             }
 
@@ -333,16 +301,7 @@ async function runRotationGpuPath({
         }
     }
 
-    const candidates = topResults.sorted().slice(0, resultsLimit);
-
-    return candidates.map(({ dmg, ids }) => {
-        const uids = ids.map((idx) => {
-            if (idx < 0) return null;
-            const echo = echoes?.[idx];
-            return echo?.uid ?? null;
-        });
-        return { ids, uids, damage: dmg };
-    });
+    return resultCollector.toResults({ echoes, limit: resultsLimit });
 }
 
 // CPU path: uses batch-based enumeration
@@ -364,44 +323,15 @@ async function runRotationCpuPath({
     const targetIntsPerJob = targetCombosPerJob * OPTIMIZER_ECHOS_PER_COMBO;
 
     const totalForProgress = combinations ?? 0;
-    let totalProcessed = 0;
-    const startTime = performance.now();
-    let lastUpdateTime = startTime;
-    let avgSpeed = 0;
-    let speedSamples = 0;
+    const applyProgress = createProgressTracker({
+        totalForProgress,
+        mainFactor,
+        onProgress,
+    });
 
     const oversample = 8;
-    const candidateLimit = Math.min(Math.max(resultsLimit * oversample, resultsLimit), 512);
-    const jobResultsLimit = Math.min(Math.max(resultsLimit * 2, resultsLimit), 128);
-
-    const topResults = new TopKHeap(candidateLimit);
-    const globalBestBySet = new Map();
-
-    const applyProgress = (comboDelta) => {
-        totalProcessed += comboDelta * mainFactor;
-        const now = performance.now();
-        const elapsedSinceLast = now - lastUpdateTime;
-        if (elapsedSinceLast > 0) {
-            const speed = (comboDelta * mainFactor) / elapsedSinceLast;
-            avgSpeed = (avgSpeed * speedSamples + speed) / (speedSamples + 1);
-            speedSamples++;
-            lastUpdateTime = now;
-        }
-        let remainingMs = Infinity;
-        if (avgSpeed > 0) {
-            const combosLeft = totalForProgress - totalProcessed;
-            remainingMs = combosLeft / avgSpeed;
-        }
-        if (onProgress) {
-            onProgress({
-                progress: totalProcessed / totalForProgress,
-                elapsedMs: now - startTime,
-                remainingMs,
-                processed: totalProcessed,
-                speed: avgSpeed * 1000,
-            });
-        }
-    };
+    const jobResultsLimit = Math.min(Math.max(resultsLimit * 2, resultsLimit), 65536);
+    const resultCollector = createResultCollector({ resultsLimit, oversample });
 
     const runOneJob = async (intsArray, runLockedIndex) => {
         const comboCount = (intsArray.length / OPTIMIZER_ECHOS_PER_COMBO) | 0;
@@ -438,13 +368,7 @@ async function runRotationCpuPath({
 
         if (r.topK) {
             for (const { dmg, ids } of r.topK) {
-                if (dmg <= 0) continue;
-                const key = makeSortedKey5BigInt(ids[0], ids[1], ids[2], ids[3], ids[4]);
-                const prev = globalBestBySet.get(key);
-                if (prev == null || dmg > prev) {
-                    globalBestBySet.set(key, dmg);
-                    topResults.push({ dmg, ids });
-                }
+                resultCollector.push({ dmg, ids });
             }
         }
 
@@ -460,28 +384,18 @@ async function runRotationCpuPath({
     let pendingInts = 0;
 
     const flushPending = async (runLockedIndex) => {
-        if (pendingInts <= 0) return { cancelled: false };
+        const { cancelled, pending: newPending, pendingInts: newPendingInts } =
+            await flushPendingBatches({
+                pending,
+                pendingInts,
+                runJob: (merged) => runOneJob(merged, runLockedIndex),
+                applyProgress,
+            });
 
-        let merged;
-        if (pending.length === 1) {
-            merged = pending[0];
-        } else {
-            merged = new Int32Array(pendingInts);
-            let off = 0;
-            for (const b of pending) {
-                merged.set(b, off);
-                off += b.length;
-            }
-        }
+        pending = newPending;
+        pendingInts = newPendingInts;
 
-        pending = [];
-        pendingInts = 0;
-
-        const { cancelled, comboCount } = await runOneJob(merged, runLockedIndex);
-        if (cancelled) return { cancelled: true };
-
-        applyProgress(comboCount);
-        return { cancelled: false };
+        return { cancelled };
     };
 
     for (const runLockedIndex of lockedRuns) {
@@ -514,14 +428,5 @@ async function runRotationCpuPath({
         }
     }
 
-    const candidates = topResults.sorted().slice(0, resultsLimit);
-
-    return candidates.map(({ dmg, ids }) => {
-        const uids = ids.map((idx) => {
-            if (idx < 0) return null;
-            const echo = echoes?.[idx];
-            return echo?.uid ?? null;
-        });
-        return { ids, uids, damage: dmg };
-    });
+    return resultCollector.toResults({ echoes, limit: resultsLimit });
 }

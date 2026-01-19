@@ -70,10 +70,10 @@ export function calc1306CritConversion(charId, sequence, critRateTotal) {
  * @returns {Object} { dmgVuln, critRateBonus, critDmgBonus }
  */
 export function calc1209Conversion(charId, finalER, id) {
-    if (charId !== 1209 || finalER <= 0) return { dmgVuln: 0, critRateBonus: 0, critDmgBonus: 0 };
+    if (charId !== 1209 || finalER <= 0) return { mornyeDmgBonus: 0, critRateBonus: 0, critDmgBonus: 0 };
 
     const erOver = finalER - 100;
-    const dmgVuln = Math.min(erOver * .25, 40);
+    const mornyeDmgBonus = Math.min(erOver * .25, 40);
 
     let critRateBonus = 0;
     let critDmgBonus = 0;
@@ -85,7 +85,7 @@ export function calc1209Conversion(charId, finalER, id) {
         critDmgBonus = Math.min(erOver, 160) / 100;
     }
 
-    return { dmgVuln, critRateBonus, critDmgBonus };
+    return { mornyeDmgBonus: mornyeDmgBonus / 100, critRateBonus, critDmgBonus };
 }
 
 /**

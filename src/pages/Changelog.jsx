@@ -775,5 +775,30 @@ export const changelog = [
             }
         ],
         shortDesc: `New year tune-up: faster optimizer + rotation-ready Suggestions (〜^∇^)〜`
-    }
+    },
+    {
+        date: '19/01/2025',
+        patchVersion: '3.1.2 (Beta)',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `Added <strong>3.1.2</strong> beta content to the calculator.`,
+            },
+            {
+                type: 'paragraph',
+                content: `
+                - All currently released characters are supported.<br/>
+                - All new Echoes and Sonata sets have been added to the data model.<br/>
+                - All new weapons are wired in.
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `Reworked <strong>Tune Rupture</strong>: i don't necessarily understand it well enough to give that much of a breakdown but it's correct right now for 
+                Calamity/Overlord class enemies, other enemy classes will be supported on a future update. <strong>Tune Rupture</strong> will also be brought to all characters (so not just lynae).`,
+            },
+        ],
+        shortDesc: `3.1.2 beta content~! (and some other stuff) (〜^∇^)〜`,
+    },
+
 ];

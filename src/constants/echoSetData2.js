@@ -620,6 +620,82 @@ export const echoSets = {
             },
         },
         icon: '/assets/echo-icons/riteOfGildedRevelation.webp',
+    },
+
+    27: {
+        setMax: 5,
+        name: 'Trailblazing Star',
+        desc: {
+            twoPiece: 'Fusion DMG +10%',
+            fivePiece: 'Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator\'s Crit. Rate by 20% and grants 20% Fusion DMG Bonus for 8s.'
+        },
+        twoPiece: [
+            { value: 10, path: ['attribute', 'fusion', 'dmgBonus'] },
+        ],
+        fivePiece: null,
+        states: {
+            trailblazingStar5pc: {
+                perStack: [
+                    { value: 20, path: ['critRate'] },
+                    { value: 20, path: ['attribute', 'fusion', 'dmgBonus'] },
+                ],
+                max: [
+                    { value: 20, path: ['critRate'] },
+                    { value: 20, path: ['attribute', 'fusion', 'dmgBonus'] },
+                ],
+            },
+        },
+        icon: '/assets/echo-icons/default.webp',
+    },
+
+    28: {
+        setMax: 5,
+        name: 'Chromatic Foam',
+        desc: {
+            twoPiece: 'Fusion DMG +10%',
+            fivePiece: 'When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain 10% Fusion DMG Bonus for 15s. While this effect is active, casting an Outro Skill grants the incoming Resonator 25% Fusion DMG Bonus for 15s or until they\'re switched out.'
+        },
+        twoPiece: [
+            { value: 10, path: ['attribute', 'fusion', 'dmgBonus'] },
+        ],
+        fivePiece: null,
+        states: {
+            chromaticFoamSelf: {
+                perStack: [
+                    { value: 10, path: ['attribute', 'fusion', 'dmgBonus'] },
+                ],
+                max: [
+                    { value: 10, path: ['attribute', 'fusion', 'dmgBonus'] },
+                ],
+            },
+        },
+        icon: '/assets/echo-icons/default.webp',
+    },
+
+    29: {
+        setMax: 5,
+        name: 'Sound of True Name',
+        desc: {
+            twoPiece: 'Aero DMG +10%',
+            fivePiece: 'Dealing Echo Skill DMG to enemies increases the Resonator\'s Echo Skill Crit. Rate by 20%, and grants 15% Aero DMG Bonus for 5s'
+        },
+        twoPiece: [
+            { value: 10, path: ['attribute', 'aero', 'dmgBonus'] },
+        ],
+        fivePiece: null,
+        states: {
+            soundOfTrueName5pc: {
+                perStack: [
+                    { value: 20, path: ['skillType', 'echoSkill', 'critRate'] },
+                    { value: 15, path: ['attribute', 'aero', 'dmgBonus'] },
+                ],
+                max: [
+                    { value: 20, path: ['skillType', 'echoSkill', 'critRate'] },
+                    { value: 15, path: ['attribute', 'aero', 'dmgBonus'] },
+                ],
+            },
+        },
+        icon: '/assets/echo-icons/default.webp',
     }
 };
 

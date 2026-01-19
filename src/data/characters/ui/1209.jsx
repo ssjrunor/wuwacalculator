@@ -47,27 +47,14 @@ export default function MornyeUI({ activeStates, toggleState, setCharacterRuntim
                     <p>
                         Responding to Tune Strain - Interfered: Each stack of Tune Strain - Interfered on the target increases <span className="highlight">Mornye</span>'s total DMG against them. Every point of <span className="highlight">Mornye</span>'s Tune Break Boost increases the total DMG by <span className="highlight">0.12%</span>.
                     </p>
-                    Tune Break Boost
-                    <input
-                        type="number"
-                        className="character-level-input"
-                        min="0"
-                        max="10000"
-                        value={activeStates.mornyeTuneBreakBoost ?? 0}
-                        onChange={(e) => {
-                            const val = Math.max(0, Math.min(50, Number(e.target.value) || 0));
-                            setCharacterRuntimeStates(prev => ({
-                                ...prev,
-                                [charId]: {
-                                    ...(prev[charId] ?? {}),
-                                    activeStates: {
-                                        ...(prev[charId]?.activeStates ?? {}),
-                                        mornyeTuneBreakBoost: val
-                                    }
-                                }
-                            }));
-                        }}
-                    />
+                    <label className="modern-checkbox">
+                        <input
+                            type="checkbox"
+                            checked={activeStates.decoupling || false}
+                            onChange={() => toggleState('decoupling')}
+                        />
+                        Enable
+                    </label>
                 </div>
             </div>
         </div>

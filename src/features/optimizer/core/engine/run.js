@@ -3,13 +3,17 @@ import {
     runWorkerOnIndexRange,
     setWorkerLockedEchoIndex
 } from "../workers/pool.js";
-import { TopKHeap } from "../misc/utils.js";
 import { packOptimizerContext } from "../context/pack.js";
 import {
     ECHO_OPTIMIZER_JOB_TARGET_COMBOS_GPU,
     OPTIMIZER_ECHOS_PER_COMBO,
     OPTIMIZER_ENABLE_TIMING_LOGS
 } from "../misc/index.js";
+import {
+    createProgressTracker,
+    createResultCollector,
+    flushPendingBatches,
+} from "./shared.js";
 
 export async function runEchoOptimizer({
     comboBatchGenerator,
@@ -34,14 +38,14 @@ export async function runEchoOptimizer({
     const totalForProgress = progressCombinations ?? combinations;
     const targetIntsPerJob = targetCombosPerJob * OPTIMIZER_ECHOS_PER_COMBO;
 
-    let totalProcessed = 0;
-    const topResults = new TopKHeap(resultsLimit);
-    const globalBestBySet = new Map();
-
-    const startTime = performance.now();
-    let lastUpdateTime = startTime;
-    let avgSpeed = 0;
-    let speedSamples = 0;
+    const applyProgress = createProgressTracker({
+        totalForProgress,
+        mainFactor,
+        onProgress,
+    });
+    const oversample = 8;
+    const jobResultsLimit = Math.min(Math.max(resultsLimit * 2, resultsLimit), 65536);
+    const collector = createResultCollector({ resultsLimit, oversample });
 
     let pending = [];
     let pendingInts = 0;
@@ -75,7 +79,7 @@ export async function runEchoOptimizer({
         const r = await runWorkerOnBatch({
             combosBatch,
             packedContext,
-            resultsLimit,
+            resultsLimit: jobResultsLimit,
             encodedConstraints,
         });
         if (OPTIMIZER_ENABLE_TIMING_LOGS) {
@@ -89,15 +93,7 @@ export async function runEchoOptimizer({
 
         if (r.topK) {
             for (const { dmg, ids } of r.topK) {
-                if (dmg <= 0) continue;
-
-                const key = makeSortedKey5BigInt(ids[0], ids[1], ids[2], ids[3], ids[4]);
-                const prev = globalBestBySet.get(key);
-
-                if (prev == null || dmg > prev) {
-                    globalBestBySet.set(key, dmg);
-                    topResults.push({ dmg, ids });
-                }
+                collector.push({ dmg, ids });
             }
         }
 
@@ -122,7 +118,7 @@ export async function runEchoOptimizer({
             comboStart,
             comboCount,
             packedContext,
-            resultsLimit,
+            resultsLimit: jobResultsLimit,
             encodedConstraints,
         });
         if (OPTIMIZER_ENABLE_TIMING_LOGS) {
@@ -136,75 +132,26 @@ export async function runEchoOptimizer({
 
         if (r.topK) {
             for (const { dmg, ids } of r.topK) {
-                if (dmg <= 0) continue;
-
-                const key = makeSortedKey5BigInt(ids[0], ids[1], ids[2], ids[3], ids[4]);
-                const prev = globalBestBySet.get(key);
-
-                if (prev == null || dmg > prev) {
-                    globalBestBySet.set(key, dmg);
-                    topResults.push({ dmg, ids });
-                }
+                collector.push({ dmg, ids });
             }
         }
 
         return { cancelled: false, comboCount };
     };
 
-    const applyProgress = (comboCount) => {
-        totalProcessed += comboCount * mainFactor;
-
-        const now = performance.now();
-        const elapsedSinceLast = now - lastUpdateTime;
-
-        if (elapsedSinceLast > 0) {
-            const speed = (comboCount * mainFactor) / elapsedSinceLast;
-            avgSpeed = (avgSpeed * speedSamples + speed) / (speedSamples + 1);
-            speedSamples++;
-            lastUpdateTime = now;
-        }
-
-        let remainingMs = Infinity;
-        if (avgSpeed > 0) {
-            const combosLeft = totalForProgress - totalProcessed;
-            remainingMs = combosLeft / avgSpeed; // ms
-        }
-
-        if (onProgress) {
-            onProgress({
-                progress: totalProcessed / totalForProgress,
-                elapsedMs: now - startTime,
-                remainingMs,
-                processed: totalProcessed,
-                speed: avgSpeed * 1000,
-            });
-        }
-    };
-
     const flushPending = async (runLockedIndex) => {
-        if (pendingInts <= 0) return { cancelled: false };
+        const { cancelled, pending: newPending, pendingInts: newPendingInts } =
+            await flushPendingBatches({
+                pending,
+                pendingInts,
+                runJob: (merged) => runOneJob(merged, runLockedIndex),
+                applyProgress,
+            });
 
-        let merged;
-        if (pending.length === 1) {
-            merged = pending[0];
-        } else {
-            merged = new Int32Array(pendingInts);
-            let off = 0;
-            for (const b of pending) {
-                merged.set(b, off);
-                off += b.length;
-            }
-        }
+        pending = newPending;
+        pendingInts = newPendingInts;
 
-        pending = [];
-        pendingInts = 0;
-
-        const { cancelled, comboCount } = await runOneJob(merged, runLockedIndex);
-        if (cancelled) return { cancelled: true };
-
-        applyProgress(comboCount);
-
-        return { cancelled: false };
+        return { cancelled };
     };
 
     if (useComboIndexing && comboIndexing) {
@@ -225,15 +172,7 @@ export async function runEchoOptimizer({
             }
         }
 
-        return topResults.sorted().map(({ dmg, ids }) => {
-            const uids = ids.map((idx) => {
-                if (idx < 0) return null;
-                const echo = echoes?.[idx];
-                return echo?.uid ?? null;
-            });
-
-            return { ids, uids, damage: dmg };
-        });
+        return collector.toResults({ echoes, limit: resultsLimit });
     }
 
     if (lockedRuns.length > 1 && !comboBatchGeneratorFactory) {
@@ -275,44 +214,7 @@ export async function runEchoOptimizer({
         }
     }
 
-    return topResults.sorted().map(({ dmg, ids }) => {
-        const uids = ids.map((idx) => {
-            if (idx < 0) return null;
-            const echo = echoes?.[idx];
-            return echo?.uid ?? null;
-        });
-
-        return { ids, uids, damage: dmg };
-    });
+    return collector.toResults({ echoes, limit: resultsLimit });
 }
 
-export function makeSortedKey5BigInt(a, b, c, d, e) {
-    if (a > b) [a, b] = [b, a];
-    if (c > d) [c, d] = [d, c];
-    if (a > c) [a, c] = [c, a];
-    if (b > d) [b, d] = [d, b];
-    if (b > c) [b, c] = [c, b];
-    let e0 = e;
-    if (e0 < b) {
-        if (e0 < a) {
-            return packKey(e0, a, b, c, d);
-        }
-        return packKey(a, e0, b, c, d);
-    }
-    if (e0 < d) {
-        if (e0 < c) {
-            return packKey(a, b, e0, c, d);
-        }
-        return packKey(a, b, c, e0, d);
-    }
-    return packKey(a, b, c, d, e0);
-}
-
-function packKey(a, b, c, d, e) {
-    const A = BigInt(a >>> 0);
-    const B = BigInt(b >>> 0);
-    const C = BigInt(c >>> 0);
-    const D = BigInt(d >>> 0);
-    const E = BigInt(e >>> 0);
-    return (((((A << 32n) | B) << 32n | C) << 32n | D) << 32n) | E;
-}
+export { makeSortedKey5BigInt } from "./shared.js";

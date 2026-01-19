@@ -45,7 +45,8 @@
           "Energy": 260,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 11000
+          "ToughLv": 11000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -173,7 +174,8 @@
           "Energy": 160,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 6405
+          "ToughLv": 6405,
+          "WeaknessLvl": 0
         },
         "28000402": {
           "Element": 3,
@@ -189,7 +191,8 @@
           "Energy": 274,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10980
+          "ToughLv": 10980,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -275,7 +278,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -377,7 +381,8 @@
           "Energy": 260,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 11000
+          "ToughLv": 11000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -511,7 +516,8 @@
           "Energy": 209,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 8380
+          "ToughLv": 8380,
+          "WeaknessLvl": 0
         },
         "28000502": {
           "Element": 6,
@@ -527,7 +533,8 @@
           "Energy": 157,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 6285
+          "ToughLv": 6285,
+          "WeaknessLvl": 0
         },
         "28000503": {
           "Element": 6,
@@ -543,7 +550,8 @@
           "Energy": 104,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4190
+          "ToughLv": 4190,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -654,7 +662,8 @@
           "Energy": 362,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14490
+          "ToughLv": 14490,
+          "WeaknessLvl": 0
         },
         "28000602": {
           "Element": 4,
@@ -670,7 +679,8 @@
           "Energy": 442,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17710
+          "ToughLv": 17710,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -784,7 +794,8 @@
           "Energy": 312,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 12510
+          "ToughLv": 12510,
+          "WeaknessLvl": 0
         },
         "28000702": {
           "Element": 1,
@@ -800,7 +811,8 @@
           "Energy": 312,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 12510
+          "ToughLv": 12510,
+          "WeaknessLvl": 0
         },
         "28000703": {
           "Element": 1,
@@ -816,7 +828,8 @@
           "Energy": 417,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 16680
+          "ToughLv": 16680,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -922,7 +935,8 @@
           "Energy": 246,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 9840
+          "ToughLv": 9840,
+          "WeaknessLvl": 0
         },
         "28000801": {
           "Element": 5,
@@ -938,7 +952,8 @@
           "Energy": 369,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14760
+          "ToughLv": 14760,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -1032,7 +1047,8 @@
           "Energy": 175,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7000
+          "ToughLv": 7000,
+          "WeaknessLvl": 0
         },
         "20004702": {
           "Element": 4,
@@ -1048,7 +1064,8 @@
           "Energy": 262,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10500
+          "ToughLv": 10500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -1159,7 +1176,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -1286,7 +1304,8 @@
           "Energy": 76,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3040
+          "ToughLv": 3040,
+          "WeaknessLvl": 0
         },
         "28000902": {
           "Element": 3,
@@ -1302,7 +1321,8 @@
           "Energy": 152,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 20000
+          "ToughLv": 20000,
+          "WeaknessLvl": 0
         },
         "28000903": {
           "Element": 3,
@@ -1318,7 +1338,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10000
+          "ToughLv": 10000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -1406,7 +1427,8 @@
           "Energy": 425,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17000
+          "ToughLv": 17000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -1617,7 +1639,8 @@
           "Energy": 275,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 5800
+          "ToughLv": 5800,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -1732,7 +1755,8 @@
           "Energy": 87,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3483
+          "ToughLv": 3483,
+          "WeaknessLvl": 0
         },
         "28001002": {
           "Element": 6,
@@ -1748,7 +1772,8 @@
           "Energy": 485,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 19410
+          "ToughLv": 19410,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -1853,7 +1878,8 @@
           "Energy": 124,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4976
+          "ToughLv": 4976,
+          "WeaknessLvl": 0
         },
         "28001102": {
           "Element": 6,
@@ -1869,7 +1895,8 @@
           "Energy": 422,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 16900
+          "ToughLv": 16900,
+          "WeaknessLvl": 0
         },
         "28001103": {
           "Element": 6,
@@ -1885,7 +1912,8 @@
           "Energy": 185,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7400
+          "ToughLv": 7400,
+          "WeaknessLvl": 0
         },
         "28001104": {
           "Element": 6,
@@ -1901,7 +1929,8 @@
           "Energy": 84,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3380
+          "ToughLv": 3380,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -1992,7 +2021,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -2110,7 +2140,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         },
         "20005103": {
           "Element": 0,
@@ -2126,7 +2157,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         },
         "20005104": {
           "Element": 0,
@@ -2142,7 +2174,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -2258,7 +2291,8 @@
           "Energy": 335,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 13400
+          "ToughLv": 13400,
+          "WeaknessLvl": 0
         },
         "20005502": {
           "Element": 1,
@@ -2274,7 +2308,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2000
+          "ToughLv": 2000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -2386,7 +2421,8 @@
           "Energy": 432,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17300
+          "ToughLv": 17300,
+          "WeaknessLvl": 0
         },
         "20005302": {
           "Element": 1,
@@ -2402,7 +2438,8 @@
           "Energy": 865,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 34600
+          "ToughLv": 34600,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -2523,7 +2560,8 @@
           "Energy": 211,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 8460
+          "ToughLv": 8460,
+          "WeaknessLvl": 0
         },
         "20005202": {
           "Element": 5,
@@ -2539,7 +2577,8 @@
           "Energy": 242,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 9693
+          "ToughLv": 9693,
+          "WeaknessLvl": 0
         },
         "20005203": {
           "Element": 5,
@@ -2555,7 +2594,8 @@
           "Energy": 242,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 9693
+          "ToughLv": 9693,
+          "WeaknessLvl": 0
         },
         "20005204": {
           "Element": 5,
@@ -2571,7 +2611,8 @@
           "Energy": 23,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 940
+          "ToughLv": 940,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -2690,7 +2731,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4000
+          "ToughLv": 4000,
+          "WeaknessLvl": 0
         },
         "28001202": {
           "Element": 5,
@@ -2706,7 +2748,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 800
+          "ToughLv": 800,
+          "WeaknessLvl": 0
         },
         "280012002": {
           "Element": 5,
@@ -2722,7 +2765,8 @@
           "Energy": 76,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3040
+          "ToughLv": 3040,
+          "WeaknessLvl": 0
         },
         "280012003": {
           "Element": 5,
@@ -2738,7 +2782,8 @@
           "Energy": 30,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1216
+          "ToughLv": 1216,
+          "WeaknessLvl": 0
         },
         "280012004": {
           "Element": 5,
@@ -2754,7 +2799,8 @@
           "Energy": 76,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3040
+          "ToughLv": 3040,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -2849,7 +2895,8 @@
           "Energy": 304,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 12160
+          "ToughLv": 12160,
+          "WeaknessLvl": 0
         },
         "280013020": {
           "Element": 5,
@@ -2865,7 +2912,8 @@
           "Energy": 30,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1216
+          "ToughLv": 1216,
+          "WeaknessLvl": 0
         },
         "280013030": {
           "Element": 5,
@@ -2881,7 +2929,8 @@
           "Energy": 380,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 15200
+          "ToughLv": 15200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -2971,7 +3020,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 0,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -3082,7 +3132,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -3191,7 +3242,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7200
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -3302,7 +3354,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7200
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -3413,7 +3466,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7200
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -3524,7 +3578,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7200
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -3635,7 +3690,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7200
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -3766,7 +3822,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 0,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -3897,7 +3954,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -4008,7 +4066,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7200
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -4119,7 +4178,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -4234,7 +4294,8 @@
           "Energy": 89,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3566
+          "ToughLv": 3566,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -4371,7 +4432,8 @@
           "Energy": 435,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17400
+          "ToughLv": 17400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -4491,7 +4553,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -4602,7 +4665,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -4716,7 +4780,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -4837,7 +4902,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         },
         "20005902": {
           "Element": 1,
@@ -4853,7 +4919,8 @@
           "Energy": 931,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 37250
+          "ToughLv": 37250,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -4978,7 +5045,8 @@
           "Energy": 124,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4966
+          "ToughLv": 4966,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -5096,7 +5164,8 @@
           "Energy": 26,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1070
+          "ToughLv": 1070,
+          "WeaknessLvl": 0
         },
         "20006202": {
           "Element": 2,
@@ -5112,7 +5181,8 @@
           "Energy": 107,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4280
+          "ToughLv": 4280,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -5246,7 +5316,8 @@
           "Energy": 435,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17400
+          "ToughLv": 17400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -5366,7 +5437,8 @@
           "Energy": 65,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2610
+          "ToughLv": 2610,
+          "WeaknessLvl": 0
         },
         "20006402": {
           "Element": 0,
@@ -5382,7 +5454,8 @@
           "Energy": 174,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 6960
+          "ToughLv": 6960,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -5507,7 +5580,8 @@
           "Energy": 562,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 22500
+          "ToughLv": 22500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -5613,7 +5687,8 @@
           "Energy": 562,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 22500
+          "ToughLv": 22500,
+          "WeaknessLvl": 0
         },
         "28001402": {
           "Element": 1,
@@ -5629,7 +5704,8 @@
           "Energy": 562,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 22500
+          "ToughLv": 22500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -5732,7 +5808,8 @@
           "Energy": 51,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2045
+          "ToughLv": 2045,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -5824,7 +5901,8 @@
           "Energy": 63,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -5926,7 +6004,8 @@
           "Energy": 228,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 9120
+          "ToughLv": 9120,
+          "WeaknessLvl": 0
         },
         "28001802": {
           "Element": 4,
@@ -5942,7 +6021,8 @@
           "Energy": 30,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1216
+          "ToughLv": 1216,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -6037,7 +6117,8 @@
           "Energy": 56,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2250
+          "ToughLv": 2250,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -6134,7 +6215,8 @@
           "Energy": 562,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 22500
+          "ToughLv": 22500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -6230,7 +6312,8 @@
           "Energy": 562,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 22500
+          "ToughLv": 22500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -6368,7 +6451,8 @@
           "Energy": 367,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14700
+          "ToughLv": 14700,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -6474,7 +6558,8 @@
           "Energy": 562,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 22500
+          "ToughLv": 22500,
+          "WeaknessLvl": 0
         },
         "28002302": {
           "Element": 2,
@@ -6490,7 +6575,8 @@
           "Energy": 393,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 15750
+          "ToughLv": 15750,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -6589,7 +6675,8 @@
           "Energy": 380,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 15200
+          "ToughLv": 15200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -6678,7 +6765,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7200
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -6809,7 +6897,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 0,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -6936,7 +7025,8 @@
           "Energy": 26,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1070
+          "ToughLv": 1070,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -7052,7 +7142,8 @@
           "Energy": 435,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17400
+          "ToughLv": 17400,
+          "WeaknessLvl": 0
         },
         "20008002": {
           "Element": 5,
@@ -7068,7 +7159,8 @@
           "Energy": 652,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 26100
+          "ToughLv": 26100,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -7202,7 +7294,8 @@
           "Energy": 217,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 8700
+          "ToughLv": 8700,
+          "WeaknessLvl": 0
         },
         "20008102": {
           "Element": 4,
@@ -7218,7 +7311,8 @@
           "Energy": 217,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 8700
+          "ToughLv": 8700,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -7360,7 +7454,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         },
         "20008202": {
           "Element": 0,
@@ -7376,7 +7471,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         },
         "20008203": {
           "Element": 0,
@@ -7392,7 +7488,8 @@
           "Energy": 24,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 993
+          "ToughLv": 993,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -7533,7 +7630,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         },
         "20008302": {
           "Element": 5,
@@ -7549,7 +7647,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         },
         "20008303": {
           "Element": 5,
@@ -7565,7 +7664,8 @@
           "Energy": 74,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2980
+          "ToughLv": 2980,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -7698,7 +7798,8 @@
           "Energy": 90,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3600
+          "ToughLv": 3600,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -7807,7 +7908,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7200
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -7938,7 +8040,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -8069,7 +8172,8 @@
           "Energy": 36,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1440
+          "ToughLv": 1440,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -8193,7 +8297,8 @@
           "Energy": 165,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 6600
+          "ToughLv": 6600,
+          "WeaknessLvl": 0
         },
         "20008802": {
           "Element": 5,
@@ -8209,7 +8314,8 @@
           "Energy": 82,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3300
+          "ToughLv": 3300,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -8356,7 +8462,8 @@
           "Energy": 380,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 15200
+          "ToughLv": 15200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -8482,7 +8589,8 @@
           "Energy": 38,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1520
+          "ToughLv": 1520,
+          "WeaknessLvl": 0
         },
         "28002602": {
           "Element": 4,
@@ -8498,7 +8606,8 @@
           "Energy": 190,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7600
+          "ToughLv": 7600,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -8607,7 +8716,8 @@
           "Energy": 36,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1440
+          "ToughLv": 1440,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -8716,7 +8826,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -8825,7 +8936,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7200
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -8950,7 +9062,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -9081,7 +9194,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -9205,7 +9319,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         },
         "20009402": {
           "Element": 4,
@@ -9221,7 +9336,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -9367,7 +9483,8 @@
           "Energy": 281,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 22500
+          "ToughLv": 22500,
+          "WeaknessLvl": 0
         },
         "28002702": {
           "Element": 4,
@@ -9383,7 +9500,8 @@
           "Energy": 281,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 22500
+          "ToughLv": 22500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -9507,7 +9625,8 @@
           "Energy": 114,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4560
+          "ToughLv": 4560,
+          "WeaknessLvl": 0
         },
         "28002802": {
           "Element": 2,
@@ -9523,7 +9642,8 @@
           "Energy": 266,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10640
+          "ToughLv": 10640,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -9620,7 +9740,8 @@
           "Energy": 105,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 8466
+          "ToughLv": 8466,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -9711,7 +9832,8 @@
           "Energy": 380,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 15200
+          "ToughLv": 15200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -9810,7 +9932,8 @@
           "Energy": 268,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10733
+          "ToughLv": 10733,
+          "WeaknessLvl": 0
         },
         "20001302": {
           "Element": 6,
@@ -9826,7 +9949,8 @@
           "Energy": 268,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10733
+          "ToughLv": 10733,
+          "WeaknessLvl": 0
         },
         "20001303": {
           "Element": 6,
@@ -9842,7 +9966,8 @@
           "Energy": 268,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10733
+          "ToughLv": 10733,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -9933,7 +10058,8 @@
           "Energy": 72,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2880
+          "ToughLv": 2880,
+          "WeaknessLvl": 0
         },
         "20001402": {
           "Element": 1,
@@ -9949,7 +10075,8 @@
           "Energy": 7,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 288
+          "ToughLv": 288,
+          "WeaknessLvl": 0
         },
         "20001403": {
           "Element": 1,
@@ -9965,7 +10092,8 @@
           "Energy": 36,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1440
+          "ToughLv": 1440,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10046,7 +10174,8 @@
           "Energy": 22,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 900
+          "ToughLv": 900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10137,7 +10266,8 @@
           "Energy": 380,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 15200
+          "ToughLv": 15200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10272,7 +10402,8 @@
           "Energy": 76,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3075
+          "ToughLv": 3075,
+          "WeaknessLvl": 0
         },
         "28003102": {
           "Element": 3,
@@ -10288,7 +10419,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 22500
+          "ToughLv": 22500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10390,7 +10522,8 @@
           "Energy": 19,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 760
+          "ToughLv": 760,
+          "WeaknessLvl": 0
         },
         "28003202": {
           "Element": 4,
@@ -10406,7 +10539,8 @@
           "Energy": 228,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 9120
+          "ToughLv": 9120,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10494,7 +10628,8 @@
           "Energy": 450,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 18000
+          "ToughLv": 18000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10577,7 +10712,8 @@
           "Energy": 370,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14800
+          "ToughLv": 14800,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10665,7 +10801,8 @@
           "Energy": 27,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1080
+          "ToughLv": 1080,
+          "WeaknessLvl": 0
         },
         "20001502": {
           "Element": 3,
@@ -10681,7 +10818,8 @@
           "Energy": 72,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2880
+          "ToughLv": 2880,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10764,7 +10902,8 @@
           "Energy": 45,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1800
+          "ToughLv": 1800,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10852,7 +10991,8 @@
           "Energy": 36,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1440
+          "ToughLv": 1440,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -10940,7 +11080,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11058,7 +11199,8 @@
           "Energy": 91,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7280
+          "ToughLv": 7280,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11157,7 +11299,8 @@
           "Energy": 26,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1070
+          "ToughLv": 1070,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11231,7 +11374,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 0,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11310,7 +11454,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7500
+          "ToughLv": 7500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11408,7 +11553,8 @@
           "Energy": 107,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4280
+          "ToughLv": 4280,
+          "WeaknessLvl": 0
         },
         "20000702": {
           "Element": 6,
@@ -11424,7 +11570,8 @@
           "Energy": 160,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 6420
+          "ToughLv": 6420,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11515,7 +11662,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         },
         "20005103": {
           "Element": 0,
@@ -11531,7 +11679,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         },
         "20005104": {
           "Element": 0,
@@ -11547,7 +11696,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11633,7 +11783,8 @@
           "Energy": 89,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3566
+          "ToughLv": 3566,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11714,7 +11865,8 @@
           "Energy": 285,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 15000
+          "ToughLv": 15000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11738,6 +11890,29 @@
               "0.2%",
               "25%",
               "4"
+            ]
+          }
+        }
+      },
+      "28": {
+        "Id": 28,
+        "Name": "Chromatic Foam",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Param": [
+              "10%",
+              "15",
+              "25%",
+              "15"
             ]
           }
         }
@@ -11812,7 +11987,8 @@
           "Energy": 45,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3600
+          "ToughLv": 3600,
+          "WeaknessLvl": 0
         },
         "20012602": {
           "Element": 0,
@@ -11828,7 +12004,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 0,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11846,7 +12023,7 @@
             ]
           },
           "5": {
-            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by {0}. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -11875,6 +12052,28 @@
               "3",
               "5",
               "40%"
+            ]
+          }
+        }
+      },
+      "29": {
+        "Id": 29,
+        "Name": "Sound of True Name",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Aero DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by {0}, and grants {1} Aero DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "15%",
+              "5"
             ]
           }
         }
@@ -11939,7 +12138,8 @@
           "Energy": 71,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 5700
+          "ToughLv": 5700,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -11989,6 +12189,28 @@
             ]
           }
         }
+      },
+      "29": {
+        "Id": 29,
+        "Name": "Sound of True Name",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Aero DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by {0}, and grants {1} Aero DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "15%",
+              "5"
+            ]
+          }
+        }
       }
     },
     "Rarity": [
@@ -12010,7 +12232,7 @@
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31079_UI.T_IconMonsterHead_31079_UI",
     "Skill": {
-      "Desc": "Summon a Geospider S4 to attack enemies, dealing an instance of {0} Spectro DMG and an instance of {1} Spectro DMG.\n\nCD: {2}s.",
+      "Desc": "Summon a Geospider S4 to attack enemies, dealing {0} Spectro DMG once and {1} Spectro DMG once.\n \n CD: {2}s.",
       "SimpleDesc": "Summon a Geospider S4 to attack enemies, dealing Spectro DMG.",
       "Param": [
         [
@@ -12055,7 +12277,8 @@
           "Energy": 28,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2880
+          "ToughLv": 2880,
+          "WeaknessLvl": 0
         },
         "20012802": {
           "Element": 5,
@@ -12071,7 +12294,8 @@
           "Energy": 64,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4320
+          "ToughLv": 4320,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -12089,7 +12313,7 @@
             ]
           },
           "5": {
-            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by {0}. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -12118,6 +12342,28 @@
               "0.2%",
               "25%",
               "4"
+            ]
+          }
+        }
+      },
+      "27": {
+        "Id": 27,
+        "Name": "Trailblazing Star",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by {0} and grants {1} Fusion DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "20%",
+              "8"
             ]
           }
         }
@@ -12182,7 +12428,8 @@
           "Energy": 7,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1440
+          "ToughLv": 1440,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -12200,7 +12447,7 @@
             ]
           },
           "5": {
-            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by {0}. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -12232,6 +12479,51 @@
             ]
           }
         }
+      },
+      "28": {
+        "Id": 28,
+        "Name": "Chromatic Foam",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Param": [
+              "10%",
+              "15",
+              "25%",
+              "15"
+            ]
+          }
+        }
+      },
+      "29": {
+        "Id": 29,
+        "Name": "Sound of True Name",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Aero DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by {0}, and grants {1} Aero DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "15%",
+              "5"
+            ]
+          }
+        }
       }
     },
     "Rarity": [
@@ -12241,7 +12533,11 @@
       5
     ],
     "IntensityCode": 0,
-    "MonsterInfo": 310000820
+    "MonsterInfo": 310000820,
+    "Phantom": {
+      "Name": "Phantom: Zip Zap",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_31082_UI.T_IconMonsterGoods_SG_31082_UI"
+    }
   },
   {
     "id": "6000179",
@@ -12253,8 +12549,8 @@
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32049_UI.T_IconMonsterHead_32049_UI",
     "Skill": {
-      "Desc": "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing {0} Spectro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Spectro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill unleashes both Nebulous Cannon and Collapsar Blade skills in quick succession, but the DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use added every {9}s.",
-      "SimpleDesc": "Transform into Twin Nova: Nebulous Cannon to launch slashes at enemies, dealing Spectro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains Spectro and Basic Attack Bonuses.\n\nEquipping Twin Nova: Collapsar Blade at the same time grants special Echo Skill effects.",
+      "Desc": "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing {0} Spectro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Spectro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use added every {9}s.",
+      "SimpleDesc": "Transform into a Twin Nova: Nebulous Cannon to launch slashes at enemies, dealing Spectro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains Spectro and Basic Attack Bonuses.\n\nEquipping Twin Nova: Collapsar Blade at the same time grants special Echo Skill effects.",
       "Param": [
         [
           "44.73%",
@@ -12343,7 +12639,8 @@
           "Energy": 55,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4473
+          "ToughLv": 4473,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -12367,6 +12664,29 @@
               "3",
               "5",
               "40%"
+            ]
+          }
+        }
+      },
+      "28": {
+        "Id": 28,
+        "Name": "Chromatic Foam",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Param": [
+              "10%",
+              "15",
+              "25%",
+              "15"
             ]
           }
         }
@@ -12395,8 +12715,8 @@
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32050_UI.T_IconMonsterHead_32050_UI",
     "Skill": {
-      "Desc": "Transform into Twin Nova: Collapsar Blade to rapidly fire at enemies for 5s, with each attack dealing {0} Electro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Electro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Nebulous Cannon is equipped in another slot on the Resonator:\n- Casting Echo Skill unleashes both Nebulous Cannon and Collapsar Blade skills in quick succession, but is still considered performing the same Echo Skill.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG. The Electro DMG Bonus gained from equipping it in the main slot is turned into Spectro DMG Bonus.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n- This skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use added every {9}s.",
-      "SimpleDesc": "Transform into Twin Nova: Collapsar Blade to fire at enemies, dealing Electro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains Electro and Basic Attack Bonuses.\n\nEquipping Twin Nova: Nebulous Cannon at the same time grants special Echo Skill effects.",
+      "Desc": "Transform into a Twin Nova: Collapsar Blade to rapidly fire at enemies for 5s, with each attack dealing {0} Electro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains {6} Electro DMG Bonus and {7} Basic Attack DMG Bonus.\n\nCD: {11}s.\n\nIf Twin Nova: Nebulous Cannon is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Collapsar Blade and Nebulous Cannon alternately and is considered casting Echo skills of the same name.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG. The Electro DMG Bonus gained from equipping it in the main slot is turned into Spectro DMG Bonus.\n- Casting Basic Attacks grants <SapTag=1>{1}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>{2}</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to {3} times and lasts for {4}s. Each stack increases Echo Skill DMG by {5}, and all stacks are cleared after this Echo Skill ends.\n- This skill is capped at {10} uses. Initially, this skill can be used {8} times, with 1 use added every {9}s.",
+      "SimpleDesc": "Transform into a Twin Nova: Collapsar Blade to fire at enemies, dealing Electro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains Electro and Basic Attack Bonuses.\n\nEquipping Twin Nova: Nebulous Cannon at the same time grants special Echo Skill effects.",
       "Param": [
         [
           "1.12%",
@@ -12485,7 +12805,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 112
+          "ToughLv": 112,
+          "WeaknessLvl": 0
         },
         "20011602": {
           "Element": 5,
@@ -12501,7 +12822,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 112
+          "ToughLv": 112,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -12525,6 +12847,50 @@
               "3",
               "5",
               "40%"
+            ]
+          }
+        }
+      },
+      "27": {
+        "Id": 27,
+        "Name": "Trailblazing Star",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by {0} and grants {1} Fusion DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "20%",
+              "8"
+            ]
+          }
+        }
+      },
+      "29": {
+        "Id": 29,
+        "Name": "Sound of True Name",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Aero DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by {0}, and grants {1} Aero DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "15%",
+              "5"
             ]
           }
         }
@@ -12593,7 +12959,8 @@
           "Energy": 267,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10700
+          "ToughLv": 10700,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -12681,7 +13048,8 @@
           "Energy": 330,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 13200
+          "ToughLv": 13200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -12699,7 +13067,7 @@
             ]
           },
           "5": {
-            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by {0}. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -12779,7 +13147,8 @@
           "Energy": 14,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2980
+          "ToughLv": 2980,
+          "WeaknessLvl": 0
         },
         "20012002": {
           "Element": 2,
@@ -12795,7 +13164,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 745
+          "ToughLv": 745,
+          "WeaknessLvl": 0
         },
         "20012003": {
           "Element": 2,
@@ -12811,7 +13181,8 @@
           "Energy": 157,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14527
+          "ToughLv": 14527,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -12829,7 +13200,7 @@
             ]
           },
           "5": {
-            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by {0}. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -12914,6 +13285,51 @@
             ]
           }
         }
+      },
+      "28": {
+        "Id": 28,
+        "Name": "Chromatic Foam",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Param": [
+              "10%",
+              "15",
+              "25%",
+              "15"
+            ]
+          }
+        }
+      },
+      "29": {
+        "Id": 29,
+        "Name": "Sound of True Name",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Aero DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by {0}, and grants {1} Aero DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "15%",
+              "5"
+            ]
+          }
+        }
       }
     },
     "Rarity": [
@@ -12975,7 +13391,8 @@
           "Energy": 267,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10700
+          "ToughLv": 10700,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -12993,7 +13410,7 @@
             ]
           },
           "5": {
-            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by {0}. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -13022,6 +13439,28 @@
               "0.2%",
               "25%",
               "4"
+            ]
+          }
+        }
+      },
+      "29": {
+        "Id": 29,
+        "Name": "Sound of True Name",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Aero DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by {0}, and grants {1} Aero DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "15%",
+              "5"
             ]
           }
         }
@@ -13086,7 +13525,8 @@
           "Energy": 267,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10700
+          "ToughLv": 10700,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -13104,7 +13544,7 @@
             ]
           },
           "5": {
-            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by {0}. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -13133,6 +13573,28 @@
               "0.2%",
               "25%",
               "4"
+            ]
+          }
+        }
+      },
+      "29": {
+        "Id": 29,
+        "Name": "Sound of True Name",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Aero DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by {0}, and grants {1} Aero DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "15%",
+              "5"
             ]
           }
         }
@@ -13197,7 +13659,8 @@
           "Energy": 267,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10700
+          "ToughLv": 10700,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -13285,7 +13748,8 @@
           "Energy": 372,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14900
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -13333,8 +13797,8 @@
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34021_UI.T_IconMonsterHead_34021_UI",
     "Skill": {
-      "Desc": "Summon Hyvatia in mid-air to fire lasers at enemies, dealing {0} Spectro DMG 10 times.\n\nCasting Outro Skill within {1}s after summoning Hyvatia grants {2} All-Attribute DMG Bonus to the Intro Skill of the incoming Resonator for {3}s.\n\nCD: {4}s.",
-      "SimpleDesc": "Summon Hyvatia to attack enemies, dealing Spectro DMG and granting All-Attribute DMG Bonus to the Intro Skill of the incoming Resonator.",
+      "Desc": "Summon Hyvatia to fire lasers at enemies from mid-air, dealing {0} Spectro DMG 10 times.\n\nCasting Outro Skill within {1}s after summoning Hyvatia grants {2} All-Attribute DMG Bonus to the next Resonator using Intro Skill for {3}s.\n\nCD: {4}s.",
+      "SimpleDesc": "Summon Hyvatia to attack enemies, dealing Spectro DMG and granting All-Attribute DMG Bonus to the next Resonator using Intro Skill.",
       "Param": [
         [
           "15.20%",
@@ -13388,7 +13852,8 @@
           "Energy": 3,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1520
+          "ToughLv": 1520,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -13406,7 +13871,7 @@
             ]
           },
           "5": {
-            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator by {0}, with each point of Tune Break Boost additionally increasing ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
+            "Desc": "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by {0}. Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by {1}, up to {2}. This effect lasts for {3}s, or until the Resonator is switched out.",
             "Param": [
               "15%",
               "0.3%",
@@ -13459,8 +13924,8 @@
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34022_UI.T_IconMonsterHead_34022_UI",
     "Skill": {
-      "Desc": "Transform into Reactor Husk, jumping into the air and unleashing a heavy slash that deals {0} Fusion DMG to enemies.\n\nThe Resonator with this Echo equipped in their main slot gain {1} Energy Regen.\n\nCD: {4}s.",
-      "SimpleDesc": "Transform into Reactor Husk to attack enemies, dealing Fusion DMG.\n\nThe Resonator with this Echo equipped in their main slot gains Energy Regen.",
+      "Desc": "Transform into a Reactor Husk, jumping into the air and unleashing a heavy slash that deals {0} Fusion DMG to enemies.\n \nThe Resonator with this Echo equipped in their main slot gain {1} Energy Regen.\n \n CD: {4}s.",
+      "SimpleDesc": "Transform into a Reactor Husk to attack enemies, dealing Fusion DMG.\n \nThe Resonator with this Echo equipped in their main slot gains Energy Regen.",
       "Param": [
         [
           "195.00%",
@@ -13514,7 +13979,8 @@
           "Energy": 487,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 19500
+          "ToughLv": 19500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -13541,6 +14007,29 @@
             ]
           }
         }
+      },
+      "28": {
+        "Id": 28,
+        "Name": "Chromatic Foam",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Param": [
+              "10%",
+              "15",
+              "25%",
+              "15"
+            ]
+          }
+        }
       }
     },
     "Rarity": [
@@ -13551,6 +14040,812 @@
     ],
     "IntensityCode": 2,
     "MonsterInfo": 340000220
+  },
+  {
+    "id": "6000191",
+    "Id": 6000191,
+    "Code": "T01-",
+    "Name": "Stay tuned",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34025_UI.T_IconMonsterHead_34025_UI",
+    "Skill": {
+      "Desc": "Summon Sigillum to unleash two attacks, dealing {0} and {1} Fusion DMG respectively.\nWhen equipped in the main slot by Aemeath, it grants {2} Resonance Liberation DMG Bonus.\nCD: {3}s",
+      "SimpleDesc": "Summon Sigillum to attack enemies, dealing Fusion DMG.\nWhen equipped in the main slot by Aemeath, grant Resonance Liberation DMG Bonus.",
+      "Param": [
+        [
+          "152.00%",
+          "25.00%",
+          "20"
+        ],
+        [
+          "182.40%",
+          "25.00%",
+          "20"
+        ],
+        [
+          "212.80%",
+          "25.00%",
+          "20"
+        ],
+        [
+          "243.20%",
+          "25.00%",
+          "20"
+        ],
+        [
+          "273.60%",
+          "25.00%",
+          "20"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Damage": {
+        "28003701": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            3800,
+            4560,
+            5320,
+            6080,
+            6840
+          ],
+          "Energy": 23,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 3800,
+          "WeaknessLvl": 0
+        }
+      }
+    },
+    "Group": {
+      "27": {
+        "Id": 27,
+        "Name": "Trailblazing Star",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by {0} and grants {1} Fusion DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "20%",
+              "8"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 3,
+    "MonsterInfo": 340000250,
+    "Phantom": {
+      "Name": "Stay tuned",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_34025_UI.T_IconMonsterGoods_SG_34025_UI"
+    }
+  },
+  {
+    "id": "6000192",
+    "Id": 6000192,
+    "Code": "T01-",
+    "Name": "Stay tuned",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34026_UI.T_IconMonsterHead_34026_UI",
+    "Skill": {
+      "Desc": "Summon a Nameless Explorer to attack enemies along its path, dealing {0} Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains {1} Aero DMG Bonus and {2} Echo Skill DMG Bonus.\nCD: {3}s.",
+      "SimpleDesc": "Summon a Nameless Explorer to attack enemies, dealing Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains Aero DMG and Echo Skill DMG Bonus",
+      "Param": [
+        [
+          "152.00%",
+          "12.00%",
+          "20.00%",
+          "20"
+        ],
+        [
+          "182.40%",
+          "12.00%",
+          "20.00%",
+          "20"
+        ],
+        [
+          "212.80%",
+          "12.00%",
+          "20.00%",
+          "20"
+        ],
+        [
+          "243.20%",
+          "12.00%",
+          "20.00%",
+          "20"
+        ],
+        [
+          "273.60%",
+          "12.00%",
+          "20.00%",
+          "20"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Damage": {
+        "28003801": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            15200,
+            18240,
+            21280,
+            24320,
+            27360
+          ],
+          "Energy": 380,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15200,
+          "WeaknessLvl": 0
+        }
+      }
+    },
+    "Group": {
+      "29": {
+        "Id": 29,
+        "Name": "Sound of True Name",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Aero DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by {0}, and grants {1} Aero DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "15%",
+              "5"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 2,
+    "MonsterInfo": 340000260
+  },
+  {
+    "id": "6000193",
+    "Id": 6000193,
+    "Code": "T01-",
+    "Name": "Kronablight",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32059_UI.T_IconMonsterHead_32059_UI",
+    "Skill": {
+      "Desc": "Transform into a Kronablight, soar into the air to deal {0} Electro DMG, then dive to deal {0} Electro DMG 2 times and {1} Electro DMG 1 time.\nCD: {2}s",
+      "SimpleDesc": "Transform into a Kronablight to attack enemies, dealing Electro DMG.",
+      "Param": [
+        [
+          "37.25%",
+          "74.50%",
+          "15"
+        ],
+        [
+          "44.70%",
+          "89.40%",
+          "15"
+        ],
+        [
+          "52.15%",
+          "104.30%",
+          "15"
+        ],
+        [
+          "59.60%",
+          "119.20%",
+          "15"
+        ],
+        [
+          "67.05%",
+          "134.10%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Damage": {
+        "20012901": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            2235,
+            2682,
+            3129,
+            3576,
+            4023
+          ],
+          "Energy": 8,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 2235,
+          "WeaknessLvl": 0
+        },
+        "20012902": {
+          "Element": 3,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            14900,
+            17880,
+            20860,
+            23840,
+            26820
+          ],
+          "Energy": 372,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 14900,
+          "WeaknessLvl": 0
+        }
+      }
+    },
+    "Group": {
+      "27": {
+        "Id": 27,
+        "Name": "Trailblazing Star",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by {0} and grants {1} Fusion DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "20%",
+              "8"
+            ]
+          }
+        }
+      },
+      "28": {
+        "Id": 28,
+        "Name": "Chromatic Foam",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Param": [
+              "10%",
+              "15",
+              "25%",
+              "15"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000590
+  },
+  {
+    "id": "6000194",
+    "Id": 6000194,
+    "Code": "T01-",
+    "Name": "Kronaclaw",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32060_UI.T_IconMonsterHead_32060_UI",
+    "Skill": {
+      "Desc": "Transform into a Kronaclaw, soar into the air to deal {0} Aero DMG up to 8 times and {1} Aero DMG 2 times, then dive to deal {1} Aero DMG 1 time and {2} Aero DMG 1 time.\nCD: {3}s",
+      "SimpleDesc": "Transform into a Kronaclaw to attack enemies, dealing Aero DMG.",
+      "Param": [
+        [
+          "4.47%",
+          "13.41%",
+          "73.01%",
+          "15"
+        ],
+        [
+          "5.36%",
+          "16.09%",
+          "87.61%",
+          "15"
+        ],
+        [
+          "6.25%",
+          "18.77%",
+          "102.21%",
+          "15"
+        ],
+        [
+          "7.15%",
+          "21.45%",
+          "116.81%",
+          "15"
+        ],
+        [
+          "8.04%",
+          "24.13%",
+          "131.41%",
+          "15"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Damage": {
+        "20013001": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            447,
+            536,
+            625,
+            715,
+            804
+          ],
+          "Energy": 0,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 447,
+          "WeaknessLvl": 0
+        },
+        "20013003": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            1341,
+            1609,
+            1877,
+            2145,
+            2413
+          ],
+          "Energy": 3,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 1341,
+          "WeaknessLvl": 0
+        },
+        "20013005": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7301,
+            8761,
+            10221,
+            11681,
+            13141
+          ],
+          "Energy": 89,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7301,
+          "WeaknessLvl": 0
+        },
+        "20013006": {
+          "Element": 4,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            8642,
+            10370,
+            12098,
+            13827,
+            15555
+          ],
+          "Energy": 125,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 8642,
+          "WeaknessLvl": 0
+        }
+      }
+    },
+    "Group": {
+      "27": {
+        "Id": 27,
+        "Name": "Trailblazing Star",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by {0} and grants {1} Fusion DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "20%",
+              "8"
+            ]
+          }
+        }
+      },
+      "28": {
+        "Id": 28,
+        "Name": "Chromatic Foam",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Param": [
+              "10%",
+              "15",
+              "25%",
+              "15"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000600
+  },
+  {
+    "id": "6000195",
+    "Id": 6000195,
+    "Code": "T01-",
+    "Name": "Glommoth",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32061_UI.T_IconMonsterHead_32061_UI",
+    "Skill": {
+      "Desc": "Summon a Glommoth to stomp enemies, dealing {0} Glacio DMG.\nCasting Outro Skill within {1}s after summoning Glommoth grants {2} Glacio DMG Bonus to the incoming Resonator for {3}s.\nCD: {4}s.",
+      "SimpleDesc": "Summon a Glommoth to attack enemies, dealing Glacio DMG and granting Glacio DMG Bonus to the incoming Resonator.",
+      "Param": [
+        [
+          "152.00%",
+          "15",
+          "12.00%",
+          "15",
+          "20"
+        ],
+        [
+          "182.40%",
+          "15",
+          "12.00%",
+          "15",
+          "20"
+        ],
+        [
+          "212.80%",
+          "15",
+          "12.00%",
+          "15",
+          "20"
+        ],
+        [
+          "243.20%",
+          "15",
+          "12.00%",
+          "15",
+          "20"
+        ],
+        [
+          "273.60%",
+          "15",
+          "12.00%",
+          "15",
+          "20"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Damage": {
+        "20013101": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            15200,
+            18240,
+            21280,
+            24320,
+            27360
+          ],
+          "Energy": 380,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 15200,
+          "WeaknessLvl": 0
+        }
+      }
+    },
+    "Group": {
+      "27": {
+        "Id": 27,
+        "Name": "Trailblazing Star",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by {0} and grants {1} Fusion DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "20%",
+              "8"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 1,
+    "MonsterInfo": 320000610
+  },
+  {
+    "id": "6000196",
+    "Id": 6000196,
+    "Code": "T01-",
+    "Name": "Stay tuned",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31083_UI.T_IconMonsterHead_31083_UI",
+    "Skill": {
+      "Desc": "Transform into an Iceglint Dancer to attack enemies, dealing {0} Glacio DMG.\nCD: {1}s.",
+      "SimpleDesc": "Summon an Iceglint Dancer to attack enemies, dealing Glacio DMG.",
+      "Param": [
+        [
+          "114.00%",
+          "8"
+        ],
+        [
+          "136.80%",
+          "8"
+        ],
+        [
+          "159.60%",
+          "8"
+        ],
+        [
+          "182.40%",
+          "8"
+        ],
+        [
+          "205.20%",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Damage": {
+        "20013201": {
+          "Element": 1,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            11400,
+            13680,
+            15960,
+            18240,
+            20520
+          ],
+          "Energy": 285,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 11400,
+          "WeaknessLvl": 0
+        }
+      }
+    },
+    "Group": {
+      "27": {
+        "Id": 27,
+        "Name": "Trailblazing Star",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by {0} and grants {1} Fusion DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "20%",
+              "8"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000830,
+    "Phantom": {
+      "Name": "Stay tuned",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_31083_UI.T_IconMonsterGoods_SG_31083_UI"
+    }
+  },
+  {
+    "id": "6000197",
+    "Id": 6000197,
+    "Code": "T01-",
+    "Name": "Stay tuned",
+    "Type": "",
+    "Intensity": "",
+    "Place": "",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31084_UI.T_IconMonsterHead_31084_UI",
+    "Skill": {
+      "Desc": "Summon a Shadow Stepper to attack enemies, dealing {0} Havoc DMG.\nCD: {1}s.",
+      "SimpleDesc": "Summon a Shadow Stepper to attack enemies, dealing Havoc DMG.",
+      "Param": [
+        [
+          "72.00%",
+          "8"
+        ],
+        [
+          "86.40%",
+          "8"
+        ],
+        [
+          "100.80%",
+          "8"
+        ],
+        [
+          "115.20%",
+          "8"
+        ],
+        [
+          "129.60%",
+          "8"
+        ]
+      ],
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Damage": {
+        "20013301": {
+          "Element": 6,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            7200,
+            8640,
+            10080,
+            11520,
+            12960
+          ],
+          "Energy": 180,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 7200,
+          "WeaknessLvl": 0
+        }
+      }
+    },
+    "Group": {
+      "27": {
+        "Id": 27,
+        "Name": "Trailblazing Star",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by {0} and grants {1} Fusion DMG Bonus for {2}s.",
+            "Param": [
+              "20%",
+              "20%",
+              "8"
+            ]
+          }
+        }
+      },
+      "28": {
+        "Id": 28,
+        "Name": "Chromatic Foam",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Color": "FFFFFF00",
+        "Set": {
+          "2": {
+            "Desc": "Fusion DMG + {0}",
+            "Param": [
+              "10%"
+            ]
+          },
+          "5": {
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Param": [
+              "10%",
+              "15",
+              "25%",
+              "15"
+            ]
+          }
+        }
+      }
+    },
+    "Rarity": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "IntensityCode": 0,
+    "MonsterInfo": 310000840
   },
   {
     "id": "390070051",
@@ -13598,7 +14893,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7500
+          "ToughLv": 7500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -13724,7 +15020,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 0,
-          "ToughLv": 100
+          "ToughLv": 100,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -13857,7 +15154,8 @@
           "Energy": 27,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1080
+          "ToughLv": 1080,
+          "WeaknessLvl": 0
         },
         "20001502": {
           "Element": 3,
@@ -13873,7 +15171,8 @@
           "Energy": 72,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2880
+          "ToughLv": 2880,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -13984,7 +15283,8 @@
           "Energy": 450,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 18000
+          "ToughLv": 18000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -14110,7 +15410,8 @@
           "Energy": 268,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10733
+          "ToughLv": 10733,
+          "WeaknessLvl": 0
         },
         "20001302": {
           "Element": 6,
@@ -14126,7 +15427,8 @@
           "Energy": 268,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10733
+          "ToughLv": 10733,
+          "WeaknessLvl": 0
         },
         "20001303": {
           "Element": 6,
@@ -14142,7 +15444,8 @@
           "Energy": 268,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10733
+          "ToughLv": 10733,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -14245,7 +15548,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7500
+          "ToughLv": 7500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -14370,7 +15674,8 @@
           "Energy": 260,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 11000
+          "ToughLv": 11000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -14509,7 +15814,8 @@
           "Energy": 80,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3210
+          "ToughLv": 3210,
+          "WeaknessLvl": 0
         },
         "20000502": {
           "Element": 4,
@@ -14525,7 +15831,8 @@
           "Energy": 31,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1248
+          "ToughLv": 1248,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -14667,7 +15974,8 @@
           "Energy": 107,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4280
+          "ToughLv": 4280,
+          "WeaknessLvl": 0
         },
         "20000702": {
           "Element": 6,
@@ -14683,7 +15991,8 @@
           "Energy": 160,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 6420
+          "ToughLv": 6420,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -14824,7 +16133,8 @@
           "Energy": 72,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2880
+          "ToughLv": 2880,
+          "WeaknessLvl": 0
         },
         "20001402": {
           "Element": 1,
@@ -14840,7 +16150,8 @@
           "Energy": 7,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 288
+          "ToughLv": 288,
+          "WeaknessLvl": 0
         },
         "20001403": {
           "Element": 1,
@@ -14856,7 +16167,8 @@
           "Energy": 36,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1440
+          "ToughLv": 1440,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -14962,7 +16274,8 @@
           "Energy": 45,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1800
+          "ToughLv": 1800,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -15073,7 +16386,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 0,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -15196,7 +16510,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7500
+          "ToughLv": 7500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -15328,7 +16643,8 @@
           "Energy": 36,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1440
+          "ToughLv": 1440,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -15515,7 +16831,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 0,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -15640,7 +16957,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7500
+          "ToughLv": 7500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -15743,7 +17061,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7500
+          "ToughLv": 7500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -15942,7 +17261,8 @@
           "Energy": 450,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 18000
+          "ToughLv": 18000,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -16048,7 +17368,8 @@
           "Energy": 370,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 14800
+          "ToughLv": 14800,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -16149,7 +17470,8 @@
           "Energy": 180,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7500
+          "ToughLv": 7500,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -16278,7 +17600,8 @@
           "Energy": 60,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 2400
+          "ToughLv": 2400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -16412,7 +17735,8 @@
           "Energy": 22,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 900
+          "ToughLv": 900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -16538,7 +17862,8 @@
           "Energy": 36,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1440
+          "ToughLv": 1440,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -16681,7 +18006,8 @@
           "Energy": 176,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7040
+          "ToughLv": 7040,
+          "WeaknessLvl": 0
         },
         "20000102": {
           "Element": 0,
@@ -16697,7 +18023,8 @@
           "Energy": 264,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 10560
+          "ToughLv": 10560,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -16809,7 +18136,8 @@
           "Energy": 83,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3330
+          "ToughLv": 3330,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -16918,7 +18246,8 @@
           "Energy": 22,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 900
+          "ToughLv": 900,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -17036,7 +18365,8 @@
           "Energy": 106,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3533
+          "ToughLv": 3533,
+          "WeaknessLvl": 0
         },
         "20002202": {
           "Element": 5,
@@ -17052,7 +18382,8 @@
           "Energy": 88,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4240
+          "ToughLv": 4240,
+          "WeaknessLvl": 0
         },
         "20002207": {
           "Element": 5,
@@ -17068,7 +18399,8 @@
           "Energy": 159,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 6360
+          "ToughLv": 6360,
+          "WeaknessLvl": 0
         },
         "20002211": {
           "Element": 5,
@@ -17084,7 +18416,8 @@
           "Energy": 159,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 6360
+          "ToughLv": 6360,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -17209,7 +18542,8 @@
           "Energy": 427,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17100
+          "ToughLv": 17100,
+          "WeaknessLvl": 0
         },
         "20002302": {
           "Element": 6,
@@ -17221,7 +18555,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         },
         "20002303": {
           "Element": 0,
@@ -17233,7 +18568,8 @@
           "Energy": 0,
           "ElementPower": 0,
           "HardnessLv": 0,
-          "ToughLv": 0
+          "ToughLv": 0,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -17342,7 +18678,8 @@
           "Energy": 26,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1070
+          "ToughLv": 1070,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -17453,7 +18790,8 @@
           "Energy": 89,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3566
+          "ToughLv": 3566,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -17566,7 +18904,8 @@
           "Energy": 182,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7290
+          "ToughLv": 7290,
+          "WeaknessLvl": 0
         },
         "20003702": {
           "Element": 6,
@@ -17582,7 +18921,8 @@
           "Energy": 121,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4860
+          "ToughLv": 4860,
+          "WeaknessLvl": 0
         },
         "20003703": {
           "Element": 6,
@@ -17598,7 +18938,8 @@
           "Energy": 182,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 7290
+          "ToughLv": 7290,
+          "WeaknessLvl": 0
         },
         "20003704": {
           "Element": 6,
@@ -17614,7 +18955,8 @@
           "Energy": 121,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 4860
+          "ToughLv": 4860,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -17726,7 +19068,8 @@
           "Energy": 46,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1872
+          "ToughLv": 1872,
+          "WeaknessLvl": 0
         },
         "20003402": {
           "Element": 0,
@@ -17742,7 +19085,8 @@
           "Energy": 80,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 3210
+          "ToughLv": 3210,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -17876,7 +19220,8 @@
           "Energy": 207,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 8288
+          "ToughLv": 8288,
+          "WeaknessLvl": 0
         },
         "28000102": {
           "Element": 3,
@@ -17892,7 +19237,8 @@
           "Energy": 296,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 11840
+          "ToughLv": 11840,
+          "WeaknessLvl": 0
         },
         "28000103": {
           "Element": 3,
@@ -17908,7 +19254,8 @@
           "Energy": 49,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 1973
+          "ToughLv": 1973,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -18018,7 +19365,8 @@
           "Energy": 455,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 15200
+          "ToughLv": 15200,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -18150,7 +19498,8 @@
           "Energy": 378,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 15150
+          "ToughLv": 15150,
+          "WeaknessLvl": 0
         },
         "28000202": {
           "Element": 2,
@@ -18166,7 +19515,8 @@
           "Energy": 441,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17675
+          "ToughLv": 17675,
+          "WeaknessLvl": 0
         },
         "28000203": {
           "Element": 2,
@@ -18182,7 +19532,8 @@
           "Energy": 441,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17675
+          "ToughLv": 17675,
+          "WeaknessLvl": 0
         },
         "28000266": {
           "Element": 2,
@@ -18198,7 +19549,8 @@
           "Energy": 441,
           "ElementPower": 0,
           "HardnessLv": 10000,
-          "ToughLv": 17675
+          "ToughLv": 17675,
+          "WeaknessLvl": 0
         }
       }
     },

@@ -83,7 +83,8 @@ export function getUnifiedStatPool(buffSources, overrideLogic = null) {
         energyRegen: 0,
         healingBonus: 0,
         shieldBonus: 0,
-        dmgBonus: 0
+        dmgBonus: 0,
+        tuneBreakBoost: 10
     };
 
     for (const source of buffSources ?? []) {

@@ -4,7 +4,7 @@ import DropdownSelect from '@/components/common/DropdownSelect.jsx';
 import {attributeColors} from "@/utils/attributeHelpers.js";
 import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
 
-export default function LynaeUI({ setCharacterRuntimeStates, charId, activeStates }) {
+export default function LynaeUI({ toggleState, activeStates }) {
     return (
         <div className="status-toggles">
             <div className="status-toggle-box">
@@ -25,32 +25,19 @@ export default function LynaeUI({ setCharacterRuntimeStates, charId, activeState
             </div>
 
             <div className="status-toggle-box">
-                <h4 className={'highlight'} style={{ fontSize: '18px'}}>Spectral Analysis</h4>
+                <h4 className={'highlight'} style={{ fontSize: '18px'}}>True Color</h4>
                 <div>
                     <p>
-                        Responding to Tune Strain - Interfered: For each stack of Tune Strain - Interfered on the target, each point of <span className="highlight">Lynae</span>'s Tune Break Boost increases her total DMG against that target by <span className="highlight">0.12%</span>.
+                        This skill consumes 3 points of <span className="highlight">True Color</span> and grants all nearby Resonators in the team 40 points of <span className="highlight">Tune Break Boost</span> for 30s.
                     </p>
-                    Tune Break Boost
-                    <input
-                        type="number"
-                        className="character-level-input"
-                        min="0"
-                        max="50"
-                        value={activeStates.lynaeTuneBreakBoost ?? 0}
-                        onChange={(e) => {
-                            const val = Math.max(0, Math.min(50, Number(e.target.value) || 0));
-                            setCharacterRuntimeStates(prev => ({
-                                ...prev,
-                                [charId]: {
-                                    ...(prev[charId] ?? {}),
-                                    activeStates: {
-                                        ...(prev[charId]?.activeStates ?? {}),
-                                        lynaeTuneBreakBoost: val
-                                    }
-                                }
-                            }));
-                        }}
-                    />
+                    <label className="modern-checkbox">
+                        <input
+                            type="checkbox"
+                            checked={activeStates.trueColor || false}
+                            onChange={() => toggleState('trueColor')}
+                        />
+                        Enable
+                    </label>
                 </div>
             </div>
         </div>
@@ -272,6 +259,25 @@ export function buffUI({ activeStates, toggleState }) {
                             type="checkbox"
                             checked={activeStates.prismaticOverblast || false}
                             onChange={() => toggleState('prismaticOverblast')}
+                        />
+                        Enable
+                    </label>
+                </div>
+            </div>
+
+            <div className="echo-buff">
+                <div className="echo-buff-header">
+                    <div className="echo-buff-name">True Color</div>
+                </div>
+                <div className="echo-buff-effect">
+                    <p>
+                        This skill consumes 3 points of <span className="highlight">True Color</span> and grants all nearby Resonators in the team 40 points of <span className="highlight">Tune Break Boost</span> for 30s.
+                    </p>
+                    <label className="modern-checkbox">
+                        <input
+                            type="checkbox"
+                            checked={activeStates.trueColor || false}
+                            onChange={() => toggleState('trueColor')}
                         />
                         Enable
                     </label>

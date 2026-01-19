@@ -93,6 +93,7 @@ var<uniform> params : Params;
 const STATS_VEC4S_PER_ECHO : u32 = 5u;
 const ECHOS_PER_COMBO: u32 = 5u;
 const BUFFS_PER_ECHO : u32 = 15u;
+const SET_SLOTS : u32 = 30u; // supports set ids 0..29 inclusive
 
 override CYCLES_PER_INVOCATION : u32 = 16u;
 
@@ -269,7 +270,7 @@ struct EchoBase {
     coord:     f32,
 
     // counts fit in u8; stored in u32 array for alignment but source can be u8 to save space
-    setCount: array<u32, 27u>,
+    setCount: array<u32, SET_SLOTS>,
 };
 
 fn buildEchoBase(echoIds: array<i32, 5>) -> EchoBase {
@@ -300,7 +301,7 @@ fn buildEchoBase(echoIds: array<i32, 5>) -> EchoBase {
     out.echoSkill = 0.0;
     out.coord     = 0.0;
 
-    for (var s: u32 = 0u; s < 27u; s = s + 1u) {
+    for (var s: u32 = 0u; s < SET_SLOTS; s = s + 1u) {
         out.setCount[s] = 0u;
     }
 
@@ -354,7 +355,7 @@ fn buildEchoBase(echoIds: array<i32, 5>) -> EchoBase {
         if (setIdF < 0.0) { continue; }
 
         let setId = u32(setIdF);
-        if (setId >= 27u) { continue; }
+        if (setId >= SET_SLOTS) { continue; }
 
         let kindId: i32 = echoKindIds[echoIndex];
 
@@ -470,6 +471,9 @@ fn applySetEffectsBase(base: EchoBase) -> SetApplied {
     let s24_2 = has2(c[24u]);                           // Pact of Neonlight Leap
     let s25_5 = has5(c[25u]);                           // Halo of Starry Radiance
     let s26_2 = has2(c[26u]); let s26_5 = has5(c[26u]); // Rite of Gilded Revelation
+    let s27_2 = has2(c[27u]); let s27_5 = has5(c[27u]); // Trailblazing Star
+    let s28_2 = has2(c[28u]);                           // Chromatic Foam
+    let s29_2 = has2(c[29u]); let s29_5 = has5(c[29u]); // Sound of True Name (conditional handled separately)
 
     // 3pc sets
     let s19_3 = has3(c[19u]); // Dream of the Lost
@@ -484,15 +488,15 @@ fn applySetEffectsBase(base: EchoBase) -> SetApplied {
 
     // Element bonuses
     s.glacio += 10.0 * s1_2 + 30.0 * s1_5 + 12.0 * s10_2 + 22.5 * s10_5;
-    s.fusion += 10.0 * s2_2 + 30.0 * s2_5 + 10.0 * s18_2 + 15.0 * s18_5 + 16.0 * s22_3;
+    s.fusion += 10.0 * s2_2 + 30.0 * s2_5 + 10.0 * s18_2 + 15.0 * s18_5 + 16.0 * s22_3 + 10.0 * s27_2 + 20.0 * s27_5 + 10.0 * s28_2;
     s.electro += 10.0 * s3_2 + 30.0 * s3_5;
-    s.aero += 10.0 * s4_2 + 30.0 * s4_5 + 10.0 * s16_2 + 30.0 * s16_5 + 10.0 * s17_2 + 30.0 * s17_5;
+    s.aero += 10.0 * s4_2 + 30.0 * s4_5 + 10.0 * s16_2 + 30.0 * s16_5 + 10.0 * s17_2 + 30.0 * s17_5 + 10.0 * s29_2 + 15.0 * s29_5;
     s.spectro += 10.0 * s5_2 + 30.0 * s5_5 + 10.0 * s11_2 + 15.0 * s11_5 + 10.0 * s24_2 + 10.0 * s26_2 + 30.0 * s26_5;
     s.havoc += 10.0 * s6_2 + 30.0 * s6_5 + 10.0 * s12_2;
 
     // Stat bonuses
     s.atkP += 15.0 * s7_5 + 10.0 * s9_2 + 20.0 * s9_5 + 20.0 * s13_5 + 15.0 * s14_5 + 30.0 * s20_3 + 20.0 * s23_3 + 25.0 * s25_5;
-    s.critRate += 20.0 * s11_5 + 10.0 * s17_5 + 20.0 * s19_3;
+    s.critRate += 20.0 * s11_5 + 10.0 * s17_5 + 20.0 * s19_3 + 20.0 * s27_5;
     s.critDmg += 20.0 * s20_3;
     s.erSetBonus += 10.0 * s8_2 + 10.0 * s13_2 + 10.0 * s14_2;
 
@@ -503,14 +507,15 @@ fn applySetEffectsBase(base: EchoBase) -> SetApplied {
     s.basic += 40.0 * s26_5;
     s.echoSkill += 35.0 * s19_3 + 16.0 * s21_3;
     s.coord += 80.0 * s13_5;
-
     return s;
 }
 
-fn applySetEffectsConditional(s: ptr<function, SetApplied>, setCount: array<u32, 27u>, skillMask: u32) {
+fn applySetEffectsConditional(s: ptr<function, SetApplied>, setCount: array<u32, SET_SLOTS>, skillMask: u32) {
     let set22 = has3(setCount[22u]);
+    let set29 = has5(setCount[29u]);
     let set22Cond = set22 * f32(u32(hasSkill(skillMask, SKILL_HEAVY | SKILL_ECHO_SKILL)));
-    (*s).critRate += 20.0 * set22Cond;
+    let set29Cond = set29 * f32(u32(hasSkill(skillMask, SKILL_ECHO_SKILL)));
+    (*s).critRate += 20.0 * set22Cond + 20.0 * set29Cond;
 }
 
 fn applySetEffects(base: EchoBase, skillMask: u32) -> SetApplied {
@@ -638,7 +643,7 @@ fn buildPreMain(p: Params, s: SetApplied, skillMask: u32, elementId: u32, skillI
 // Returns NEG_INF if constraints fail.
 fn evalMainPos(
     pre: PreMain,
-    setCount: array<u32, 27u>,
+    setCount: array<u32, SET_SLOTS>,
     mainAtkPRatio: f32,
     mainAtkF: f32,
     mainER: f32,

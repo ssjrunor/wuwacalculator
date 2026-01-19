@@ -6,12 +6,12 @@ const data = {
     lastUpdated: '03-01-2026',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
-    patchVersion: '3.0',
+    patchVersion: '3.1.2',
     calculatorState: 'Fully updated for the current patch.',
     coverage: [
         {
             title: 'Note',
-            desc: 'HELLO EVERYONE & HAPPY NEW YEAR!\nOptimizer runs are now much faster on GPU (single-skill jumps from ~40M combos/sec to ~900M on capable devices) and memory usage has been trimmed. Speed still depends on your hardware and the GPU path. Suggestions now include combo/rotation handling alongside the Randomizer’s home in the Suggestions tab. Also, Mornye should work correctly in the optimizer; Suggestions fix is still pending.',
+            desc: 'Hey, new beta. All newly added characters should work everywhere except the optimizer (specifically for Aemeath). Just haven\'t gotten to it yet, will do so soon though. Do not fret.',
         },
         {
             title: 'Character Coverage',
@@ -23,25 +23,22 @@ const data = {
         },
         {
             title: 'Echoes Coverage',
-            desc: 'All echoes and sonata sets supported, with icons updated through 3.0.',
-        },
-        {
-            title: 'Echo Generator',
-            desc: 'Fixed and updated. Generates full sets with set filters, main echo focus, and ER targets.',
+            desc: 'All echoes and sonata sets supported.',
         },
         {
             title: 'Icons & Assets',
-            desc: 'All 3.0 icons and assets have been added.',
+            desc: 'Some missing assets.',
         },
     ],
     knownIssues: [
-        "Mornye is fixed in the optimizer but still not working in Suggestions.",
+        "Mornye's suggestions related stuff's fix still pending.",
+        "Aemeath could be bugging in the optimizer.",
         "That's kinda it tbh.",
     ],
     recentChanges: [
-        "Optimizer GPU path now massively faster for single-skill runs (~900M combos/sec on capable GPUs) with memory optimizations.",
-        "Suggestions now handle combo/rotation inputs alongside the Randomizer in the Suggestions tab.",
-        "Mornye behaves correctly in the optimizer (Suggestions fix pending).",
+        "Added new beta stuff.",
+        "Updated Tune Rupture DMG calculation. I learned it scales with the enemy class. For now it's just set to Calamity/Overlord class.",
+        "Added a paging system on the optimizer for it's produced results. Helps with memory management.",
     ],
 };
 

@@ -28,19 +28,25 @@ export function applyLynaeLogic({
         name.includes('to a vivid tomorrow') ||
         tab === 'forteCircuit') skillMeta.skillType = 'basic';
 
-    if (name.includes('tune rupture response') && tab === 'forteCircuit') {
+    if (tab === 'tuneBreak' || name.includes('tune rupture')) {
         skillMeta.skillType = 'tuneRupture';
-        skillMeta.element = '';
-        skillMeta.visible = false;
+        if (tab !== 'tuneBreak') {
+            skillMeta.element = 'spectro';
+            skillMeta.tuneAmp = skillMeta.multiplier ?? skillMeta.tuneAmp;
+        }
+        skillMeta.dmgType = 'tuneBreak';
     }
 
-    const stacks = characterState?.activeStates?.lynaeTuneBreakBoost ?? 0;
-    const bonus = Math.min(stacks * 0.12, 0.12 * 50) * (combatState?.tuneStrain ?? 0);
+    if (!mergedBuffs.__trueColor && isToggleActiveLocal('trueColor')) {
+        mergedBuffs.tuneBreakBoost += 40;
+        mergedBuffs.__trueColor = true;
+    }
+
+    const bonus = mergedBuffs.tuneBreakBoost * (combatState?.tuneStrain ?? 0) * 0.12;
     if (!mergedBuffs.__lynaTuneStrain) {
-        mergedBuffs.attribute.all.dmgBonus += bonus;
+        mergedBuffs.dmgBonus += bonus;
         mergedBuffs.__lynaTuneStrain = true;
     }
-
 
     if (isToggleActiveLocal('prismaticOverblast') && !mergedBuffs.__prismaticOverblast) {
         mergedBuffs.dmgBonus += 24;
@@ -97,6 +103,8 @@ export function lynaeBuffsLogic({
     if (state.prismaticOverblast) mergedBuffs.dmgBonus += 24;
 
     if (state.vanishingPoint) mergedBuffs.attribute.all.amplify += 25;
+
+    if (state.trueColor) mergedBuffs.tuneBreakBoost += 40;
 
     return { mergedBuffs };
 }

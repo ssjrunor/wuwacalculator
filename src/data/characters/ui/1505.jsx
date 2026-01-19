@@ -253,9 +253,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                         type="checkbox"
                         checked={(activeStates.gravitation && isRover) || false}
                         disabled={!isRover}
-                        onChange={() => {
-                            toggleState('gravitation');
-                        }}
+                        onChange={() => toggleState('gravitation')}
                     />
                     Enable
                     {!isRover && (
@@ -277,9 +275,7 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
                     <input
                         type="checkbox"
                         checked={activeStates.innerS || false}
-                        onChange={() => {
-                            toggleState('innerS');
-                        }}
+                        onChange={() => toggleState('innerS')}
                     />
                     Enable
                 </label>

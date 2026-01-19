@@ -43,6 +43,8 @@ import BulingUI, {CustomInherentSkills as BulingInherents} from "./1307.jsx";
 import ChisaUI, {chisaSequenceToggles, CustomInherentSkills as ChisaInherentSkills} from "./1508.jsx";
 import LynaeUI, {lynaeSequenceToggles, CustomInherentSkills as LynaeInherentSkills} from "./1509.jsx";
 import MornyeUI, {MornyeSequenceToggles} from "./1209.jsx";
+import AemeathUI, {AemeathSequenceToggles, CustomInherentSkills as AemeathInherents} from "./1210.jsx";
+import LuukUI, {LuukSequenceToggles, CustomInherentSkills as LuukInherents} from "./1510.jsx";
 
 
 export function getCharacterUIComponent(characterId) {
@@ -74,6 +76,8 @@ export function getCharacterUIComponent(characterId) {
         case '1508': return ChisaUI;
         case '1509': return LynaeUI;
         case '1209': return MornyeUI;
+        case '1210': return AemeathUI;
+        case '1510': return LuukUI;
         default: return null;
     }
 }
@@ -115,6 +119,8 @@ export function getCustomInherentSkillsComponent(characterId) {
         case '1307': return BulingInherents;
         case '1508': return ChisaInherentSkills;
         case '1509': return LynaeInherentSkills;
+        case '1210': return AemeathInherents;
+        case '1510': return LuukInherents;
         default: return null;
     }
 }
@@ -168,6 +174,8 @@ export function getSequenceToggleComponent(characterId) {
         case '1508': return chisaSequenceToggles;
         case '1509': return lynaeSequenceToggles;
         case '1209': return MornyeSequenceToggles;
+        case '1210': return AemeathSequenceToggles;
+        case '1510': return LuukSequenceToggles;
         default: return null;
     }
 }
@@ -219,6 +227,8 @@ const characterBuffUIMap = {
     '1508': () => import('./1508.jsx').then(mod => mod.buffUI),
     '1509': () => import('./1509.jsx').then(mod => mod.buffUI),
     '1209': () => import('./1209.jsx').then(mod => mod.buffUI),
+    '1210': () => import('./1210.jsx').then(mod => mod.buffUI),
+    '1510': () => import('./1510.jsx').then(mod => mod.buffUI),
 };
 
 export async function loadCharacterBuffUI(charId) {

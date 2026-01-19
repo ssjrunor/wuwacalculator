@@ -158,24 +158,37 @@ export default function Info() {
                     }}>
                     <div style={{ overflowY: 'auto' }}>
                         <div className="info-section">
-                            <h1>Hi!</h1>
-                            <p>First off, i made this solely because i was bored and wanted to try out programming with javascript.
-                                I was initially working with spreadsheets but later found out how easy it was to like make something
-                                so i was like "why not?" and yeah.
-                                It's still a work in progress, i will stay avoiding grass for as long as i can to push out more stuff
-                                to make it functional.
+                            <h1>About this project</h1>
+                            <p>
+                                The Wuthering Waves Damage Calculator & Optimizer is a fan-made toolkit to plan builds, compare rotations, and explore how stats translate into real damage. It tracks live-patch character kits, echoes, weapons, and resonance chains, and pairs the calculator with an optimizer so you can see which substat rolls or echo sets move the needle the most.
+                            </p>
+                            <p>
+                                Goals: stay current with balance changes, keep formulas transparent, and help the community answer "why did my damage change?" as quickly as possible.
                             </p>
                         </div>
 
                         <div className="info-section">
-                            <h3>...SO</h3>
-                            <p>Most assets and character data are sourced from <a href="https://ww.hakush.in/" target="_blank" rel="noopener noreferrer">hakush.in</a>, <a href="https://encore.moe/?lang=en/" target="_blank" rel="noopener noreferrer">encore.moe</a> and the internet.</p>
-                            <p>The formulas for calculating damage were gotten from <a href="https://wutheringwaves.fandom.com/wiki/Damage" target="_blank" rel="noopener noreferrer">Wuthering Waves Wiki</a>.</p>
+                            <h3>Data + formulas</h3>
+                            <p>
+                                Gameplay values are pulled from in-game inspections plus community-maintained sources like <a href="https://ww.hakush.in/" target="_blank" rel="noopener noreferrer">hakush.in</a> and <a href="https://encore.moe/?lang=en/" target="_blank" rel="noopener noreferrer">encore.moe</a>. Damage math follows the <a href="https://wutheringwaves.fandom.com/wiki/Damage" target="_blank" rel="noopener noreferrer">Wuthering Waves Wiki</a> model and ongoing community testing, with patch notes tracked in the changelog.
+                            </p>
                         </div>
 
                         <div className="info-section">
-                            <h3>How to contact MOI?</h3>
-                            <p>Join the <a href="https://discord.gg/wNaauhE4uH" target="_blank" rel="noopener noreferrer">discord</a> bro.</p>
+                            <h3>Who builds it?</h3>
+                            <p>Designed, coded, and maintained by <strong>ssjrunor</strong>. This is an unofficial fan project and not affiliated with Kuro Games.</p>
+                        </div>
+
+                        <div className="info-section">
+                            <h3>Community credits</h3>
+                            <p>
+                                Huge thanks to everyone in the Discord for ideas, bug finds, and sharing information about damage calculations. Community feedback keeps the numbers honest and the features pointed at real problems.
+                            </p>
+                        </div>
+
+                        <div className="info-section">
+                            <h3>Need help or want to hang out?</h3>
+                            <p>Join the <a href="https://discord.gg/wNaauhE4uH" target="_blank" rel="noopener noreferrer">discord</a> for support, feedback, or just to talk shop.</p>
                         </div>
                     </div>
                     <img
