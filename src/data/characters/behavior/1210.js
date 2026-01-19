@@ -37,7 +37,7 @@ export function applyAemeathLogic({
         }
         skillMeta.dmgType = 'tuneBreak';
     } else if (name.includes('heavy attack') ||
-    name.includes('duet of seraphic plumes')) skillMeta.skillType.push('ultimate');
+    name.includes('duet of seraphic plumes')) skillMeta.skillType = 'ultimate';
 
 
     if (name.includes('heavy attack') && state.instantResponse) {
