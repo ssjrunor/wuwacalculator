@@ -67,8 +67,8 @@ export function applyAemeathLogic({
         }
     }
 
-    if (isActiveSequence(3) && name.includes('heavenfall falls - finale')) {
-        skillMeta.multiplier *= 2;
+    if (isActiveSequence(3) && name.includes('heavenfall edict - finale')) {
+        skillMeta.multiplier += 2;
     }
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__aemeathS4) {
