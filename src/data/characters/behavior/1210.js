@@ -48,8 +48,7 @@ export function applyAemeathLogic({
     }
 
     const max = rupture ? 3 : 2;
-    const maxed = rupture ? max === 3 : max === 2;
-    let inherent2Stacks = isActiveSequence(3) ? max : Math.min(Number(state.aemeathInherent2Stacks ?? 0), max);
+    const inherent2Stacks = isActiveSequence(3) ? max : Math.min(Number(state.aemeathInherent2Stacks ?? 0), max);
     if (rupture) mergedBuffs.critDmg += inherent2Stacks * 20;
     else if (burst) mergedBuffs.critDmg += inherent2Stacks * 30;
 
@@ -58,8 +57,9 @@ export function applyAemeathLogic({
 
     if (
         name.includes('heavenfall edict: finale') && eitherMode &&
-        (isActiveSequence(4) ||
-            maxed)) skillMeta.amplify = (skillMeta.amplify ?? 0) + 25;
+        (isActiveSequence(3) ||
+            inherent2Stacks === max)) {
+        skillMeta.amplify = (skillMeta.amplify ?? 0) + 25;}
 
     if (isActiveSequence(2)) {
         if (name.includes('seraphic duet')) {
