@@ -32,7 +32,8 @@ export default function SuggestionsPane({
                                             suggestionsPaneSettings,
                                             setSuggestionsPaneSettings,
                                             keywords,
-                                            rotationEntries
+                                            rotationEntries,
+                                            enemyProfile
                                         }) {
     const runtime = characterRuntimeStates[charId] ?? {};
     const echoData = runtime?.equippedEchoes ?? [];
@@ -240,6 +241,7 @@ export default function SuggestionsPane({
             rotationEntries,
             skillResults,
             allSkillLevels,
+            enemyProfile
         };
 
         const nonNullCount = echoData.reduce(
@@ -288,6 +290,7 @@ export default function SuggestionsPane({
             skillResults,
             allSkillLevels,
             sequence: runtime?.SkillLevels?.sequence,
+            enemyProfile
         }
 
         const result = await runEchoGenerator({

@@ -22,6 +22,17 @@ const SKILLTYPE_MAP = {
     spectroFrazzle: 'spectroFrazzle',
 };
 
+const ATTRIBUTE_TO_ELEMENT_ID = {
+    physical: 0,
+    glacio: 1,
+    fusion: 2,
+    electro: 3,
+    aero: 4,
+    spectro: 5,
+    havoc: 6,
+    none: 0
+};
+
 function aggregateBuffMods(finalStats, { element, skillTypes }) {
     const result = {
         resShred: 0,
@@ -79,34 +90,43 @@ function aggregateBuffMods(finalStats, { element, skillTypes }) {
 export function calculateDamage({
                                     finalStats,
                                     flat,
-                                    combatState,
+                                    combatState = {},
                                     scaling,
                                     multiplier,
-                                    element,
-                                    skillType,
                                     characterLevel,
                                     mergedBuffs,
-                                    amplify = 0,
-                                    skillDmgBonus = 0,
-                                    critDmgBonus = 0,
-                                    critRateBonus = 0,
-                                    skillDefIgnore = 0,
-                                    skillResIgnore = 0,
-                                    skillCritDmg = 0,
-                                    skillCritRate = 0,
-                                    fixedDmg = null,
-                                    skillDmgTaken = 0,
                                     returnContextOnly = false,
                                     baseTuneRup,
-    dmgType,
-                                    skillMeta
+                                    skillMeta: rawSkillMeta = {},
+                                    enemyProfile: rawEnemyProfile = {},
                                 }) {
+    const skillMeta = rawSkillMeta ?? {};
+    const enemyProfile = rawEnemyProfile ?? {};
+
+    const {
+        element,
+        skillType,
+        dmgType,
+        amplify = 0,
+        skillDmgBonus = 0,
+        critDmgBonus = 0,
+        critRateBonus = 0,
+        skillDefIgnore = 0,
+        skillResIgnore = 0,
+        skillCritDmg = 0,
+        skillCritRate = 0,
+        fixedDmg = null,
+        skillDmgTaken = 0,
+    } = skillMeta;
+
+    const effectiveMultiplier = multiplier ?? skillMeta.multiplier ?? 1;
+
     if (fixedDmg) {
         const normal = Math.max(1, Math.floor(fixedDmg));
         return { normal, crit: normal, avg: normal };
     }
 
-    const skillTypes = Array.isArray(skillType) ? skillType : [skillType];
+    const skillTypes = (Array.isArray(skillType) ? skillType : [skillType]).filter(Boolean);
 
     // Support both old scalar finalStats and new { base, final } shape
     const atk =
@@ -134,7 +154,7 @@ export function calculateDamage({
 
     let baseDmg = flat != null
         ? flat
-        : baseAbility * multiplier;
+        : baseAbility * effectiveMultiplier;
 
     // global + combat flat damage (still comes from buff pool + combat state)
     baseDmg += (combatState.flatDmg ?? 0) + (mergedBuffs?.flatDmg ?? 0);
@@ -152,11 +172,12 @@ export function calculateDamage({
     } = aggregateBuffMods(finalStats, { element, skillTypes });
 
     // ---- resistance multiplier ----
-    const enemyResBase = combatState.enemyRes ?? 0;
+    const elementId = ATTRIBUTE_TO_ELEMENT_ID[element] ?? 0;
+    const baseRes = typeof enemyProfile.res?.[elementId] === 'number' ? enemyProfile.res[elementId] : 0;
     const totalResShred = (resShred ?? 0) + (skillResIgnore ?? 0);
-    const enemyRes = enemyResBase - totalResShred;
+    const enemyRes = baseRes - totalResShred;
 
-    let resMult = 1;
+    let resMult;
     if (enemyRes < 0) {
         resMult = 1 - (enemyRes / 200);
     } else if (enemyRes < 75) {
@@ -165,8 +186,16 @@ export function calculateDamage({
         resMult = 1 / (1 + 5 * (enemyRes / 100));
     }
 
+    if (baseRes === 100) {
+        return {
+            normal: 0,
+            crit: 0,
+            avg: 0,
+        }
+    }
+
     // ---- defense multiplier ----
-    const enemyLevel = combatState.enemyLevel ?? 1;
+    const enemyLevel = enemyProfile.level ?? combatState.enemyLevel ?? 90;
     const charLevel = characterLevel ?? 1;
 
     const totalDefIgnore = (defIgnore ?? 0) + (skillDefIgnore ?? 0);
@@ -191,7 +220,7 @@ export function calculateDamage({
     let amplifyTotal = (amplify ?? 0) + (buffAmplify ?? 0);
     const dmgAmplify = 1 + amplifyTotal / 100;
 
-    const special = 1 + 0; // placeholder for any future special multiplier
+    const special = 1 + (finalStats.special ?? 0) / 100;
 
     let normal =
         baseDmg *
@@ -234,8 +263,9 @@ export function calculateDamage({
             scalingHp: scaling?.hp ?? 0,
             scalingDef: scaling?.def ?? 0,
             scalingER: scaling?.energyRegen ?? 0,
-            multiplier,
+            multiplier: effectiveMultiplier,
             flatDmg: (flat ?? 0) + (combatState.flatDmg ?? 0) + (mergedBuffs?.flatDmg ?? 0),
+            special,
             resMult,
             defMult,
             dmgReductionTotal,
@@ -253,11 +283,15 @@ export function calculateDamage({
 */
 
     if (dmgType === 'tuneBreak') {
+        let classMod = 1;
+        if (enemyProfile.class === 3 || enemyProfile.class === 4) classMod = 14;
+        else if (enemyProfile.class === 2) classMod = 3;
+
         const bonus = 1 +
             ((finalStats.skillType?.tuneRupture?.dmgBonus ?? 0) + (finalStats.tuneBreakBoost ?? 10)) / 100;
         normal = baseTuneRup * resMult *
             defMult *
-            dmgReductionTotal * 14 * bonus;
+            dmgReductionTotal * classMod * bonus * special;
         crit = normal * (skillMeta.tuneBreakCd ?? 1);
         const cr = (skillMeta.tuneBreakCr ?? 0)
         avg = cr >= 1
@@ -272,15 +306,24 @@ export function calculateDamage({
     };
 }
 
-export function calculateSpectroFrazzleDamage(combatState, finalStats, characterLevel) {
+export function calculateSpectroFrazzleDamage(combatState, finalStats, characterLevel, enemyLevel, enemyResMap = {}) {
     const stacks = combatState?.spectroFrazzle ?? 0;
     if (stacks === 0) return 0;
 
+    const resMap = enemyResMap ?? {};
+    const element = 'spectro';
+    const elementId = ATTRIBUTE_TO_ELEMENT_ID[element] ?? 0;
+    const baseRes = typeof resMap?.[elementId] === 'number' ? resMap[elementId] : 0;
+    if (baseRes === 100) {
+        return {
+            frazzleTotal: 0,
+            frazzle: 0,
+        }
+    }
     // hard-coded internal formula stays the same
     const perStack = (209.9 + 895.8 * stacks);
     const total = (447.9 * Math.pow(stacks, 2)) + (657.8 * stacks);
 
-    const element = 'spectro';
     const skillTypes = ['spectroFrazzle'];
 
     const {
@@ -292,11 +335,8 @@ export function calculateSpectroFrazzleDamage(combatState, finalStats, character
 
     const amplify = finalStats.skillType.spectroFrazzle.amplify;
     const dmgBonus = finalStats.skillType.spectroFrazzle.dmgBonus;
-
-    const enemyLevel = combatState.enemyLevel ?? 1;
-    const charLevel = characterLevel ?? 1;
-
-    const enemyRes = combatState.enemyRes - (resShred ?? 0);
+    const special = 1 + (finalStats.special ?? 0) / 100;
+    const enemyRes = baseRes - (resShred ?? 0);
 
     let resMult;
     if (enemyRes < 0) {
@@ -309,10 +349,10 @@ export function calculateSpectroFrazzleDamage(combatState, finalStats, character
 
     let enemyDef = ((8 * enemyLevel) + 792) * (1 - ((defIgnore ?? 0) + (defShred ?? 0)) / 100);
     if (enemyDef < 0) enemyDef = 0;
-    const defMult = (800 + 8 * charLevel) / (800 + 8 * charLevel + enemyDef);
+    const defMult = (800 + 8 * characterLevel) / (800 + 8 * characterLevel + enemyDef);
 
     const dmgReduction = 1 + (dmgVuln ?? 0) / 100;
-    const bonusMult = (1 + amplify / 100) * (1 + dmgBonus / 100);
+    const bonusMult = (1 + amplify / 100) * (1 + dmgBonus / 100) * special;
 
     const perStackDmg = Math.floor(perStack * bonusMult * resMult * defMult * dmgReduction);
     const totalDmg = Math.floor(total * bonusMult * resMult * defMult * dmgReduction);
@@ -320,9 +360,21 @@ export function calculateSpectroFrazzleDamage(combatState, finalStats, character
     return { frazzleTotal: totalDmg, frazzle: perStackDmg };
 }
 
-export function calculateAeroErosionDamage(combatState, finalStats, characterLevel) {
+export function calculateAeroErosionDamage(combatState, finalStats, characterLevel, enemyLevel, enemyResMap = {}) {
     const stacks = combatState?.aeroErosion ?? 0;
     if (stacks === 0) return 0;
+
+    const resMap = enemyResMap ?? {};
+    const element = 'aero';
+    const elementId = ATTRIBUTE_TO_ELEMENT_ID[element] ?? 0;
+    const baseRes = typeof resMap?.[elementId] === 'number' ? resMap[elementId] : 0;
+    if (baseRes === 100) {
+        return {
+            erosionTotal: 0,
+            erosion: 0,
+        }
+    }
+
 
     let perStack = 0;
     if (stacks === 1) {
@@ -331,8 +383,7 @@ export function calculateAeroErosionDamage(combatState, finalStats, characterLev
         perStack = 4133.45 * stacks - 4132.37;
     }
 
-    const total = 0; // kept as in your original
-    const element = 'aero';
+    const total = 0;
     const skillTypes = ['aeroErosion'];
 
     const {
@@ -344,11 +395,9 @@ export function calculateAeroErosionDamage(combatState, finalStats, characterLev
 
     const amplify = finalStats.skillType.aeroErosion.amplify;
     const dmgBonus = finalStats.skillType.aeroErosion.dmgBonus;
+    const special = 1 + (finalStats.special ?? 0) / 100;
 
-    const enemyLevel = combatState.enemyLevel ?? 1;
-    const charLevel = characterLevel ?? 1;
-
-    const enemyRes = combatState.enemyRes - (resShred ?? 0);
+    const enemyRes = baseRes - (resShred ?? 0);
 
     let resMult;
     if (enemyRes < 0) {
@@ -361,10 +410,10 @@ export function calculateAeroErosionDamage(combatState, finalStats, characterLev
 
     let enemyDef = ((8 * enemyLevel) + 792) * (1 - ((defIgnore ?? 0) + (defShred ?? 0)) / 100);
     if (enemyDef < 0) enemyDef = 0;
-    const defMult = (800 + 8 * charLevel) / (800 + 8 * charLevel + enemyDef);
+    const defMult = (800 + 8 * characterLevel) / (800 + 8 * characterLevel + enemyDef);
 
     const dmgReduction = 1 + (dmgVuln ?? 0) / 100;
-    const bonusMult = (1 + amplify / 100) * (1 + dmgBonus / 100);
+    const bonusMult = (1 + amplify / 100) * (1 + dmgBonus / 100) * special;
 
     const perStackDmg = Math.floor(perStack * bonusMult * resMult * defMult * dmgReduction);
     const totalDmg = Math.floor(total * bonusMult * resMult * defMult * dmgReduction);

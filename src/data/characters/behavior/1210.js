@@ -29,7 +29,7 @@ export function applyAemeathLogic({
     const eitherMode = burst || rupture;
 
     if (tab === 'tuneBreak' || name.includes('tune rupture') ||
-        name.includes('duet of seraphic plumes bonus')) {
+        name.includes('seraphic duet bonus')) {
         skillMeta.skillType = 'tuneRupture';
         if (tab !== 'tuneBreak') {
             skillMeta.element = 'fusion';
@@ -37,7 +37,7 @@ export function applyAemeathLogic({
         }
         skillMeta.dmgType = 'tuneBreak';
     } else if (name.includes('heavy attack') ||
-    name.includes('duet of seraphic plumes')) skillMeta.skillType = ['ultimate'];
+    name.includes('seraphic duet')) skillMeta.skillType = ['ultimate'];
 
 
     if (name.includes('heavy attack') && state.instantResponse) {
@@ -47,29 +47,32 @@ export function applyAemeathLogic({
         }
     }
 
-    let inherent2Stacks = isActiveSequence(3) ? 3 : Math.min(Number(state.aemeathInherent2Stacks ?? 0), 2);
-    if (!mergedBuffs.__aemeathInherent2 && eitherMode) {
-        mergedBuffs.critDmg += inherent2Stacks * 30;
-        mergedBuffs.__aemeathInherent2 = true;
-    }
+    const max = rupture ? 3 : 2;
+    const maxed = rupture ? max === 3 : max === 2;
+    let inherent2Stacks = isActiveSequence(3) ? max : Math.min(Number(state.aemeathInherent2Stacks ?? 0), max);
+    if (rupture) mergedBuffs.critDmg += inherent2Stacks * 20;
+    else if (burst) mergedBuffs.critDmg += inherent2Stacks * 30;
+
+    const rupturousTrail = Math.min((state.rupturousTrail ?? 0) * 10, 30);
+    if (rupture && name.includes('seraphic duet bonus')) skillMeta.tuneAmp *= 1 + rupturousTrail * 0.04;
+
     if (
-        name.includes('starbreak falls - finale') && eitherMode &&
+        name.includes('heavenfall edict: finale') && eitherMode &&
         (isActiveSequence(4) ||
-            inherent2Stacks >= 2)) skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + 20;
+            maxed)) skillMeta.amplify = (skillMeta.amplify ?? 0) + 25;
 
     if (isActiveSequence(2)) {
-        if (name.includes('duet of seraphic plumes')) {
+        if (name.includes('seraphic duet')) {
             skillMeta.multiplier *= 2;
         }
         const ruptureStacks = Math.min(Number(toggles['2_stacks'] ?? 0), 5);
-        if (ruptureStacks > 0 && name.includes('duet of seraphic plumes bonus')) {
-            skillMeta.multiplier *= (1 + 0.2 * ruptureStacks);
+        if (ruptureStacks > 0 && name.includes('seraphic duet bonus')) {
+            skillMeta.tuneAmp *= (1 + 0.2 * ruptureStacks);
         }
     }
 
-    if (isActiveSequence(3) && name.includes('heavenfall edict - finale')) {
-        skillMeta.multiplier += 2;
-    }
+    skillMeta.multiplier *= ((isActiveSequence(3) && name.includes('heavenfall edict: finale')) ? 2 : 1);
+    skillMeta.multiplier *= ((isActiveSequence(3) && name.includes('heavenfall edict: overdrive')) ? 1.4 : 1);
 
     if (isActiveSequence(4) && isToggleActive(4) && !mergedBuffs.__aemeathS4) {
         mergedBuffs.attribute.all.dmgBonus += 20;

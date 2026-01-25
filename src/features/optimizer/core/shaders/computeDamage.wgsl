@@ -12,8 +12,6 @@ fn computeDamageForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
     let sonata = applySetEffects(base, skillMask);
     let pre = buildPreMain(params, sonata, skillMask, elementId, skillId);
 
-    let flatOnly = (pre.multiplier == 0.0 && pre.scalingAtk == 0.0 && pre.flatDmg > 0.0);
-
     var best: f32 = 0.0;
     var bestMain: u32 = 0u;
 
@@ -21,14 +19,6 @@ fn computeDamageForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
         let mainId = echoIds[mainPos];
         if (mainId < 0) { continue; }
         if (lockedIndex >= 0 && mainId != lockedIndex) { continue; }
-
-        if (flatOnly) {
-            if (pre.flatDmg > best) {
-                best = pre.flatDmg;
-                bestMain = mainPos;
-            }
-            continue;
-        }
 
         let b = u32(mainId) * BUFFS_PER_ECHO;
 

@@ -800,5 +800,23 @@ export const changelog = [
         ],
         shortDesc: `3.1.2 beta content~! (and some other stuff) (〜^∇^)〜`,
     },
+    {
+        date: '24/01/2025',
+        patchVersion: '3.1.4 (Beta)',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `Added and updated stuff for <strong>3.1.4</strong> beta content in the calculator.`,
+            },
+            {
+                type: 'paragraph',
+                content: `
+                - Enemy section fully redesigned: pick any in‑game enemy with auto-filled level, class, and per-element RES.<br/>
+                - Custom enemy editing now shows live RES values with clamped inputs, so tuning break tests are faster and safer.<br/>
+            `
+            },
+        ],
+        shortDesc: `3.1.4 beta content~! | New enemy section (〜^∇^)〜`,
+    },
 
 ];

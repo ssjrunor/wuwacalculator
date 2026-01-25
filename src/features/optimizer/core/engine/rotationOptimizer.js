@@ -42,7 +42,8 @@ export function buildRotationTargets({ rotationEntries, skillResults, allSkillLe
         const skill = (skillResults ?? []).find(
             (s) => s?.name === entry.label && s?.tab === entry.tab
         );
-        if (!skill || skill.visible === false || skill.isSupportSkill) continue;
+        if (!skill || skill.visible === false || skill.isSupportSkill ||
+            (skill.dmgType ?? skill.custSkillMeta?.dmgType) === "tuneBreak") continue;
 
         targets.push({
             tab: entry.tab,

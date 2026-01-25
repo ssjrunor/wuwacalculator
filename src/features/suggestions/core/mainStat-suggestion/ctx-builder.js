@@ -41,6 +41,7 @@ export function generateMainStatsContext(form) {
         getSkillData,
         mergedBuffs: withoutMainStats,
         sequence: form.sequence,
+        enemyProfile: form.enemyProfile,
     };
 
     return {...prepareGpuContext({
@@ -109,6 +110,7 @@ export function generateRotationContexts(form) {
             mergedBuffs: withoutMainStats,
             skillType: target.skillType ?? form.skillType,
             sequence: form.sequence,
+            enemyProfile: form.enemyProfile,
         };
 
         const ctx = {

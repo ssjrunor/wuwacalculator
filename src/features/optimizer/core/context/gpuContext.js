@@ -16,7 +16,8 @@ export function prepareGpuContext({
                                       entry,
                                       levelData,
                                       getSkillData,
-                                      sequence
+                                      sequence,
+                                      enemyProfile,
                                   }) {
     const finalStatsBase = getFinalStats(
         activeCharacter,
@@ -37,19 +38,14 @@ export function prepareGpuContext({
         sliderValues: characterRuntimeStates?.[charId]?.SkillLevels,
         characterLevel,
         getSkillData,
+        enemyProfile,
         returnContextOnly: true
     });
 
-
     const skillId = ctx.skillMeta?.skillId ?? 0;
     const hasSkillId = skillId !== 0;
-    const elementIdFromSkillId = hasSkillId ? getElementIdFromSkillId(skillId) : -1;
     const skillTypeMaskFromSkillId = hasSkillId ? getSkillTypeMaskFromSkillId(skillId) : 0;
 
-
-/*
-    console.log();
-*/
     return {
         baseAtk: finalStatsBase.atk.base,
         baseHp: finalStatsBase.hp.base,
@@ -80,8 +76,8 @@ export function prepareGpuContext({
 
         normalBase: ctx.normalBase,
 
-        elementId: elementIdFromSkillId >= 0 ? elementIdFromSkillId : mapElementToId(ctx?.skillMeta?.element),
-        skillTypeId: skillTypeMaskFromSkillId || mapSkillTypeToId(ctx?.skillMeta?.skillType), // kept for fallback consumers
+        special: ctx.special,
+        skillTypeId: skillTypeMaskFromSkillId || mapSkillTypeToId(ctx?.skillMeta?.skillType),
         skillId,
         sequence
     };

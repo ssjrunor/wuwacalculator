@@ -196,6 +196,7 @@ export const EchoOptimizer = {
                 lockedIndex,
                 runCount,
                 mainFactor,
+                enemyProfile: form.enemyProfile,
                 statConstraints: null,
                 rotationEntries: form.rotationEntries,
                 skillResults: form.skillResults,

@@ -1,6 +1,7 @@
 export function applyLuukLogic({
                                       mergedBuffs,
                                       combatState,
+                                      enemyProfile,
                                       skillMeta,
                                       characterState,
                                       isActiveSequence = () => false,
@@ -27,7 +28,7 @@ export function applyLuukLogic({
 
     if (tab === 'resonanceLiberation'
         || name.includes('definition in absolute zero')
-    || name.includes('Basic Attack') || name.includes('aureole of execution') ||
+    || name.includes('basic attack') || name.includes('aureole of execution') ||
     name.includes('ichor deposit') || tab === 'forteCircuit') {
         skillMeta.skillType = 'basic';
     }
@@ -40,32 +41,31 @@ export function applyLuukLogic({
     }
     const mvBoost = characterState.activeStates.__aureate;
     if (isToggleActive('aureateJudge') && (name.includes('aureole of execution') ||
-    name.includes('gavel of earthshaker'))) skillMeta.multiplier += mvBoost;
+    name.includes('gavel of earthshaker'))) skillMeta.multiplier *= (1 + mvBoost);
 
-    if (name.includes('radiant reave blade dmg')) skillMeta.fixedDmg = 10;
+    if (name.includes('ichor blade dmg')) skillMeta.fixedDmg = 10;
 
     const stacks = characterState?.activeStates?.endnotes ?? 0;
-    const endnotes = Math.min(stacks * 20, 60);
+    const endnotes = Math.min(stacks * 25, 75);
 
     if (tab === 'resonanceLiberation') skillMeta.multiplier *= 1 + (endnotes / 100);
 
     if (isActiveSequence(1) && name.includes('mid-air attack')) {
-        skillMeta.multiplier *= 2.5;
+        skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 150;
     }
 
-    const tuneStrainStacks = combatState?.tuneStrain ?? 0;
     const tuneBreakBoost = mergedBuffs.tuneBreakBoost;
     const per10 = isActiveSequence(2) ? 10 : 5;
     const cap = isActiveSequence(2) ? 60 : 30;
 
-    if (isToggleActiveLocal('silentDebate') && characterLevel >= 70) {
+    if (isToggleActiveLocal('inherent2') && characterLevel >= 70) {
         const ampFromBoost = Math.min(Math.floor(tuneBreakBoost / 10) * per10, cap);
-        const extra = tuneStrainStacks >= 3 ? 15 : 0;
-        skillMeta.amplify = (skillMeta.amplify ?? 0) + ampFromBoost + extra;
+        mergedBuffs.atk.percent += 25;
+        skillMeta.amplify = (skillMeta.amplify ?? 0) + ampFromBoost;
     }
 
-    const bonus = mergedBuffs.tuneBreakBoost * (combatState?.tuneStrain ?? 0) * 0.12;
-    if (isToggleActiveLocal('silentDebate')) mergedBuffs.dmgBonus += bonus;
+    const bonus = mergedBuffs.tuneBreakBoost * (enemyProfile?.status?.tuneStrain ?? 0) * 0.12;
+    if (isToggleActiveLocal('silentDebate')) mergedBuffs.special += bonus;
 
     if (isActiveSequence(2) && name.includes('definition in absolute zero')) {
         skillMeta.multiplier *= 1.6;
@@ -75,7 +75,7 @@ export function applyLuukLogic({
         skillMeta.multiplier *= 1.65;
     }
 
-    if (isActiveSequence(4) && isToggleActive(4)) mergedBuffs.attribute.all.dmgBonus += 20;
+    if (isActiveSequence(4) && isToggleActive(4)) mergedBuffs.dmgBonus += 20;
 
     if (isActiveSequence(5)) {
         if (tab === 'introSkill' || tab === 'outroSkill') {
@@ -86,13 +86,11 @@ export function applyLuukLogic({
         }
     }
 
-    const window = isToggleActiveLocal('silentDebate') ? 1 : 0;
-    const definitionStacks = Math.min(Number(toggles['6_stacks'] ?? 0), 3);
-    if (isActiveSequence(6)) {
+    if (isActiveSequence(6) && isToggleActive(6)) {
         if ((tab === 'resonanceLiberation' || name.includes('definition in absolute zero')))
-            skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 40 * definitionStacks;
+            skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 40 * stacks;
         if ((name.includes('aureole of execution') || name.includes('gavel of earthshaker')))
-            skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 30 * window;
+            skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 30;
     }
 
     return {mergedBuffs, combatState, skillMeta};
@@ -100,7 +98,7 @@ export function applyLuukLogic({
 
 export const luukMultipliers = {
     outroSkill: [ { name: "Nod to Dying Moment DMG" } ],
-    forteCircuit: [ { name: "Radiant Reave Blade DMG" } ],
+    forteCircuit: [ { name: "Ichor Blade DMG" } ],
 };
 
 
@@ -110,7 +108,7 @@ export function luukBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     if (state.teamTuneBreakBuff)
-        mergedBuffs.attribute.all.dmgBonus += 20;
+        mergedBuffs.dmgBonus += 20;
 
     return { mergedBuffs };
 }

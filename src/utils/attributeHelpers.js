@@ -17,13 +17,13 @@ export const attributeIcons = {
 };
 
 export const elementToAttribute = {
+    0: 'physical',
     1: 'glacio',
     2: 'fusion',
     3: 'electro',
     4: 'aero',
     5: 'spectro',
     6: 'havoc',
-    7: 'physical'
 };
 
 export function withOpacity(color, alpha = 0.5) {

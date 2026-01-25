@@ -49,3 +49,4 @@ import '@/features/optimizer/ui/styles/CharacterOptionsPanel.css';
 import '@/features/optimizer/ui/styles/EchoSetSelector.css';
 import '@/features/optimizer/ui/styles/OptimizerAnalyticsPanel.css';
 import '@/features/suggestions/ui/styles/suggestions-main.css';
+import '@/features/enemy/ui/styles/enemyPane.css';

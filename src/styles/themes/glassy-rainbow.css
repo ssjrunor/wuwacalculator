@@ -476,6 +476,20 @@
     box-shadow: 0 0 15px rgba(150,100,255,0.15),
     inset 0 0 12px rgba(255,255,255,0.2);
     backdrop-filter: blur(12px) saturate(160%);
+
+    /* Prevent clipping when rendered near pane edges */
+    overflow: visible;
+}
+
+/* Ensure overlays span the full viewport and sit above pane stacking contexts */
+.glassy-rainbow .menu-overlay,
+.glassy-rainbow .skill-menu-overlay {
+    position: fixed !important;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: visible;
+    z-index: 2000;
 }
 
 /* Skills modal content */

@@ -315,22 +315,6 @@ select:focus {
     animation: fadeOutOverlay 0.2s ease-in forwards;
 }
 
-.menu-header-with-buttons {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0.9rem;
-    gap: 0.75rem;
-    font-size: 15px;
-    flex-shrink: 0;
-    z-index: 1;
-}
-
-.dark .menu-header-with-buttons {
-    border-bottom: 1px solid rgba(207, 207, 207, 0.1);
-}
-
 .skill-menu-list {
     padding: 0.5rem;
     display: flex;

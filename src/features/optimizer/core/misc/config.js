@@ -50,13 +50,14 @@ export const OPTIMIZER_CTX_DEF_MULT = 15;
 export const OPTIMIZER_CTX_DMG_REDUCTION = 16;
 export const OPTIMIZER_CTX_DMG_BONUS = 17;
 export const OPTIMIZER_CTX_DMG_AMPLIFY = 18;
-export const OPTIMIZER_CTX_CRIT_RATE = 19;
-export const OPTIMIZER_CTX_CRIT_DMG = 20;
-export const OPTIMIZER_CTX_SKILL_ID = 22;
-export const OPTIMIZER_CTX_SKILL_PAD = 23;
-export const OPTIMIZER_CTX_CHAR_ID = 25;
-export const OPTIMIZER_CTX_SEQUENCE = 26;
-export const OPTIMIZER_CTX_LOCKED_INDEX = 27;
+export const OPTIMIZER_CTX_SPECIAL = 19;
+export const OPTIMIZER_CTX_CRIT_RATE = 20;
+export const OPTIMIZER_CTX_CRIT_DMG = 21;
+export const OPTIMIZER_CTX_SKILL_ID = 23;
+export const OPTIMIZER_CTX_SKILL_PAD = 24;
+export const OPTIMIZER_CTX_CHAR_ID = 26;
+export const OPTIMIZER_CTX_SEQUENCE = 27;
+export const OPTIMIZER_CTX_LOCKED_INDEX = 28;
 
 export const WORKER_COUNT = {
     cpu: OPTIMIZER_WORKER_COUNT_CPU,

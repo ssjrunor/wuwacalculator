@@ -58,6 +58,7 @@ export function generateEchoContext(form) {
         // Buffs BEFORE applying echoes
         mergedBuffsWithoutEchoes,
         sequence: form.sequence,
+        enemyProfile: form.enemyProfile,
     };
 }
 
@@ -67,7 +68,6 @@ export function removeSpecialBuffs(
     charId,
     activeStates,
     sequence = 0,
-    skillType = ''
 ) {
     switch (Number(charId)) {
         case 1206: {

@@ -594,7 +594,7 @@ export const mainEchoBuffs = {
         always: { electro: 12, heavyAtk: 12 }
     },
     '6000160': {
-        always: { aero: 12, resonanceLiberation: 25 }
+        always: { aero: 12, resonanceLiberation: 12 }
     },
     '6000120': {
         always: { fusion: 12, echoSkill: 20 }

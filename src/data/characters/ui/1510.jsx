@@ -39,7 +39,7 @@ export default function LuukUI({ activeStates, toggleState, setCharacterRuntimeS
 
             <div className="status-toggle-box">
                 <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Endnotes on the Endgame</h4>
-                <p>Increase the DMG Multiplier of <span className="highlight">Resonance Liberation Rewritten in Winter's Margins</span> by <span className="highlight">20%</span>, stacking up to 3 times.</p>
+                <p>Increase the DMG Multiplier of <span className="highlight">Resonance Liberation Rewritten in Winter's Margins</span> by <span className="highlight">25%</span>, stacking up to 3 times.</p>
                 <DropdownSelect
                     label=""
                     options={[0, 1, 2, 3]}
@@ -74,19 +74,41 @@ export function CustomInherentSkills({
                                          currentSliderColor,
                                          characterRuntimeStates,
                                          setCharacterRuntimeStates,
-                                         unlockLevels = [],
-                                         charLevel = 1,
-                                         keywords = [],
+                                         keywords
                                      }) {
     const charId = character?.Id ?? character?.id ?? character?.link;
+    const charLevel = characterRuntimeStates?.[charId]?.CharacterLevel ?? 1;
     const activeStates = characterRuntimeStates?.[charId]?.activeStates ?? {};
-    const currentLevel = characterRuntimeStates?.[charId]?.CharacterLevel ?? charLevel;
+
+    const toggleState = (key) => {
+        setCharacterRuntimeStates(prev => ({
+            ...prev,
+            [charId]: {
+                ...(prev[charId] ?? {}),
+                activeStates: {
+                    ...(prev[charId]?.activeStates ?? {}),
+                    [key]: !(prev[charId]?.activeStates?.[key] ?? false)
+                }
+            }
+        }));
+    };
+
+    const updateState = (key, value) => {
+        setCharacterRuntimeStates(prev => ({
+            ...prev,
+            [charId]: {
+                ...(prev[charId] ?? {}),
+                activeStates: {
+                    ...(prev[charId]?.activeStates ?? {}),
+                    [key]: value
+                }
+            }
+        }));
+    };
 
     const skills = Object.values(character?.raw?.SkillTrees ?? {}).filter(
         node => node.Skill?.Type === "Inherent Skill"
     );
-
-    if (skills.length === 0) return null;
 
     return (
         <div className="inherent-skills">
@@ -94,8 +116,15 @@ export function CustomInherentSkills({
 
             {skills.map((node, index) => {
                 const name = node.Skill?.Name ?? '';
-                const unlockLevel = unlockLevels[index] ?? 1;
-                const locked = currentLevel < unlockLevel;
+                const lowerName = name.toLowerCase();
+
+                const uncausedDiagnosis = lowerName.includes("uncaused diagnosis");
+                const unlockLevel = uncausedDiagnosis ? 70 : 50;
+                const locked = charLevel < unlockLevel;
+
+                if (locked) {
+                    if (uncausedDiagnosis && activeStates.inherent2) updateState('inherent2', false);
+                }
 
                 return (
                     <div key={index} className="inherent-skill">
@@ -107,7 +136,23 @@ export function CustomInherentSkills({
                                 currentSliderColor
                             ), keywords)}
                         </p>
-                        {locked && (
+                        {uncausedDiagnosis && (
+                            <div
+                                className="slider-label-with-input"
+                                style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}
+                            >
+                                <label className="modern-checkbox">
+                                    <input
+                                        type="checkbox"
+                                        checked={activeStates.inherent2 || false}
+                                        onChange={() => !locked && toggleState('inherent2')}
+                                        disabled={locked}
+                                    />
+                                    Enable
+                                </label>
+                            </div>
+                        )}
+                        {!uncausedDiagnosis && locked && (
                             <span style={{ fontSize: '12px', color: 'gray' }}>
                                 (Unlocks at Lv. {unlockLevel})
                             </span>
@@ -124,41 +169,11 @@ export function LuukSequenceToggles({
                                         sequenceToggles,
                                         toggleSequence,
                                         currentSequenceLevel,
-                                        setCharacterRuntimeStates,
-                                        charId
                                     }) {
     if (!['4', '6'].includes(String(nodeKey))) return null;
 
     const requiredLevel = Number(nodeKey);
     const isDisabled = currentSequenceLevel < requiredLevel;
-    const value = sequenceToggles['6_stacks'] ?? 0;
-
-    const handleChange = (newValue) => {
-        setCharacterRuntimeStates(prev => ({
-            ...prev,
-            [charId]: {
-                ...(prev[charId] ?? {}),
-                sequenceToggles: {
-                    ...(prev[charId]?.sequenceToggles ?? {}),
-                    ['6_stacks']: newValue
-                }
-            }
-        }));
-    };
-
-    if (String(nodeKey) === '6') {
-        return (
-            <div className="sequence-controls" style={{ opacity: isDisabled ? 0.5 : 1 }}>
-                <DropdownSelect
-                    label=""
-                    options={[0, 1, 2, 3]}
-                    value={value}
-                    onChange={handleChange}
-                    disabled={isDisabled}
-                />
-            </div>
-        )
-    }
 
     return (
         <label className="modern-checkbox" style={{ opacity: isDisabled ? 0.5 : 1 }}>
@@ -173,20 +188,7 @@ export function LuukSequenceToggles({
     );
 }
 
-export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeStates }) {
-    const updateState = (key, value) => {
-        setCharacterRuntimeStates(prev => ({
-            ...prev,
-            [charId]: {
-                ...(prev[charId] ?? {}),
-                activeStates: {
-                    ...(prev[charId]?.activeStates ?? {}),
-                    [key]: value
-                }
-            }
-        }));
-    };
-
+export function buffUI({ activeStates, toggleState }) {
     return (
         <div className="echo-buffs">
             <div className="echo-buff">

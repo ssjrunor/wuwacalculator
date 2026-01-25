@@ -8,6 +8,7 @@ export const tabDisplayOrder = [
     'resonanceLiberation',
     'introSkill',
     'outroSkill',
+    'tuneBreak',
     'echoAttacks',
     'negativeEffect'
 ];
@@ -20,6 +21,7 @@ const tabDisplayNames = {
     resonanceLiberation: 'Resonance Liberation',
     introSkill: 'Intro Skill',
     outroSkill: 'Outro Skill',
+    tuneBreak: 'Tune Break',
     echoAttacks: 'Echo Attacks',
     negativeEffect: 'Negative Effects'
 };

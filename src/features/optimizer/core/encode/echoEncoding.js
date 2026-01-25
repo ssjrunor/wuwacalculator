@@ -60,23 +60,20 @@ export function buildMainEchoBuffsArray(reverseIds, echoes, charId) {
 
         const entry = mainEchoBuffs[String(echo.id)] ?? null;
         const base = i * BUFFS_PER_ECHO;
-
-        if (!entry) continue;
-
         let buffs = {};
 
         // always
-        if (entry.always) {
+        if (entry?.always) {
             Object.assign(buffs, entry.always);
         }
 
         // toggleable (apply because optimizer-ui must assume "enabled")
-        if (entry.toggleable && entry.toggleable.buffs) {
+        if (entry?.toggleable && entry?.toggleable.buffs) {
             Object.assign(buffs, entry.toggleable.buffs);
         }
 
         // stackable (apply max stacks)
-        if (entry.stackable) {
+        if (entry?.stackable) {
             const { max, buffsPerStack } = entry.stackable;
             for (const k in buffsPerStack) {
                 buffs[k] = (buffs[k] || 0) + buffsPerStack[k] * max;
@@ -86,6 +83,8 @@ export function buildMainEchoBuffsArray(reverseIds, echoes, charId) {
         if (echo.id === '6000106' && ['1409', '1406', '1408'].includes(charId)) {
             buffs.aero = (buffs.aero ?? 0) + 10;
         }
+
+        if (echo.id === '6000191' && charId === '1210') buffs.resonanceLiberation = (buffs.resonanceLiberation ?? 0) + 20;
 
         out[base]      = buffs.atkPercent   ?? 0;
         out[base + 1]  = buffs.atkFlat      ?? 0;

@@ -7,6 +7,7 @@ import {
     calc1209Conversion,
     computeAvgDamage,
 } from "@/features/optimizer/core/cpu/damageCore.js";
+import { getElementIdFromSkillId } from "@/utils/computeSkillDamage.js";
 
 export function computeMainStatDamage(params, mainStats) {
     const {
@@ -33,13 +34,14 @@ export function computeMainStatDamage(params, mainStats) {
         dmgReductionTotal = 1,
         dmgBonus = 1,
         dmgAmplify = 1,
+        special = 1,
 
         critRate = 0,
         critDmg = 1,
 
+        skillId = 0,
         elementId = 0,
         skillTypeId = 0,
-        skillId = 0,
 
         charId = 0,
         sequence = 0,
@@ -62,9 +64,14 @@ export function computeMainStatDamage(params, mainStats) {
         electro = 0,
     } = mainStats || {};
 
+    // Prefer skillId (optimizer style) and fall back to legacy fields
+    const elementIdEff = skillId
+        ? getElementIdFromSkillId(skillId)
+        : (elementId | 0);
+
     // Element bonus via array lookup (branchless)
     const elemBonuses = [aero, glacio, fusion, spectro, havoc, electro];
-    const elemIdx = Math.max(0, Math.min(5, elementId | 0));
+    const elemIdx = Math.max(0, Math.min(5, elementIdEff | 0));
     const elementBonus = elemBonuses[elemIdx];
 
     const dmgBonusTotal = dmgBonus + elementBonus / 100;
@@ -107,6 +114,7 @@ export function computeMainStatDamage(params, mainStats) {
         dmgReduction: dmgReductionTotal,
         dmgBonus: dmgBonusTotal,
         dmgAmplify,
+        special,
         critRateTotal,
         critDmgTotal,
         dmgVuln: conv1209.dmgVuln,

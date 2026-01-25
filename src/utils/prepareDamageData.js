@@ -10,7 +10,8 @@ export function getGroupedSkillOptions ({ skillResults }) {
             s.visible !== false &&
             s.tab !== "negativeEffect" &&
             s.tab !== "echoAttacks" &&
-            !s.isSupportSkill
+            !s.isSupportSkill &&
+            (s.dmgType ?? s.custSkillMeta?.dmgType) !== "tuneBreak"
     );
     const groups = {};
     for (const skill of allSkills) {
@@ -36,6 +37,7 @@ export function prepareDamageData({
                                       characterRuntimeStates,
                                       combatState,
                                       mergedBuffs,
+                                      enemyProfile,
                                       skillTabs,
                                       getAllSkillLevels
                                   }) {
@@ -45,8 +47,11 @@ export function prepareDamageData({
     const echoSkillResults = [];
     const negativeEffects = [];
 
-    const { frazzle } = calculateSpectroFrazzleDamage(combatState, finalStats, characterLevel);
-    const { erosion } = calculateAeroErosionDamage(combatState, finalStats, characterLevel);
+    const enemyLevel = enemyProfile?.level ?? 90;
+    const enemyResMap = enemyProfile?.res ?? {};
+
+    const { frazzle } = calculateSpectroFrazzleDamage(combatState, finalStats, characterLevel, enemyLevel, enemyResMap);
+    const { erosion } = calculateAeroErosionDamage(combatState, finalStats, characterLevel, enemyLevel, enemyResMap);
 
     negativeEffects.push({
         name: 'Spectro Frazzle',
@@ -100,6 +105,7 @@ export function prepareDamageData({
                     combatState,
                     mergedBuffs,
                     echoElement,
+                    enemyProfile,
                     sliderValues,
                     characterLevel,
                 });
@@ -137,8 +143,8 @@ export function prepareDamageData({
                     custSkillMeta: result.skillMeta,
                     tab: 'echoAttacks'
                 });
-            });
-        }
+        });
+    }
     }
 
     const allLevels = getAllSkillLevels(charId, activeCharacter, skillTabs);
@@ -150,15 +156,16 @@ export function prepareDamageData({
             const result = computeSkillDamage({
                 entry: { label: level.Name, detail: level.Type ?? tab, tab },
                 levelData: level,
-                activeCharacter,
-                characterRuntimeStates,
-                finalStats,
-                combatState,
-                mergedBuffs,
-                sliderValues,
-                characterLevel,
-                getSkillData,
-            });
+                    activeCharacter,
+                    characterRuntimeStates,
+                    finalStats,
+                    combatState,
+                    mergedBuffs,
+                    enemyProfile,
+                    sliderValues,
+                    characterLevel,
+                    getSkillData,
+                });
 
             const { normal, crit, avg, skillMeta = {} } = result;
             const isSupportSkill =
@@ -217,6 +224,15 @@ export function getEffectiveSkillLevels(charId, activeCharacter, tab, skill) {
                 return match ? { ...level, ...match, visible: match.visible ?? true } : level;
             })
             .concat(newCustom);
+    }
+
+    if (levels.length === 0 && tab === 'tuneBreak') {
+        levels = [{
+            Name: 'Tune Break',
+            Param: [['0%']],
+            Type: 'tuneBreak',
+            Format: null,
+        }];
     }
 
     return levels.map((level) => {

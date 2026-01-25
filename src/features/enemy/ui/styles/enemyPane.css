@@ -5,19 +5,23 @@
     margin-bottom: 10px;
 }
 
+.enemy-pane {
+    padding: 0.5rem;
+    gap: 0.5rem;
+    margin: unset;
+}
+
 .slider-group {
     margin-bottom: 12px;
 }
 
+.enemy-pane .slider-label-with-input {
+    justify-content: space-between;
+}
 .slider-label-with-input {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 4px;
-}
-
-.slider-label-with-input input[type=number] {
-    -moz-appearance: textfield;
 }
 
 .slider-controls {
@@ -28,4 +32,51 @@
 
 .slider-controls input[type="range"] {
     flex: 1;
+}
+
+button.class-toggle {
+    padding: 0 10px;
+    height: 1.75rem;
+    background-color: rgba(195, 195, 195, 0.44);
+    border-radius: 0.75rem;
+    font-weight: bold;
+    border: none;
+    transition: background-color ease-in-out 0.3s, transform ease-in-out 0.3s, color ease-in-out 0.3s;
+}
+
+button.class-toggle.selected {
+    background-color: rgba(64, 64, 64, 0.44);
+    color: white;
+    transform: scale(1.05);
+}
+
+button.class-toggle:hover {
+    transform: scale(1.05);
+}
+
+.enemy-pane .attribute-button-group {
+    gap: 0.5rem;
+    align-self: center;
+}
+
+.enemy-pane input {
+    align-self: center;
+}
+
+.enemy-pane .toggle-effect-button {
+    margin: unset;
+    font-size: 0.8rem;
+}
+
+.enemy-pane .toggle-effect-button.delete {
+    color: red;
+}
+
+.res-pill {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.enemy-pane .toggle-effect-button {
+    font-weight: bold;
 }

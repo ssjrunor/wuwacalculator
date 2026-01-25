@@ -8,8 +8,7 @@ export function packOptimizerContext(ctx) {
     const u32 = new Uint32Array(buffer);
     let i = 0;
 
-    const fallbackSkillId = ((((ctx.elementId ?? 0) & 0x7) << 15) | ((ctx.skillTypeId ?? 0) & 0x7fff)) >>> 0;
-    const skillId = (ctx.skillId ?? fallbackSkillId) >>> 0;
+    const skillId = ctx.skillId >>> 0;
 
     data[i++] = ctx.baseAtk      ?? 0;
     data[i++] = ctx.baseHp       ?? 0;
@@ -35,6 +34,7 @@ export function packOptimizerContext(ctx) {
     data[i++] = ctx.dmgReductionTotal ?? 1;
     data[i++] = ctx.dmgBonus     ?? 1;
     data[i++] = ctx.dmgAmplify   ?? 1;
+    data[i++] = ctx.special      ?? 1;
 
     data[i++] = ctx.critRate     ?? 0;
     data[i++] = ctx.critDmg      ?? 1;
@@ -42,7 +42,7 @@ export function packOptimizerContext(ctx) {
     data[i++] = ctx.normalBase   ?? 0;
 
     u32[i++] = skillId;
-    u32[i++] = 0; // pad to preserve stride / alignment
+    u32[i++] = 0;
 
     data[i++] = ctx.comboCount   ?? 0;
 
@@ -56,8 +56,6 @@ export function packOptimizerContext(ctx) {
     data[i++] = ctx.comboK ?? 0;
     {
         const baseIndex = (ctx.comboBaseIndex ?? 0) >>> 0;
-        // Preserve full u32 precision in WGSL even though uniforms are f32.
-        // WGSL reconstructs: base = (hi << 16) | lo.
         const lo = baseIndex & 0xffff;
         const hi = baseIndex >>> 16;
         data[i++] = lo;

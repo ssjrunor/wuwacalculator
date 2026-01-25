@@ -66,6 +66,7 @@ struct Params {
     dmgReductionTotal: f32,
     dmgBonus:     f32,
     dmgAmplify:   f32,
+    special:      f32,
 
     critRate:     f32,
     critDmg:      f32,
@@ -487,7 +488,7 @@ fn applySetEffectsBase(base: EchoBase) -> SetApplied {
     // =========================================================================
 
     // Element bonuses
-    s.glacio += 10.0 * s1_2 + 30.0 * s1_5 + 12.0 * s10_2 + 22.5 * s10_5;
+    s.glacio += 10.0 * s1_2 + 30.0 * s1_5 + 22.5 * s10_5;
     s.fusion += 10.0 * s2_2 + 30.0 * s2_5 + 10.0 * s18_2 + 15.0 * s18_5 + 16.0 * s22_3 + 10.0 * s27_2 + 20.0 * s27_5 + 10.0 * s28_2;
     s.electro += 10.0 * s3_2 + 30.0 * s3_5;
     s.aero += 10.0 * s4_2 + 30.0 * s4_5 + 10.0 * s16_2 + 30.0 * s16_5 + 10.0 * s17_2 + 30.0 * s17_5 + 10.0 * s29_2 + 15.0 * s29_5;
@@ -501,7 +502,7 @@ fn applySetEffectsBase(base: EchoBase) -> SetApplied {
     s.erSetBonus += 10.0 * s8_2 + 10.0 * s13_2 + 10.0 * s14_2;
 
     // Skill type bonuses
-    s.skill += 36.0 * s10_5;
+    s.skill += 12.0 * s10_2 + 36.0 * s10_5;
     s.lib += 20.0 * s18_5 + 30.0 * s23_3;
     s.heavy += 30.0 * s21_3;
     s.basic += 40.0 * s26_5;
@@ -597,7 +598,8 @@ fn buildPreMain(p: Params, s: SetApplied, skillMask: u32, elementId: u32, skillI
     let resDefAmp =
         p.resMult *
         p.defMult *
-        p.dmgAmplify;
+        p.dmgAmplify *
+        p.special;
 
     pre.resDefAmp = resDefAmp;
     pre.dmgReductionTotal = p.dmgReductionTotal;

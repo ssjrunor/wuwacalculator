@@ -1,6 +1,7 @@
 export function applyMornyeLogic({
                                        mergedBuffs,
                                        combatState,
+                                       enemyProfile,
                                        skillMeta,
                                        characterState,
                                        isActiveSequence = () => false,
@@ -34,7 +35,7 @@ export function applyMornyeLogic({
         skillMeta.scaling = { atk: 0, hp: 0, def: 1, energyRegen: 0 };
     }
 
-    const bonus = mergedBuffs.tuneBreakBoost * (combatState?.tuneStrain ?? 0) * 0.12;
+    const bonus = mergedBuffs.tuneBreakBoost * (enemyProfile?.status?.tuneStrain ?? 0) * 0.12;
     if (!mergedBuffs.__mornyeTuneStrain && isToggleActiveLocal('decoupling')) {
         mergedBuffs.dmgBonus += bonus;
         mergedBuffs.__mornyeTuneStrain = true;

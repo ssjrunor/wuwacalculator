@@ -40,6 +40,7 @@ export function generateSetPlanContext(form) {
         getSkillData,
         mergedBuffs: withoutSetEffects,
         sequence: form.sequence,
+        enemyProfile: form.enemyProfile,
     };
 
     return {...prepareGpuContext({
@@ -108,6 +109,7 @@ export function generateRotationSetPlanContexts(form) {
             mergedBuffs: withoutSetEffects,
             skillType: target.skillType ?? form.skillType,
             sequence: form.sequence,
+            enemyProfile: form.enemyProfile,
         };
 
         const ctx = {

@@ -29,7 +29,7 @@ import {syncAllPresetsForRuntime} from '@/state/echoPresetStore.js';
 const defaultSliderValues = { normalAttack: 1, resonanceSkill: 1, forteCircuit: 1, resonanceLiberation: 1, introSkill: 1, sequence: 0 };
 const defaultTraceBuffs = { atkPercent: 0, hpPercent: 0, defPercent: 0, healingBonus: 0, critRate: 0, critDmg: 0, activeNodes: {} };
 const defaultCustomBuffs = { atkFlat: 0, hpFlat: 0, defFlat: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, critRate: 0, critDmg: 0, energyRegen: 0, healingBonus: 0, basicAtk: 0, heavyAtk: 0, resonanceSkill: 0, resonanceLiberation: 0, aero: 0, glacio: 0, spectro: 0, fusion: 0, electro: 0, havoc: 0 };
-const defaultCombatSettings = { enemyLevel: 100, enemyRes: 20 };
+const defaultCombatSettings = { critRate: 0, critDmg: 0, weaponBaseAtk: 0, spectroFrazzle: 0, havocBane: 0, electroFlare: 0, aeroErosion: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, energyRegen: 0 };
 const skillTabs = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill', 'outroSkill', 'echoAttacks', 'negativeEffect'];
 
 function useCharacterStoreState() {
@@ -109,7 +109,7 @@ function buildDefaultWeapon(char, weapons, baseCombat) {
 
 function buildNormalizedRuntime(char, weapons, existing, defaults) {
     const charId = char.Id ?? char.id ?? char.link;
-    const baseCombat = { enemyLevel: defaults.enemyLevel, enemyRes: defaults.enemyRes, critRate: 0, critDmg: 0, weaponBaseAtk: 0, spectroFrazzle: 0, havocBane: 0, electroFlare: 0, aeroErosion: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, energyRegen: 0 };
+    const baseCombat = { ...defaults };
     const weaponInfo = buildDefaultWeapon(char, weapons, baseCombat);
 
     return {
@@ -506,6 +506,10 @@ export default function CalculatorStore() {
 
     const damageData = useMemo(() => {
         if (!activeCharacter || !charId) return { charSkillResults: [], echoSkillResults: [], negativeEffects: [] };
+        const enemyProfile = {
+            level: activeRuntime?.CombatState?.enemyLevel ?? 90,
+            res: activeRuntime?.CombatState?.enemyResMap ?? {}
+        };
         return prepareDamageData({
             activeCharacter,
             charId,
@@ -515,6 +519,7 @@ export default function CalculatorStore() {
             characterRuntimeStates: legacyRuntimeStates,
             combatState,
             mergedBuffs: finalMergedBuffs,
+            enemyProfile,
             skillTabs,
             getAllSkillLevels: getAllSkillLevelsForTabs
         });

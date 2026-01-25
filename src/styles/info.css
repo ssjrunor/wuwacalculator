@@ -52,7 +52,7 @@
 .changelog-entries.guides p {
     padding: 0.5rem;
     white-space: unset;
-    pointer-events: none;
+    cursor: initial;
     color: #2a2a2a;
 }
 

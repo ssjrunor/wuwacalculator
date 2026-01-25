@@ -182,5 +182,6 @@ export function getFinalStats(
         shieldBonus,
         dmgBonus,
         tuneBreakBoost: buffs.tuneBreakBoost,
+        special: buffs.special ?? 0,
     };
 }

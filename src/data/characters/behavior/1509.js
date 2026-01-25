@@ -1,6 +1,7 @@
 export function applyLynaeLogic({
                                        mergedBuffs,
                                        combatState,
+                                       enemyProfile,
                                        skillMeta,
                                        characterState,
                                        isActiveSequence = () => false,
@@ -42,7 +43,7 @@ export function applyLynaeLogic({
         mergedBuffs.__trueColor = true;
     }
 
-    const bonus = mergedBuffs.tuneBreakBoost * (combatState?.tuneStrain ?? 0) * 0.12;
+    const bonus = mergedBuffs.tuneBreakBoost * (enemyProfile?.status?.tuneStrain ?? 0) * 0.12;
     if (!mergedBuffs.__lynaTuneStrain) {
         mergedBuffs.dmgBonus += bonus;
         mergedBuffs.__lynaTuneStrain = true;

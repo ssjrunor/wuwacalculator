@@ -13,7 +13,8 @@ export function buildRotationBreakdown(skillResults, allSkillLevels, rotationEnt
         if (!skill
             || skill.tab === "echoAttacks"
             || skill.tab === "negativeEffect"
-            || skill.isSupportSkill) continue;
+            || skill.isSupportSkill ||
+            (skill.dmgType ?? skill.custSkillMeta?.dmgType) === "tuneBreak") continue;
         const key = `${skill.tab}::${skill.name}`;
         if (!skillByTabName.has(key)) {
             skillByTabName.set(key, skill);

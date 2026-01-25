@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import Split from 'split.js';
 import {fetchCharacters} from '@/data/ingest/wutheringFetch';
 import characterStatesRaw from '../data/characterStates.json';
@@ -70,6 +70,17 @@ import Optimizer from "@/features/optimizer/ui/Optimizer.jsx";
 import SuggestionsPane from "@/features/suggestions/ui/SuggestionsPane.jsx";
 import AppStatusModal from "../components/common/AppStatusModal.jsx";
 import {defaultRandGen} from "@/features/suggestions/core/randomEchoes/lib/constants.js";
+import enemies from '@/data/enemies.json';
+
+export const defaultEnemyRes = () => ({
+    0: 20,
+    1: 60,
+    2: 20,
+    3: 20,
+    4: 20,
+    5: 20,
+    6: 20
+});
 
 export const defaultTraceBuffs = {
     // main stats: only percent is used, flat stays 0
@@ -107,12 +118,12 @@ export default function Calculator(props) {
         prompt: {}
     });
 
-    const { user, accessToken } = useGoogleAuth();
+    const { user } = useGoogleAuth();
 
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2026-01-19 07:54';
+    const LATEST_CHANGELOG_VERSION = '2026-01-24 23:00';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
@@ -129,8 +140,8 @@ export default function Calculator(props) {
     const [isCollapsedMode, setIsCollapsedMode] = useState(false);
     const [activeCharacterId, setActiveCharacterId] = usePersistentState('activeCharacterId', null);
     const [characterRuntimeStates, setCharacterRuntimeStates] = usePersistentState('characterRuntimeStates', {});
-    const [enemyLevel, setEnemyLevel] = usePersistentState('enemyLevel', 100);
-    const [enemyRes, setEnemyRes] = usePersistentState('enemyRes', 20);
+    const [enemyProfile, setEnemyProfile] = usePersistentState('enemyProfile', { id: 340000020, level: 100, res: defaultEnemyRes(), toa: true, class: 4, status: { tuneStrain: 0 } });
+    const [customEnemies, setCustomEnemies] = usePersistentState('customEnemies', []);
     const [menuOpen, setMenuOpen] = useState(false);
     const [skillsModalOpen, setSkillsModalOpen] = useState(false);
     const [activeSkillTab, setActiveSkillTab] = useState('normalAttack');
@@ -145,7 +156,32 @@ export default function Calculator(props) {
     const attributeIconPath = attributeIcons[currentAttribute] ?? '';
     const defaultSliderValues = { normalAttack: 1, resonanceSkill: 1, forteCircuit: 1, resonanceLiberation: 1, introSkill: 1, tuneBreak: 1, sequence: 0 };
     const defaultCustomBuffs = { atkFlat: 0, hpFlat: 0, defFlat: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, critRate: 0, critDmg: 0, energyRegen: 0, healingBonus: 0, basicAtk: 0, heavyAtk: 0, resonanceSkill: 0, resonanceLiberation: 0, aero: 0, glacio: 0, spectro: 0, fusion: 0, electro: 0, havoc: 0 };
-    const defaultCombatState = { enemyLevel: enemyLevel ?? 100, enemyRes: enemyRes ?? 20, critRate: 0, critDmg: 0, weaponBaseAtk: 0, spectroFrazzle: 0, havocBane: 0, electroFlare: 0, aeroErosion: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, energyRegen: 0 };
+    const enemyMap = useMemo(() => {
+        const map = {};
+        enemies.forEach(e => {
+            const key = String(e?.Id ?? e?.id ?? e?.monsterId ?? '');
+            if (key) map[key] = e;
+        });
+        return map;
+    }, []);
+
+    const selectedEnemyId = String(enemyProfile?.id ?? 340000020);
+    const selectedEnemy = enemyMap[selectedEnemyId] ?? null;
+    const enemyLevel = Math.min(Math.max(Number(enemyProfile?.level ?? 90), 1), 120);
+
+    const defaultCombatState = {
+        critRate: 0,
+        critDmg: 0,
+        weaponBaseAtk: 0,
+        spectroFrazzle: 0,
+        havocBane: 0,
+        electroFlare: 0,
+        aeroErosion: 0,
+        atkPercent: 0,
+        hpPercent: 0,
+        defPercent: 0,
+        energyRegen: 0
+    };
     const [characterState, setCharacterState] = useState({ activeStates: {} });
     const [showDropdown, setShowDropdown] = useState(false);
     const [moveToolbarToSidebar, setMoveToolbarToSidebar] = useState(false);
@@ -188,8 +224,6 @@ export default function Calculator(props) {
     const combatState = {
         ...defaultCombatState,
         ...(runtime?.CombatState ?? {}),
-        enemyLevel,
-        enemyRes
     };
     const setTeam = useCallback((nextOrUpdater) => {
         if (!charId) return;
@@ -339,9 +373,7 @@ export default function Calculator(props) {
             const hasWeapon = cleanedCombatState?.weaponId != null;
             let nextCombatState = {
                 ...defaultCombatState,
-                ...cleanedCombatState,
-                enemyLevel,
-                enemyRes
+                ...cleanedCombatState
             };
 
             if (defaultWeapon && !hasWeapon) {
@@ -392,15 +424,6 @@ export default function Calculator(props) {
             setWeapons(data);
         });
     }, []);
-
-    useEffect(() => {
-        setCombatState(prev => ({
-            ...prev,
-            enemyLevel,
-            enemyRes
-        }));
-    }, [enemyLevel, enemyRes]);
-
 
     useEffect(() => {
         const seenVersion = getPersistentValue('seenChangelogVersion');
@@ -545,8 +568,6 @@ export default function Calculator(props) {
         const cachedCombatState = {
             ...defaultCombatState,
             ...(cached?.CombatState ?? {}),
-            enemyLevel,
-            enemyRes
         };
 
         const alreadyHasWeapon = cachedCombatState?.weaponId != null;
@@ -748,6 +769,7 @@ export default function Calculator(props) {
         const result = overrideLogic({
             mergedBuffs,
             combatState,
+            enemyProfile,
             characterState,
             isActiveSequence,
             isToggleActive,
@@ -963,8 +985,6 @@ export default function Calculator(props) {
 
             resetCombatState = {
                 ...defaultCombatState,
-                enemyLevel: combatState.enemyLevel,
-                enemyRes: combatState.enemyRes,
                 weaponId,
                 weaponLevel: 1,
                 weaponRank: 1,
@@ -978,9 +998,7 @@ export default function Calculator(props) {
             };
         } else {
             resetCombatState = {
-                ...defaultCombatState,
-                enemyLevel: combatState.enemyLevel,
-                enemyRes: combatState.enemyRes
+                ...defaultCombatState
             };
         }
 
@@ -1038,6 +1056,7 @@ export default function Calculator(props) {
         characterRuntimeStates,
         combatState,
         mergedBuffs,
+        enemyProfile,
         skillTabs,
         getAllSkillLevels,
     });
@@ -1720,6 +1739,7 @@ export default function Calculator(props) {
                                     switchLeftPane={switchLeftPane}
                                     finalStats={finalStats}
                                     keywords={keywords}
+                                    enemyProfile={enemyProfile}
                                 />
                             ) : (
                                 <div className="split">
@@ -1768,12 +1788,15 @@ export default function Calculator(props) {
                                         )}
                                         {leftPaneView === 'enemy' && (
                                             <EnemyPane
-                                                enemyLevel={enemyLevel}
-                                                setEnemyLevel={setEnemyLevel}
-                                                enemyRes={enemyRes}
-                                                setEnemyRes={setEnemyRes}
+                                                enemyProfile={enemyProfile}
+                                                setEnemyProfile={setEnemyProfile}
+                                                enemy={selectedEnemy}
+                                                enemies={enemies}
+                                                customEnemies={customEnemies}
+                                                setCustomEnemies={setCustomEnemies}
                                                 combatState={combatState}
                                                 setCombatState={setCombatState}
+                                                menuRef={menuRef}
                                             />
                                         )}
                                         {leftPaneView === 'buffs' && (
@@ -1868,7 +1891,7 @@ export default function Calculator(props) {
                                                 setSuggestionsPaneSettings={setSuggestionsPaneSettings}
                                                 keywords={keywords}
                                                 rotationEntries={rotationEntries}
-
+                                                enemyProfile={enemyProfile}
                                             />
                                         )}
                                     </div>

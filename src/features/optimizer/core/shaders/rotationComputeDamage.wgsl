@@ -27,14 +27,15 @@ const CTX_DEF_MULT: u32 = 15u;
 const CTX_DMG_REDUCTION: u32 = 16u;
 const CTX_DMG_BONUS: u32 = 17u;
 const CTX_DMG_AMPLIFY: u32 = 18u;
-const CTX_CRIT_RATE: u32 = 19u;
-const CTX_CRIT_DMG: u32 = 20u;
-const CTX_NORMAL_BASE: u32 = 21u;
-const CTX_SKILL_ID: u32 = 22u;
-const CTX_SKILL_PAD: u32 = 23u;
-const CTX_CHAR_ID: u32 = 25u;
-const CTX_SEQUENCE: u32 = 26u;
-const CTX_LOCKED_INDEX: u32 = 27u;
+const CTX_SPECIAL: u32 = 19u;
+const CTX_CRIT_RATE: u32 = 20u;
+const CTX_CRIT_DMG: u32 = 21u;
+const CTX_NORMAL_BASE: u32 = 22u;
+const CTX_SKILL_ID: u32 = 23u;
+const CTX_SKILL_PAD: u32 = 24u;
+const CTX_CHAR_ID: u32 = 26u;
+const CTX_SEQUENCE: u32 = 27u;
+const CTX_LOCKED_INDEX: u32 = 28u;
 
 fn loadParams(ctxIndex: u32) -> Params {
     var p: Params;
@@ -65,6 +66,7 @@ fn loadParams(ctxIndex: u32) -> Params {
     p.dmgReductionTotal = rotationContexts[base + CTX_DMG_REDUCTION];
     p.dmgBonus = rotationContexts[base + CTX_DMG_BONUS];
     p.dmgAmplify = rotationContexts[base + CTX_DMG_AMPLIFY];
+    p.special = rotationContexts[base + CTX_SPECIAL];
 
     p.critRate = rotationContexts[base + CTX_CRIT_RATE];
     p.critDmg = rotationContexts[base + CTX_CRIT_DMG];
@@ -215,15 +217,8 @@ fn computeRotationForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
         applySetEffectsConditional(&sonata, base.setCount, skillMask);
         let pre = buildPreMain(p, sonata, skillMask, elementId, skillId);
 
-        let flatOnly = (pre.multiplier == 0.0 && pre.scalingAtk == 0.0 && pre.flatDmg > 0.0);
-
         for (var mainPos: u32 = 0u; mainPos < 5u; mainPos = mainPos + 1u) {
             if (mainOk[mainPos] == 0u) { continue; }
-
-            if (flatOnly) {
-                totals[mainPos] = totals[mainPos] + pre.flatDmg * w;
-                continue;
-            }
 
             let avg = evalMainPos(
                 pre,

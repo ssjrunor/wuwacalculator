@@ -71,7 +71,8 @@ export default function Optimizer({
                                       setGeneralOptimizerSettings,
                                       switchLeftPane,
                                       keywords,
-                                      finalStats
+                                      finalStats,
+                                      enemyProfile
                                   }) {
     useEffect(() => {
         (async () => {
@@ -423,6 +424,7 @@ export default function Optimizer({
             rotationEntries,
             skillResults,
             allSkillLevels,
+            enemyProfile,
             onProgress: ({ progress, elapsedMs, remainingMs, processed, speed }) =>
                 setProgress(prev => ({
                     ...prev,

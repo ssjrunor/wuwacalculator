@@ -103,6 +103,7 @@ export function computeAvgDamage({
     dmgReduction,
     dmgBonus,
     dmgAmplify,
+    special = 1,
     critRateTotal,
     critDmgTotal,
     dmgVuln = 0,
@@ -115,7 +116,8 @@ export function computeAvgDamage({
             defMult *
             (dmgReduction + dmgVuln / 100) *
             dmgBonus *
-            dmgAmplify;
+            dmgAmplify *
+            special;
 
         const critHit = baseDamage * critDmgTotal;
         const cr = Math.max(0, Math.min(1, critRateTotal));
@@ -128,7 +130,8 @@ export function computeAvgDamage({
         defMult *
         (dmgReduction + dmgVuln / 100) *
         dmgBonus *
-        dmgAmplify;
+        dmgAmplify *
+        special;
 
     const critHit = baseDamage * critDmgTotal;
 

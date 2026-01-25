@@ -645,7 +645,7 @@ export const echoSets = {
                 ],
             },
         },
-        icon: '/assets/echo-icons/default.webp',
+        icon: '/assets/echo-icons/trailblazingStar.webp',
     },
 
     28: {
@@ -695,7 +695,7 @@ export const echoSets = {
                 ],
             },
         },
-        icon: '/assets/echo-icons/default.webp',
+        icon: '/assets/echo-icons/soundOfTrueName.webp',
     }
 };
 

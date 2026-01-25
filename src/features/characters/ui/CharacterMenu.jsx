@@ -146,6 +146,7 @@ export default function CharacterMenu({
                                         src={imageCache[`/assets/attributes/attributes alt/${attr}.webp`]?.src || `/assets/attributes/attributes alt/${attr}.webp`}
                                         alt={attr}
                                         loading="eager"
+                                        style={attr === 'physical' ? { filter: 'grayscale(1) brightness(0.6)' } : undefined}
                                     />
                                 </button>
                             ))}
@@ -179,6 +180,7 @@ export default function CharacterMenu({
                                             alt="Element"
                                             className="mini-icon"
                                             loading="eager"
+                                            style={getAttributeName(char.attribute) === 'physical' ? { filter: 'grayscale(1) brightness(0.6)' } : undefined}
                                         />
                                     </div>
                                 </div>

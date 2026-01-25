@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 import '../../styles/appStatusModal.css';
 
 const data = {
-    lastUpdated: '03-01-2026',
+    lastUpdated: '24-01-2026',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
-    patchVersion: '3.1.2',
+    patchVersion: '3.1.4',
     calculatorState: 'Fully updated for the current patch.',
     coverage: [
         {
             title: 'Note',
-            desc: 'Hey, new beta. All newly added characters should work everywhere except the optimizer (specifically for Aemeath). Just haven\'t gotten to it yet, will do so soon though. Do not fret.',
+            desc: 'Hey, new stuff. I just be doing anything atp, the enemy section has been redesigned, you can have in game enemies with their data on there now. Enemy specific effects wil come soon.',
         },
         {
             title: 'Character Coverage',
@@ -32,13 +32,12 @@ const data = {
     ],
     knownIssues: [
         "Mornye's suggestions related stuff's fix still pending.",
-        "Aemeath could be bugging in the optimizer.",
         "That's kinda it tbh.",
     ],
     recentChanges: [
         "Added new beta stuff.",
-        "Updated Tune Rupture DMG calculation. I learned it scales with the enemy class. For now it's just set to Calamity/Overlord class.",
-        "Added a paging system on the optimizer for it's produced results. Helps with memory management.",
+        "Aemeath isn't bugging in the optimizer anymore. yippee.",
+        "New look for enemy section."
     ],
 };
 

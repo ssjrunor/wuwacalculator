@@ -193,7 +193,6 @@
 
 .mode-switch {
     display: flex;
-    border-radius: 50px !important;
     padding: unset !important;
     overflow: hidden;
     margin-top: 0.4rem;

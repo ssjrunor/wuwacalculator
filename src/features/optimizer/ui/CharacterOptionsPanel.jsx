@@ -70,7 +70,7 @@ export function CharacterOptionsPanel({
                 </div>
                 <div className="preset-section image-art">
                     <label>Image Art</label>
-                    <div className="toggle mode-switch custom-select small">
+                    <div className="mode-switch toggle custom-select small">
                         <div className={`optimizer-toggle ${useSplash ? 'active btn-primary' : ''}`}
                              onClick={() => updateGeneralOptimizerSettings({useSplash: true})}
                         >
@@ -129,7 +129,7 @@ export function CharacterOptionsPanel({
                         </div>
 
                         <div className="dial-row">Evaluation Engine</div>
-                        <div className="toggle mode-switch custom-select small">
+                        <div className="mode-switch toggle custom-select small">
                             <div className={`optimizer-toggle ${enableGpu ? 'active btn-primary' : ''}`}
                                  onClick={() => updateGeneralOptimizerSettings({enableGpu: true})}
                             >

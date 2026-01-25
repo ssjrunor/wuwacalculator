@@ -124,15 +124,25 @@ export default function DamageSection({
         .filter(([tab, skills]) => skills.some(s => s.visible))
         .map(([tab, skills]) => {
             const skill = getSkillData(activeCharacter, tab);
+            const tabLabel = tab
+                .replace(/([A-Z])/g, " $1")
+                .replace(/^./, s => s.toUpperCase());
+
+            const skillName = skill?.Name ?? '';
+            const normalizedTab = tabLabel.toLowerCase().trim();
+            const normalizedSkill = skillName.toLowerCase().trim();
+
+            let title = tabLabel;
+            if (skillName && normalizedSkill.includes('tune break')) {
+                title = skillName;
+            } else if (skillName && normalizedSkill.length > 0 && !normalizedSkill.startsWith(normalizedTab)) {
+                title = `${tabLabel}: ${skillName}`;
+            }
+
             return (
                 <div key={tab} className="box-wrapper">
                     <div className="damage-inner-box">
-                        <h3 className="damage-box-title">
-                            {tab
-                                .replace(/([A-Z])/g, " $1")
-                                .replace(/^./, s => s.toUpperCase())}
-                            {skill?.Name ? `: ${skill.Name}` : ''}
-                        </h3>
+                        <h3 className="damage-box-title">{title}</h3>
                         <div className="damage-grid">
                             <div></div>
                             <div className="subhit">Normal</div>

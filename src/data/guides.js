@@ -151,6 +151,51 @@ export const guides = [
         ]
     },
     {
+        category: 'Enemies',
+        guides: [
+            {
+                title: 'Using the Enemy Section',
+                type: 'article',
+                shortDesc: 'Pick a target, tweak its resistances/level, and set up one custom enemy.',
+                content: `
+                <p>The <strong>Enemy Section</strong> lets you choose which foe your calculations target. You can swap enemies, adjust their level and resistances, flip endgame mode, and keep one custom enemy for special cases.</p>
+
+                <h4>1. Selecting an enemy</h4>
+                <ul>
+                  <li>Click the enemy icon to open the <strong>Menu</strong>.</li>
+                  <li>Filter the list by <strong>Attribute</strong> or <strong>Class</strong>; each row shows an attribute icon.</li>
+                  <li>Picking one sets it as the active target. Use the level slider or input field (1–120) to match whatever.</li>
+                </ul>
+
+                <h4>2. Resistances & ToA</h4>
+                <ul>
+                  <li>Resistances show for all elements with their icons. Values come from the selected enemy.</li>
+                  <li>Toggle <strong>Endgame / Overworld</strong>. Endgame bumps any 10% res to 20% and 40% res to 60% for every attribute; adjusts level when enabled.</li>
+                </ul>
+
+                <h4>3. Custom enemy</h4>
+                <ul>
+                  <li>Click <strong>EDIT</strong> to jump to your custom enemy. If none exists, one is created from the current target and saved.</li>
+                  <li>Custom enemy has editable resistances (0–100) and a class picker (Common/Elite/Overlord/Calamity).</li>
+                  <li>Only one custom enemy exists; it persists between sessions.</li>
+                  <li><strong>DELETE</strong> <a href="https://tenor.com/bzsbK.gif" target="_blank" rel="noopener noreferrer">deletes</a> it.</li>
+                </ul>
+
+                <h4>4. Tunability & debuffs</h4>
+                <ul>
+                  <li><strong>Tune Strain</strong> slider adds stacks that amplify tune-break buffs for certain characters.</li>
+                  <li>Negative effects (Spectro Frazzle, Aero Erosion, Havoc Bane, Electro Flare) live here too—set them to match your scenario.</li>
+                </ul>
+
+                <h4>5. Persistence</h4>
+                <ul>
+                  <li>Your chosen enemy, level, Endgame state, and any custom enemy edits are saved automatically and aren't tied to a character.</li>
+                </ul>
+                `
+            }
+        ]
+    },
+    {
         category: 'Random Echoes',
         guides: [
             {

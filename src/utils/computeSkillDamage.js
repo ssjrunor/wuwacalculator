@@ -133,11 +133,11 @@ export function computeSkillDamage({
                                        sliderValues,
                                        characterLevel,
                                        echoElement,
-                                       returnContextOnly = false
-
+                                       returnContextOnly = false,
+                                       enemyProfile = null
                                    }) {
     const charId = activeCharacter?.Id ?? activeCharacter?.id ?? activeCharacter?.link;
-    let element = elementToAttribute[activeCharacter?.attribute] ?? echoElement ?? '';
+    let element = echoElement ?? elementToAttribute[activeCharacter?.attribute] ?? '';
 
     const characterState = {
         activeStates: characterRuntimeStates?.[charId]?.activeStates ?? {},
@@ -188,7 +188,7 @@ export function computeSkillDamage({
             : levelData.Param?.[0]?.[sliderValues?.[tab] - 1] ?? '0%';
     }
 
-    const { flat, percent } = extractFlatAndPercent(rawMultiplier);
+    const { flat } = extractFlatAndPercent(rawMultiplier);
     const parsedMultiplier = parseCompoundMultiplier(rawMultiplier);
 
     let skillMeta = {
@@ -214,6 +214,7 @@ export function computeSkillDamage({
         const result = override({
             mergedBuffs: localMergedBuffs,
             combatState,
+            enemyProfile,
             skillMeta,
             characterState,
             isActiveSequence,
@@ -358,22 +359,9 @@ export function computeSkillDamage({
             baseTuneRup,
             skillMeta,
             multiplier: skillMeta.multiplier,
-            element: skillMeta.element,
-            skillType: skillMeta.skillType,
-            dmgType: skillMeta.dmgType,
             characterLevel,
             mergedBuffs: localMergedBuffs,
-            amplify: skillMeta.amplify,
-            skillDmgBonus: skillMeta.skillDmgBonus,
-            critDmgBonus: skillMeta.critDmgBonus,
-            critRateBonus: skillMeta.critRateBonus,
-            skillDefIgnore: skillMeta.skillDefIgnore,
-            skillResIgnore: skillMeta.skillResIgnore,
-            skillCritDmg: skillMeta.skillCritDmg,
-            skillCritRate: skillMeta.skillCritRate,
-            fixedDmg: skillMeta.fixedDmg,
-            skillDmgTaken: skillMeta.skillDmgTaken,
-
+            enemyProfile,
             returnContextOnly: true
         });
 
@@ -403,22 +391,10 @@ export function computeSkillDamage({
         baseTuneRup,
         skillMeta,
         multiplier: skillMeta.multiplier,
-        amplify: skillMeta.amplify,
         scaling: skillMeta.scaling,
-        element: skillMeta.element ?? echoElement ?? element,
-        skillType: skillMeta.skillType,
-        dmgType: skillMeta.dmgType,
         characterLevel,
         mergedBuffs: localMergedBuffs,
-        skillDmgBonus: skillMeta.skillDmgBonus ?? 0,
-        critDmgBonus: skillMeta.critDmgBonus ?? 0,
-        critRateBonus: skillMeta.critRateBonus ?? 0,
-        skillDefIgnore: skillMeta.skillDefIgnore ?? 0,
-        skillResIgnore: skillMeta.skillResIgnore ?? 0,
-        skillCritDmg: skillMeta.skillCritDmg ?? 0,
-        skillCritRate: skillMeta.skillCritRate ?? 0,
-        fixedDmg: skillMeta.fixedDmg ?? null,
-        skillDmgTaken: skillMeta.skillDmgTaken ?? 0,
+        enemyProfile
     });
 
     let subHits = [];
@@ -451,21 +427,9 @@ export function computeSkillDamage({
                     scaling,
                     baseTuneRup,
                     skillMeta,
-                    element: skillMeta.element ?? echoElement ?? element,
-                    skillType: skillMeta.skillType,
-                    dmgType: skillMeta.dmgType,
                     characterLevel,
                     mergedBuffs: localMergedBuffs,
-                    amplify: skillMeta.amplify,
-                    skillDmgBonus: skillMeta.skillDmgBonus ?? 0,
-                    critDmgBonus: skillMeta.critDmgBonus ?? 0,
-                    critRateBonus: skillMeta.critRateBonus ?? 0,
-                    skillDefIgnore: skillMeta.skillDefIgnore ?? 0,
-                    skillResIgnore: skillMeta.skillResIgnore ?? 0,
-                    skillCritDmg: skillMeta.skillCritDmg ?? 0,
-                    skillCritRate: skillMeta.skillCritRate ?? 0,
-                    fixedDmg: skillMeta.fixedDmg ?? null,
-                    skillDmgTaken: skillMeta.skillDmgTaken ?? 0,
+                    enemyProfile
                 });
 
                 subHits.push({
@@ -482,30 +446,17 @@ export function computeSkillDamage({
 
                 const oneHitMeta = structuredClone(skillMeta);
                 oneHitMeta.multiplier = adjustedMultiplier;
+                oneHitMeta.element = oneHitMeta.element ?? echoElement ?? element;
 
                 const { normal, crit, avg } = calculateDamage({
                     finalStats,
                     combatState,
-                    multiplier: oneHitMeta.multiplier,
-                    amplify: oneHitMeta.amplify,
                     scaling,
                     baseTuneRup,
-                    element: echoElement ?? element,
-                    skillType: oneHitMeta.skillType,
-                    dmgType: skillMeta.dmgType,
                     characterLevel,
-                    skillMeta,
+                    skillMeta: oneHitMeta,
                     mergedBuffs: localMergedBuffs,
-                    skillDmgBonus: oneHitMeta.skillDmgBonus ?? 0,
-                    critDmgBonus: oneHitMeta.critDmgBonus ?? 0,
-                    critRateBonus: oneHitMeta.critRateBonus ?? 0,
-                    skillDefIgnore: oneHitMeta.skillDefIgnore ?? 0,
-                    skillResIgnore: skillMeta.skillResIgnore ?? 0,
-                    skillCritDmg: skillMeta.skillCritDmg ?? 0,
-                    skillCritRate: skillMeta.skillCritRate ?? 0,
-                    fixedDmg: skillMeta.fixedDmg ?? null,
-                    skillDmgTaken: skillMeta.skillDmgTaken ?? 0,
-                    name: levelData?.Name ?? ''
+                    enemyProfile
                 });
 
 

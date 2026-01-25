@@ -1,15 +1,25 @@
-import React from "react";
+import React, {useEffect} from "react";
 import DropdownSelect from "@/components/common/DropdownSelect.jsx";
 import {formatDescription} from "@/utils/formatDescription.js";
 import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
 import {attributeColors} from "@/utils/attributeHelpers.js";
+export default function AemeathUI({ activeStates, toggleState, charId, setCharacterRuntimeStates }) {
+    const ruptureMode = activeStates.tuneRupture;
+    const burstMode = activeStates.fusionBurst;
 
-/*
-* While in Instant Response, Heavy Attack - Aemeath and Heavy Attack - Mech take less time to charge up fully.
-- In Instant Response, casting Heavy Attack - Aemeath or Heavy Attack - Mech restores 100 points of Synchronization Rate. If Aemeath is in the Heavenfall Edict - Unbound state at the same time, she additionally restores 100 points of Synchronization Rate.
-Inher
-- If Inherent Skill Before All Sounds is activated, while in Instant Response, Heavy Attack - Aemeath and Heavy Attack - Mech gain 200% DMG Amplification.*/
-export default function AemeathUI({ activeStates, toggleState }) {
+    const updateState = (key, value) => {
+        setCharacterRuntimeStates(prev => ({
+            ...prev,
+            [charId]: {
+                ...(prev[charId] ?? {}),
+                activeStates: {
+                    ...(prev[charId]?.activeStates ?? {}),
+                    [key]: value
+                }
+            }
+        }));
+    };
+
     return (
         <div className="status-toggles">
             <div className="status-toggle-box">
@@ -42,10 +52,10 @@ export default function AemeathUI({ activeStates, toggleState }) {
                 <label className="modern-checkbox">
                     <input
                         type="checkbox"
-                        checked={activeStates.tuneRupture || false}
+                        checked={ruptureMode || false}
                         onChange={() => {
                             toggleState('tuneRupture');
-                            if (activeStates.fusionBurst) toggleState('fusionBurst');
+                            if (burstMode) toggleState('fusionBurst');
                         }}
                     />
                     Tune Rupture?
@@ -64,15 +74,63 @@ export default function AemeathUI({ activeStates, toggleState }) {
                 <label className="modern-checkbox">
                     <input
                         type="checkbox"
-                        checked={activeStates.fusionBurst || false}
+                        checked={burstMode || false}
                         onChange={() => {
                             toggleState('fusionBurst');
-                            if (activeStates.tuneRupture) toggleState('tuneRupture');
+                            if (ruptureMode) toggleState('tuneRupture');
                         }}
                     />
                     Fusion Burst?
                 </label>
             </div>
+
+            {burstMode && (
+                <div className="status-toggle-box">
+                    <h4 className={'highlight'} style={{ fontSize: '18px'}}>Fusion Trail</h4>
+                    <p>
+                        In <span className='highlight'>Resonance Mode - Fusion Burst</span>, when Resonators in the team inflict <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion Burst</span>, inflict 1 stack of <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion Trail</span> for 30s, stacking up to 30 times.
+                    </p>
+                    <label style={{ fontWeight: 'bold' }}>Fusion Trail</label>
+                    <input
+                        type="number"
+                        className="character-level-input"
+                        min="0"
+                        max="30"
+                        value={activeStates.fusionTrail ?? 0}
+                        onChange={(e) => {
+                            const val = Math.max(0, Math.min(30, Number(e.target.value) || 0));
+                            setCharacterRuntimeStates(prev => ({
+                                ...prev,
+                                [charId]: {
+                                    ...(prev[charId] ?? {}),
+                                    activeStates: {
+                                        ...(prev[charId]?.activeStates ?? {}),
+                                        fusionTrail: val
+                                    }
+                                }
+                            }));
+                        }}
+                    />
+                </div>
+            )}
+
+            {ruptureMode && (
+                <div className="status-toggle-box">
+                    <h4 className={'highlight'} style={{ fontSize: '18px'}}>Rupturous Trail</h4>
+                    <p>
+                        In <span className='highlight'>Resonance Mode - Tune Rupture</span>, when Resonators in the team respond to <span className='highlight'>Tune Rupture - Interfered</span>, inflict 10 stacks of <span className='highlight'>Rupturous Trail</span> on the target for 30s, stacking up to 30 times.
+                    </p>
+                    <label className="modern-checkbox">
+                        <DropdownSelect
+                            label="Stacks"
+                            options={[0, 1, 2, 3]}
+                            value={activeStates.rupturousTrail ?? 0}
+                            onChange={(value) => updateState('rupturousTrail', value)}
+                            width="80px"
+                        />
+                    </label>
+                </div>
+            )}
         </div>
     );
 }
@@ -91,18 +149,17 @@ export function CustomInherentSkills({
     const currentLevel = characterRuntimeStates?.[charId]?.CharacterLevel ?? charLevel;
     const sequence = characterRuntimeStates?.[charId]?.SkillLevels?.sequence;
 
-    const toggleState = (key) => {
-        setCharacterRuntimeStates(prev => ({
-            ...prev,
-            [charId]: {
-                ...(prev[charId] ?? {}),
-                activeStates: {
-                    ...(prev[charId]?.activeStates ?? {}),
-                    [key]: !(prev[charId]?.activeStates?.[key] ?? false)
-                }
-            }
-        }));
-    };
+    const ruptureMode = activeStates.tuneRupture;
+    const burstMode = activeStates.fusionBurst;
+
+    const dropOpt = ruptureMode ? [0, 1, 2, 3] : [0, 1, 2];
+
+    useEffect(() => {
+        if (ruptureMode && activeStates.aemeathInherent2Stacks === 2)
+            updateState('aemeathInherent2Stacks', 3);
+        else if (burstMode && activeStates.aemeathInherent2Stacks === 3)
+            updateState('aemeathInherent2Stacks', 2);
+    }, [ruptureMode, burstMode]);
 
     const updateState = (key, value) => {
         setCharacterRuntimeStates(prev => ({
@@ -154,7 +211,7 @@ export function CustomInherentSkills({
                                     locked={locked}
                                     text={`(Unlocks at Lv. ${unlockLevel})`}
                                     label="Stacks"
-                                    options={[0, 1, 2]}
+                                    options={dropOpt}
                                     value={activeStates.aemeathInherent2Stacks ?? 0}
                                     onChange={(value) => !locked && updateState('aemeathInherent2Stacks', value)}
                                     disabled={locked || sequence >= 3}
