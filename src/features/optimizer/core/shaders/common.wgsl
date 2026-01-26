@@ -71,21 +71,20 @@ struct Params {
     critRate:     f32,
     critDmg:      f32,
 
-    normalBase:   f32,
-
     skillId:      u32,
-    _padSkill:    u32,
+    meta0:        u32,
+    meta1:        u32,
+    lockedPacked: u32,
+    comboBaseIndex: u32,
 
-    comboCount:   f32,
-    charId:       f32,
-    sequence:     f32,
-    lockedEchoIndex: f32,
-    comboMode:    f32,
-    comboN:       f32,
-    comboMaxCost: f32,
-    comboK:       f32,
-    comboBaseIndexLo: f32,
-    comboBaseIndexHi: f32,
+    _pad0: u32,
+    _pad1: u32,
+    _pad2: u32,
+    _pad3: u32,
+    _pad4: u32,
+    _pad5: u32,
+    _pad6: u32,
+    _pad7: u32,
 };
 
 @group(0) @binding(4)
@@ -97,6 +96,16 @@ const BUFFS_PER_ECHO : u32 = 15u;
 const SET_SLOTS : u32 = 30u; // supports set ids 0..29 inclusive
 
 override CYCLES_PER_INVOCATION : u32 = 16u;
+
+fn decodeCharId(p: Params) -> f32 { return f32(p.meta0 & 0xfffu); }
+fn decodeSequence(p: Params) -> f32 { return f32((p.meta0 >> 12u) & 0xfu); }
+fn decodeComboMode(p: Params) -> u32 { return (p.meta0 >> 16u) & 0x3u; }
+fn decodeComboK(p: Params) -> u32 { return (p.meta0 >> 18u) & 0x7u; }
+fn decodeComboMaxCost(p: Params) -> f32 { return f32((p.meta0 >> 21u) & 0x3fu); }
+fn decodeComboCount(p: Params) -> u32 { return p.meta1 & 0xffffffu; }
+fn decodeComboN(p: Params) -> u32 { return (p.meta1 >> 24u) & 0xffu; }
+fn decodeLockedIndex(p: Params) -> i32 { return i32(p.lockedPacked) - 1; }
+fn comboBaseIndex(p: Params) -> u32 { return p.comboBaseIndex; }
 
 fn in_range(val: f32, range: vec2<f32>) -> bool {
     // Branchless: disabled (x > y) OR value in range
@@ -165,20 +174,14 @@ struct ComboEval {
     mainPos: u32,
 };
 
-fn comboBaseIndexU32() -> u32 {
-    let lo = u32(params.comboBaseIndexLo) & 0xffffu;
-    let hi = u32(params.comboBaseIndexHi);
-    return (hi << 16u) | lo;
-}
-
 fn buildComboIndices(index: u32) -> array<u32, 5> {
     var out: array<u32, 5>;
     for (var i: u32 = 0u; i < 5u; i = i + 1u) {
         out[i] = 0u;
     }
 
-    let comboN = u32(params.comboN);
-    let comboK = u32(params.comboK);
+    let comboN = decodeComboN(params);
+    let comboK = decodeComboK(params);
     let binomStride = 6u;
 
     var remainingK = comboK;
@@ -223,13 +226,14 @@ fn comboIndicesToEchoIds(combo: array<u32, 5>) -> array<i32, 5> {
         out[i] = -1;
     }
 
-    let comboK = u32(params.comboK);
+    let comboK = decodeComboK(params);
     for (var pos: u32 = 0u; pos < comboK; pos = pos + 1u) {
         out[pos] = comboIndexMap[combo[pos]];
     }
 
-    if (i32(params.lockedEchoIndex) >= 0 && comboK < 5u) {
-        out[4] = i32(params.lockedEchoIndex);
+    let lockedIndex = decodeLockedIndex(params);
+    if (lockedIndex >= 0 && comboK < 5u) {
+        out[4] = lockedIndex;
     }
 
     return out;
@@ -574,17 +578,19 @@ fn buildPreMain(p: Params, s: SetApplied, skillMask: u32, elementId: u32, skillI
     pre.critRateTotal = p.critRate + s.critRate * INV_100;
     pre.critDmgTotal  = p.critDmg  + s.critDmg  * INV_100;
 
-    pre.charId = p.charId;
+    let charId = decodeCharId(p);
+    let sequence = decodeSequence(p);
+    pre.charId = charId;
     pre.skillId = skillId;
 
     // 1306 crit conversion
     if (pre.charId == 1306.0) {
         var bonusCd: f32 = 0.0;
-        if (p.sequence >= 2.0 && pre.critRateTotal >= 1.0) {
+        if (sequence >= 2.0 && pre.critRateTotal >= 1.0) {
             let excess = pre.critRateTotal - 1.0;
             bonusCd += min(excess * 2.0, 1.0);
         }
-        if (p.sequence >= 6.0 && pre.critRateTotal >= 1.5) {
+        if (sequence >= 6.0 && pre.critRateTotal >= 1.5) {
             let excess2 = pre.critRateTotal - 1.5;
             bonusCd += min(excess2 * 2.0, 0.5);
         }
@@ -676,7 +682,7 @@ fn evalMainPos(
     bonus += mainType1.x * f32((mask >> 6u) & 1u);  // SKILL_ECHO_SKILL
     bonus += mainType1.y * f32((mask >> 7u) & 1u);  // SKILL_COORD
 
-    let dmgBonus = pre.dmgBonusBase + bonus * INV_100;
+    var dmgBonus = pre.dmgBonusBase + bonus * INV_100;
 
     var finalAtk = pre.atkBaseTerm + (pre.baseAtk * mainAtkPRatio) + mainAtkF;
 
@@ -690,12 +696,12 @@ fn evalMainPos(
 
     var critRateForDmg = pre.critRateTotal;
     var critDmgForDmg = pre.critDmgTotal;
-    var baseMul = pre.baseMul;
+    let baseMul = pre.resDefAmp * pre.dmgReductionTotal;
 
     if (pre.charId == 1209.0) {
         let erOver = finalER - 100.0;
-        let dmgVuln = min(erOver * 0.25, 40.0);
-        baseMul = pre.resDefAmp * (pre.dmgReductionTotal + dmgVuln * INV_100);
+        let extraDmgBonus = min(erOver * 0.25, 40.0);
+        dmgBonus += extraDmgBonus * INV_100;
 
         if (pre.skillId == 2206007304u) {
             critRateForDmg = critRateForDmg + min(erOver * 0.5, 80.0) * INV_100;

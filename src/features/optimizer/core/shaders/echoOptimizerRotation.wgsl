@@ -16,10 +16,10 @@ fn mainRotation(
     @builtin(local_invocation_id) lid3: vec3<u32>
 ) {
     let lid = lid3.x;
-    let comboCount = u32(params.comboCount);
+    let comboCount = decodeComboCount(params);
     let baseIndex = (wg.x * 512u + lid) * CYCLES_PER_INVOCATION;
-    let comboN = u32(params.comboN);
-    let comboK = u32(params.comboK);
+    let comboN = decodeComboN(params);
+    let comboK = decodeComboK(params);
 
     var best: f32 = NEG_INF;
     var bestIndex: u32 = 0u;
@@ -27,7 +27,7 @@ fn mainRotation(
 
     if (baseIndex < comboCount) {
         var idx: u32 = baseIndex;
-        var combo = buildComboIndices(comboBaseIndexU32() + idx);
+        var combo = buildComboIndices(comboBaseIndex(params) + idx);
 
         for (var j: u32 = 0u; j < CYCLES_PER_INVOCATION; j = j + 1u) {
             if (idx >= comboCount) { break; }

@@ -34,6 +34,10 @@ function generateStates() {
 
     Object.entries(characters).forEach(([charId, charData]) => {
         const baseStats = charData?.Stats?.["0"]?.["1"] ?? { Life: 0, Atk: 0, Def: 0 };
+        const tuneBreakBoost =
+            charData?.StatWeakness?.WeaknessMastery ??
+            charData?.StatsWeakness?.WeaknessMastery ??
+            0;
 
         output[charId] = {
             Name: charData.Name,
@@ -48,6 +52,7 @@ function generateStates() {
                 critRate: DEFAULT_CRIT_RATE,
                 critDmg: DEFAULT_CRIT_DMG,
                 energyRegen: DEFAULT_ENERGY_REGEN,
+                tuneBreakBoost,
                 ...bonusesTemplate
             },
             CurrentLevelMultipliers: {},

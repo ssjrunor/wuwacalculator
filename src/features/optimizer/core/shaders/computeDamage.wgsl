@@ -2,10 +2,10 @@ fn computeDamageForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
     let skillId: u32 = unpackSkillIdFromParams();
     let skillMask: u32 = skillMaskFromSkillId(skillId);
     let elementId: u32 = elementFromSkillId(skillId);
-    let lockedIndex: i32 = i32(params.lockedEchoIndex);
+    let lockedIndex: i32 = decodeLockedIndex(params);
 
     let base = buildEchoBase(echoIds);
-    if (base.totalCost > params.comboMaxCost) {
+    if (base.totalCost > decodeComboMaxCost(params)) {
         return ComboEval(0.0, 0u);
     }
 
@@ -69,12 +69,12 @@ fn computeDamageForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
 }
 
 fn computeDamageForCombo(index: u32) -> ComboEval {
-    let comboCount = u32(params.comboCount);
+    let comboCount = decodeComboCount(params);
     if (index >= comboCount) {
         return ComboEval(0.0, 0u);
     }
 
-    let comboIndex = comboBaseIndexU32() + index;
+    let comboIndex = comboBaseIndex(params) + index;
     let echoIds = buildEchoIds(comboIndex);
     return computeDamageForEchoIds(echoIds);
 }

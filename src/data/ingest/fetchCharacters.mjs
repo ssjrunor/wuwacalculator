@@ -14,6 +14,30 @@ const OUTPUT_PATH = path.join(__dirname, '../characters-mapped.json');
 // --- toggle this ---
 const SKIP_EXISTING = false;
 
+/**
+ * Keep only the fields the app actually consumes.
+ * We still preserve SkillTrees/Chains/Stats because the UI and damage
+ * calculations read them directly from `raw`.
+ */
+function normalizeCharacter(detail) {
+    const Id = detail?.Id ?? detail?.id ?? detail?.link ?? null;
+    const Name = detail?.Name ?? detail?.name ?? '';
+    const Element = detail?.Element ?? detail?.element ?? 0;
+    const Weapon = detail?.Weapon ?? detail?.weapon ?? 0;
+    const Rarity = detail?.Rarity ?? detail?.rarity ?? null;
+
+    // Some characters expose tune break related mastery here.
+    const StatsWeakness = detail?.StatWeakness ?? detail?.StatsWeakness ?? null;
+
+    // Stats, SkillTrees, and Chains are used throughout the calculator;
+    // keep them verbatim but drop everything else to shrink the payload.
+    const Stats = detail?.Stats ?? {};
+    const SkillTrees = detail?.SkillTrees ?? {};
+    const Chains = detail?.Chains ?? {};
+
+    return { Id, Name, Element, Weapon, Rarity, Stats, SkillTrees, Chains, StatsWeakness };
+}
+
 async function buildFullCharacterList() {
     try {
         const res = await fetch(masterUrl);
@@ -45,7 +69,14 @@ async function buildFullCharacterList() {
             try {
                 const detailRes = await fetch(url);
                 const characterData = await detailRes.json();
-                allCharacters.push(characterData);
+
+                const normalized = normalizeCharacter(characterData);
+                if (!normalized.Id || !normalized.Name) {
+                    console.warn(`Skipping character ${id} (missing Id/Name)`);
+                    continue;
+                }
+
+                allCharacters.push(normalized);
                 console.log(`Fetched and added character ${id}`);
             } catch (err) {
                 console.warn(`Failed to fetch character ${id}: ${err.message}`);

@@ -156,6 +156,10 @@ export function getFinalStats(
     const dmgBonus =
         (buffs.dmgBonus ?? 0);
 
+    const tuneBreakBoost =
+        (charExtra.tuneBreakBoost ?? 0) +
+        (buffs.tuneBreakBoost ?? 0);
+
 
     // -------------------------
     // Final shape
@@ -181,7 +185,7 @@ export function getFinalStats(
         healingBonus,
         shieldBonus,
         dmgBonus,
-        tuneBreakBoost: buffs.tuneBreakBoost,
+        tuneBreakBoost,
         special: buffs.special ?? 0,
     };
 }

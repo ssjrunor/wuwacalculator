@@ -24,9 +24,9 @@ export function generateEchoContext(form) {
         const buffs = mergedBuffsWithoutEchoes;
         const original = form.mergedBuffs;
         const erOver = Math.max(0, buffs.energyRegen);
-        const dmgVuln = runtime.activeStates.interferedMarker ?
+        const dmgBonus = runtime.activeStates.interferedMarker ?
             Math.min(original.energyRegen * .25, 40) : 0;
-        buffs.attribute.all.dmgVuln = (buffs.attribute?.all?.dmgVuln ?? 0) - dmgVuln;
+        buffs.dmgBonus = (buffs.dmgBonus ?? 0) - dmgBonus;
         const bonusCr = Math.min(erOver * .5, 80);
         const bonusCd = Math.min((erOver), 160);
         if (form.levelData.label.includes('Critical Protocol DMG')) {

@@ -1,3 +1,4 @@
+/*
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {isEqual} from 'lodash';
 import {attributeColors, attributeIcons, elementToAttribute} from '../utils/attributeHelpers';
@@ -142,7 +143,10 @@ function buildNormalizedRuntime(char, weapons, existing, defaults) {
         skills: existing?.skills ?? {meta: null, results: [], groupedOptions: {}},
         rotation: existing?.rotation ?? {entries: [], initialized: false},
         calculators: existing?.calculators ?? {targetSkills: null, randGen: null, optimizer: null, suggestions: null},
-        uiFlags: existing?.uiFlags ?? {activeStates: {}, sequenceToggles: {}},
+        uiFlags: existing?.uiFlags ?? {
+            activeStates: ensureActiveStatesShape(),
+            sequenceToggles: {},
+        },
     };
 }
 
@@ -203,7 +207,7 @@ export default function CalculatorStore() {
                 allSkillResults: runtime.skills?.results ?? [],
                 teamRotation: runtime.team?.rotations?.teamRotation,
                 teamRotationSummary: runtime.team?.rotations?.teamRotationSummary,
-                activeStates: runtime.uiFlags?.activeStates ?? {},
+                activeStates: ensureActiveStatesShape(runtime.uiFlags?.activeStates ?? {}),
                 sequenceToggles: runtime.uiFlags?.sequenceToggles ?? {},
                 CombatState: runtime.buffs?.combat ?? runtime.combat ?? {},
                 CustomBuffs: runtime.buffs?.custom ?? {},
@@ -720,3 +724,4 @@ export default function CalculatorStore() {
     // Core setup only; UI wiring to follow.
     return null;
 }
+*/

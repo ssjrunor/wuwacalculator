@@ -3,7 +3,6 @@ import {
     OPTIMIZER_CTX_BASE_DEF,
     OPTIMIZER_CTX_BASE_ER,
     OPTIMIZER_CTX_BASE_HP,
-    OPTIMIZER_CTX_CHAR_ID,
     OPTIMIZER_CTX_CRIT_DMG,
     OPTIMIZER_CTX_CRIT_RATE,
     OPTIMIZER_CTX_DEF_MULT,
@@ -11,19 +10,21 @@ import {
     OPTIMIZER_CTX_DMG_BONUS,
     OPTIMIZER_CTX_DMG_REDUCTION,
     OPTIMIZER_CTX_SKILL_ID,
+    OPTIMIZER_CTX_META0,
+    OPTIMIZER_CTX_META1,
+    OPTIMIZER_CTX_LOCKED_PACKED,
+    OPTIMIZER_CTX_BASE_INDEX,
     OPTIMIZER_CTX_SPECIAL,
     OPTIMIZER_CTX_FINAL_ATK,
     OPTIMIZER_CTX_FINAL_DEF,
     OPTIMIZER_CTX_FINAL_HP,
     OPTIMIZER_CTX_FLAT_DMG,
-    OPTIMIZER_CTX_LOCKED_INDEX,
     OPTIMIZER_CTX_MULTIPLIER,
     OPTIMIZER_CTX_RES_MULT,
     OPTIMIZER_CTX_SCALING_ATK,
     OPTIMIZER_CTX_SCALING_DEF,
     OPTIMIZER_CTX_SCALING_ER,
     OPTIMIZER_CTX_SCALING_HP,
-    OPTIMIZER_CTX_SEQUENCE,
     OPTIMIZER_ECHOS_PER_COMBO,
     OPTIMIZER_MAIN_ECHO_BUFFS_PER_ECHO,
     OPTIMIZER_SET_SLOTS,
@@ -123,6 +124,10 @@ export function computeDamageForCombo({
     // Apply set effects branchlessly
     const packedU32 = getPackedContextU32(packedContext);
     const skillId = packedU32[OPTIMIZER_CTX_SKILL_ID] >>> 0;
+    const meta0 = packedU32[OPTIMIZER_CTX_META0] >>> 0;
+    const meta1 = packedU32[OPTIMIZER_CTX_META1] >>> 0;
+    const lockedPacked = packedU32[OPTIMIZER_CTX_LOCKED_PACKED] >>> 0;
+
     const skillMask = skillId & 0x7fff;
     const setBonus = applySetEffectsFast(setCount, skillMask);
 
@@ -158,8 +163,8 @@ export function computeDamageForCombo({
     let critRateTotal = packedContext[OPTIMIZER_CTX_CRIT_RATE] + critRate / 100;
     let critDmgTotal = packedContext[OPTIMIZER_CTX_CRIT_DMG] + critDmg / 100;
 
-    const charId = packedContext[OPTIMIZER_CTX_CHAR_ID] | 0;
-    const sequence = packedContext[OPTIMIZER_CTX_SEQUENCE];
+    const charId = meta0 & 0xfff;
+    const sequence = (meta0 >>> 12) & 0xf;
     // Character 1306: Crit conversion (apply the -20% offset only for 1306)
     if (charId === 1306) {
         critDmgTotal += calc1306CritConversion(charId, sequence, critRateTotal) - 0.2;
@@ -191,7 +196,7 @@ export function computeDamageForCombo({
     let bestDmg = 0;
     let bestMain = 0;
 
-    const lockedEchoIndex = packedContext[OPTIMIZER_CTX_LOCKED_INDEX] | 0;
+    const lockedEchoIndex = lockedPacked === 0 ? -1 : ((lockedPacked - 1) | 0);
     const multiplier = packedContext[OPTIMIZER_CTX_MULTIPLIER];
     const flatDmg = packedContext[OPTIMIZER_CTX_FLAT_DMG];
     const scalingAtk = packedContext[OPTIMIZER_CTX_SCALING_ATK];

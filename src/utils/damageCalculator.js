@@ -278,9 +278,6 @@ export function calculateDamage({
         };
     }
 
-/*
-    if (skillMeta.name.includes('Finale DMG')) console.log('non op: ', dmgBonus)
-*/
 
     if (dmgType === 'tuneBreak') {
         let classMod = 1;

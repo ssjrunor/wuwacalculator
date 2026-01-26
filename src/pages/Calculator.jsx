@@ -71,7 +71,6 @@ import SuggestionsPane from "@/features/suggestions/ui/SuggestionsPane.jsx";
 import AppStatusModal from "../components/common/AppStatusModal.jsx";
 import {defaultRandGen} from "@/features/suggestions/core/randomEchoes/lib/constants.js";
 import enemies from '@/data/enemies.json';
-
 export const defaultEnemyRes = () => ({
     0: 20,
     1: 60,
@@ -167,7 +166,6 @@ export default function Calculator(props) {
 
     const selectedEnemyId = String(enemyProfile?.id ?? 340000020);
     const selectedEnemy = enemyMap[selectedEnemyId] ?? null;
-    const enemyLevel = Math.min(Math.max(Number(enemyProfile?.level ?? 90), 1), 120);
 
     const defaultCombatState = {
         critRate: 0,
@@ -182,7 +180,6 @@ export default function Calculator(props) {
         defPercent: 0,
         energyRegen: 0
     };
-    const [characterState, setCharacterState] = useState({ activeStates: {} });
     const [showDropdown, setShowDropdown] = useState(false);
     const [moveToolbarToSidebar, setMoveToolbarToSidebar] = useState(false);
     const [weapons, setWeapons] = useState({});
@@ -1331,6 +1328,10 @@ export default function Calculator(props) {
         }));
     }, [equippedEchoes]);
 
+/*
+    console.log(runtime);
+*/
+
     return (
         <>
             <SkillsModal
@@ -1855,24 +1856,9 @@ export default function Calculator(props) {
                                         )}
                                         {leftPaneView === 'echoes' && (
                                             <EchoesPane
-                                                echoId={echoes}
                                                 charId={charId}
-                                                characterState={characterState}
-                                                setCharacterState={setCharacterState}
                                                 characterRuntimeStates={characterRuntimeStates}
                                                 setCharacterRuntimeStates={setCharacterRuntimeStates}
-                                                characters={characters}
-                                                activeCharacter={activeCharacter}
-                                                getAllSkillLevels={getAllSkillLevels}
-                                                skillTabs={skillTabs}
-                                                baseCharacterState={baseCharacterState}
-                                                mergedBuffs={mergedBuffs}
-                                                allSkillLevels={allSkillLevels}
-                                                skillResults={skillResults}
-                                                onEquipPreset={onEquipPreset}
-                                                onEquipBag={onEquipBag}
-                                                getImageSrc={getImageSrc}
-                                                setStatusOpen={setStatusOpen}
                                             />
                                         )}
                                         {leftPaneView === 'suggestions-ui' && (

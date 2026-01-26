@@ -30,12 +30,11 @@ const CTX_DMG_AMPLIFY: u32 = 18u;
 const CTX_SPECIAL: u32 = 19u;
 const CTX_CRIT_RATE: u32 = 20u;
 const CTX_CRIT_DMG: u32 = 21u;
-const CTX_NORMAL_BASE: u32 = 22u;
-const CTX_SKILL_ID: u32 = 23u;
-const CTX_SKILL_PAD: u32 = 24u;
-const CTX_CHAR_ID: u32 = 26u;
-const CTX_SEQUENCE: u32 = 27u;
-const CTX_LOCKED_INDEX: u32 = 28u;
+const CTX_SKILL_ID: u32 = 22u;
+const CTX_META0: u32 = 23u;
+const CTX_META1: u32 = 24u;
+const CTX_LOCKED_PACKED: u32 = 25u;
+const CTX_BASE_INDEX: u32 = 26u;
 
 fn loadParams(ctxIndex: u32) -> Params {
     var p: Params;
@@ -71,22 +70,20 @@ fn loadParams(ctxIndex: u32) -> Params {
     p.critRate = rotationContexts[base + CTX_CRIT_RATE];
     p.critDmg = rotationContexts[base + CTX_CRIT_DMG];
 
-    p.normalBase = rotationContexts[base + CTX_NORMAL_BASE];
-
     p.skillId = bitcast<u32>(rotationContexts[base + CTX_SKILL_ID]);
-    p._padSkill = bitcast<u32>(rotationContexts[base + CTX_SKILL_PAD]);
+    p.meta0 = bitcast<u32>(rotationContexts[base + CTX_META0]);
+    p.meta1 = bitcast<u32>(rotationContexts[base + CTX_META1]);
+    p.lockedPacked = bitcast<u32>(rotationContexts[base + CTX_LOCKED_PACKED]);
+    p.comboBaseIndex = bitcast<u32>(rotationContexts[base + CTX_BASE_INDEX]);
 
-    p.comboCount = 0.0;
-    p.charId = rotationContexts[base + CTX_CHAR_ID];
-    p.sequence = rotationContexts[base + CTX_SEQUENCE];
-    p.lockedEchoIndex = rotationContexts[base + CTX_LOCKED_INDEX];
-
-    p.comboMode = 0.0;
-    p.comboN = 0.0;
-    p.comboMaxCost = 0.0;
-    p.comboK = 0.0;
-    p.comboBaseIndexLo = 0.0;
-    p.comboBaseIndexHi = 0.0;
+    p._pad0 = 0u;
+    p._pad1 = 0u;
+    p._pad2 = 0u;
+    p._pad3 = 0u;
+    p._pad4 = 0u;
+    p._pad5 = 0u;
+    p._pad6 = 0u;
+    p._pad7 = 0u;
 
     return p;
 }
@@ -99,7 +96,7 @@ fn computeRotationForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
 
     let base = buildEchoBase(echoIds);
 
-    if (base.totalCost > params.comboMaxCost) {
+    if (base.totalCost > decodeComboMaxCost(params)) {
         return ComboEval(0.0, 0u);
     }
 
@@ -111,7 +108,7 @@ fn computeRotationForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
     totals[3] = 0.0;
     totals[4] = 0.0;
 
-    let lockedIndex : i32 = i32(params.lockedEchoIndex);
+    let lockedIndex : i32 = decodeLockedIndex(params);
 
     // -------------------------
     // Prefetch main-echo buffs once per combo
@@ -252,12 +249,12 @@ fn computeRotationForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
 }
 
 fn computeRotationForCombo(index: u32) -> ComboEval {
-    let comboCount = u32(params.comboCount);
+    let comboCount = decodeComboCount(params);
     if (index >= comboCount) {
         return ComboEval(0.0, 0u);
     }
 
-    let comboIndex = comboBaseIndexU32() + index;
+    let comboIndex = comboBaseIndex(params) + index;
     let echoIds = buildEchoIds(comboIndex);
     return computeRotationForEchoIds(echoIds);
 }

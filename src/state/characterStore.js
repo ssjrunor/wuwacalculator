@@ -1,5 +1,7 @@
+/*
 import {isEqual} from 'lodash';
 import {getPersistentValue, setPersistentValue} from '../hooks/usePersistentState.js';
+import {ensureActiveStatesShape} from './activeStatesShape.js';
 
 export function normalizeCharacterRuntimeState(oldState = {}) {
     const character = {
@@ -87,7 +89,7 @@ export function normalizeCharacterRuntimeState(oldState = {}) {
     };
 
     const uiFlags = {
-        activeStates: oldState.activeStates,
+        activeStates: ensureActiveStatesShape(oldState.activeStates),
         sequenceToggles: oldState.sequenceToggles,
     };
 
@@ -278,3 +280,4 @@ export const characterStore = {
     normalizeCharacterRuntimeState,
     denormalizeCharacterRuntimeState
 };
+*/

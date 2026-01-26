@@ -74,8 +74,6 @@ export function prepareGpuContext({
         critRate: ctx.critRate,
         critDmg: ctx.critDmg,
 
-        normalBase: ctx.normalBase,
-
         special: ctx.special,
         skillTypeId: skillTypeMaskFromSkillId || mapSkillTypeToId(ctx?.skillMeta?.skillType),
         skillId,
