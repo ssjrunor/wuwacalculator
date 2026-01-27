@@ -18,6 +18,7 @@ export function prepareGpuContext({
                                       getSkillData,
                                       sequence,
                                       enemyProfile,
+                                      toggles = 0,
                                   }) {
     const finalStatsBase = getFinalStats(
         activeCharacter,
@@ -77,7 +78,8 @@ export function prepareGpuContext({
         special: ctx.special,
         skillTypeId: skillTypeMaskFromSkillId || mapSkillTypeToId(ctx?.skillMeta?.skillType),
         skillId,
-        sequence
+        sequence,
+        toggles,
     };
 }
 

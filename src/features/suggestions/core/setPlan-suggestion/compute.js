@@ -12,6 +12,8 @@ import {
     getElementIdFromSkillId,
     getSkillTypeMaskFromSkillId,
 } from "@/utils/computeSkillDamage.js";
+import {bitValue} from "@/features/optimizer/core/cpu/helpers.js";
+import {OPTIMIZER_CTX_TOGGLES} from "@/features/optimizer/core/misc/index.js";
 
 export function computeSetPlanDamage(ctx, setPlan = {}) {
     const {
@@ -49,6 +51,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}) {
 
         charId = 0,
         sequence = 0,
+        toggles = 0
     } = ctx || {};
 
 
@@ -108,7 +111,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}) {
 
     // ATK with set bonus and 1206 conversion
     let finalAtk = baseAtk * (setBonus.atkP / 100) + setBonus.atkF + baseFinalAtk;
-    finalAtk += calc1206ErToAtk(charId, finalER);
+    finalAtk += calc1206ErToAtk(charId, finalER, toggles);
 
     // Crit totals with 1306 conversion (FIX: was missing before)
     let critRateTotal = critRate + setBonus.critRate / 100;
@@ -136,12 +139,12 @@ export function computeSetPlanDamage(ctx, setPlan = {}) {
         resMult,
         defMult,
         dmgReduction: dmgReductionTotal,
-        dmgBonus: dmgBonusTotal,
+        dmgBonus: dmgBonusTotal +
+            conv1209.mornyeDmgBonus * bitValue(toggles, 0),
         dmgAmplify,
         special,
         critRateTotal,
-        critDmgTotal,
-        dmgVuln: conv1209.dmgVuln,
+        critDmgTotal
     });
 
     // Calculate base damage for display

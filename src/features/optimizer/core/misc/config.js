@@ -9,7 +9,7 @@ export const OPTIMIZER_ECHOS_PER_COMBO = 5;
 export const OPTIMIZER_STATS_PER_ECHO = 20;
 export const OPTIMIZER_MAIN_ECHO_BUFFS_PER_ECHO = 15;
 export const OPTIMIZER_SET_SLOTS = 32;
-export const OPTIMIZER_CONTEXT_FLOATS = 35;
+export const OPTIMIZER_CONTEXT_FLOATS = 36;
 
 export const OPTIMIZER_WORKER_COUNT_GPU = 1;
 const detectedCores = typeof navigator !== "undefined"
@@ -53,11 +53,12 @@ export const OPTIMIZER_CTX_DMG_AMPLIFY = 18;
 export const OPTIMIZER_CTX_SPECIAL = 19;
 export const OPTIMIZER_CTX_CRIT_RATE = 20;
 export const OPTIMIZER_CTX_CRIT_DMG = 21;
-export const OPTIMIZER_CTX_SKILL_ID = 22;
-export const OPTIMIZER_CTX_META0 = 23;
-export const OPTIMIZER_CTX_META1 = 24;
-export const OPTIMIZER_CTX_LOCKED_PACKED = 25;
-export const OPTIMIZER_CTX_BASE_INDEX = 26;
+export const OPTIMIZER_CTX_TOGGLES = 22;
+export const OPTIMIZER_CTX_SKILL_ID = 23;
+export const OPTIMIZER_CTX_META0 = 24;
+export const OPTIMIZER_CTX_META1 = 25;
+export const OPTIMIZER_CTX_LOCKED_PACKED = 26;
+export const OPTIMIZER_CTX_BASE_INDEX = 27;
 
 export const WORKER_COUNT = {
     cpu: OPTIMIZER_WORKER_COUNT_CPU,

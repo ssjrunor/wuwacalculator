@@ -1,13 +1,14 @@
 import {prepareGpuContext} from "@/features/optimizer/core/context/gpuContext.js";
 import {getDefaultMainStatFilter} from "@/features/optimizer/core/misc/utils.js";
 import {applyFixedSecondMainStat, getValidMainStats, removeMainStatsFromBuffs} from "@/utils/echoHelper.js";
-import {removeSpecialBuffs} from "@/features/optimizer/core/context/echoContext.js";
+import {flipOn, removeSpecialBuffs} from "@/features/optimizer/core/context/echoContext.js";
 import {buildRotationTargets} from "@/features/optimizer/core/engine/rotationOptimizer.js";
 import {getSkillData} from "@/utils/computeSkillDamage.js";
 
 export function generateMainStatsContext(form) {
     const charId = form.charId;
     const runtime = form.characterRuntimeStates[charId];
+    let toggles = 0;
     const withoutMainStats = removeMainStatsFromBuffs(
         removeSpecialBuffs(form.mergedBuffs, structuredClone(form.mergedBuffs), charId, runtime.activeStates, form.sequence, form.skillType),
         form.equippedEchoes
@@ -17,9 +18,12 @@ export function generateMainStatsContext(form) {
         const buffs = withoutMainStats;
         const original = form.mergedBuffs;
         const erOver = Math.max(0, buffs.energyRegen);
-        const dmgVuln = runtime.activeStates.interferedMarker ?
+        const dmgBonus = runtime.activeStates.interferedMarker ?
             Math.min(original.energyRegen * .25, 40) : 0;
-        buffs.attribute.all.dmgVuln = (buffs.attribute?.all?.dmgVuln ?? 0) - dmgVuln;
+        if (runtime.activeStates.interferedMarker) {
+            buffs.dmgBonus = (buffs.dmgBonus ?? 0) - dmgBonus;
+            toggles = flipOn(toggles, 0);
+        }
         const bonusCr = Math.min(erOver * .5, 80);
         const bonusCd = Math.min((erOver), 160);
         if (form.levelData.label.includes('Critical Protocol DMG')) {
@@ -27,6 +31,8 @@ export function generateMainStatsContext(form) {
             buffs.critDmg -= bonusCd;
         }
     }
+
+    if (Number(charId) === 1206) if (runtime.activeStates.myMoment) toggles = flipOn(toggles, 0);
 
     const raw = {
         charId,
@@ -42,6 +48,7 @@ export function generateMainStatsContext(form) {
         mergedBuffs: withoutMainStats,
         sequence: form.sequence,
         enemyProfile: form.enemyProfile,
+        toggles
     };
 
     return {...prepareGpuContext({
@@ -68,6 +75,7 @@ export function generateRotationContexts(form) {
 
     const charId = form.charId;
     const runtime = form.characterRuntimeStates[charId];
+    let toggles = 0;
     const withoutMainStats = removeMainStatsFromBuffs(
         removeSpecialBuffs(form.mergedBuffs, structuredClone(form.mergedBuffs), charId, runtime.activeStates, form.sequence, form.skillType),
         form.equippedEchoes
@@ -77,9 +85,12 @@ export function generateRotationContexts(form) {
         const buffs = withoutMainStats;
         const original = form.mergedBuffs;
         const erOver = Math.max(0, buffs.energyRegen);
-        const dmgVuln = runtime.activeStates.interferedMarker ?
+        const dmgBonus = runtime.activeStates.interferedMarker ?
             Math.min(original.energyRegen * .25, 40) : 0;
-        buffs.attribute.all.dmgVuln = (buffs.attribute?.all?.dmgVuln ?? 0) - dmgVuln;
+        if (runtime.activeStates.interferedMarker) {
+            buffs.dmgBonus = (buffs.dmgBonus ?? 0) - dmgBonus;
+            toggles = flipOn(toggles, 0);
+        }
         const bonusCr = Math.min(erOver * .5, 80);
         const bonusCd = Math.min((erOver), 160);
         if (form.levelData.label.includes('Critical Protocol DMG')) {
@@ -87,6 +98,8 @@ export function generateRotationContexts(form) {
             buffs.critDmg -= bonusCd;
         }
     }
+
+    if (Number(charId) === 1206) if (runtime.activeStates.myMoment) toggles = flipOn(toggles, 0);
 
     const contexts = [];
     for (const target of targets) {
@@ -111,6 +124,7 @@ export function generateRotationContexts(form) {
             skillType: target.skillType ?? form.skillType,
             sequence: form.sequence,
             enemyProfile: form.enemyProfile,
+            toggles
         };
 
         const ctx = {

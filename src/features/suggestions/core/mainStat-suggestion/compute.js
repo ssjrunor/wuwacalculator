@@ -8,6 +8,7 @@ import {
     computeAvgDamage,
 } from "@/features/optimizer/core/cpu/damageCore.js";
 import { getElementIdFromSkillId } from "@/utils/computeSkillDamage.js";
+import {bitValue} from "@/features/optimizer/core/cpu/helpers.js";
 
 export function computeMainStatDamage(params, mainStats) {
     const {
@@ -41,7 +42,7 @@ export function computeMainStatDamage(params, mainStats) {
 
         skillId = 0,
         elementId = 0,
-        skillTypeId = 0,
+        toggles = 0,
 
         charId = 0,
         sequence = 0,
@@ -83,7 +84,7 @@ export function computeMainStatDamage(params, mainStats) {
 
     // ATK with 1206 conversion
     let finalAtk = baseAtk * (atkPercent / 100) + atkFlat + baseFinalAtk;
-    finalAtk += calc1206ErToAtk(charId, finalER);
+    finalAtk += calc1206ErToAtk(charId, finalER, toggles);
 
     // Crit totals with 1306 conversion
     let critRateTotal = critRate + critRateFromStats / 100;
@@ -102,7 +103,6 @@ export function computeMainStatDamage(params, mainStats) {
         finalDef * scalingDef +
         finalER * scalingER;
 
-    // Flat damage only case - computeAvgDamage handles this correctly now
 
     // Use shared damage computation
     return computeAvgDamage({
@@ -112,12 +112,12 @@ export function computeMainStatDamage(params, mainStats) {
         resMult,
         defMult,
         dmgReduction: dmgReductionTotal,
-        dmgBonus: dmgBonusTotal,
+        dmgBonus: dmgBonusTotal +
+            conv1209.mornyeDmgBonus * bitValue(toggles, 0),
         dmgAmplify,
         special,
         critRateTotal,
         critDmgTotal,
-        dmgVuln: conv1209.dmgVuln,
     });
 }
 

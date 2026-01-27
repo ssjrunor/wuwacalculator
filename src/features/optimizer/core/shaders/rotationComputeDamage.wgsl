@@ -30,11 +30,12 @@ const CTX_DMG_AMPLIFY: u32 = 18u;
 const CTX_SPECIAL: u32 = 19u;
 const CTX_CRIT_RATE: u32 = 20u;
 const CTX_CRIT_DMG: u32 = 21u;
-const CTX_SKILL_ID: u32 = 22u;
-const CTX_META0: u32 = 23u;
-const CTX_META1: u32 = 24u;
-const CTX_LOCKED_PACKED: u32 = 25u;
-const CTX_BASE_INDEX: u32 = 26u;
+const CTX_TOGGLES: u32 = 22u;
+const CTX_SKILL_ID: u32 = 23u;
+const CTX_META0: u32 = 24u;
+const CTX_META1: u32 = 25u;
+const CTX_LOCKED_PACKED: u32 = 26u;
+const CTX_BASE_INDEX: u32 = 27u;
 
 fn loadParams(ctxIndex: u32) -> Params {
     var p: Params;
@@ -69,6 +70,7 @@ fn loadParams(ctxIndex: u32) -> Params {
 
     p.critRate = rotationContexts[base + CTX_CRIT_RATE];
     p.critDmg = rotationContexts[base + CTX_CRIT_DMG];
+    p.toggles = rotationContexts[base + CTX_TOGGLES];
 
     p.skillId = bitcast<u32>(rotationContexts[base + CTX_SKILL_ID]);
     p.meta0 = bitcast<u32>(rotationContexts[base + CTX_META0]);

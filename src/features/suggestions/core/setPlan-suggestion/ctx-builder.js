@@ -1,12 +1,13 @@
 import {prepareGpuContext} from "@/features/optimizer/core/context/gpuContext.js";
 import {getSetPlanFromEchoes, removeSetEffectsFromBuffs} from "@/data/buffs/setEffect.js";
-import {removeSpecialBuffs} from "@/features/optimizer/core/context/echoContext.js";
+import {flipOn, removeSpecialBuffs} from "@/features/optimizer/core/context/echoContext.js";
 import {buildRotationTargets} from "@/features/optimizer/core/engine/rotationOptimizer.js";
 import {getSkillData} from "@/utils/computeSkillDamage.js";
 
 export function generateSetPlanContext(form) {
     const charId = form.charId;
     const runtime = form.characterRuntimeStates[charId];
+    let toggles = 0;
     const currentSetPlan = getSetPlanFromEchoes(form.equippedEchoes);
     const withoutSetEffects = removeSetEffectsFromBuffs(
         removeSpecialBuffs(form.mergedBuffs, structuredClone(form.mergedBuffs), charId, runtime.activeStates, form.sequence, form.skillType),
@@ -16,9 +17,12 @@ export function generateSetPlanContext(form) {
         const buffs = withoutSetEffects;
         const original = form.mergedBuffs;
         const erOver = Math.max(0, buffs.energyRegen);
-        const dmgVuln = runtime.activeStates.interferedMarker ?
+        const dmgBonus = runtime.activeStates.interferedMarker ?
             Math.min(original.energyRegen * .25, 40) : 0;
-        buffs.attribute.all.dmgVuln = (buffs.attribute?.all?.dmgVuln ?? 0) - dmgVuln;
+        if (runtime.activeStates.interferedMarker) {
+            buffs.dmgBonus = (buffs.dmgBonus ?? 0) - dmgBonus;
+            toggles = flipOn(toggles, 0);
+        }
         const bonusCr = Math.min(erOver * .5, 80);
         const bonusCd = Math.min((erOver), 160);
         if (form.levelData.label.includes('Critical Protocol DMG')) {
@@ -26,6 +30,8 @@ export function generateSetPlanContext(form) {
             buffs.critDmg -= bonusCd;
         }
     }
+
+    if (Number(charId) === 1206) if (runtime.activeStates.myMoment) toggles = flipOn(toggles, 0);
 
     const raw = {
         charId,
@@ -41,6 +47,7 @@ export function generateSetPlanContext(form) {
         mergedBuffs: withoutSetEffects,
         sequence: form.sequence,
         enemyProfile: form.enemyProfile,
+        toggles
     };
 
     return {...prepareGpuContext({
@@ -67,6 +74,7 @@ export function generateRotationSetPlanContexts(form) {
 
     const charId = form.charId;
     const runtime = form.characterRuntimeStates[charId];
+    let toggles = 0;
     const currentSetPlan = getSetPlanFromEchoes(form.equippedEchoes);
     const withoutSetEffects = removeSetEffectsFromBuffs(
         removeSpecialBuffs(form.mergedBuffs, structuredClone(form.mergedBuffs), charId, runtime.activeStates, form.sequence, form.skillType),
@@ -76,9 +84,12 @@ export function generateRotationSetPlanContexts(form) {
         const buffs = withoutSetEffects;
         const original = form.mergedBuffs;
         const erOver = Math.max(0, buffs.energyRegen);
-        const dmgVuln = runtime.activeStates.interferedMarker ?
+        const dmgBonus = runtime.activeStates.interferedMarker ?
             Math.min(original.energyRegen * .25, 40) : 0;
-        buffs.attribute.all.dmgVuln = (buffs.attribute?.all?.dmgVuln ?? 0) - dmgVuln;
+        if (runtime.activeStates.interferedMarker) {
+            buffs.dmgBonus = (buffs.dmgBonus ?? 0) - dmgBonus;
+            toggles = flipOn(toggles, 0);
+        }
         const bonusCr = Math.min(erOver * .5, 80);
         const bonusCd = Math.min((erOver), 160);
         if (form.levelData.label.includes('Critical Protocol DMG')) {
@@ -86,6 +97,8 @@ export function generateRotationSetPlanContexts(form) {
             buffs.critDmg -= bonusCd;
         }
     }
+
+    if (Number(charId) === 1206) if (runtime.activeStates.myMoment) toggles = flipOn(toggles, 0);
 
     const contexts = [];
     for (const target of targets) {
@@ -110,6 +123,7 @@ export function generateRotationSetPlanContexts(form) {
             skillType: target.skillType ?? form.skillType,
             sequence: form.sequence,
             enemyProfile: form.enemyProfile,
+            toggles
         };
 
         const ctx = {

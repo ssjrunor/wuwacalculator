@@ -2,7 +2,7 @@
 import { OPTIMIZER_CONTEXT_FLOATS } from "../misc/index.js";
 
 export function packOptimizerContext(ctx) {
-    // 35 floats = 140 bytes; tail packed into meta words to free pad space.
+    // 36 floats = 144 bytes; tail packed into meta words to free pad space.
     const buffer = new ArrayBuffer(OPTIMIZER_CONTEXT_FLOATS * 4);
     const data = new Float32Array(buffer);
     const u32 = new Uint32Array(buffer);
@@ -61,6 +61,7 @@ export function packOptimizerContext(ctx) {
 
     data[i++] = ctx.critRate     ?? 0;
     data[i++] = ctx.critDmg      ?? 1;
+    data[i++] = ctx.toggles      ?? 0;
 
     u32[i++] = skillId;
     u32[i++] = meta0;

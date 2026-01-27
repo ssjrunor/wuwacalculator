@@ -70,6 +70,7 @@ struct Params {
 
     critRate:     f32,
     critDmg:      f32,
+    toggles:      f32,
 
     skillId:      u32,
     meta0:        u32,
@@ -106,6 +107,10 @@ fn decodeComboCount(p: Params) -> u32 { return p.meta1 & 0xffffffu; }
 fn decodeComboN(p: Params) -> u32 { return (p.meta1 >> 24u) & 0xffu; }
 fn decodeLockedIndex(p: Params) -> i32 { return i32(p.lockedPacked) - 1; }
 fn comboBaseIndex(p: Params) -> u32 { return p.comboBaseIndex; }
+fn toggleValue(toggles: f32, bit: u32) -> f32 {
+    let mask = 1u << (bit & 31u);
+    return f32((bitcast<u32>(toggles) & mask) != 0u);
+}
 
 fn in_range(val: f32, range: vec2<f32>) -> bool {
     // Branchless: disabled (x > y) OR value in range
@@ -561,6 +566,7 @@ struct PreMain {
 
     multiplier: f32,
     flatDmg:    f32,
+    toggles:    f32,
 };
 
 fn buildPreMain(p: Params, s: SetApplied, skillMask: u32, elementId: u32, skillId: u32) -> PreMain {
@@ -644,6 +650,7 @@ fn buildPreMain(p: Params, s: SetApplied, skillMask: u32, elementId: u32, skillI
 
     pre.multiplier = p.multiplier;
     pre.flatDmg    = p.flatDmg;
+    pre.toggles = p.toggles;
 
     return pre;
 }
@@ -689,8 +696,12 @@ fn evalMainPos(
     // 1206 ER->ATK conversion
     if (pre.charId == 1206.0) {
         let erOver = max(0.0, finalER - 150.0);
-        var extraAtk = erOver * 20.0;
-        extraAtk = min(extraAtk, 2600.0);
+        var extraAtk: f32 = 0.0;
+        if (toggleValue(pre.toggles, 0u) == 1.0) {
+            extraAtk = min(erOver * 20.0, 2600.0);
+        } else {
+            extraAtk = min(erOver * 12.0, 1560.0);
+        }
         finalAtk += extraAtk;
     }
 
@@ -701,7 +712,7 @@ fn evalMainPos(
     if (pre.charId == 1209.0) {
         let erOver = finalER - 100.0;
         let extraDmgBonus = min(erOver * 0.25, 40.0);
-        dmgBonus += extraDmgBonus * INV_100;
+        dmgBonus += extraDmgBonus * INV_100 * toggleValue(pre.toggles, 0u);
 
         if (pre.skillId == 2206007304u) {
             critRateForDmg = critRateForDmg + min(erOver * 0.5, 80.0) * INV_100;

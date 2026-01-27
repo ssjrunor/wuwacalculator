@@ -4,10 +4,38 @@ import {
     removeSetEffectsFromBuffs,
 } from "@/data/buffs/setEffect.js";
 import {removeEchoArrayFromBuffs} from "@/utils/echoHelper.js";
+export { bitValue } from "../cpu/helpers.js";
+
+export function flipOn(value , bitIndex) {
+    if (bitIndex == null || bitIndex < 0 || bitIndex > 31) return value ?? 0;
+    const u32 = new Uint32Array(1);
+    const f32 = new Float32Array(u32.buffer);
+    f32[0] = value;
+    u32[0] = (u32[0] | (1 << bitIndex)) >>> 0;
+    return f32[0];
+}
+
+export function flipOff(value, bitIndex) {
+    if (bitIndex == null || bitIndex < 0 || bitIndex > 31) return value ?? 0;
+    const u32 = new Uint32Array(1);
+    const f32 = new Float32Array(u32.buffer);
+    f32[0] = value;
+    u32[0] = (u32[0] & ~(1 << bitIndex)) >>> 0;
+    return f32[0];
+}
+
+export function logFloatBits(f, label = "bits") {
+    const u32 = new Uint32Array(1);
+    const f32 = new Float32Array(u32.buffer);
+    f32[0] = f ?? 0;
+    const bits = u32[0] >>> 0;
+    console.log(label, bits.toString(2).padStart(32, "0"));
+}
 
 export function generateEchoContext(form) {
     const charId = form.charId;
     const runtime = form.characterRuntimeStates[charId];
+    let toggles = 0;
     const currentSetPlan = getSetPlanFromEchoes(form.equippedEchoes);
     let clonedMergedBuffs = structuredClone(form.mergedBuffs);
     const withoutSetEffects = removeSetEffectsFromBuffs(clonedMergedBuffs, currentSetPlan, runtime, form.skillType);
@@ -26,7 +54,10 @@ export function generateEchoContext(form) {
         const erOver = Math.max(0, buffs.energyRegen);
         const dmgBonus = runtime.activeStates.interferedMarker ?
             Math.min(original.energyRegen * .25, 40) : 0;
-        buffs.dmgBonus = (buffs.dmgBonus ?? 0) - dmgBonus;
+        if (runtime.activeStates.interferedMarker) {
+            buffs.dmgBonus = (buffs.dmgBonus ?? 0) - dmgBonus;
+            toggles = flipOn(toggles, 0);
+        }
         const bonusCr = Math.min(erOver * .5, 80);
         const bonusCd = Math.min((erOver), 160);
         if (form.levelData.label.includes('Critical Protocol DMG')) {
@@ -34,6 +65,8 @@ export function generateEchoContext(form) {
             buffs.critDmg -= bonusCd;
         }
     }
+
+    if (Number(charId) === 1206) if (runtime.activeStates.myMoment) toggles = flipOn(toggles, 0);
 
     return {
         charId,
@@ -59,6 +92,7 @@ export function generateEchoContext(form) {
         mergedBuffsWithoutEchoes,
         sequence: form.sequence,
         enemyProfile: form.enemyProfile,
+        toggles,
     };
 }
 

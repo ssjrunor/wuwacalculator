@@ -27,12 +27,13 @@ export function calcFinalStats(base, percent, flat, existing = 0) {
  * Character 1206 (brant): ER → ATK conversion
  * @param {number} charId - Character ID
  * @param {number} finalER - Final energy regen value
+ * @param {number} myMoment - state
  * @returns {number} Extra ATK to add
  */
-export function calc1206ErToAtk(charId, finalER) {
+export function calc1206ErToAtk(charId, finalER, myMoment) {
     if (charId !== 1206) return 0;
     const erOver = Math.max(0, finalER - 150);
-    return Math.min(erOver * 20, 2600);
+    return myMoment ? Math.min(erOver * 20, 2600) : Math.min(erOver * 12, 1560);
 }
 
 /**

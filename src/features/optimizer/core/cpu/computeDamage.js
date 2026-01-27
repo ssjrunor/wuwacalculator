@@ -28,7 +28,7 @@ import {
     OPTIMIZER_ECHOS_PER_COMBO,
     OPTIMIZER_MAIN_ECHO_BUFFS_PER_ECHO,
     OPTIMIZER_SET_SLOTS,
-    OPTIMIZER_STATS_PER_ECHO
+    OPTIMIZER_STATS_PER_ECHO, bitValue, OPTIMIZER_CTX_TOGGLES
 } from "../misc/index.js";
 import { passesConstraints } from "./constraints.js";
 import { countOneBits } from "./helpers.js";
@@ -241,7 +241,7 @@ export function computeDamageForCombo({
 
         // Final ATK with the main echo and 1206 conversion
         let finalAtk = atkBaseTerm + (baseAtk * (mainAtkP / 100)) + mainAtkF;
-        finalAtk += calc1206ErToAtk(charId, finalER);
+        finalAtk += calc1206ErToAtk(charId, finalER, bitValue(packedContext[OPTIMIZER_CTX_TOGGLES], 0));
 
         let {mornyeDmgBonus, critRateBonus, critDmgBonus} = calc1209Conversion(charId, finalER, skillId);
 
@@ -260,12 +260,9 @@ export function computeDamageForCombo({
             packedContext[OPTIMIZER_CTX_DEF_MULT] *
             dmgRed * packedContext[OPTIMIZER_CTX_DMG_AMPLIFY];
 
-        const base = (scaled * multiplier + flatDmg) * baseMul * (dmgBonus + mornyeDmgBonus);
+        const base = (scaled * multiplier + flatDmg) * baseMul *
+            (dmgBonus + mornyeDmgBonus * bitValue(packedContext[OPTIMIZER_CTX_TOGGLES], 0));
         const critHit = base * (critDmgTotal + critDmgBonus);
-
-/*
-        console.log('op: ', dmgBonus);
-*/
 
         // Branchless crit rate handling
         const cr = Math.max(0, Math.min(1, critRateTotal + critRateBonus));
