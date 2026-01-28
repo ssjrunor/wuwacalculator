@@ -5,20 +5,16 @@ export function applyWeaponLogic({
                                      skillMeta = {},
                                      currentParamValues = [],
                                  }) {
-    const atk = parseFloat(currentParamValues[0]);
-    const basicAmp = parseFloat(currentParamValues[1]);
-    const spectroBonus = parseFloat(currentParamValues[3]);
-    const defIgnore = parseFloat(currentParamValues[4]);
 
-    mergedBuffs.atk.percent += atk;
+    mergedBuffs.atk.percent += parseFloat(currentParamValues[0]);;
 
-    if (characterState?.activeStates?.firstP) {
-        mergedBuffs.skillType.basicAtk.amplify += basicAmp;
-    }
+    if (characterState?.activeStates?.firstP)
+        mergedBuffs.skillType.basicAtk.amplify += parseFloat(currentParamValues[1]);
+
 
     if (characterState?.activeStates?.secondP) {
-        mergedBuffs.attribute.spectro.dmgBonus += spectroBonus;
-        mergedBuffs.skillType.all.defIgnore += defIgnore;
+        mergedBuffs.attribute.spectro.dmgBonus += parseFloat(currentParamValues[3]);
+        mergedBuffs.skillType.all.defIgnore += parseFloat(currentParamValues[4]);
     }
 
     return { mergedBuffs, combatState, skillMeta };
