@@ -154,13 +154,6 @@ export function CustomInherentSkills({
 
     const dropOpt = ruptureMode ? [0, 1, 2, 3] : [0, 1, 2];
 
-    useEffect(() => {
-        if (ruptureMode && activeStates.aemeathInherent2Stacks === 2)
-            updateState('aemeathInherent2Stacks', 3);
-        else if (burstMode && activeStates.aemeathInherent2Stacks === 3)
-            updateState('aemeathInherent2Stacks', 2);
-    }, [ruptureMode, burstMode]);
-
     const updateState = (key, value) => {
         setCharacterRuntimeStates(prev => ({
             ...prev,
