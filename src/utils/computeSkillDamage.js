@@ -331,7 +331,7 @@ export function computeSkillDamage({
 
     if (typeof echoModifier === 'function') {
         skillMeta = echoModifier(skillMeta, {
-            characterState: characterRuntimeStates?.[charId]?.activeStates,
+            characterState: characterRuntimeStates?.[charId]?.activeStates ?? {},
             activeCharacter,
             combatState,
             charId

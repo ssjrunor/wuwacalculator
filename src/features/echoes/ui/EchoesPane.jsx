@@ -598,8 +598,8 @@ export default function EchoesPane({
                                                     </>
                                                 )
 
-                                                if (echo.id === '6000179' && !runtime.activeStates.nebulousCannon) return msg;
-                                                if (echo.id === '6000180' && !runtime.activeStates.collapsarBlade) return msg;
+                                                if (echo.id === '6000179' && !activeStates?.nebulousCannon) return msg;
+                                                if (echo.id === '6000180' && !activeStates?.collapsarBlade) return msg;
 
                                                 return (
                                                     <DropdownSelect
