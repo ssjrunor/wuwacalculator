@@ -35,6 +35,19 @@ const labelToKey = {
     'Healing Bonus': 'healingBonus',
 };
 
+const normalizeLabel = (label = '') =>
+    label
+        .toLowerCase()
+        .replace(/\./g, '')
+        .replace(/%/g, '')
+        .replace(/bonus/g, '')
+        .replace(/\s+/g, '');
+
+const normalizedLabelToKey = Object.entries(labelToKey).reduce((acc, [label, key]) => {
+    acc[normalizeLabel(label)] = key;
+    return acc;
+}, {});
+
 const setNameToId = {};
 for (const [id, path] of Object.entries(setIconMap)) {
     const filename = path.split('/').pop().replace(/\.[^.]+$/, '');
@@ -104,27 +117,33 @@ export function getEchoIdSetIdAndMainStats(parsedList) {
     return parsedList.map(item => {
         const echoId = echoes.find(e => e.name === item.echo)?.id ?? null;
         const setId = setNameToId[item.set] ?? null;
-        const cost = Number(item.cost);
+        const rawCost = Number(item.cost);
+        const cost = Number.isFinite(rawCost) ? rawCost : 4;
 
         const baseMainStats = getValidMainStats(cost);
-        let mainKey = labelToKey[item.mainStatLabel];
+
+        const rawMainLabel = item.mainStatLabel ?? '';
+        const normalizedMainLabel = normalizeLabel(rawMainLabel);
+
+        let mainKey = normalizedLabelToKey[normalizedMainLabel];
         if (!mainKey) {
-            return {
-                echoId: null,
-                setId: null,
-                mainStats: {},
-                subStats: {}
-            };
+            // allow partial match to avoid dropping echoes when OCR adds noise
+            for (const [label, key] of Object.entries(normalizedLabelToKey)) {
+                if (normalizedMainLabel.includes(label)) {
+                    mainKey = key;
+                    break;
+                }
+            }
         }
 
         if (['atk', 'hp', 'def'].includes(mainKey)) {
             mainKey = `${mainKey}Percent`;
         }
 
-        const mainStatValue = baseMainStats?.[mainKey];
+        const mainStatValue = mainKey ? baseMainStats?.[mainKey] : undefined;
 
         let mainStats = {};
-        if (mainStatValue !== undefined) {
+        if (mainKey && mainStatValue !== undefined) {
             mainStats[mainKey] = mainStatValue;
             mainStats = applyFixedSecondMainStat(mainStats, cost);
         }
