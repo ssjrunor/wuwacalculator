@@ -284,8 +284,8 @@ export function calculateDamage({
         if (enemyProfile.class === 3 || enemyProfile.class === 4) classMod = 14;
         else if (enemyProfile.class === 2) classMod = 3;
 
-        const bonus = 1 +
-            ((finalStats.skillType?.tuneRupture?.dmgBonus ?? 0) + (finalStats.tuneBreakBoost ?? 10)) / 100;
+        const bonus = (1 +
+            (finalStats.skillType?.tuneRupture?.dmgBonus ?? 0) / 100) * (1 + (finalStats.tuneBreakBoost ?? 0) / 100);
         normal = baseTuneRup * resMult *
             defMult *
             dmgReductionTotal * classMod * bonus * special;

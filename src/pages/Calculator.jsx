@@ -341,12 +341,7 @@ export default function Calculator(props) {
             }
             setBaseCharacterState(state ?? null);
             const nextCharacterLevel = profile.CharacterLevel ?? 1;
-            const nextSkillLevels = profile.SkillLevels
-                ? {
-                    ...profile.SkillLevels,
-                    tuneBreak: profile.SkillLevels.tuneBreak ?? 1,
-                }
-                : defaultSliderValues;
+            const nextSkillLevels = profile.SkillLevels ?? defaultSliderValues;
             const nextTraceNodeBuffs = profile.TraceNodeBuffs ?? profile.TemporaryBuffs ?? defaultTraceBuffs;
             const nextCustomBuffs = profile.CustomBuffs ?? defaultCustomBuffs;
 
