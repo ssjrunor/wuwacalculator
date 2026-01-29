@@ -9,6 +9,7 @@ import {getSetCounts} from "./echoHelper.js";
 import {getEchoSetSkillMeta} from "../data/set-behaviour/index.js";
 import {applyWeaponSkillMetaBuffLogic} from "../data/buffs/weaponBuffs.js";
 import {typeMap} from "../constants/skillTabs.js";
+import {getLevelMv} from "../constants/tuneBreak.js";
 
 const SKILLTYPE_FLAG_MAP = {
     basic: 1 << 0,
@@ -37,48 +38,6 @@ const ELEMENT_ID_MAP = {
 
 function normalizeSkillPart(part) {
     return (part ?? "").toString().trim().toLowerCase();
-}
-
-const segments = [
-    // L in [1, 20]
-    { x0: 1,  x1: 20, a: 2.215,   b: 0.0,              c: 0.013350685795443351,  d: -0.00016075194228824165 },
-
-    // L in [20, 40]
-    { x0: 20, x1: 40, a: 5.932,   b: 0.3332317067286817, c: 0.052338865218471996, d: -0.0005218975277453031 },
-
-    // L in [40, 50]
-    { x0: 40, x1: 50, a: 29.357,  b: 1.8005092821731967, c: 0.15212112481862378,  d: -0.001640205303594353 },
-
-    // L in [50, 60]
-    { x0: 50, x1: 60, a: 60.934,  b: 4.350870187467367,  c: 0.3473075504841299,   d: -0.008305456923086681 },
-
-    // L in [60, 70]
-    { x0: 60, x1: 70, a: 130.868, b: 8.805384120223962,  c: 0.3499160541102414,   d: -0.0041984466132637625 },
-
-    // L in [70, 80]
-    { x0: 70, x1: 80, a: 249.715, b: 14.54417121844966,  c: 0.469995043241612,    d: -0.0050712165086577695 },
-
-    // L in [80, 90]
-    { x0: 80, x1: 90, a: 437.085, b: 22.422707130684557, c: 0.6393335738630903,   d: -0.009025428693154466 },
-];
-
-function valueAtLevel(L) {
-    // clamp to range
-    if (L <= 1) return 2.215;
-    if (L >= 90) return 716.22;
-
-    const s = segments.find(seg => L >= seg.x0 && L <= seg.x1);
-    const t = L - s.x0;
-    return s.a + s.b*t + s.c*t*t + s.d*t*t*t;
-}
-
-function dmgAtLevel(L) {
-    const base =
-        3.44450452e-6 * Math.pow(L, 4.255) +
-        4.85299090 -
-        2.63037591 / L;
-    const correction = 0.4995554 * Math.pow(L / 90, 8);
-    return base - correction;
 }
 
 function buildSkillTypeMask(skillType) {
@@ -151,7 +110,7 @@ export function computeSkillDamage({
     let skillType = entry.detail?.toLowerCase?.() || '';
     let dmgType = '';
 
-    const levelMv = valueAtLevel(characterLevel);
+    const levelMv = getLevelMv(characterLevel);
     let tuneAmp = 16;
 
     if (!['basic', 'heavy', 'skill', 'ultimate', 'intro', 'outro', 'echoSkill', 'tuneBreak'].includes(skillType)) {
