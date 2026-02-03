@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 export default function WeaponMenu({
                                        weapons,
@@ -7,7 +7,8 @@ export default function WeaponMenu({
                                        menuRef,
                                        setMenuOpen,
                                        selectedRarities,
-                                       setSelectedRarities
+                                       setSelectedRarities,
+                                       preFilteredWeapons
                                    }) {
 
     const [isVisible, setIsVisible] = useState(false);
@@ -26,7 +27,8 @@ export default function WeaponMenu({
         }
     }, [menuOpen]);
 
-    const filteredWeapons = weapons.filter(w => selectedRarities.includes(w.Rarity ?? 1));
+    const baseWeapons = preFilteredWeapons ?? weapons;
+    const filteredWeapons = baseWeapons.filter(w => selectedRarities.includes(w.Rarity ?? 1));
 
     const formatStat = (stat) => {
         if (!stat) return '-';

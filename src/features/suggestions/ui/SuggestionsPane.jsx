@@ -33,7 +33,9 @@ export default function SuggestionsPane({
                                             setSuggestionsPaneSettings,
                                             keywords,
                                             rotationEntries,
-                                            enemyProfile
+                                            enemyProfile,
+                                            rotationSkill,
+                                            suggestionCacheKey
                                         }) {
     const runtime = characterRuntimeStates[charId] ?? {};
     const echoData = runtime?.equippedEchoes ?? [];
@@ -124,10 +126,10 @@ export default function SuggestionsPane({
     const hasRotationEntries = rotationEntries.length > 0;
     const rotationMode = suggestionSettings?.rotationMode && hasRotationEntries;
 
-    const base = skillResults
+    const base = rotationSkill ?? skillResults
         ?.find(skill => (skill.name === level?.label || skill.name === level?.Name) && skill.tab === tab) ?? {};
 
-    const skill = rotationMode
+    const skill = rotationMode && !rotationSkill
         ? {
             ...base,
             name: "Total Rotation DMG",
@@ -163,6 +165,7 @@ export default function SuggestionsPane({
     }, [suggestionCache]);
 
     const cacheKey = React.useMemo(() => {
+        if (suggestionCacheKey != null) return suggestionCacheKey;
         const hashParts = (parts) => {
             let h = 5381;
             for (const part of parts) {
@@ -209,6 +212,7 @@ export default function SuggestionsPane({
         const hash = hashParts(parts).toString(16);
         return `sc-${hash}`;
     }, [
+        suggestionCacheKey,
         charId,
         echoData,
         rotationMode,

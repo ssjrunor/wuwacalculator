@@ -82,7 +82,8 @@ export default function RotationsPane({
                                           savedTeamRotations,
                                           smartFilter,
                                           setSmartFilter,
-                                          skillResults
+                                          skillResults,
+                                          groupedSkillOptions: groupedSkillOptionsProp
                                       }) {
     const [showToast, setShowToast] = useState(false);
     const [popupMessage, setPopupMessage] = useState({
@@ -114,6 +115,7 @@ export default function RotationsPane({
     const runtime = characterRuntimeStates[charId];
     const precomputedGroups = runtime?.groupedSkillOptions;
     const groupedSkillOptions = useMemo(() => {
+        if (groupedSkillOptionsProp) return groupedSkillOptionsProp;
         if (precomputedGroups && Object.keys(precomputedGroups).length > 0)
             return precomputedGroups;
 
@@ -133,10 +135,10 @@ export default function RotationsPane({
         }
 
         return groups;
-    }, [precomputedGroups, allSkillResults]);
+    }, [groupedSkillOptionsProp, precomputedGroups, allSkillResults]);
 
     useEffect(() => {
-        if (!charId || !groupedSkillOptions) return;
+        if (!charId || !groupedSkillOptions || groupedSkillOptionsProp) return;
 
         setCharacterRuntimeStates(prev => ({
             ...prev,
@@ -145,7 +147,7 @@ export default function RotationsPane({
                 groupedSkillOptions,
             },
         }));
-    }, [groupedSkillOptions]);
+    }, [charId, groupedSkillOptions, groupedSkillOptionsProp, setCharacterRuntimeStates]);
 
     const defaultRotationData = buildRotation(charId, groupedSkillOptions);
     const [sortKey, setSortKey] = usePersistentState('sortKey', 'date');

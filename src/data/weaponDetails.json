@@ -166325,7 +166325,7 @@
         ]
       }
     },
-    "Effect": "Increases ATK by {0}. Each time Intro Skill or Resonance Skill is cast, the wielder gains {1} Basic Attack DMG Amplification for {2}s.\nDealing Basic Attack DMG increases the wielder's Spectro DMG Bonus by {3}, and the wielder ignores {4} of the target's DEF for {5}.",
+    "Effect": "Increases ATK by {0}. After dealing Basic Attack DMG, the wielder gains {1} Spectro DMG Bonus for {2}s. Each time after the wielder inflicts Tune Strain - Shifting on the target, they gain {3} Basic Attack DMG Amplification and their Basic Attack DMG ignores {4} of the target's DEF for {5}s.",
     "EffectName": "Suturing Dayline",
     "Param": [
       [
@@ -166343,11 +166343,11 @@
         "40%"
       ],
       [
-        "6",
-        "6",
-        "6",
-        "6",
-        "6"
+        "4",
+        "4",
+        "4",
+        "4",
+        "4"
       ],
       [
         "20%",
@@ -166364,11 +166364,11 @@
         "20%"
       ],
       [
-        "4",
-        "4",
-        "4",
-        "4",
-        "4"
+        "6",
+        "6",
+        "6",
+        "6",
+        "6"
       ]
     ],
     "Ascensions": {

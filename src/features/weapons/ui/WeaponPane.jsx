@@ -23,9 +23,19 @@ export function mapExtraStatToCombat(stat) {
     }
 }
 
-export default function WeaponPane({ activeCharacter, combatState, setCombatState, weapons,
-                                       characterRuntimeStates, setCharacterRuntimeStates }) {
-    const filteredWeapons = Object.values(weapons)
+export default function WeaponPane({
+                                       activeCharacter,
+                                       combatState,
+                                       setCombatState,
+                                       weapons,
+                                       characterRuntimeStates,
+                                       setCharacterRuntimeStates,
+                                       weaponList,
+                                       weaponById,
+                                       weaponIconPaths,
+                                       weaponKeywords
+                                   }) {
+    const filteredWeapons = weaponList ?? Object.values(weapons)
         .filter(
             (weapon) =>
                 typeof weapon.Id === 'number' &&
@@ -97,7 +107,7 @@ export default function WeaponPane({ activeCharacter, combatState, setCombatStat
         setWeaponMenuOpen(false);
     };
     const handleLevelChange = (level) => {
-        const weapon = Object.values(weapons).find(w => w.Id === weaponId);
+        const weapon = weaponById?.[weaponId] ?? Object.values(weapons).find(w => w.Id === weaponId);
         if (!weapon) return;
 
         let tier = 0;
@@ -126,22 +136,24 @@ export default function WeaponPane({ activeCharacter, combatState, setCombatStat
     };
 
     useEffect(() => {
-        const weaponIconPaths = filteredWeapons
+        const iconPaths = weaponIconPaths ?? filteredWeapons
             .map(w => `/assets/weapon-icons/${w.Id}.webp`)
             .filter(Boolean);
 
-        preloadImages(weaponIconPaths);
-    }, [filteredWeapons]);
+        preloadImages(iconPaths);
+    }, [filteredWeapons, weaponIconPaths]);
 
-    const keywords = statKeywords.flatMap(key => [
-        `${key} DMG Bonus`,
-        `${key} Damage Bonus`,
-        `${key} DMG`,
-        `${key} Damage`,
-        key
-    ]);
-
-    keywords.push('Negative Statuses', 'Negative Status');
+    const keywords = weaponKeywords ?? (() => {
+        const keys = statKeywords.flatMap(key => [
+            `${key} DMG Bonus`,
+            `${key} Damage Bonus`,
+            `${key} DMG`,
+            `${key} Damage`,
+            key
+        ]);
+        keys.push('Negative Statuses', 'Negative Status');
+        return keys;
+    })();
 
     return (
         <>
@@ -322,6 +334,7 @@ export default function WeaponPane({ activeCharacter, combatState, setCombatStat
                 setMenuOpen={setWeaponMenuOpen}
                 selectedRarities={selectedRarities}
                 setSelectedRarities={setSelectedRarities}
+                preFilteredWeapons={filteredWeapons}
             />
         </>
 

@@ -1,7 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { attributeColors } from '@/utils/attributeHelpers.js';
 import EnemyMenu from './EnemyMenu.jsx';
-import {defaultEnemyRes} from "@/pages/Calculator.jsx";
+
+const defaultEnemyResLocal = () => ({
+    0: 20,
+    1: 60,
+    2: 20,
+    3: 20,
+    4: 20,
+    5: 20,
+    6: 20
+});
 
 const elementLabels = ['Physical', 'Glacio', 'Fusion', 'Electro', 'Aero', 'Spectro', 'Havoc'];
 
@@ -23,7 +32,7 @@ const applyToaResMap = (resMap = {}) => {
 
 const normalizeEnemyRes = (enemy, fallbackRes = {}) => {
     const res = enemy?.baseData?.res ?? fallbackRes ?? {};
-    const normalizedRes = { ...defaultEnemyRes() };
+    const normalizedRes = { ...defaultEnemyResLocal() };
     for (let i = 0; i <= 6; i++) {
         if (typeof res?.[i] === 'number') normalizedRes[i] = res[i];
         else if (typeof res?.[String(i)] === 'number') normalizedRes[i] = res[String(i)];
@@ -48,6 +57,8 @@ export default function EnemyPane({
     setEnemyProfile,
     enemy,
     enemies,
+    allEnemies: allEnemiesProp,
+    enemyMap: enemyMapProp,
     customEnemies = [],
     setCustomEnemies,
     combatState,
@@ -60,16 +71,18 @@ export default function EnemyPane({
     const tuneStrain = enemyProfile?.status?.tuneStrain ?? 0;
     const enemyId = String(enemyProfile?.id ?? '');
 
-    const allEnemies = useMemo(() => [...enemies, ...(customEnemies ?? [])], [enemies, customEnemies]);
+    const mergedEnemies = useMemo(() => [...enemies, ...(customEnemies ?? [])], [enemies, customEnemies]);
+    const allEnemies = allEnemiesProp ?? mergedEnemies;
 
     const enemyMap = useMemo(() => {
+        if (enemyMapProp) return enemyMapProp;
         const map = {};
         allEnemies.forEach(e => {
             const key = String(e?.Id ?? e?.id ?? e?.monsterId ?? '');
             if (key) map[key] = e;
         });
         return map;
-    }, [allEnemies]);
+    }, [enemyMapProp, allEnemies]);
 
     const resolvedEnemy = enemy ?? enemyMap[enemyId] ?? null;
     const enemyIcon = resolvedEnemy?.Icon ?? '/assets/weapon-icons/default.webp';
@@ -129,7 +142,7 @@ export default function EnemyPane({
     };
 
     const handleTuneStrainChange = (val) => {
-        const clamped = Math.min(3, Math.max(0, Number(val)));
+        const clamped = Math.min(10, Math.max(0, Number(val)));
         setEnemyProfile(prev => {
             const prevProfile = prev ?? {};
             const prevStatus = prevProfile.status ?? {};
@@ -246,7 +259,7 @@ export default function EnemyPane({
                     setCustomEnemies(prev => prev.filter(e => String(e?.Id ?? e?.id ?? e?.monsterId ?? '') !== currentId));
                     const fallbackId = '340000020';
                     const fallbackEnemy = enemyMap[fallbackId];
-                    const baseRes = buildResForProfile(fallbackEnemy, fallbackEnemy?.baseData?.res ?? defaultEnemyRes(), enemyProfile?.toa);
+                    const baseRes = buildResForProfile(fallbackEnemy, fallbackEnemy?.baseData?.res ?? defaultEnemyResLocal(), enemyProfile?.toa);
                     setEnemyProfile(prev => ({
                         ...(prev ?? {}),
                         id: fallbackId,
@@ -399,7 +412,7 @@ export default function EnemyPane({
                             id="tune-strain-interfered"
                             type="number"
                             min="0"
-                            max="3"
+                            max="10"
                             className="character-level-input"
                             value={tuneStrain}
                             onChange={(e) => handleTuneStrainChange(e.target.value)}
@@ -408,12 +421,12 @@ export default function EnemyPane({
                     <input
                         type="range"
                         min="0"
-                        max="3"
+                        max="10"
                         value={tuneStrain}
                         onChange={(e) => handleTuneStrainChange(e.target.value)}
                         style={{
                             '--slider-color': '#d3d3d3',
-                            '--slider-fill': `${(tuneStrain / 3) * 100}%`
+                            '--slider-fill': `${(tuneStrain / 10) * 100}%`
                         }}
                     />
                 </div>

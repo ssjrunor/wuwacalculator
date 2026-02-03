@@ -39,16 +39,18 @@ export function applyLuukLogic({
         characterState.activeStates.__aureate = skillMeta.multiplier;
         skillMeta.visible = false;
     }
-    const mvBoost = characterState.activeStates.__aureate;
-    if (isToggleActive('aureateJudge') && (name.includes('aureole of execution') ||
-    name.includes('gavel of earthshaker'))) skillMeta.multiplier *= (1 + mvBoost);
+
+    if (isToggleActive('aureateJudge') && (name.includes('aureole of execution'))) skillMeta.multiplier *= 2.1;
+
+    if (isToggleActive('aureateJudge2') && (name.includes('ichor deposit') ||
+        name.includes('gavel of earthshaker'))) skillMeta.multiplier *= 2.1;
 
     if (name.includes('ichor blade dmg')) skillMeta.fixedDmg = 10;
 
     const stacks = characterState?.activeStates?.endnotes ?? 0;
     const endnotes = Math.min(stacks * 25, 75);
 
-    if (tab === 'resonanceLiberation') skillMeta.multiplier *= 1 + (endnotes / 100);
+    if (tab === 'resonanceLiberation') skillMeta.multiplier *= 1 + (endnotes / 100) + isActiveSequence(4) ? 0.60 : 0;
 
     if (isActiveSequence(1) && name.includes('mid-air attack')) {
         skillMeta.skillDmgBonus = (skillMeta.skillDmgBonus ?? 0) + 150;
@@ -67,12 +69,8 @@ export function applyLuukLogic({
     const bonus = mergedBuffs.tuneBreakBoost * (enemyProfile?.status?.tuneStrain ?? 0) * 0.12;
     if (isToggleActiveLocal('silentDebate')) mergedBuffs.special += bonus;
 
-    if (isActiveSequence(2) && name.includes('definition in absolute zero')) {
-        skillMeta.multiplier *= 1.6;
-    }
-
     if (isActiveSequence(3) && isToggleActive('aureateJudge') && (name.includes('aureole of execution') || name.includes('gavel of earthshaker'))) {
-        skillMeta.multiplier *= 1.65;
+        skillMeta.multiplier *= 2.36;
     }
 
     if (isActiveSequence(4) && isToggleActive(4)) mergedBuffs.dmgBonus += 20;

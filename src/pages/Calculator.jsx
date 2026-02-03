@@ -71,6 +71,14 @@ import SuggestionsPane from "@/features/suggestions/ui/SuggestionsPane.jsx";
 import AppStatusModal from "../components/common/AppStatusModal.jsx";
 import {defaultRandGen} from "@/features/suggestions/core/randomEchoes/lib/constants.js";
 import enemies from '@/data/enemies.json';
+import {
+    echoesService,
+    weaponService,
+    enemyService,
+    skillGroupingService,
+    characterOverviewService,
+    suggestionsService
+} from '@/calculator.js';
 export const defaultEnemyRes = () => ({
     0: 20,
     1: 60,
@@ -107,6 +115,9 @@ export const defaultTraceBuffs = {
 };
 
 export default function Calculator(props) {
+    // -----------------------------
+    // Persistent + UI state
+    // -----------------------------
     const [characters, setCharacters] = useState([]);
     loadBase( characters );
     const [popupMessage, setPopupMessage] = useState({
@@ -155,17 +166,15 @@ export default function Calculator(props) {
     const attributeIconPath = attributeIcons[currentAttribute] ?? '';
     const defaultSliderValues = { normalAttack: 1, resonanceSkill: 1, forteCircuit: 1, resonanceLiberation: 1, introSkill: 1, tuneBreak: 1, sequence: 0 };
     const defaultCustomBuffs = { atkFlat: 0, hpFlat: 0, defFlat: 0, atkPercent: 0, hpPercent: 0, defPercent: 0, critRate: 0, critDmg: 0, energyRegen: 0, healingBonus: 0, basicAtk: 0, heavyAtk: 0, resonanceSkill: 0, resonanceLiberation: 0, aero: 0, glacio: 0, spectro: 0, fusion: 0, electro: 0, havoc: 0 };
-    const enemyMap = useMemo(() => {
-        const map = {};
-        enemies.forEach(e => {
-            const key = String(e?.Id ?? e?.id ?? e?.monsterId ?? '');
-            if (key) map[key] = e;
-        });
-        return map;
-    }, []);
+    const enemyData = useMemo(
+        () => enemyService.buildEnemyMap(enemies, customEnemies),
+        [customEnemies]
+    );
+    const enemyMap = enemyData.map;
+    const allEnemiesList = enemyData.all;
 
     const selectedEnemyId = String(enemyProfile?.id ?? 340000020);
-    const selectedEnemy = enemyMap[selectedEnemyId] ?? null;
+    const selectedEnemy = enemyMap?.[selectedEnemyId] ?? null;
 
     const defaultCombatState = {
         critRate: 0,
@@ -185,6 +194,17 @@ export default function Calculator(props) {
     const [weapons, setWeapons] = useState({});
     const charId = activeCharacterId ?? activeCharacter?.id ?? activeCharacter?.link;
     const runtime = characterRuntimeStates[charId];
+
+    // -----------------------------
+    // Derived data (memoized)
+    // -----------------------------
+    const weaponPrep = useMemo(
+        () => weaponService.prepareWeapons({
+            weapons,
+            weaponType: activeCharacter?.weaponType ?? activeCharacter?.Weapon ?? activeCharacter?.raw?.Weapon
+        }),
+        [weapons, activeCharacter]
+    );
     const updateRuntimeForChar = useCallback((id, updater) => {
         if (!id) return;
         setCharacterRuntimeStates(prev => {
@@ -301,7 +321,11 @@ export default function Calculator(props) {
         });
     }, [charId, updateRuntimeForChar]);
     const equippedEchoes = characterRuntimeStates?.[charId]?.equippedEchoes ?? [];
-    const echoStats = getEchoStatsFromEquippedEchoes(equippedEchoes);
+    const echoMeta = useMemo(
+        () => echoesService.computeEchoMeta({ charId, equippedEchoes }),
+        [charId, equippedEchoes]
+    );
+    const echoStats = echoMeta?.echoStatTotals ?? getEchoStatsFromEquippedEchoes(equippedEchoes);
     const [showSubHits, setShowSubHits] = usePersistentState('showSubHits', false);
     const splitInstance = useRef(null);
     const [mainMode, setMainMode] = usePersistentState('mainMode', 'default');
@@ -313,6 +337,9 @@ export default function Calculator(props) {
         resultsLimit: 128
     });
 
+    // -----------------------------
+    // Effects
+    // -----------------------------
     useEffect(() => {
         Promise.all([fetchCharacters(), fetchWeapons()]).then(([charData, weaponData]) => {
             setWeapons(weaponData);
@@ -503,6 +530,9 @@ export default function Calculator(props) {
         return () => window.removeEventListener('resize', handleResize);
     }, [mainMode]);
 
+    // -----------------------------
+    // Event handlers
+    // -----------------------------
     const handleCharacterSelect = (char) => {
         if (activeCharacter && charId) {
             const currentCharId = charId;
@@ -894,6 +924,14 @@ export default function Calculator(props) {
         Object.entries(characterStates)
             .map(([key, val]) => [val.Id, val.Rarity])
     );
+    const characterMap = useMemo(
+        () => characterOverviewService.buildCharacterMap(characters),
+        [characters]
+    );
+    const sortedCharacterIds = useMemo(
+        () => characterOverviewService.sortedIds(characterRuntimeStates, characterMap),
+        [characterRuntimeStates, characterMap]
+    );
 
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1070);
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
@@ -1054,6 +1092,30 @@ export default function Calculator(props) {
     });
 
     const skillResults = [...charSkillResults, ...echoSkillResults, ...negativeEffects];
+    const groupedSkillOptions = useMemo(
+        () => skillGroupingService.groupedSkillOptions({
+            skillResults,
+            hasRotationEntries: (rotationEntries?.length ?? 0) > 0
+        }),
+        [skillResults, rotationEntries]
+    );
+
+    const rotationTotals = characterRuntimeStates?.[charId]?.rotationSummary?.totals ?? {};
+    const suggestionSkill = useMemo(() => suggestionsService.rotationAwareSkill({
+        skillResults,
+        rotationTotals,
+        suggestionSettings: characterRuntimeStates?.[charId]?.suggestionSettings
+    }), [skillResults, rotationTotals, characterRuntimeStates?.[charId]?.suggestionSettings]);
+
+    const suggestionCacheKey = useMemo(() => suggestionsService.cacheKey({
+        charId,
+        level: characterRuntimeStates?.[charId]?.suggestionSettings?.level,
+        tab: characterRuntimeStates?.[charId]?.suggestionSettings?.tab,
+        echoData: equippedEchoes,
+        rotationMode: characterRuntimeStates?.[charId]?.suggestionSettings?.rotationMode,
+        rotationEntries,
+        skillResults
+    }), [charId, characterRuntimeStates?.[charId]?.suggestionSettings, equippedEchoes, rotationEntries, skillResults]);
     useEffect(() => {
         setCharacterRuntimeStates(prev => {
             const prevChar = prev?.[charId] ?? {};
@@ -1122,25 +1184,11 @@ export default function Calculator(props) {
             characterRuntimeStates[charId]?.allSkillResults ??
             getSkillDamageCache();
 
-        const groupedSkillOptions = (() => {
-            const groups = {};
-            for (const skill of allSkillResults.filter(s => s.visible)) {
-                const tab = skill.tab ?? "unknown";
-                if (!groups[tab]) groups[tab] = [];
-                groups[tab].push({
-                    name: skill.name,
-                    type: skill.supportLabel || skill.skillType,
-                    tab,
-                    visible: skill.visible,
-                    element: skill.element ?? null,
-                });
-            }
-            return groups;
-        })();
+            const groupedSkillOptionsLocal = groupedSkillOptions;
 
-        const rotationData = getDefaultRotationEntries(charId);
-        const entries = rotationData?.entries ?? [];
-        const defaultRotationData = buildRotation(charId, groupedSkillOptions);
+            const rotationData = getDefaultRotationEntries(charId);
+            const entries = rotationData?.entries ?? [];
+            const defaultRotationData = buildRotation(charId, groupedSkillOptionsLocal);
         const builtRotations = defaultRotationData?.builtRotations ?? [];
 
         setCharacterRuntimeStates(prev => {
@@ -1164,8 +1212,8 @@ export default function Calculator(props) {
                 changed = true;
             }
 
-            if (JSON.stringify(newChar.groupedSkillOptions) !== JSON.stringify(groupedSkillOptions)) {
-                newChar.groupedSkillOptions = groupedSkillOptions;
+            if (JSON.stringify(newChar.groupedSkillOptions) !== JSON.stringify(groupedSkillOptionsLocal)) {
+                newChar.groupedSkillOptions = groupedSkillOptionsLocal;
                 changed = true;
             }
 
@@ -1327,6 +1375,9 @@ export default function Calculator(props) {
     console.log(runtime);
 */
 
+    // -----------------------------
+    // Render
+    // -----------------------------
     return (
         <>
             <SkillsModal
@@ -1698,6 +1749,8 @@ export default function Calculator(props) {
                                     keywords={keywords}
                                     activeCharacterId={activeCharacterId}
                                     characterRuntimeStates={characterRuntimeStates}
+                                    characterMap={characterMap}
+                                    sortedCharacterIds={sortedCharacterIds}
                                     onClose={() => setMainMode('default')}
                                     weapons={weapons}
                                     handleCharacterSelect={handleCharacterSelect}
@@ -1724,6 +1777,7 @@ export default function Calculator(props) {
                                     getImageSrc={getImageSrc}
                                     optimizerResults={optimizerResults}
                                     setOptimizerResults={setOptimizerResults}
+                                    groupedSkillOptions={groupedSkillOptions}
                                     rarityMap={rarityMap}
                                     triggerRef={triggerRef}
                                     menuOpen={menuOpen}
@@ -1778,6 +1832,10 @@ export default function Calculator(props) {
                                                 combatState={combatState}
                                                 setCombatState={setCombatState}
                                                 weapons={weapons}
+                                                weaponList={weaponPrep.list}
+                                                weaponById={weaponPrep.weaponById}
+                                                weaponIconPaths={weaponPrep.iconPaths}
+                                                weaponKeywords={weaponPrep.keywords}
                                                 characterRuntimeStates={characterRuntimeStates}
                                                 setCharacterRuntimeStates={setCharacterRuntimeStates}
                                             />
@@ -1787,7 +1845,9 @@ export default function Calculator(props) {
                                                 enemyProfile={enemyProfile}
                                                 setEnemyProfile={setEnemyProfile}
                                                 enemy={selectedEnemy}
-                                                enemies={enemies}
+                                                enemies={allEnemiesList}
+                                                allEnemies={allEnemiesList}
+                                                enemyMap={enemyMap}
                                                 customEnemies={customEnemies}
                                                 setCustomEnemies={setCustomEnemies}
                                                 combatState={combatState}
@@ -1847,6 +1907,7 @@ export default function Calculator(props) {
                                                 smartFilter={smartFilter}
                                                 setSmartFilter={setSmartFilter}
                                                 skillResults={skillResults}
+                                                groupedSkillOptions={groupedSkillOptions}
                                             />
                                         )}
                                         {leftPaneView === 'echoes' && (
@@ -1854,6 +1915,7 @@ export default function Calculator(props) {
                                                 charId={charId}
                                                 characterRuntimeStates={characterRuntimeStates}
                                                 setCharacterRuntimeStates={setCharacterRuntimeStates}
+                                                echoMeta={echoMeta}
                                             />
                                         )}
                                         {leftPaneView === 'suggestions-ui' && (
@@ -1873,6 +1935,8 @@ export default function Calculator(props) {
                                                 keywords={keywords}
                                                 rotationEntries={rotationEntries}
                                                 enemyProfile={enemyProfile}
+                                                rotationSkill={suggestionSkill}
+                                                suggestionCacheKey={suggestionCacheKey}
                                             />
                                         )}
                                     </div>

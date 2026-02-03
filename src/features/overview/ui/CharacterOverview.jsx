@@ -14,16 +14,18 @@ export default function CharacterOverviewPane({
                                                   setCharacterRuntimeStates,
                                                   handleReset,
                                                   allRotations,
-    theme
+    theme,
+    characterMap: characterMapProp,
+    sortedCharacterIds: sortedCharacterIdsProp
 }) {
     const isCollapsedMode = window.innerWidth <= 910;
     const [selectedId, setSelectedId] = React.useState(
         activeCharacterId ?? Object.keys(characterRuntimeStates)[0] ?? null
     );
 
-    const characterMap = Object.fromEntries(characters.map(c => [String(c.link), c]));
+    const characterMap = characterMapProp ?? Object.fromEntries(characters.map(c => [String(c.link), c]));
 
-    const sortedCharacterIds = Object.keys(characterRuntimeStates)
+    const sortedCharacterIds = sortedCharacterIdsProp ?? Object.keys(characterRuntimeStates)
         .filter(id => characterMap[id])
         .sort((a, b) => {
             const charA = characterMap[a];

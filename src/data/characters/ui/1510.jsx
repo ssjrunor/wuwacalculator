@@ -22,16 +22,48 @@ export default function LuukUI({ activeStates, toggleState, setCharacterRuntimeS
     return (
         <div className="status-toggles">
             <div className="status-toggle-box">
-                <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>Aureate Judge</h4>
-                <ul>With full <span className="highlight">Ichor Flow</span>, enter the <span className="highlight">Aureate Judge</span> state. In this state, <span className="highlight">Luuk Herssen</span> gains the following effects:
-                    <li><span className="highlight">Ichor Flow</span> does not restore. The DMG Multipliers of all forms of <span className="highlight">Resonance Skill Aureole of Execution</span> increases.</li>
-                    <li>Casting <span className="highlight">Aureole of Execution: Glare</span> increases the DMG Multiplier of the next <span className="highlight">Mid-air Attack - Gavel of Earthshaker</span>.</li>
+                <h4 className={'highlight'} style={{ fontSize: '18px', fontWeight: 'bold' }}>
+                    Aureate Judge
+                </h4>
+
+                <ul>
+                    With full <span className="highlight">Ichor Flow</span>, enter the{' '}
+                    <span className="highlight">Aureate Judge</span> state. In this state,{' '}
+                    <span className="highlight">Luuk Herssen</span> gains the following effects:
+                    <li>
+                        <span className="highlight">Ichor Flow</span> does not restore. The DMG
+                        Multipliers of all forms of{' '}
+                        <span className="highlight">Resonance Skill Aureole of Execution</span>{' '}
+                        increase by 110%.
+                    </li>
                 </ul>
+
                 <label className="modern-checkbox">
                     <input
                         type="checkbox"
                         checked={activeStates.aureateJudge || false}
                         onChange={() => toggleState('aureateJudge')}
+                    />
+                    Enable
+                </label>
+
+                <ul style={{ marginTop: '0.75rem' }}>
+                    With full <span className="highlight">Ichor Flow</span>, enter the{' '}
+                    <span className="highlight">Aureate Judge</span> state. In this state,{' '}
+                    <span className="highlight">Luuk Herssen</span> gains the following effects:
+                    <li>
+                        Casting <span className="highlight">Aureole of Execution: Glare</span>{' '}
+                        increases the DMG Multiplier of the next{' '}
+                        <span className="highlight">Mid-air Attack - Gavel of Earthshaker</span>{' '}
+                        and <span className="highlight">Ichor Deposit DMG</span> by 110%.
+                    </li>
+                </ul>
+
+                <label className="modern-checkbox">
+                    <input
+                        type="checkbox"
+                        checked={activeStates.aureateJudge2 || false}
+                        onChange={() => toggleState('aureateJudge2')}
                     />
                     Enable
                 </label>

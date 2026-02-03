@@ -61,6 +61,7 @@ export default function Optimizer({
                                       getImageSrc,
                                       optimizerResults,
                                       setOptimizerResults,
+                                      groupedSkillOptions: groupedSkillOptionsProp,
                                       rarityMap,
                                       triggerRef,
                                       menuOpen,
@@ -163,6 +164,7 @@ export default function Optimizer({
         setExpandedTabs((prev) => ({...prev, [key]: !prev[key]}));
 
     const groupedSkillOptions = React.useMemo(() => {
+        if (groupedSkillOptionsProp) return groupedSkillOptionsProp;
         const groups = getGroupedSkillOptions({ skillResults });
         if (hasRotationEntries) {
             if (!groups.combo) groups.combo = [];
@@ -175,7 +177,7 @@ export default function Optimizer({
             });
         }
         return groups;
-    }, [skillResults, hasRotationEntries]);
+    }, [groupedSkillOptionsProp, skillResults, hasRotationEntries]);
 
     const handleAddSkill = (skill) => {
         if (skill?.tab === "combo") {

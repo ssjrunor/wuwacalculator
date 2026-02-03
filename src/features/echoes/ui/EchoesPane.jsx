@@ -35,6 +35,7 @@ export default function EchoesPane({
                                        charId,
                                        setCharacterRuntimeStates,
                                        characterRuntimeStates,
+                                       echoMeta
                                    }) {
     const runtime = characterRuntimeStates[charId];
     const [showToast, setShowToast] = useState(false);
@@ -202,22 +203,25 @@ export default function EchoesPane({
         preloadImages(allPaths);
     }, []);
 
-    const setCounts = getSetCounts(echoData);
-    const setRequirements = new Map(
+    const setCounts = echoMeta?.setCounts ?? getSetCounts(echoData);
+    const setRequirements = echoMeta?.setRequirements ?? new Map(
         echoSetList.map(set => {
             const requiredCount = set.threePiece ? 3 : 2;
             return [set.id, requiredCount];
         })
     );
 
-    const hasSetEffects = Object.entries(setCounts).some(([setId, count]) => {
-        const numericId = Number(setId);
-        const requiredCount = setRequirements.get(numericId) ?? 2;
-        return count >= requiredCount;
-    });
+    const hasSetEffects = typeof echoMeta?.hasSetEffects === 'boolean'
+        ? echoMeta.hasSetEffects
+        : Object.entries(setCounts).some(([setId, count]) => {
+            const numericId = Number(setId);
+            const requiredCount = setRequirements.get(numericId) ?? 2;
+            return count >= requiredCount;
+        });
 
-    const echoStatTotals = getEchoStatsFromEquippedEchoes(echoData);
-    const maxScore = getTop5SubstatScoreDetails(charId).total;
+    const echoStatTotals = echoMeta?.echoStatTotals ?? getEchoStatsFromEquippedEchoes(echoData);
+    const maxScore = echoMeta?.maxScore ?? getTop5SubstatScoreDetails(charId).total;
+    const perEchoScores = echoMeta?.perEchoScores ?? [];
 
     const echoesPaneRef = useRef(null);
 
@@ -315,7 +319,8 @@ export default function EchoesPane({
                 const echo = echoData[slotIndex];
                 const isMain = slotIndex === 0;
                 const cv = (echo?.subStats?.critRate ?? 0) * 2 + (echo?.subStats?.critDmg ?? 0);
-                const score = (getEchoScores(charId, echo).totalScore / maxScore) * 100;
+                const echoScore = perEchoScores?.[slotIndex]?.score ?? getEchoScores(charId, echo).totalScore ?? 0;
+                const score = maxScore ? (echoScore / maxScore) * 100 : 0;
                 return (
                     <React.Fragment key={slotIndex}>
                         <div key={slotIndex} className="inherent-skills-box echo">
