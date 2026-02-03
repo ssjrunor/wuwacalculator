@@ -28,6 +28,24 @@ export function getGroupedSkillOptions ({ skillResults }) {
     return groups;
 }
 
+export function getRotationGroupedSkillOptions ({ skillResults }) {
+    const allSkills = skillResults.filter(
+        (s) => s.visible !== false);
+    const groups = {};
+    for (const skill of allSkills) {
+        const tab = skill.tab ?? "unknown";
+        if (!groups[tab]) groups[tab] = [];
+        groups[tab].push({
+            name: skill.name,
+            type: skill.skillType,
+            tab,
+            visible: skill.visible,
+            element: skill.element ?? null,
+        });
+    }
+    return groups;
+}
+
 export function prepareDamageData({
                                       activeCharacter,
                                       charId,

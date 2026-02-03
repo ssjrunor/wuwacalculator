@@ -202,7 +202,7 @@ export default function EchoBuffs({
         {
             key: 'chromaticFoam',
             name: 'Chromatic Foam',
-            icon: '/assets/echo-icons/default.webp',
+            icon: '/assets/echo-icons/chromaticFoam.webp',
             effect: (
                 <>
                     Casting an <span className="highlight">Outro Skill</span> grants the incoming Resonator <span className="highlight">25%</span> <span style={{ color: attributeColors['fusion'], fontWeight: 'bold' }}>Fusion DMG Bonus</span> for 15s or until they're switched out.

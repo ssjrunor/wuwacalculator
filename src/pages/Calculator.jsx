@@ -1100,6 +1100,14 @@ export default function Calculator(props) {
         [skillResults, rotationEntries]
     );
 
+    const rotationGroupedSkillOptions = useMemo(
+        () => skillGroupingService.rotationGroupedSkillOptions({
+            skillResults,
+            hasRotationEntries: (rotationEntries?.length ?? 0) > 0
+        }),
+        [skillResults, rotationEntries]
+    );
+
     const rotationTotals = characterRuntimeStates?.[charId]?.rotationSummary?.totals ?? {};
     const suggestionSkill = useMemo(() => suggestionsService.rotationAwareSkill({
         skillResults,
@@ -1184,11 +1192,9 @@ export default function Calculator(props) {
             characterRuntimeStates[charId]?.allSkillResults ??
             getSkillDamageCache();
 
-            const groupedSkillOptionsLocal = groupedSkillOptions;
-
-            const rotationData = getDefaultRotationEntries(charId);
-            const entries = rotationData?.entries ?? [];
-            const defaultRotationData = buildRotation(charId, groupedSkillOptionsLocal);
+        const rotationData = getDefaultRotationEntries(charId);
+        const entries = rotationData?.entries ?? [];
+        const defaultRotationData = buildRotation(charId, groupedSkillOptions);
         const builtRotations = defaultRotationData?.builtRotations ?? [];
 
         setCharacterRuntimeStates(prev => {
@@ -1212,8 +1218,8 @@ export default function Calculator(props) {
                 changed = true;
             }
 
-            if (JSON.stringify(newChar.groupedSkillOptions) !== JSON.stringify(groupedSkillOptionsLocal)) {
-                newChar.groupedSkillOptions = groupedSkillOptionsLocal;
+            if (JSON.stringify(newChar.groupedSkillOptions) !== JSON.stringify(groupedSkillOptions)) {
+                newChar.groupedSkillOptions = groupedSkillOptions;
                 changed = true;
             }
 
@@ -1907,7 +1913,7 @@ export default function Calculator(props) {
                                                 smartFilter={smartFilter}
                                                 setSmartFilter={setSmartFilter}
                                                 skillResults={skillResults}
-                                                groupedSkillOptions={groupedSkillOptions}
+                                                groupedSkillOptions={rotationGroupedSkillOptions}
                                             />
                                         )}
                                         {leftPaneView === 'echoes' && (

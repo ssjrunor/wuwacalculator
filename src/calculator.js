@@ -10,7 +10,10 @@ import {
 } from "@/utils/echoHelper.js";
 import { statKeywords } from "@/constants/echoSetData.jsx";
 import { groupEchoSetsByPiece } from "@/features/optimizer/core/misc/index.js";
-import { getGroupedSkillOptions } from "@/utils/prepareDamageData.js";
+import {
+  getGroupedSkillOptions,
+  getRotationGroupedSkillOptions
+} from "@/utils/prepareDamageData.js";
 import { getEchoPresetById } from "@/state/echoPresetStore.js";
 
 const DEFAULT_ENEMY_RES = {
@@ -141,6 +144,20 @@ export const enemyService = {
 export const skillGroupingService = {
   groupedSkillOptions({ skillResults = [], hasRotationEntries = false }) {
     const groups = getGroupedSkillOptions({ skillResults });
+    if (hasRotationEntries) {
+      if (!groups.combo) groups.combo = [];
+      groups.combo.unshift({
+        name: "Total Rotation DMG",
+        type: "combo",
+        tab: "combo",
+        visible: true,
+        element: null,
+      });
+    }
+    return groups;
+  },
+  rotationGroupedSkillOptions({ skillResults = [], hasRotationEntries = false }) {
+    const groups = getRotationGroupedSkillOptions({ skillResults });
     if (hasRotationEntries) {
       if (!groups.combo) groups.combo = [];
       groups.combo.unshift({

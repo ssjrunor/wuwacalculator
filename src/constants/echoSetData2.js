@@ -669,7 +669,7 @@ export const echoSets = {
                 ],
             },
         },
-        icon: '/assets/echo-icons/default.webp',
+        icon: '/assets/echo-icons/chromaticFoam.webp',
     },
 
     29: {

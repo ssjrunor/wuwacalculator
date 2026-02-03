@@ -51251,9 +51251,9 @@
   },
   {
     "Id": 310000830,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
+    "Name": "Iceglint Dancer",
+    "Desc": "A graceful humanoid TD dressed in ice.",
+    "DescOpen": "This enemy has a <span style=\"color:#ffd12f;\" class=\"font-bold\">higher RES</span> to <span style=\"color:#a2fbfc;\">Glacio DMG</span>.<br><br>Draped in a flowing skirt of ice, this humanoid Tacet Discord moves with airy grace. The razor-sharp blades beneath its feet trace frozen arcs that mimic figure skating but deliver only demise. It senses every tremor across the ice and reads the world through the frozen mirror. From the reflections, it learned elegance, then turned that elegance into a weapon. What was once a noble art has, in its hands, become a quiet choreography of death.",
     "Class": 1,
     "Element": 1,
     "ElementArray": [
@@ -51876,9 +51876,9 @@
   },
   {
     "Id": 310000840,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
+    "Name": "Shadow Stepper",
+    "Desc": "A faceless humanoid Tacet Discord with a body that flows, splits, and coalesces like a living shadow.",
+    "DescOpen": "This enemy has a <span style=\"color:#ffd12f;\" class=\"font-bold\">higher RES</span> to <span style=\"color:#fcc4db;\">Havoc DMG</span>.<br><br>A faceless humanoid Tacet Discord with a body that flows, splits, and coalesces like a living shadow. By splintering its own frequency, it can generate a pocket of shadow realm to lie in wait. When its prey draws near, it will erupt from the darkness to strike from impossible angles.",
     "Class": 1,
     "Element": 6,
     "ElementArray": [
@@ -88751,9 +88751,9 @@
   },
   {
     "Id": 320000590,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
+    "Name": "Kronablight",
+    "Desc": "A mysterious raptor-shaped Exoswarm that seems to mimic an extinct ancient animal.",
+    "DescOpen": "This enemy has a <span style=\"color:#ffd12f;\" class=\"font-bold\">higher RES</span> to <span style=\"color:#ebb0ff;\">Electro DMG</span>.<br>This enemy has a higher All-Attribute RES.<br>This enemy has the Rage Feather ability and three weaknesses.<br><br>After remaining in combat for a period of time, Kronablight enters the Rage Feather state, greatly enhancing its ATK.<br>Weakness I: A successful Counterattack can damage its crest and wings, weakening its attacks and reducing the number of ranged projectiles.<br>Weakness II: Tune Break can remove its Rage Feather state and reduce its ranged projectiles.<br>Special Weakness: When Kronablight is under Tune Rupture - Shifting, hitting it with Tune Break will greatly reduce its All-Attribute RES.<br><br>A powerful raptor-like Exoswarm, mimicking an ancient predator known as Kronaclaw.<br>In the distant past, these raptors once circled the skies of Lahai-Roi, their dominion unchallenged since the First Epoch.<br>Legend holds that the Kronaclaw was a creation of Sol, sharing the divine sight of the Eye of Sol and beholding all that lay above and below Lahai-Roi.<br>But as magnetic poles shifted and the landscape was reshaped, the Kronaclaw species had faded into near extinction. Their place was eventually taken by Kronablight, an Exoswarm born of the Exostrider.",
     "Class": 2,
     "Element": 3,
     "ElementArray": [
@@ -88773,602 +88773,602 @@
     },
     "Stats": {
       "1": {
-        "hp": 946,
+        "hp": 630,
         "atk": 75,
         "def": 800
       },
       "2": {
-        "hp": 1001.4356,
+        "hp": 666.918,
         "atk": 82.14,
         "def": 808
       },
       "3": {
-        "hp": 1057.4388,
+        "hp": 704.2139999999999,
         "atk": 89.42999999999999,
         "def": 816
       },
       "4": {
-        "hp": 1062.831,
+        "hp": 707.805,
         "atk": 96.83999999999999,
         "def": 824
       },
       "5": {
-        "hp": 1068.1286,
+        "hp": 711.333,
         "atk": 104.36999999999999,
         "def": 832
       },
       "6": {
-        "hp": 1125.267,
+        "hp": 749.385,
         "atk": 112.035,
         "def": 840
       },
       "7": {
-        "hp": 1182.973,
+        "hp": 787.8149999999999,
         "atk": 119.82,
         "def": 848
       },
       "8": {
-        "hp": 1241.152,
+        "hp": 826.5600000000001,
         "atk": 127.74000000000001,
         "def": 856
       },
       "9": {
-        "hp": 1299.8986,
+        "hp": 865.6830000000001,
         "atk": 135.78,
         "def": 864
       },
       "10": {
-        "hp": 1359.2128,
+        "hp": 905.1840000000001,
         "atk": 143.955,
         "def": 872.0000000000001
       },
       "11": {
-        "hp": 1489.95,
+        "hp": 992.25,
         "atk": 152.24999999999997,
         "def": 880.0000000000001
       },
       "12": {
-        "hp": 1553.4266,
+        "hp": 1034.523,
         "atk": 160.67999999999998,
         "def": 888.0000000000001
       },
       "13": {
-        "hp": 1621.3494,
+        "hp": 1079.757,
         "atk": 169.245,
         "def": 896.0000000000001
       },
       "14": {
-        "hp": 1689.9344,
+        "hp": 1125.432,
         "atk": 177.92999999999998,
         "def": 903.9999999999999
       },
       "15": {
-        "hp": 1763.0602,
+        "hp": 1174.1309999999999,
         "atk": 186.73499999999999,
         "def": 911.9999999999999
       },
       "16": {
-        "hp": 1844.7,
+        "hp": 1228.5,
         "atk": 195.675,
         "def": 919.9999999999999
       },
       "17": {
-        "hp": 1931.1644,
+        "hp": 1286.0819999999999,
         "atk": 204.75,
         "def": 927.9999999999999
       },
       "18": {
-        "hp": 2018.2910000000002,
+        "hp": 1344.105,
         "atk": 213.95999999999998,
         "def": 936
       },
       "19": {
-        "hp": 2114.31,
+        "hp": 1408.05,
         "atk": 223.29,
         "def": 944
       },
       "20": {
-        "hp": 2527.239,
+        "hp": 1683.045,
         "atk": 232.77,
         "def": 952
       },
       "21": {
-        "hp": 2999.293,
+        "hp": 1997.415,
         "atk": 315.48,
         "def": 960
       },
       "22": {
-        "hp": 3207.6022,
+        "hp": 2136.141,
         "atk": 326.72999999999996,
         "def": 968
       },
       "23": {
-        "hp": 3382.9905999999996,
+        "hp": 2252.9429999999998,
         "atk": 338.1,
         "def": 976
       },
       "24": {
-        "hp": 3536.7156,
+        "hp": 2355.3179999999998,
         "atk": 349.63500000000005,
         "def": 984
       },
       "25": {
-        "hp": 3993.0660000000003,
+        "hp": 2659.23,
         "atk": 362.28000000000003,
         "def": 992
       },
       "26": {
-        "hp": 4160.6972000000005,
+        "hp": 2770.866,
         "atk": 375.105,
         "def": 1000
       },
       "27": {
-        "hp": 4770.678,
+        "hp": 3177.09,
         "atk": 388.09499999999997,
         "def": 1008
       },
       "28": {
-        "hp": 5427.8642,
+        "hp": 3614.751,
         "atk": 401.25,
         "def": 1016
       },
       "29": {
-        "hp": 5788.6686,
+        "hp": 3855.0330000000004,
         "atk": 415.42499999999995,
         "def": 1024
       },
       "30": {
-        "hp": 6376.4184000000005,
+        "hp": 4246.452,
         "atk": 429.765,
         "def": 1032
       },
       "31": {
-        "hp": 6977.696,
+        "hp": 4646.88,
         "atk": 443.475,
         "def": 1040
       },
       "32": {
-        "hp": 7542.7418,
+        "hp": 5023.179,
         "atk": 458.22,
         "def": 1048
       },
       "33": {
-        "hp": 8120.2748,
+        "hp": 5407.794,
         "atk": 473.13,
         "def": 1056
       },
       "34": {
-        "hp": 8730.2556,
+        "hp": 5814.018,
         "atk": 489.135,
         "def": 1064
       },
       "35": {
-        "hp": 9354.8994,
+        "hp": 6230.007,
         "atk": 504.85499999999996,
         "def": 1072
       },
       "36": {
-        "hp": 9955.4202,
+        "hp": 6629.931,
         "atk": 520.815,
         "def": 1080
       },
       "37": {
-        "hp": 10579.9694,
+        "hp": 7045.857,
         "atk": 537.885,
         "def": 1088
       },
       "38": {
-        "hp": 11217.9518,
+        "hp": 7470.729,
         "atk": 555.1949999999999,
         "def": 1096
       },
       "39": {
-        "hp": 11869.462000000001,
+        "hp": 7904.610000000001,
         "atk": 571.86,
         "def": 1104
       },
       "40": {
-        "hp": 12547.8386,
+        "hp": 8356.383,
         "atk": 589.65,
         "def": 1112
       },
       "41": {
-        "hp": 12693.9956,
+        "hp": 8453.717999999999,
         "atk": 735.9449999999999,
         "def": 1120
       },
       "42": {
-        "hp": 13648.793399999999,
+        "hp": 9089.577,
         "atk": 757.995,
         "def": 1128
       },
       "43": {
-        "hp": 14583.063,
+        "hp": 9711.765,
         "atk": 781.9799999999999,
         "def": 1136
       },
       "44": {
-        "hp": 15542.4962,
+        "hp": 10350.711000000001,
         "atk": 804.7950000000001,
         "def": 1144
       },
       "45": {
-        "hp": 16507.794599999997,
+        "hp": 10993.563,
         "atk": 827.985,
         "def": 1152
       },
       "46": {
-        "hp": 17527.866400000003,
+        "hp": 11672.892000000002,
         "atk": 851.565,
         "def": 1160
       },
       "47": {
-        "hp": 18992.5582,
+        "hp": 12648.321,
         "atk": 875.535,
         "def": 1168
       },
       "48": {
-        "hp": 20483.5488,
+        "hp": 13641.264,
         "atk": 899.91,
         "def": 1176
       },
       "49": {
-        "hp": 22012.1902,
+        "hp": 14659.280999999999,
         "atk": 924.66,
         "def": 1184
       },
       "50": {
-        "hp": 24350.7968,
+        "hp": 16216.704,
         "atk": 1017.12,
         "def": 1192
       },
       "51": {
-        "hp": 27282.4508,
+        "hp": 18169.074,
         "atk": 1162.785,
         "def": 1200
       },
       "52": {
-        "hp": 29829.9342,
+        "hp": 19865.601,
         "atk": 1192.4850000000001,
         "def": 1208
       },
       "53": {
-        "hp": 32431.623399999997,
+        "hp": 21598.227,
         "atk": 1220.085,
         "def": 1216
       },
       "54": {
-        "hp": 35267.2584,
+        "hp": 23486.652000000002,
         "atk": 1250.655,
         "def": 1224
       },
       "55": {
-        "hp": 37653.5434,
+        "hp": 25075.827,
         "atk": 1281.7050000000002,
         "def": 1232
       },
       "56": {
-        "hp": 39768.9886,
+        "hp": 26484.632999999998,
         "atk": 1313.235,
         "def": 1240
       },
       "57": {
-        "hp": 42138.245599999995,
+        "hp": 28062.467999999997,
         "atk": 1342.59,
         "def": 1248
       },
       "58": {
-        "hp": 45425.501000000004,
+        "hp": 30251.655000000002,
         "atk": 1372.365,
         "def": 1256
       },
       "59": {
-        "hp": 49023.4228,
+        "hp": 32647.734,
         "atk": 1405.305,
         "def": 1264
       },
       "60": {
-        "hp": 51291.836200000005,
+        "hp": 34158.411,
         "atk": 1444.02,
         "def": 1272
       },
       "61": {
-        "hp": 54554.3064,
+        "hp": 36331.092,
         "atk": 1894.17,
         "def": 1280
       },
       "62": {
-        "hp": 59317.511,
+        "hp": 39503.205,
         "atk": 2010.3899999999999,
         "def": 1288
       },
       "63": {
-        "hp": 63856.1352,
+        "hp": 42525.756,
         "atk": 2133.315,
         "def": 1296
       },
       "64": {
-        "hp": 68993.1044,
+        "hp": 45946.782,
         "atk": 2263.455,
         "def": 1304
       },
       "65": {
-        "hp": 76613.32359999999,
+        "hp": 51021.558,
         "atk": 2371.86,
         "def": 1312
       },
       "66": {
-        "hp": 82810.6642,
+        "hp": 55148.751000000004,
         "atk": 2452.14,
         "def": 1320
       },
       "67": {
-        "hp": 88571.7096,
+        "hp": 58985.388,
         "atk": 2535.915,
         "def": 1328
       },
       "68": {
-        "hp": 95624.518,
+        "hp": 63682.29,
         "atk": 2629.2149999999997,
         "def": 1336
       },
       "69": {
-        "hp": 102311.6974,
+        "hp": 68135.697,
         "atk": 2720.805,
         "def": 1344
       },
       "70": {
-        "hp": 108927.8322,
+        "hp": 72541.791,
         "atk": 2816.61,
         "def": 1352
       },
       "71": {
-        "hp": 118224.5526,
+        "hp": 78733.053,
         "atk": 3166.2000000000003,
         "def": 1360
       },
       "72": {
-        "hp": 130338.65019999999,
+        "hp": 86800.58099999999,
         "atk": 3273.645,
         "def": 1368
       },
       "73": {
-        "hp": 143294.97160000002,
+        "hp": 95428.998,
         "atk": 3372.015,
         "def": 1376
       },
       "74": {
-        "hp": 156547.76940000002,
+        "hp": 104254.857,
         "atk": 3474.21,
         "def": 1384
       },
       "75": {
-        "hp": 171936.919,
+        "hp": 114503.44499999999,
         "atk": 3580.4700000000003,
         "def": 1392
       },
       "76": {
-        "hp": 186071.4834,
+        "hp": 123916.527,
         "atk": 3691.08,
         "def": 1400
       },
       "77": {
-        "hp": 197951.7298,
+        "hp": 131828.319,
         "atk": 3806.2799999999997,
         "def": 1408
       },
       "78": {
-        "hp": 210346.6948,
+        "hp": 140082.894,
         "atk": 3970.47,
         "def": 1416
       },
       "79": {
-        "hp": 223278.0418,
+        "hp": 148694.679,
         "atk": 4081.695,
         "def": 1424
       },
       "80": {
-        "hp": 235207.3856,
+        "hp": 156639.168,
         "atk": 4197.8099999999995,
         "def": 1432
       },
       "81": {
-        "hp": 248110.5418,
+        "hp": 165232.179,
         "atk": 4549.68,
         "def": 1440
       },
       "82": {
-        "hp": 265133.1496,
+        "hp": 176568.58800000002,
         "atk": 4615.575,
         "def": 1448
       },
       "83": {
-        "hp": 285275.94920000003,
+        "hp": 189982.926,
         "atk": 4642.065,
         "def": 1456
       },
       "84": {
-        "hp": 307684.0404,
+        "hp": 204905.86200000002,
         "atk": 4708.02,
         "def": 1464
       },
       "85": {
-        "hp": 331826.3388,
+        "hp": 220983.714,
         "atk": 4774.05,
         "def": 1472
       },
       "86": {
-        "hp": 356895.2442,
+        "hp": 237678.65099999998,
         "atk": 4800.57,
         "def": 1480
       },
       "87": {
-        "hp": 376544.6102,
+        "hp": 250764.381,
         "atk": 4866.6449999999995,
         "def": 1488
       },
       "88": {
-        "hp": 397391.1392,
+        "hp": 264647.376,
         "atk": 4932.795,
         "def": 1496
       },
       "89": {
-        "hp": 418938.7488,
+        "hp": 278997.264,
         "atk": 4959.345,
         "def": 1504
       },
       "90": {
-        "hp": 442196.9156,
+        "hp": 294486.318,
         "atk": 5025.585,
         "def": 1512
       },
       "91": {
-        "hp": 464669.2402,
+        "hp": 309452.03099999996,
         "atk": 5025.585,
         "def": 1520
       },
       "92": {
-        "hp": 488084.8214000001,
+        "hp": 325045.917,
         "atk": 5025.585,
         "def": 1528
       },
       "93": {
-        "hp": 508147.211,
+        "hp": 338406.705,
         "atk": 5025.585,
         "def": 1536
       },
       "94": {
-        "hp": 525056.7718,
+        "hp": 349667.82899999997,
         "atk": 5025.585,
         "def": 1544
       },
       "95": {
-        "hp": 537982.5374,
+        "hp": 358275.897,
         "atk": 5025.585,
         "def": 1552
       },
       "96": {
-        "hp": 557320.3856,
+        "hp": 371154.168,
         "atk": 5025.585,
         "def": 1560
       },
       "97": {
-        "hp": 573069.8666000001,
+        "hp": 381642.723,
         "atk": 5025.585,
         "def": 1568
       },
       "98": {
-        "hp": 586893.6699999999,
+        "hp": 390848.85,
         "atk": 5025.585,
         "def": 1576
       },
       "99": {
-        "hp": 600728.447,
+        "hp": 400062.285,
         "atk": 5025.585,
         "def": 1584
       },
       "100": {
-        "hp": 613688.9308,
+        "hp": 408693.474,
         "atk": 5025.585,
         "def": 1592
       },
       "101": {
-        "hp": 648054.5566,
+        "hp": 431579.673,
         "atk": 5025.585,
         "def": 1600
       },
       "102": {
-        "hp": 652247.7962,
+        "hp": 434372.211,
         "atk": 5025.585,
         "def": 1607.9999999999998
       },
       "103": {
-        "hp": 656440.9412,
+        "hp": 437164.686,
         "atk": 5025.585,
         "def": 1616
       },
       "104": {
-        "hp": 660634.1808,
+        "hp": 439957.224,
         "atk": 5025.585,
         "def": 1623.9999999999998
       },
       "105": {
-        "hp": 664827.3258,
+        "hp": 442749.69899999996,
         "atk": 5025.585,
         "def": 1632
       },
       "106": {
-        "hp": 669020.5654,
+        "hp": 445542.23699999996,
         "atk": 5025.585,
         "def": 1639.9999999999998
       },
       "107": {
-        "hp": 673213.7104,
+        "hp": 448334.71199999994,
         "atk": 5025.585,
         "def": 1648
       },
       "108": {
-        "hp": 677406.9500000001,
+        "hp": 451127.25,
         "atk": 5025.585,
         "def": 1655.9999999999998
       },
       "109": {
-        "hp": 681600.1896,
+        "hp": 453919.788,
         "atk": 5025.585,
         "def": 1664
       },
       "110": {
-        "hp": 685793.3346000001,
+        "hp": 456712.26300000004,
         "atk": 5025.585,
         "def": 1672
       },
       "111": {
-        "hp": 689986.5742,
+        "hp": 459504.801,
         "atk": 5025.585,
         "def": 1680
       },
       "112": {
-        "hp": 694179.7192,
+        "hp": 462297.276,
         "atk": 5025.585,
         "def": 1688
       },
       "113": {
-        "hp": 698372.9588,
+        "hp": 465089.814,
         "atk": 5025.585,
         "def": 1696
       },
       "114": {
-        "hp": 702566.1038,
+        "hp": 467882.289,
         "atk": 5025.585,
         "def": 1704
       },
       "115": {
-        "hp": 706759.3434,
+        "hp": 470674.827,
         "atk": 5025.585,
         "def": 1712
       },
       "116": {
-        "hp": 710952.583,
+        "hp": 473467.365,
         "atk": 5025.585,
         "def": 1720
       },
       "117": {
-        "hp": 715145.728,
+        "hp": 476259.83999999997,
         "atk": 5025.585,
         "def": 1728
       },
       "118": {
-        "hp": 719338.9676000001,
+        "hp": 479052.378,
         "atk": 5025.585,
         "def": 1736
       },
       "119": {
-        "hp": 723532.1126,
+        "hp": 481844.85299999994,
         "atk": 5025.585,
         "def": 1744.0000000000002
       },
       "120": {
-        "hp": 727725.3522000001,
+        "hp": 484637.391,
         "atk": 5025.585,
         "def": 1752
       }
@@ -89376,9 +89376,9 @@
   },
   {
     "Id": 320000600,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
+    "Name": "Kronaclaw",
+    "Desc": "A powerful raptor believed to be extinct, now appearing within the Upphaf Life Chamber.",
+    "DescOpen": "This enemy has a <span style=\"color:#ffd12f;\" class=\"font-bold\">higher RES</span> to <span style=\"color:#c7ffed\";>Aero DMG</span>.<br>This enemy has a higher All-Attribute RES.<br>This enemy has the Rage Feather ability and three weaknesses.<br><br>After remaining in combat for a period of time, Kronaclaw enters the Rage Feather state, greatly enhancing its ATK.<br>Weakness I: A successful Counterattack can damage its crest and wings, weakening its attacks and reducing the number of ranged projectiles.<br>Weakness II: Tune Break can remove its Rage Feather state and reduce its ranged projectiles.<br>Special Weakness: When Kronaclaw is under Tune Rupture - Shifting, hitting it with Tune Break will greatly reduce its All-Attribute RES.<br><br>An extinct ancient raptor reproduced through the Upphaf Life Chamber.<br>In the distant past, these raptors once circled the skies of Lahai-Roi, their dominion unchallenged since the First Epoch.<br>Legend holds that the Kronaclaw was a creation of Sol, sharing the divine sight of the Eye of Sol and beholding all that lay above and below Lahai-Roi.<br>But as magnetic poles shifted and the landscape was reshaped, the Kronaclaw species had faded into near extinction. Their place was eventually taken by Kronablight, an Exoswarm born of the Exostrider.",
     "Class": 2,
     "Element": 4,
     "ElementArray": [
@@ -89398,602 +89398,1227 @@
     },
     "Stats": {
       "1": {
-        "hp": 946,
+        "hp": 630,
         "atk": 75,
         "def": 800
       },
       "2": {
-        "hp": 1001.4356,
+        "hp": 666.918,
         "atk": 82.14,
         "def": 808
       },
       "3": {
-        "hp": 1057.4388,
+        "hp": 704.2139999999999,
         "atk": 89.42999999999999,
         "def": 816
       },
       "4": {
-        "hp": 1062.831,
+        "hp": 707.805,
         "atk": 96.83999999999999,
         "def": 824
       },
       "5": {
-        "hp": 1068.1286,
+        "hp": 711.333,
         "atk": 104.36999999999999,
         "def": 832
       },
       "6": {
-        "hp": 1125.267,
+        "hp": 749.385,
         "atk": 112.035,
         "def": 840
       },
       "7": {
-        "hp": 1182.973,
+        "hp": 787.8149999999999,
         "atk": 119.82,
         "def": 848
       },
       "8": {
-        "hp": 1241.152,
+        "hp": 826.5600000000001,
         "atk": 127.74000000000001,
         "def": 856
       },
       "9": {
-        "hp": 1299.8986,
+        "hp": 865.6830000000001,
         "atk": 135.78,
         "def": 864
       },
       "10": {
-        "hp": 1359.2128,
+        "hp": 905.1840000000001,
         "atk": 143.955,
         "def": 872.0000000000001
       },
       "11": {
-        "hp": 1489.95,
+        "hp": 992.25,
         "atk": 152.24999999999997,
         "def": 880.0000000000001
       },
       "12": {
-        "hp": 1553.4266,
+        "hp": 1034.523,
         "atk": 160.67999999999998,
         "def": 888.0000000000001
       },
       "13": {
-        "hp": 1621.3494,
+        "hp": 1079.757,
         "atk": 169.245,
         "def": 896.0000000000001
       },
       "14": {
-        "hp": 1689.9344,
+        "hp": 1125.432,
         "atk": 177.92999999999998,
         "def": 903.9999999999999
       },
       "15": {
-        "hp": 1763.0602,
+        "hp": 1174.1309999999999,
         "atk": 186.73499999999999,
         "def": 911.9999999999999
       },
       "16": {
-        "hp": 1844.7,
+        "hp": 1228.5,
         "atk": 195.675,
         "def": 919.9999999999999
       },
       "17": {
-        "hp": 1931.1644,
+        "hp": 1286.0819999999999,
         "atk": 204.75,
         "def": 927.9999999999999
       },
       "18": {
-        "hp": 2018.2910000000002,
+        "hp": 1344.105,
         "atk": 213.95999999999998,
         "def": 936
       },
       "19": {
-        "hp": 2114.31,
+        "hp": 1408.05,
         "atk": 223.29,
         "def": 944
       },
       "20": {
-        "hp": 2527.239,
+        "hp": 1683.045,
         "atk": 232.77,
         "def": 952
       },
       "21": {
-        "hp": 2999.293,
+        "hp": 1997.415,
         "atk": 315.48,
         "def": 960
       },
       "22": {
-        "hp": 3207.6022,
+        "hp": 2136.141,
         "atk": 326.72999999999996,
         "def": 968
       },
       "23": {
-        "hp": 3382.9905999999996,
+        "hp": 2252.9429999999998,
         "atk": 338.1,
         "def": 976
       },
       "24": {
-        "hp": 3536.7156,
+        "hp": 2355.3179999999998,
         "atk": 349.63500000000005,
         "def": 984
       },
       "25": {
-        "hp": 3993.0660000000003,
+        "hp": 2659.23,
         "atk": 362.28000000000003,
         "def": 992
       },
       "26": {
-        "hp": 4160.6972000000005,
+        "hp": 2770.866,
         "atk": 375.105,
         "def": 1000
       },
       "27": {
-        "hp": 4770.678,
+        "hp": 3177.09,
         "atk": 388.09499999999997,
         "def": 1008
       },
       "28": {
-        "hp": 5427.8642,
+        "hp": 3614.751,
         "atk": 401.25,
         "def": 1016
       },
       "29": {
-        "hp": 5788.6686,
+        "hp": 3855.0330000000004,
         "atk": 415.42499999999995,
         "def": 1024
       },
       "30": {
-        "hp": 6376.4184000000005,
+        "hp": 4246.452,
         "atk": 429.765,
         "def": 1032
       },
       "31": {
-        "hp": 6977.696,
+        "hp": 4646.88,
         "atk": 443.475,
         "def": 1040
       },
       "32": {
-        "hp": 7542.7418,
+        "hp": 5023.179,
         "atk": 458.22,
         "def": 1048
       },
       "33": {
-        "hp": 8120.2748,
+        "hp": 5407.794,
         "atk": 473.13,
         "def": 1056
       },
       "34": {
-        "hp": 8730.2556,
+        "hp": 5814.018,
         "atk": 489.135,
         "def": 1064
       },
       "35": {
-        "hp": 9354.8994,
+        "hp": 6230.007,
         "atk": 504.85499999999996,
         "def": 1072
       },
       "36": {
-        "hp": 9955.4202,
+        "hp": 6629.931,
         "atk": 520.815,
         "def": 1080
       },
       "37": {
-        "hp": 10579.9694,
+        "hp": 7045.857,
         "atk": 537.885,
         "def": 1088
       },
       "38": {
-        "hp": 11217.9518,
+        "hp": 7470.729,
         "atk": 555.1949999999999,
         "def": 1096
       },
       "39": {
-        "hp": 11869.462000000001,
+        "hp": 7904.610000000001,
         "atk": 571.86,
         "def": 1104
       },
       "40": {
-        "hp": 12547.8386,
+        "hp": 8356.383,
         "atk": 589.65,
         "def": 1112
       },
       "41": {
-        "hp": 12693.9956,
+        "hp": 8453.717999999999,
         "atk": 735.9449999999999,
         "def": 1120
       },
       "42": {
-        "hp": 13648.793399999999,
+        "hp": 9089.577,
         "atk": 757.995,
         "def": 1128
       },
       "43": {
-        "hp": 14583.063,
+        "hp": 9711.765,
         "atk": 781.9799999999999,
         "def": 1136
       },
       "44": {
-        "hp": 15542.4962,
+        "hp": 10350.711000000001,
         "atk": 804.7950000000001,
         "def": 1144
       },
       "45": {
-        "hp": 16507.794599999997,
+        "hp": 10993.563,
         "atk": 827.985,
         "def": 1152
       },
       "46": {
-        "hp": 17527.866400000003,
+        "hp": 11672.892000000002,
         "atk": 851.565,
         "def": 1160
       },
       "47": {
-        "hp": 18992.5582,
+        "hp": 12648.321,
         "atk": 875.535,
         "def": 1168
       },
       "48": {
-        "hp": 20483.5488,
+        "hp": 13641.264,
         "atk": 899.91,
         "def": 1176
       },
       "49": {
-        "hp": 22012.1902,
+        "hp": 14659.280999999999,
         "atk": 924.66,
         "def": 1184
       },
       "50": {
-        "hp": 24350.7968,
+        "hp": 16216.704,
         "atk": 1017.12,
         "def": 1192
       },
       "51": {
-        "hp": 27282.4508,
+        "hp": 18169.074,
         "atk": 1162.785,
         "def": 1200
       },
       "52": {
-        "hp": 29829.9342,
+        "hp": 19865.601,
         "atk": 1192.4850000000001,
         "def": 1208
       },
       "53": {
-        "hp": 32431.623399999997,
+        "hp": 21598.227,
         "atk": 1220.085,
         "def": 1216
       },
       "54": {
-        "hp": 35267.2584,
+        "hp": 23486.652000000002,
         "atk": 1250.655,
         "def": 1224
       },
       "55": {
-        "hp": 37653.5434,
+        "hp": 25075.827,
         "atk": 1281.7050000000002,
         "def": 1232
       },
       "56": {
-        "hp": 39768.9886,
+        "hp": 26484.632999999998,
         "atk": 1313.235,
         "def": 1240
       },
       "57": {
-        "hp": 42138.245599999995,
+        "hp": 28062.467999999997,
         "atk": 1342.59,
         "def": 1248
       },
       "58": {
-        "hp": 45425.501000000004,
+        "hp": 30251.655000000002,
         "atk": 1372.365,
         "def": 1256
       },
       "59": {
-        "hp": 49023.4228,
+        "hp": 32647.734,
         "atk": 1405.305,
         "def": 1264
       },
       "60": {
-        "hp": 51291.836200000005,
+        "hp": 34158.411,
         "atk": 1444.02,
         "def": 1272
       },
       "61": {
-        "hp": 54554.3064,
+        "hp": 36331.092,
         "atk": 1894.17,
         "def": 1280
       },
       "62": {
-        "hp": 59317.511,
+        "hp": 39503.205,
         "atk": 2010.3899999999999,
         "def": 1288
       },
       "63": {
-        "hp": 63856.1352,
+        "hp": 42525.756,
         "atk": 2133.315,
         "def": 1296
       },
       "64": {
-        "hp": 68993.1044,
+        "hp": 45946.782,
         "atk": 2263.455,
         "def": 1304
       },
       "65": {
-        "hp": 76613.32359999999,
+        "hp": 51021.558,
         "atk": 2371.86,
         "def": 1312
       },
       "66": {
-        "hp": 82810.6642,
+        "hp": 55148.751000000004,
         "atk": 2452.14,
         "def": 1320
       },
       "67": {
-        "hp": 88571.7096,
+        "hp": 58985.388,
         "atk": 2535.915,
         "def": 1328
       },
       "68": {
-        "hp": 95624.518,
+        "hp": 63682.29,
         "atk": 2629.2149999999997,
         "def": 1336
       },
       "69": {
-        "hp": 102311.6974,
+        "hp": 68135.697,
         "atk": 2720.805,
         "def": 1344
       },
       "70": {
-        "hp": 108927.8322,
+        "hp": 72541.791,
         "atk": 2816.61,
         "def": 1352
       },
       "71": {
-        "hp": 118224.5526,
+        "hp": 78733.053,
         "atk": 3166.2000000000003,
         "def": 1360
       },
       "72": {
-        "hp": 130338.65019999999,
+        "hp": 86800.58099999999,
         "atk": 3273.645,
         "def": 1368
       },
       "73": {
-        "hp": 143294.97160000002,
+        "hp": 95428.998,
         "atk": 3372.015,
         "def": 1376
       },
       "74": {
-        "hp": 156547.76940000002,
+        "hp": 104254.857,
         "atk": 3474.21,
         "def": 1384
       },
       "75": {
-        "hp": 171936.919,
+        "hp": 114503.44499999999,
         "atk": 3580.4700000000003,
         "def": 1392
       },
       "76": {
-        "hp": 186071.4834,
+        "hp": 123916.527,
         "atk": 3691.08,
         "def": 1400
       },
       "77": {
-        "hp": 197951.7298,
+        "hp": 131828.319,
         "atk": 3806.2799999999997,
         "def": 1408
       },
       "78": {
-        "hp": 210346.6948,
+        "hp": 140082.894,
         "atk": 3970.47,
         "def": 1416
       },
       "79": {
-        "hp": 223278.0418,
+        "hp": 148694.679,
         "atk": 4081.695,
         "def": 1424
       },
       "80": {
-        "hp": 235207.3856,
+        "hp": 156639.168,
         "atk": 4197.8099999999995,
         "def": 1432
       },
       "81": {
-        "hp": 248110.5418,
+        "hp": 165232.179,
         "atk": 4549.68,
         "def": 1440
       },
       "82": {
-        "hp": 265133.1496,
+        "hp": 176568.58800000002,
         "atk": 4615.575,
         "def": 1448
       },
       "83": {
-        "hp": 285275.94920000003,
+        "hp": 189982.926,
         "atk": 4642.065,
         "def": 1456
       },
       "84": {
-        "hp": 307684.0404,
+        "hp": 204905.86200000002,
         "atk": 4708.02,
         "def": 1464
       },
       "85": {
-        "hp": 331826.3388,
+        "hp": 220983.714,
         "atk": 4774.05,
         "def": 1472
       },
       "86": {
-        "hp": 356895.2442,
+        "hp": 237678.65099999998,
         "atk": 4800.57,
         "def": 1480
       },
       "87": {
-        "hp": 376544.6102,
+        "hp": 250764.381,
         "atk": 4866.6449999999995,
         "def": 1488
       },
       "88": {
-        "hp": 397391.1392,
+        "hp": 264647.376,
         "atk": 4932.795,
         "def": 1496
       },
       "89": {
-        "hp": 418938.7488,
+        "hp": 278997.264,
         "atk": 4959.345,
         "def": 1504
       },
       "90": {
-        "hp": 442196.9156,
+        "hp": 294486.318,
         "atk": 5025.585,
         "def": 1512
       },
       "91": {
-        "hp": 464669.2402,
+        "hp": 309452.03099999996,
         "atk": 5025.585,
         "def": 1520
       },
       "92": {
-        "hp": 488084.8214000001,
+        "hp": 325045.917,
         "atk": 5025.585,
         "def": 1528
       },
       "93": {
-        "hp": 508147.211,
+        "hp": 338406.705,
         "atk": 5025.585,
         "def": 1536
       },
       "94": {
-        "hp": 525056.7718,
+        "hp": 349667.82899999997,
         "atk": 5025.585,
         "def": 1544
       },
       "95": {
-        "hp": 537982.5374,
+        "hp": 358275.897,
         "atk": 5025.585,
         "def": 1552
       },
       "96": {
-        "hp": 557320.3856,
+        "hp": 371154.168,
         "atk": 5025.585,
         "def": 1560
       },
       "97": {
-        "hp": 573069.8666000001,
+        "hp": 381642.723,
         "atk": 5025.585,
         "def": 1568
       },
       "98": {
-        "hp": 586893.6699999999,
+        "hp": 390848.85,
         "atk": 5025.585,
         "def": 1576
       },
       "99": {
-        "hp": 600728.447,
+        "hp": 400062.285,
         "atk": 5025.585,
         "def": 1584
       },
       "100": {
-        "hp": 613688.9308,
+        "hp": 408693.474,
         "atk": 5025.585,
         "def": 1592
       },
       "101": {
-        "hp": 648054.5566,
+        "hp": 431579.673,
         "atk": 5025.585,
         "def": 1600
       },
       "102": {
-        "hp": 652247.7962,
+        "hp": 434372.211,
         "atk": 5025.585,
         "def": 1607.9999999999998
       },
       "103": {
-        "hp": 656440.9412,
+        "hp": 437164.686,
         "atk": 5025.585,
         "def": 1616
       },
       "104": {
-        "hp": 660634.1808,
+        "hp": 439957.224,
         "atk": 5025.585,
         "def": 1623.9999999999998
       },
       "105": {
-        "hp": 664827.3258,
+        "hp": 442749.69899999996,
         "atk": 5025.585,
         "def": 1632
       },
       "106": {
-        "hp": 669020.5654,
+        "hp": 445542.23699999996,
         "atk": 5025.585,
         "def": 1639.9999999999998
       },
       "107": {
-        "hp": 673213.7104,
+        "hp": 448334.71199999994,
         "atk": 5025.585,
         "def": 1648
       },
       "108": {
-        "hp": 677406.9500000001,
+        "hp": 451127.25,
         "atk": 5025.585,
         "def": 1655.9999999999998
       },
       "109": {
-        "hp": 681600.1896,
+        "hp": 453919.788,
         "atk": 5025.585,
         "def": 1664
       },
       "110": {
-        "hp": 685793.3346000001,
+        "hp": 456712.26300000004,
         "atk": 5025.585,
         "def": 1672
       },
       "111": {
-        "hp": 689986.5742,
+        "hp": 459504.801,
         "atk": 5025.585,
         "def": 1680
       },
       "112": {
-        "hp": 694179.7192,
+        "hp": 462297.276,
         "atk": 5025.585,
         "def": 1688
       },
       "113": {
-        "hp": 698372.9588,
+        "hp": 465089.814,
         "atk": 5025.585,
         "def": 1696
       },
       "114": {
-        "hp": 702566.1038,
+        "hp": 467882.289,
         "atk": 5025.585,
         "def": 1704
       },
       "115": {
-        "hp": 706759.3434,
+        "hp": 470674.827,
         "atk": 5025.585,
         "def": 1712
       },
       "116": {
-        "hp": 710952.583,
+        "hp": 473467.365,
         "atk": 5025.585,
         "def": 1720
       },
       "117": {
-        "hp": 715145.728,
+        "hp": 476259.83999999997,
         "atk": 5025.585,
         "def": 1728
       },
       "118": {
-        "hp": 719338.9676000001,
+        "hp": 479052.378,
         "atk": 5025.585,
         "def": 1736
       },
       "119": {
-        "hp": 723532.1126,
+        "hp": 481844.85299999994,
         "atk": 5025.585,
         "def": 1744.0000000000002
       },
       "120": {
-        "hp": 727725.3522000001,
+        "hp": 484637.391,
+        "atk": 5025.585,
+        "def": 1752
+      }
+    }
+  },
+  {
+    "Id": 320000601,
+    "Name": "Reminiscence: Kronaclaw",
+    "Desc": "A powerful raptor believed to be extinct, now appearing within the Upphaf Life Chamber.",
+    "DescOpen": "This enemy has a <span style=\"color:#ffd12f;\" class=\"font-bold\">higher RES</span> to <span style=\"color:#c7ffed\";>Aero DMG</span>.<br>This enemy has a higher All-Attribute RES.<br>This enemy has the Rage Feather ability and three weaknesses.<br><br>After remaining in combat for a period of time, Kronaclaw enters the Rage Feather state, greatly enhancing its ATK.<br>Weakness I: A successful Counterattack can damage its crest and wings, weakening its attacks and reducing the number of ranged projectiles.<br>Weakness II: Tune Break can remove its Rage Feather state and reduce its ranged projectiles.<br>Special Weakness: When Kronaclaw is under Tune Rupture - Shifting, hitting it with Tune Break will greatly reduce its All-Attribute RES.<br><br>An extinct ancient raptor reproduced through the Upphaf Life Chamber.<br>In the distant past, these raptors once circled the skies of Lahai-Roi, their dominion unchallenged since the First Epoch.<br>Legend holds that the Kronaclaw was a creation of Sol, sharing the divine sight of the Eye of Sol and beholding all that lay above and below Lahai-Roi.<br>But as magnetic poles shifted and the landscape was reshaped, the Kronaclaw species had faded into near extinction. Their place was eventually taken by Kronablight, an Exoswarm born of the Exostrider.",
+    "Class": 2,
+    "Element": 4,
+    "ElementArray": [
+      4
+    ],
+    "Icon": "/assets/enemies/320000601.webp",
+    "baseData": {
+      "res": {
+        "0": 10,
+        "1": 10,
+        "2": 10,
+        "3": 10,
+        "4": 40,
+        "5": 10,
+        "6": 10
+      }
+    },
+    "Stats": {
+      "1": {
+        "hp": 630,
+        "atk": 75,
+        "def": 800
+      },
+      "2": {
+        "hp": 666.918,
+        "atk": 82.14,
+        "def": 808
+      },
+      "3": {
+        "hp": 704.2139999999999,
+        "atk": 89.42999999999999,
+        "def": 816
+      },
+      "4": {
+        "hp": 707.805,
+        "atk": 96.83999999999999,
+        "def": 824
+      },
+      "5": {
+        "hp": 711.333,
+        "atk": 104.36999999999999,
+        "def": 832
+      },
+      "6": {
+        "hp": 749.385,
+        "atk": 112.035,
+        "def": 840
+      },
+      "7": {
+        "hp": 787.8149999999999,
+        "atk": 119.82,
+        "def": 848
+      },
+      "8": {
+        "hp": 826.5600000000001,
+        "atk": 127.74000000000001,
+        "def": 856
+      },
+      "9": {
+        "hp": 865.6830000000001,
+        "atk": 135.78,
+        "def": 864
+      },
+      "10": {
+        "hp": 905.1840000000001,
+        "atk": 143.955,
+        "def": 872.0000000000001
+      },
+      "11": {
+        "hp": 992.25,
+        "atk": 152.24999999999997,
+        "def": 880.0000000000001
+      },
+      "12": {
+        "hp": 1034.523,
+        "atk": 160.67999999999998,
+        "def": 888.0000000000001
+      },
+      "13": {
+        "hp": 1079.757,
+        "atk": 169.245,
+        "def": 896.0000000000001
+      },
+      "14": {
+        "hp": 1125.432,
+        "atk": 177.92999999999998,
+        "def": 903.9999999999999
+      },
+      "15": {
+        "hp": 1174.1309999999999,
+        "atk": 186.73499999999999,
+        "def": 911.9999999999999
+      },
+      "16": {
+        "hp": 1228.5,
+        "atk": 195.675,
+        "def": 919.9999999999999
+      },
+      "17": {
+        "hp": 1286.0819999999999,
+        "atk": 204.75,
+        "def": 927.9999999999999
+      },
+      "18": {
+        "hp": 1344.105,
+        "atk": 213.95999999999998,
+        "def": 936
+      },
+      "19": {
+        "hp": 1408.05,
+        "atk": 223.29,
+        "def": 944
+      },
+      "20": {
+        "hp": 1683.045,
+        "atk": 232.77,
+        "def": 952
+      },
+      "21": {
+        "hp": 1997.415,
+        "atk": 315.48,
+        "def": 960
+      },
+      "22": {
+        "hp": 2136.141,
+        "atk": 326.72999999999996,
+        "def": 968
+      },
+      "23": {
+        "hp": 2252.9429999999998,
+        "atk": 338.1,
+        "def": 976
+      },
+      "24": {
+        "hp": 2355.3179999999998,
+        "atk": 349.63500000000005,
+        "def": 984
+      },
+      "25": {
+        "hp": 2659.23,
+        "atk": 362.28000000000003,
+        "def": 992
+      },
+      "26": {
+        "hp": 2770.866,
+        "atk": 375.105,
+        "def": 1000
+      },
+      "27": {
+        "hp": 3177.09,
+        "atk": 388.09499999999997,
+        "def": 1008
+      },
+      "28": {
+        "hp": 3614.751,
+        "atk": 401.25,
+        "def": 1016
+      },
+      "29": {
+        "hp": 3855.0330000000004,
+        "atk": 415.42499999999995,
+        "def": 1024
+      },
+      "30": {
+        "hp": 4246.452,
+        "atk": 429.765,
+        "def": 1032
+      },
+      "31": {
+        "hp": 4646.88,
+        "atk": 443.475,
+        "def": 1040
+      },
+      "32": {
+        "hp": 5023.179,
+        "atk": 458.22,
+        "def": 1048
+      },
+      "33": {
+        "hp": 5407.794,
+        "atk": 473.13,
+        "def": 1056
+      },
+      "34": {
+        "hp": 5814.018,
+        "atk": 489.135,
+        "def": 1064
+      },
+      "35": {
+        "hp": 6230.007,
+        "atk": 504.85499999999996,
+        "def": 1072
+      },
+      "36": {
+        "hp": 6629.931,
+        "atk": 520.815,
+        "def": 1080
+      },
+      "37": {
+        "hp": 7045.857,
+        "atk": 537.885,
+        "def": 1088
+      },
+      "38": {
+        "hp": 7470.729,
+        "atk": 555.1949999999999,
+        "def": 1096
+      },
+      "39": {
+        "hp": 7904.610000000001,
+        "atk": 571.86,
+        "def": 1104
+      },
+      "40": {
+        "hp": 8356.383,
+        "atk": 589.65,
+        "def": 1112
+      },
+      "41": {
+        "hp": 8453.717999999999,
+        "atk": 735.9449999999999,
+        "def": 1120
+      },
+      "42": {
+        "hp": 9089.577,
+        "atk": 757.995,
+        "def": 1128
+      },
+      "43": {
+        "hp": 9711.765,
+        "atk": 781.9799999999999,
+        "def": 1136
+      },
+      "44": {
+        "hp": 10350.711000000001,
+        "atk": 804.7950000000001,
+        "def": 1144
+      },
+      "45": {
+        "hp": 10993.563,
+        "atk": 827.985,
+        "def": 1152
+      },
+      "46": {
+        "hp": 11672.892000000002,
+        "atk": 851.565,
+        "def": 1160
+      },
+      "47": {
+        "hp": 12648.321,
+        "atk": 875.535,
+        "def": 1168
+      },
+      "48": {
+        "hp": 13641.264,
+        "atk": 899.91,
+        "def": 1176
+      },
+      "49": {
+        "hp": 14659.280999999999,
+        "atk": 924.66,
+        "def": 1184
+      },
+      "50": {
+        "hp": 16216.704,
+        "atk": 1017.12,
+        "def": 1192
+      },
+      "51": {
+        "hp": 18169.074,
+        "atk": 1162.785,
+        "def": 1200
+      },
+      "52": {
+        "hp": 19865.601,
+        "atk": 1192.4850000000001,
+        "def": 1208
+      },
+      "53": {
+        "hp": 21598.227,
+        "atk": 1220.085,
+        "def": 1216
+      },
+      "54": {
+        "hp": 23486.652000000002,
+        "atk": 1250.655,
+        "def": 1224
+      },
+      "55": {
+        "hp": 25075.827,
+        "atk": 1281.7050000000002,
+        "def": 1232
+      },
+      "56": {
+        "hp": 26484.632999999998,
+        "atk": 1313.235,
+        "def": 1240
+      },
+      "57": {
+        "hp": 28062.467999999997,
+        "atk": 1342.59,
+        "def": 1248
+      },
+      "58": {
+        "hp": 30251.655000000002,
+        "atk": 1372.365,
+        "def": 1256
+      },
+      "59": {
+        "hp": 32647.734,
+        "atk": 1405.305,
+        "def": 1264
+      },
+      "60": {
+        "hp": 34158.411,
+        "atk": 1444.02,
+        "def": 1272
+      },
+      "61": {
+        "hp": 36331.092,
+        "atk": 1894.17,
+        "def": 1280
+      },
+      "62": {
+        "hp": 39503.205,
+        "atk": 2010.3899999999999,
+        "def": 1288
+      },
+      "63": {
+        "hp": 42525.756,
+        "atk": 2133.315,
+        "def": 1296
+      },
+      "64": {
+        "hp": 45946.782,
+        "atk": 2263.455,
+        "def": 1304
+      },
+      "65": {
+        "hp": 51021.558,
+        "atk": 2371.86,
+        "def": 1312
+      },
+      "66": {
+        "hp": 55148.751000000004,
+        "atk": 2452.14,
+        "def": 1320
+      },
+      "67": {
+        "hp": 58985.388,
+        "atk": 2535.915,
+        "def": 1328
+      },
+      "68": {
+        "hp": 63682.29,
+        "atk": 2629.2149999999997,
+        "def": 1336
+      },
+      "69": {
+        "hp": 68135.697,
+        "atk": 2720.805,
+        "def": 1344
+      },
+      "70": {
+        "hp": 72541.791,
+        "atk": 2816.61,
+        "def": 1352
+      },
+      "71": {
+        "hp": 78733.053,
+        "atk": 3166.2000000000003,
+        "def": 1360
+      },
+      "72": {
+        "hp": 86800.58099999999,
+        "atk": 3273.645,
+        "def": 1368
+      },
+      "73": {
+        "hp": 95428.998,
+        "atk": 3372.015,
+        "def": 1376
+      },
+      "74": {
+        "hp": 104254.857,
+        "atk": 3474.21,
+        "def": 1384
+      },
+      "75": {
+        "hp": 114503.44499999999,
+        "atk": 3580.4700000000003,
+        "def": 1392
+      },
+      "76": {
+        "hp": 123916.527,
+        "atk": 3691.08,
+        "def": 1400
+      },
+      "77": {
+        "hp": 131828.319,
+        "atk": 3806.2799999999997,
+        "def": 1408
+      },
+      "78": {
+        "hp": 140082.894,
+        "atk": 3970.47,
+        "def": 1416
+      },
+      "79": {
+        "hp": 148694.679,
+        "atk": 4081.695,
+        "def": 1424
+      },
+      "80": {
+        "hp": 156639.168,
+        "atk": 4197.8099999999995,
+        "def": 1432
+      },
+      "81": {
+        "hp": 165232.179,
+        "atk": 4549.68,
+        "def": 1440
+      },
+      "82": {
+        "hp": 176568.58800000002,
+        "atk": 4615.575,
+        "def": 1448
+      },
+      "83": {
+        "hp": 189982.926,
+        "atk": 4642.065,
+        "def": 1456
+      },
+      "84": {
+        "hp": 204905.86200000002,
+        "atk": 4708.02,
+        "def": 1464
+      },
+      "85": {
+        "hp": 220983.714,
+        "atk": 4774.05,
+        "def": 1472
+      },
+      "86": {
+        "hp": 237678.65099999998,
+        "atk": 4800.57,
+        "def": 1480
+      },
+      "87": {
+        "hp": 250764.381,
+        "atk": 4866.6449999999995,
+        "def": 1488
+      },
+      "88": {
+        "hp": 264647.376,
+        "atk": 4932.795,
+        "def": 1496
+      },
+      "89": {
+        "hp": 278997.264,
+        "atk": 4959.345,
+        "def": 1504
+      },
+      "90": {
+        "hp": 294486.318,
+        "atk": 5025.585,
+        "def": 1512
+      },
+      "91": {
+        "hp": 309452.03099999996,
+        "atk": 5025.585,
+        "def": 1520
+      },
+      "92": {
+        "hp": 325045.917,
+        "atk": 5025.585,
+        "def": 1528
+      },
+      "93": {
+        "hp": 338406.705,
+        "atk": 5025.585,
+        "def": 1536
+      },
+      "94": {
+        "hp": 349667.82899999997,
+        "atk": 5025.585,
+        "def": 1544
+      },
+      "95": {
+        "hp": 358275.897,
+        "atk": 5025.585,
+        "def": 1552
+      },
+      "96": {
+        "hp": 371154.168,
+        "atk": 5025.585,
+        "def": 1560
+      },
+      "97": {
+        "hp": 381642.723,
+        "atk": 5025.585,
+        "def": 1568
+      },
+      "98": {
+        "hp": 390848.85,
+        "atk": 5025.585,
+        "def": 1576
+      },
+      "99": {
+        "hp": 400062.285,
+        "atk": 5025.585,
+        "def": 1584
+      },
+      "100": {
+        "hp": 408693.474,
+        "atk": 5025.585,
+        "def": 1592
+      },
+      "101": {
+        "hp": 431579.673,
+        "atk": 5025.585,
+        "def": 1600
+      },
+      "102": {
+        "hp": 434372.211,
+        "atk": 5025.585,
+        "def": 1607.9999999999998
+      },
+      "103": {
+        "hp": 437164.686,
+        "atk": 5025.585,
+        "def": 1616
+      },
+      "104": {
+        "hp": 439957.224,
+        "atk": 5025.585,
+        "def": 1623.9999999999998
+      },
+      "105": {
+        "hp": 442749.69899999996,
+        "atk": 5025.585,
+        "def": 1632
+      },
+      "106": {
+        "hp": 445542.23699999996,
+        "atk": 5025.585,
+        "def": 1639.9999999999998
+      },
+      "107": {
+        "hp": 448334.71199999994,
+        "atk": 5025.585,
+        "def": 1648
+      },
+      "108": {
+        "hp": 451127.25,
+        "atk": 5025.585,
+        "def": 1655.9999999999998
+      },
+      "109": {
+        "hp": 453919.788,
+        "atk": 5025.585,
+        "def": 1664
+      },
+      "110": {
+        "hp": 456712.26300000004,
+        "atk": 5025.585,
+        "def": 1672
+      },
+      "111": {
+        "hp": 459504.801,
+        "atk": 5025.585,
+        "def": 1680
+      },
+      "112": {
+        "hp": 462297.276,
+        "atk": 5025.585,
+        "def": 1688
+      },
+      "113": {
+        "hp": 465089.814,
+        "atk": 5025.585,
+        "def": 1696
+      },
+      "114": {
+        "hp": 467882.289,
+        "atk": 5025.585,
+        "def": 1704
+      },
+      "115": {
+        "hp": 470674.827,
+        "atk": 5025.585,
+        "def": 1712
+      },
+      "116": {
+        "hp": 473467.365,
+        "atk": 5025.585,
+        "def": 1720
+      },
+      "117": {
+        "hp": 476259.83999999997,
+        "atk": 5025.585,
+        "def": 1728
+      },
+      "118": {
+        "hp": 479052.378,
+        "atk": 5025.585,
+        "def": 1736
+      },
+      "119": {
+        "hp": 481844.85299999994,
+        "atk": 5025.585,
+        "def": 1744.0000000000002
+      },
+      "120": {
+        "hp": 484637.391,
         "atk": 5025.585,
         "def": 1752
       }
@@ -90001,9 +90626,9 @@
   },
   {
     "Id": 320000610,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
+    "Name": "Glommoth",
+    "Desc": "The largest and most revered kind among the Exoswarm. They serve as trusted guides who lead their kin back to the Exostrider.",
+    "DescOpen": "This enemy has a <span style=\"color:#ffd12f;\" class=\"font-bold\">higher RES</span> to <span style=\"color:#a2fbfc;\">Glacio DMG</span>.<br>While in combat, Glommoth gains Frost Armor, which increases its All-Attribute RES.<br>Inflicting Fusion Burst on it removes Frost Armor.<br><br>Weakness: Breaking Glommoth's left tusk causes it to lose part of its skill set.<br><br>Among the Exoswarm, none stand taller nor command greater reverence than these towering figures. Shaped in the likeness of the long-extinct mammoth, they are seen as reliable guides in leading their kin back to the Exostrider.<br>Glommoth, the male, advances with ferocity, often carving paths through frozen earth with its long, jagged tusks.<br>While Glommotha, the female, moves with care, guiding and healing the Exoswarm with its trunk as they return along the paths to the Exostrider.",
     "Class": 2,
     "Element": 1,
     "ElementArray": [
@@ -90023,602 +90648,602 @@
     },
     "Stats": {
       "1": {
-        "hp": 709,
+        "hp": 472,
         "atk": 75,
         "def": 800
       },
       "2": {
-        "hp": 750.5474,
+        "hp": 499.6592,
         "atk": 82.14,
         "def": 808
       },
       "3": {
-        "hp": 792.5201999999999,
+        "hp": 527.6016,
         "atk": 89.42999999999999,
         "def": 816
       },
       "4": {
-        "hp": 796.5614999999999,
+        "hp": 530.2919999999999,
         "atk": 96.83999999999999,
         "def": 824
       },
       "5": {
-        "hp": 800.5319,
+        "hp": 532.9352,
         "atk": 104.36999999999999,
         "def": 832
       },
       "6": {
-        "hp": 843.3555,
+        "hp": 561.444,
         "atk": 112.035,
         "def": 840
       },
       "7": {
-        "hp": 886.6044999999999,
+        "hp": 590.236,
         "atk": 119.82,
         "def": 848
       },
       "8": {
-        "hp": 930.2080000000001,
+        "hp": 619.264,
         "atk": 127.74000000000001,
         "def": 856
       },
       "9": {
-        "hp": 974.2369000000001,
+        "hp": 648.5752,
         "atk": 135.78,
         "def": 864
       },
       "10": {
-        "hp": 1018.6912000000001,
+        "hp": 678.1696000000001,
         "atk": 143.955,
         "def": 872.0000000000001
       },
       "11": {
-        "hp": 1116.675,
+        "hp": 743.4,
         "atk": 152.24999999999997,
         "def": 880.0000000000001
       },
       "12": {
-        "hp": 1164.2488999999998,
+        "hp": 775.0712,
         "atk": 160.67999999999998,
         "def": 888.0000000000001
       },
       "13": {
-        "hp": 1215.1551,
+        "hp": 808.9608,
         "atk": 169.245,
         "def": 896.0000000000001
       },
       "14": {
-        "hp": 1266.5576,
+        "hp": 843.1808,
         "atk": 177.92999999999998,
         "def": 903.9999999999999
       },
       "15": {
-        "hp": 1321.3633,
+        "hp": 879.6664,
         "atk": 186.73499999999999,
         "def": 911.9999999999999
       },
       "16": {
-        "hp": 1382.55,
+        "hp": 920.4,
         "atk": 195.675,
         "def": 919.9999999999999
       },
       "17": {
-        "hp": 1447.3526,
+        "hp": 963.5408,
         "atk": 204.75,
         "def": 927.9999999999999
       },
       "18": {
-        "hp": 1512.6515000000002,
+        "hp": 1007.0120000000001,
         "atk": 213.95999999999998,
         "def": 936
       },
       "19": {
-        "hp": 1584.615,
+        "hp": 1054.9199999999998,
         "atk": 223.29,
         "def": 944
       },
       "20": {
-        "hp": 1894.0935,
+        "hp": 1260.948,
         "atk": 232.77,
         "def": 952
       },
       "21": {
-        "hp": 2247.8845,
+        "hp": 1496.476,
         "atk": 315.48,
         "def": 960
       },
       "22": {
-        "hp": 2404.0063,
+        "hp": 1600.4104,
         "atk": 326.72999999999996,
         "def": 968
       },
       "23": {
-        "hp": 2535.4548999999997,
+        "hp": 1687.9191999999998,
         "atk": 338.1,
         "def": 976
       },
       "24": {
-        "hp": 2650.6674,
+        "hp": 1764.6191999999999,
         "atk": 349.63500000000005,
         "def": 984
       },
       "25": {
-        "hp": 2992.689,
+        "hp": 1992.3120000000001,
         "atk": 362.28000000000003,
         "def": 992
       },
       "26": {
-        "hp": 3118.3238,
+        "hp": 2075.9504,
         "atk": 375.105,
         "def": 1000
       },
       "27": {
-        "hp": 3575.487,
+        "hp": 2380.2960000000003,
         "atk": 388.09499999999997,
         "def": 1008
       },
       "28": {
-        "hp": 4068.0293,
+        "hp": 2708.1944000000003,
         "atk": 401.25,
         "def": 1016
       },
       "29": {
-        "hp": 4338.441900000001,
+        "hp": 2888.2152,
         "atk": 415.42499999999995,
         "def": 1024
       },
       "30": {
-        "hp": 4778.9436000000005,
+        "hp": 3181.4688,
         "atk": 429.765,
         "def": 1032
       },
       "31": {
-        "hp": 5229.584,
+        "hp": 3481.472,
         "atk": 443.475,
         "def": 1040
       },
       "32": {
-        "hp": 5653.0697,
+        "hp": 3763.3976000000002,
         "atk": 458.22,
         "def": 1048
       },
       "33": {
-        "hp": 6085.9142,
+        "hp": 4051.5536,
         "atk": 473.13,
         "def": 1056
       },
       "34": {
-        "hp": 6543.0774,
+        "hp": 4355.8992,
         "atk": 489.135,
         "def": 1064
       },
       "35": {
-        "hp": 7011.2301,
+        "hp": 4667.5608,
         "atk": 504.85499999999996,
         "def": 1072
       },
       "36": {
-        "hp": 7461.3033,
+        "hp": 4967.1864,
         "atk": 520.815,
         "def": 1080
       },
       "37": {
-        "hp": 7929.3850999999995,
+        "hp": 5278.8008,
         "atk": 537.885,
         "def": 1088
       },
       "38": {
-        "hp": 8407.5347,
+        "hp": 5597.1176,
         "atk": 555.1949999999999,
         "def": 1096
       },
       "39": {
-        "hp": 8895.823,
+        "hp": 5922.184,
         "atk": 571.86,
         "def": 1104
       },
       "40": {
-        "hp": 9404.2469,
+        "hp": 6260.655199999999,
         "atk": 589.65,
         "def": 1112
       },
       "41": {
-        "hp": 9513.7874,
+        "hp": 6333.5792,
         "atk": 735.9449999999999,
         "def": 1120
       },
       "42": {
-        "hp": 10229.381099999999,
+        "hp": 6809.9688,
         "atk": 757.995,
         "def": 1128
       },
       "43": {
-        "hp": 10929.5895,
+        "hp": 7276.116,
         "atk": 781.9799999999999,
         "def": 1136
       },
       "44": {
-        "hp": 11648.6573,
+        "hp": 7754.8184,
         "atk": 804.7950000000001,
         "def": 1144
       },
       "45": {
-        "hp": 12372.1209,
+        "hp": 8236.447199999999,
         "atk": 827.985,
         "def": 1152
       },
       "46": {
-        "hp": 13136.635600000001,
+        "hp": 8745.4048,
         "atk": 851.565,
         "def": 1160
       },
       "47": {
-        "hp": 14234.380299999999,
+        "hp": 9476.2024,
         "atk": 875.535,
         "def": 1168
       },
       "48": {
-        "hp": 15351.8352,
+        "hp": 10220.1216,
         "atk": 899.91,
         "def": 1176
       },
       "49": {
-        "hp": 16497.508299999998,
+        "hp": 10982.8264,
         "atk": 924.66,
         "def": 1184
       },
       "50": {
-        "hp": 18250.2272,
+        "hp": 12149.6576,
         "atk": 1017.12,
         "def": 1192
       },
       "51": {
-        "hp": 20447.4182,
+        "hp": 13612.3856,
         "atk": 1162.785,
         "def": 1200
       },
       "52": {
-        "hp": 22356.684299999997,
+        "hp": 14883.4344,
         "atk": 1192.4850000000001,
         "def": 1208
       },
       "53": {
-        "hp": 24306.5761,
+        "hp": 16181.528799999998,
         "atk": 1220.085,
         "def": 1216
       },
       "54": {
-        "hp": 26431.8036,
+        "hp": 17596.3488,
         "atk": 1250.655,
         "def": 1224
       },
       "55": {
-        "hp": 28220.256100000002,
+        "hp": 18786.9688,
         "atk": 1281.7050000000002,
         "def": 1232
       },
       "56": {
-        "hp": 29805.721899999997,
+        "hp": 19842.4552,
         "atk": 1313.235,
         "def": 1240
       },
       "57": {
-        "hp": 31581.412399999997,
+        "hp": 21024.5792,
         "atk": 1342.59,
         "def": 1248
       },
       "58": {
-        "hp": 34045.116500000004,
+        "hp": 22664.732,
         "atk": 1372.365,
         "def": 1256
       },
       "59": {
-        "hp": 36741.656200000005,
+        "hp": 24459.889600000002,
         "atk": 1405.305,
         "def": 1264
       },
       "60": {
-        "hp": 38441.7673,
+        "hp": 25591.6984,
         "atk": 1444.02,
         "def": 1272
       },
       "61": {
-        "hp": 40886.895599999996,
+        "hp": 27219.4848,
         "atk": 1894.17,
         "def": 1280
       },
       "62": {
-        "hp": 44456.7815,
+        "hp": 29596.052,
         "atk": 2010.3899999999999,
         "def": 1288
       },
       "63": {
-        "hp": 47858.3508,
+        "hp": 31860.5664,
         "atk": 2133.315,
         "def": 1296
       },
       "64": {
-        "hp": 51708.3626,
+        "hp": 34423.6208,
         "atk": 2263.455,
         "def": 1304
       },
       "65": {
-        "hp": 57419.49939999999,
+        "hp": 38225.6752,
         "atk": 2371.86,
         "def": 1312
       },
       "66": {
-        "hp": 62064.2293,
+        "hp": 41317.7944,
         "atk": 2452.14,
         "def": 1320
       },
       "67": {
-        "hp": 66381.9684,
+        "hp": 44192.2272,
         "atk": 2535.915,
         "def": 1328
       },
       "68": {
-        "hp": 71667.847,
+        "hp": 47711.176,
         "atk": 2629.2149999999997,
         "def": 1336
       },
       "69": {
-        "hp": 76679.6971,
+        "hp": 51047.6968,
         "atk": 2720.805,
         "def": 1344
       },
       "70": {
-        "hp": 81638.3013,
+        "hp": 54348.7704,
         "atk": 2816.61,
         "def": 1352
       },
       "71": {
-        "hp": 88605.9279,
+        "hp": 58987.3032,
         "atk": 3166.2000000000003,
         "def": 1360
       },
       "72": {
-        "hp": 97685.09829999998,
+        "hp": 65031.54639999999,
         "atk": 3273.645,
         "def": 1368
       },
       "73": {
-        "hp": 107395.49140000001,
+        "hp": 71496.01120000001,
         "atk": 3372.015,
         "def": 1376
       },
       "74": {
-        "hp": 117328.08510000001,
+        "hp": 78108.4008,
         "atk": 3474.21,
         "def": 1384
       },
       "75": {
-        "hp": 128861.81349999999,
+        "hp": 85786.708,
         "atk": 3580.4700000000003,
         "def": 1392
       },
       "76": {
-        "hp": 139455.2661,
+        "hp": 92839.0488,
         "atk": 3691.08,
         "def": 1400
       },
       "77": {
-        "hp": 148359.17169999998,
+        "hp": 98766.6136,
         "atk": 3806.2799999999997,
         "def": 1408
       },
       "78": {
-        "hp": 157648.8442,
+        "hp": 104950.9936,
         "atk": 3970.47,
         "def": 1416
       },
       "79": {
-        "hp": 167340.5197,
+        "hp": 111402.9976,
         "atk": 4081.695,
         "def": 1424
       },
       "80": {
-        "hp": 176281.2224,
+        "hp": 117355.0592,
         "atk": 4197.8099999999995,
         "def": 1432
       },
       "81": {
-        "hp": 185951.7697,
+        "hp": 123792.9976,
         "atk": 4549.68,
         "def": 1440
       },
       "82": {
-        "hp": 198709.72840000002,
+        "hp": 132286.3072,
         "atk": 4615.575,
         "def": 1448
       },
       "83": {
-        "hp": 213806.18180000002,
+        "hp": 142336.4144,
         "atk": 4642.065,
         "def": 1456
       },
       "84": {
-        "hp": 230600.40660000002,
+        "hp": 153516.7728,
         "atk": 4708.02,
         "def": 1464
       },
       "85": {
-        "hp": 248694.3702,
+        "hp": 165562.4016,
         "atk": 4774.05,
         "def": 1472
       },
       "86": {
-        "hp": 267482.7993,
+        "hp": 178070.35439999998,
         "atk": 4800.57,
         "def": 1480
       },
       "87": {
-        "hp": 282209.4383,
+        "hp": 187874.2664,
         "atk": 4866.6449999999995,
         "def": 1488
       },
       "88": {
-        "hp": 297833.3168,
+        "hp": 198275.4944,
         "atk": 4932.795,
         "def": 1496
       },
       "89": {
-        "hp": 313982.6352,
+        "hp": 209026.5216,
         "atk": 4959.345,
         "def": 1504
       },
       "90": {
-        "hp": 331413.9674,
+        "hp": 220631.0192,
         "atk": 5025.585,
         "def": 1512
       },
       "91": {
-        "hp": 348256.3333,
+        "hp": 231843.4264,
         "atk": 5025.585,
         "def": 1520
       },
       "92": {
-        "hp": 365805.64310000004,
+        "hp": 243526.46480000002,
         "atk": 5025.585,
         "def": 1528
       },
       "93": {
-        "hp": 380841.83150000003,
+        "hp": 253536.452,
         "atk": 5025.585,
         "def": 1536
       },
       "94": {
-        "hp": 393515.0647,
+        "hp": 261973.3576,
         "atk": 5025.585,
         "def": 1544
       },
       "95": {
-        "hp": 403202.55710000003,
+        "hp": 268422.57680000004,
         "atk": 5025.585,
         "def": 1552
       },
       "96": {
-        "hp": 417695.7224,
+        "hp": 278071.0592,
         "atk": 5025.585,
         "def": 1560
       },
       "97": {
-        "hp": 429499.5089,
+        "hp": 285929.1512,
         "atk": 5025.585,
         "def": 1568
       },
       "98": {
-        "hp": 439860.055,
+        "hp": 292826.44,
         "atk": 5025.585,
         "def": 1576
       },
       "99": {
-        "hp": 450228.8255,
+        "hp": 299729.20399999997,
         "atk": 5025.585,
         "def": 1584
       },
       "100": {
-        "hp": 459942.3382,
+        "hp": 306195.74559999997,
         "atk": 5025.585,
         "def": 1592
       },
       "101": {
-        "hp": 485698.3939,
+        "hp": 323342.2312,
         "atk": 5025.585,
         "def": 1600
       },
       "102": {
-        "hp": 488841.1073,
+        "hp": 325434.41839999997,
         "atk": 5025.585,
         "def": 1607.9999999999998
       },
       "103": {
-        "hp": 491983.7498,
+        "hp": 327526.5584,
         "atk": 5025.585,
         "def": 1616
       },
       "104": {
-        "hp": 495126.4632,
+        "hp": 329618.74559999997,
         "atk": 5025.585,
         "def": 1623.9999999999998
       },
       "105": {
-        "hp": 498269.10569999996,
+        "hp": 331710.8856,
         "atk": 5025.585,
         "def": 1632
       },
       "106": {
-        "hp": 501411.81909999996,
+        "hp": 333803.07279999997,
         "atk": 5025.585,
         "def": 1639.9999999999998
       },
       "107": {
-        "hp": 504554.4616,
+        "hp": 335895.2128,
         "atk": 5025.585,
         "def": 1648
       },
       "108": {
-        "hp": 507697.17500000005,
+        "hp": 337987.4,
         "atk": 5025.585,
         "def": 1655.9999999999998
       },
       "109": {
-        "hp": 510839.8884,
+        "hp": 340079.5872,
         "atk": 5025.585,
         "def": 1664
       },
       "110": {
-        "hp": 513982.5309,
+        "hp": 342171.7272,
         "atk": 5025.585,
         "def": 1672
       },
       "111": {
-        "hp": 517125.2443,
+        "hp": 344263.9144,
         "atk": 5025.585,
         "def": 1680
       },
       "112": {
-        "hp": 520267.88680000004,
+        "hp": 346356.0544,
         "atk": 5025.585,
         "def": 1688
       },
       "113": {
-        "hp": 523410.6002,
+        "hp": 348448.2416,
         "atk": 5025.585,
         "def": 1696
       },
       "114": {
-        "hp": 526553.2427,
+        "hp": 350540.3816,
         "atk": 5025.585,
         "def": 1704
       },
       "115": {
-        "hp": 529695.9561,
+        "hp": 352632.5688,
         "atk": 5025.585,
         "def": 1712
       },
       "116": {
-        "hp": 532838.6695,
+        "hp": 354724.756,
         "atk": 5025.585,
         "def": 1720
       },
       "117": {
-        "hp": 535981.3119999999,
+        "hp": 356816.896,
         "atk": 5025.585,
         "def": 1728
       },
       "118": {
-        "hp": 539124.0254,
+        "hp": 358909.08320000005,
         "atk": 5025.585,
         "def": 1736
       },
       "119": {
-        "hp": 542266.6679,
+        "hp": 361001.22319999995,
         "atk": 5025.585,
         "def": 1744.0000000000002
       },
       "120": {
-        "hp": 545409.3813,
+        "hp": 363093.4104,
         "atk": 5025.585,
         "def": 1752
       }
@@ -103143,7 +103768,7 @@
         "2": 40,
         "3": 10,
         "4": 10,
-        "5": 40,
+        "5": 10,
         "6": 10
       }
     },
@@ -105633,7 +106258,8 @@
     "Class": 4,
     "Element": 5,
     "ElementArray": [
-      5
+      5,
+      3
     ],
     "Icon": "/assets/enemies/340000090.webp",
     "baseData": {
@@ -115011,7 +115637,8 @@
     "Class": 4,
     "Element": 4,
     "ElementArray": [
-      4
+      4,
+      6
     ],
     "Icon": "/assets/enemies/340000200.webp",
     "baseData": {
@@ -118755,14 +119382,13 @@
   },
   {
     "Id": 340000250,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
+    "Name": "Sigillum",
+    "Desc": "A wordless black mech, lost and longing to return home.",
+    "DescOpen": "This enemy has a <span style=\"color:#ffd12f;\" class=\"font-bold\">higher RES</span> to <span style=\"color:#f8e56cff;\">Spectro DMG</span>.<br>When hit by an Echo Skill, Sigillum gains 1 stack of Off Course, up to 5 stacks. Echoes with the same name can only trigger this effect once.<br>Each stack of Off Course makes it take 10% more total DMG. At 5 stacks, Sigillum takes an additional 30% total DMG.<br><br>Rage and tears. Suffering and joy. Sorrow and pain. All are condensed, along with her sigh, into a single golden frequency.<br>It gazes at the sky, lost in memories worn thin by the ages. The lost voyager is still searching for the way home.",
     "Class": 4,
     "Element": 5,
     "ElementArray": [
-      5,
-      2
+      5
     ],
     "Icon": "/assets/enemies/340000250.webp",
     "baseData": {
@@ -118772,623 +119398,622 @@
         "2": 10,
         "3": 10,
         "4": 10,
-        "5": 10,
+        "5": 40,
         "6": 10
       }
     },
     "Stats": {
       "1": {
-        "hp": 6000,
-        "atk": 20,
+        "hp": 2784,
+        "atk": 62.5,
         "def": 800
       },
       "2": {
-        "hp": 6351.6,
-        "atk": 21.904,
+        "hp": 2947.1424,
+        "atk": 68.45,
         "def": 808
       },
       "3": {
-        "hp": 6706.799999999999,
-        "atk": 23.848,
+        "hp": 3111.9552,
+        "atk": 74.52499999999999,
         "def": 816
       },
       "4": {
-        "hp": 6741,
-        "atk": 25.823999999999998,
+        "hp": 3127.8239999999996,
+        "atk": 80.69999999999999,
         "def": 824
       },
       "5": {
-        "hp": 6774.6,
-        "atk": 27.832,
+        "hp": 3143.4144,
+        "atk": 86.975,
         "def": 832
       },
       "6": {
-        "hp": 7137,
-        "atk": 29.876,
+        "hp": 3311.568,
+        "atk": 93.3625,
         "def": 840
       },
       "7": {
-        "hp": 7503,
-        "atk": 31.951999999999998,
+        "hp": 3481.392,
+        "atk": 99.85,
         "def": 848
       },
       "8": {
-        "hp": 7872,
-        "atk": 34.064,
+        "hp": 3652.608,
+        "atk": 106.45,
         "def": 856
       },
       "9": {
-        "hp": 8244.6,
-        "atk": 36.208,
+        "hp": 3825.4944000000005,
+        "atk": 113.15,
         "def": 864
       },
       "10": {
-        "hp": 8620.800000000001,
-        "atk": 38.388,
+        "hp": 4000.0512000000003,
+        "atk": 119.9625,
         "def": 872.0000000000001
       },
       "11": {
-        "hp": 9450,
-        "atk": 40.599999999999994,
+        "hp": 4384.8,
+        "atk": 126.87499999999999,
         "def": 880.0000000000001
       },
       "12": {
-        "hp": 9852.599999999999,
-        "atk": 42.848,
+        "hp": 4571.6064,
+        "atk": 133.89999999999998,
         "def": 888.0000000000001
       },
       "13": {
-        "hp": 10283.4,
-        "atk": 45.132000000000005,
+        "hp": 4771.4976,
+        "atk": 141.03750000000002,
         "def": 896.0000000000001
       },
       "14": {
-        "hp": 10718.4,
-        "atk": 47.44799999999999,
+        "hp": 4973.3376,
+        "atk": 148.27499999999998,
         "def": 903.9999999999999
       },
       "15": {
-        "hp": 11182.199999999999,
-        "atk": 49.79599999999999,
+        "hp": 5188.5408,
+        "atk": 155.61249999999998,
         "def": 911.9999999999999
       },
       "16": {
-        "hp": 11700,
-        "atk": 52.18,
+        "hp": 5428.8,
+        "atk": 163.0625,
         "def": 919.9999999999999
       },
       "17": {
-        "hp": 12248.4,
-        "atk": 54.6,
+        "hp": 5683.2576,
+        "atk": 170.625,
         "def": 927.9999999999999
       },
       "18": {
-        "hp": 12801.000000000002,
-        "atk": 57.056,
+        "hp": 5939.664000000001,
+        "atk": 178.29999999999998,
         "def": 936
       },
       "19": {
-        "hp": 13410,
-        "atk": 59.544,
+        "hp": 6222.24,
+        "atk": 186.075,
         "def": 944
       },
       "20": {
-        "hp": 16029,
-        "atk": 62.072,
+        "hp": 7437.456,
+        "atk": 193.97500000000002,
         "def": 952
       },
       "21": {
-        "hp": 19023,
-        "atk": 84.12800000000001,
+        "hp": 8826.672,
+        "atk": 262.90000000000003,
         "def": 960
       },
       "22": {
-        "hp": 20344.2,
-        "atk": 87.128,
+        "hp": 9439.7088,
+        "atk": 272.275,
         "def": 968
       },
       "23": {
-        "hp": 21456.6,
-        "atk": 90.16,
+        "hp": 9955.8624,
+        "atk": 281.75,
         "def": 976
       },
       "24": {
-        "hp": 22431.6,
-        "atk": 93.236,
+        "hp": 10408.2624,
+        "atk": 291.3625,
         "def": 984
       },
       "25": {
-        "hp": 25326,
-        "atk": 96.608,
+        "hp": 11751.264000000001,
+        "atk": 301.9,
         "def": 992
       },
       "26": {
-        "hp": 26389.2,
-        "atk": 100.028,
+        "hp": 12244.5888,
+        "atk": 312.58750000000003,
         "def": 1000
       },
       "27": {
-        "hp": 30258,
-        "atk": 103.49199999999999,
+        "hp": 14039.712,
+        "atk": 323.41249999999997,
         "def": 1008
       },
       "28": {
-        "hp": 34426.200000000004,
-        "atk": 107,
+        "hp": 15973.756800000001,
+        "atk": 334.375,
         "def": 1016
       },
       "29": {
-        "hp": 36714.600000000006,
-        "atk": 110.78,
+        "hp": 17035.5744,
+        "atk": 346.1875,
         "def": 1024
       },
       "30": {
-        "hp": 40442.4,
-        "atk": 114.604,
+        "hp": 18765.2736,
+        "atk": 358.1375,
         "def": 1032
       },
       "31": {
-        "hp": 44256,
-        "atk": 118.26,
+        "hp": 20534.784,
+        "atk": 369.5625,
         "def": 1040
       },
       "32": {
-        "hp": 47839.8,
-        "atk": 122.19200000000001,
+        "hp": 22197.6672,
+        "atk": 381.85,
         "def": 1048
       },
       "33": {
-        "hp": 51502.8,
-        "atk": 126.16799999999999,
+        "hp": 23897.2992,
+        "atk": 394.275,
         "def": 1056
       },
       "34": {
-        "hp": 55371.6,
-        "atk": 130.436,
+        "hp": 25692.4224,
+        "atk": 407.6125,
         "def": 1064
       },
       "35": {
-        "hp": 59333.399999999994,
-        "atk": 134.628,
+        "hp": 27530.6976,
+        "atk": 420.7125,
         "def": 1072
       },
       "36": {
-        "hp": 63142.2,
-        "atk": 138.88400000000001,
+        "hp": 29297.9808,
+        "atk": 434.01250000000005,
         "def": 1080
       },
       "37": {
-        "hp": 67103.4,
-        "atk": 143.436,
+        "hp": 31135.9776,
+        "atk": 448.2375,
         "def": 1088
       },
       "38": {
-        "hp": 71149.8,
-        "atk": 148.052,
+        "hp": 33013.5072,
+        "atk": 462.66249999999997,
         "def": 1096
       },
       "39": {
-        "hp": 75282,
-        "atk": 152.49599999999998,
+        "hp": 34930.848,
+        "atk": 476.54999999999995,
         "def": 1104
       },
       "40": {
-        "hp": 79584.59999999999,
-        "atk": 157.24,
+        "hp": 36927.2544,
+        "atk": 491.375,
         "def": 1112
       },
       "41": {
-        "hp": 80511.59999999999,
-        "atk": 196.252,
+        "hp": 37357.3824,
+        "atk": 613.2875,
         "def": 1120
       },
       "42": {
-        "hp": 86567.4,
-        "atk": 202.132,
+        "hp": 40167.2736,
+        "atk": 631.6625,
         "def": 1128
       },
       "43": {
-        "hp": 92493,
-        "atk": 208.528,
+        "hp": 42916.752,
+        "atk": 651.65,
         "def": 1136
       },
       "44": {
-        "hp": 98578.2,
-        "atk": 214.61200000000002,
+        "hp": 45740.2848,
+        "atk": 670.6625,
         "def": 1144
       },
       "45": {
-        "hp": 104700.59999999999,
-        "atk": 220.796,
+        "hp": 48581.0784,
+        "atk": 689.9875,
         "def": 1152
       },
       "46": {
-        "hp": 111170.40000000001,
-        "atk": 227.084,
+        "hp": 51583.0656,
+        "atk": 709.6375,
         "def": 1160
       },
       "47": {
-        "hp": 120460.2,
-        "atk": 233.476,
+        "hp": 55893.53279999999,
+        "atk": 729.6125,
         "def": 1168
       },
       "48": {
-        "hp": 129916.79999999999,
-        "atk": 239.976,
+        "hp": 60281.3952,
+        "atk": 749.925,
         "def": 1176
       },
       "49": {
-        "hp": 139612.19999999998,
-        "atk": 246.576,
+        "hp": 64780.0608,
+        "atk": 770.55,
         "def": 1184
       },
       "50": {
-        "hp": 154444.8,
-        "atk": 271.232,
+        "hp": 71662.3872,
+        "atk": 847.6,
         "def": 1192
       },
       "51": {
-        "hp": 173038.8,
-        "atk": 310.076,
+        "hp": 80290.0032,
+        "atk": 968.9875,
         "def": 1200
       },
       "52": {
-        "hp": 189196.19999999998,
-        "atk": 317.99600000000004,
+        "hp": 87787.0368,
+        "atk": 993.7375000000001,
         "def": 1208
       },
       "53": {
-        "hp": 205697.4,
-        "atk": 325.356,
+        "hp": 95443.5936,
+        "atk": 1016.7375000000001,
         "def": 1216
       },
       "54": {
-        "hp": 223682.4,
-        "atk": 333.508,
+        "hp": 103788.6336,
+        "atk": 1042.2125,
         "def": 1224
       },
       "55": {
-        "hp": 238817.4,
-        "atk": 341.788,
+        "hp": 110811.2736,
+        "atk": 1068.0875,
         "def": 1232
       },
       "56": {
-        "hp": 252234.59999999998,
-        "atk": 350.19599999999997,
+        "hp": 117036.8544,
+        "atk": 1094.3625,
         "def": 1240
       },
       "57": {
-        "hp": 267261.6,
-        "atk": 358.024,
+        "hp": 124009.38239999999,
+        "atk": 1118.825,
         "def": 1248
       },
       "58": {
-        "hp": 288111,
-        "atk": 365.96400000000006,
+        "hp": 133683.50400000002,
+        "atk": 1143.6375,
         "def": 1256
       },
       "59": {
-        "hp": 310930.80000000005,
-        "atk": 374.74800000000005,
+        "hp": 144271.8912,
+        "atk": 1171.0875,
         "def": 1264
       },
       "60": {
-        "hp": 325318.2,
-        "atk": 385.072,
+        "hp": 150947.6448,
+        "atk": 1203.35,
         "def": 1272
       },
       "61": {
-        "hp": 346010.39999999997,
-        "atk": 505.112,
+        "hp": 160548.82559999998,
+        "atk": 1578.4750000000001,
         "def": 1280
       },
       "62": {
-        "hp": 376221,
-        "atk": 536.104,
+        "hp": 174566.544,
+        "atk": 1675.325,
         "def": 1288
       },
       "63": {
-        "hp": 405007.2,
-        "atk": 568.884,
+        "hp": 187923.3408,
+        "atk": 1777.7624999999998,
         "def": 1296
       },
       "64": {
-        "hp": 437588.39999999997,
-        "atk": 603.588,
+        "hp": 203041.0176,
+        "atk": 1886.2125,
         "def": 1304
       },
       "65": {
-        "hp": 485919.6,
-        "atk": 632.496,
+        "hp": 225466.69439999998,
+        "atk": 1976.55,
         "def": 1312
       },
       "66": {
-        "hp": 525226.2,
-        "atk": 653.904,
+        "hp": 243704.9568,
+        "atk": 2043.45,
         "def": 1320
       },
       "67": {
-        "hp": 561765.6,
-        "atk": 676.2439999999999,
+        "hp": 260659.2384,
+        "atk": 2113.2625,
         "def": 1328
       },
       "68": {
-        "hp": 606498,
-        "atk": 701.1239999999999,
+        "hp": 281415.072,
+        "atk": 2191.0125,
         "def": 1336
       },
       "69": {
-        "hp": 648911.4,
-        "atk": 725.548,
+        "hp": 301094.8896,
+        "atk": 2267.3375,
         "def": 1344
       },
       "70": {
-        "hp": 690874.2000000001,
-        "atk": 751.096,
+        "hp": 320565.6288,
+        "atk": 2347.175,
         "def": 1352
       },
       "71": {
-        "hp": 749838.6,
-        "atk": 844.32,
+        "hp": 347925.1104,
+        "atk": 2638.5,
         "def": 1360
       },
       "72": {
-        "hp": 826672.2,
-        "atk": 872.972,
+        "hp": 383575.90079999994,
+        "atk": 2728.0375,
         "def": 1368
       },
       "73": {
-        "hp": 908847.6000000001,
-        "atk": 899.204,
+        "hp": 421705.28640000004,
+        "atk": 2810.0125,
         "def": 1376
       },
       "74": {
-        "hp": 992903.4,
-        "atk": 926.456,
+        "hp": 460707.1776,
+        "atk": 2895.175,
         "def": 1384
       },
       "75": {
-        "hp": 1090509,
-        "atk": 954.792,
+        "hp": 505996.176,
+        "atk": 2983.7250000000004,
         "def": 1392
       },
       "76": {
-        "hp": 1180157.4000000001,
-        "atk": 984.288,
+        "hp": 547593.0336,
+        "atk": 3075.8999999999996,
         "def": 1400
       },
       "77": {
-        "hp": 1255507.7999999998,
-        "atk": 1015.008,
+        "hp": 582555.6192,
+        "atk": 3171.9,
         "def": 1408
       },
       "78": {
-        "hp": 1334122.8,
-        "atk": 1058.792,
+        "hp": 619032.9792000001,
+        "atk": 3308.725,
         "def": 1416
       },
       "79": {
-        "hp": 1416139.8,
-        "atk": 1088.452,
+        "hp": 657088.8672,
+        "atk": 3401.4125000000004,
         "def": 1424
       },
       "80": {
-        "hp": 1491801.6,
-        "atk": 1119.416,
+        "hp": 692195.9424,
+        "atk": 3498.1749999999997,
         "def": 1432
       },
       "81": {
-        "hp": 1573639.8,
-        "atk": 1213.248,
+        "hp": 730168.8672,
+        "atk": 3791.4,
         "def": 1440
       },
       "82": {
-        "hp": 1681605.6,
-        "atk": 1230.82,
+        "hp": 780264.9984,
+        "atk": 3846.3125,
         "def": 1448
       },
       "83": {
-        "hp": 1809361.2,
-        "atk": 1237.884,
+        "hp": 839543.5968,
+        "atk": 3868.3875,
         "def": 1456
       },
       "84": {
-        "hp": 1951484.4000000001,
-        "atk": 1255.472,
+        "hp": 905488.7616000001,
+        "atk": 3923.35,
         "def": 1464
       },
       "85": {
-        "hp": 2104606.8000000003,
-        "atk": 1273.0800000000002,
+        "hp": 976537.5552000001,
+        "atk": 3978.375,
         "def": 1472
       },
       "86": {
-        "hp": 2263606.1999999997,
-        "atk": 1280.152,
+        "hp": 1050313.2767999999,
+        "atk": 4000.475,
         "def": 1480
       },
       "87": {
-        "hp": 2388232.2,
-        "atk": 1297.772,
+        "hp": 1108139.7408,
+        "atk": 4055.5375,
         "def": 1488
       },
       "88": {
-        "hp": 2520451.2,
-        "atk": 1315.412,
+        "hp": 1169489.3568,
+        "atk": 4110.6625,
         "def": 1496
       },
       "89": {
-        "hp": 2657116.8,
-        "atk": 1322.492,
+        "hp": 1232902.1952,
+        "atk": 4132.7875,
         "def": 1504
       },
       "90": {
-        "hp": 2804631.6,
-        "atk": 1340.156,
+        "hp": 1301349.0624,
+        "atk": 4187.9875,
         "def": 1512
       },
       "91": {
-        "hp": 2947162.1999999997,
-        "atk": 1340.156,
+        "hp": 1367483.2608,
+        "atk": 4187.9875,
         "def": 1520
       },
       "92": {
-        "hp": 3095675.4000000004,
-        "atk": 1340.156,
+        "hp": 1436393.3856000002,
+        "atk": 4187.9875,
         "def": 1528
       },
       "93": {
-        "hp": 3222921,
-        "atk": 1340.156,
+        "hp": 1495435.344,
+        "atk": 4187.9875,
         "def": 1536
       },
       "94": {
-        "hp": 3330169.8,
-        "atk": 1340.156,
+        "hp": 1545198.7872,
+        "atk": 4187.9875,
         "def": 1544
       },
       "95": {
-        "hp": 3412151.4000000004,
-        "atk": 1340.156,
+        "hp": 1583238.2496,
+        "atk": 4187.9875,
         "def": 1552
       },
       "96": {
-        "hp": 3534801.6,
-        "atk": 1340.156,
+        "hp": 1640147.9424,
+        "atk": 4187.9875,
         "def": 1560
       },
       "97": {
-        "hp": 3634692.6,
-        "atk": 1340.156,
+        "hp": 1686497.3664,
+        "atk": 4187.9875,
         "def": 1568
       },
       "98": {
-        "hp": 3722370,
-        "atk": 1340.156,
+        "hp": 1727179.68,
+        "atk": 4187.9875,
         "def": 1576
       },
       "99": {
-        "hp": 3810117,
-        "atk": 1340.156,
+        "hp": 1767894.288,
+        "atk": 4187.9875,
         "def": 1584
       },
       "100": {
-        "hp": 3892318.8,
-        "atk": 1340.156,
+        "hp": 1806035.9231999998,
+        "atk": 4187.9875,
         "def": 1592
       },
       "101": {
-        "hp": 4110282.6,
-        "atk": 1340.156,
+        "hp": 1907171.1264,
+        "atk": 4187.9875,
         "def": 1600
       },
       "102": {
-        "hp": 4136878.1999999997,
-        "atk": 1340.156,
+        "hp": 1919511.4848,
+        "atk": 4187.9875,
         "def": 1607.9999999999998
       },
       "103": {
-        "hp": 4163473.1999999997,
-        "atk": 1340.156,
+        "hp": 1931851.5648,
+        "atk": 4187.9875,
         "def": 1616
       },
       "104": {
-        "hp": 4190068.8,
-        "atk": 1340.156,
+        "hp": 1944191.9231999998,
+        "atk": 4187.9875,
         "def": 1623.9999999999998
       },
       "105": {
-        "hp": 4216663.8,
-        "atk": 1340.156,
+        "hp": 1956532.0032,
+        "atk": 4187.9875,
         "def": 1632
       },
       "106": {
-        "hp": 4243259.399999999,
-        "atk": 1340.156,
+        "hp": 1968872.3616,
+        "atk": 4187.9875,
         "def": 1639.9999999999998
       },
       "107": {
-        "hp": 4269854.399999999,
-        "atk": 1340.156,
+        "hp": 1981212.4415999998,
+        "atk": 4187.9875,
         "def": 1648
       },
       "108": {
-        "hp": 4296450,
-        "atk": 1340.156,
+        "hp": 1993552.8,
+        "atk": 4187.9875,
         "def": 1655.9999999999998
       },
       "109": {
-        "hp": 4323045.600000001,
-        "atk": 1340.156,
+        "hp": 2005893.1584,
+        "atk": 4187.9875,
         "def": 1664
       },
       "110": {
-        "hp": 4349640.600000001,
-        "atk": 1340.156,
+        "hp": 2018233.2384000001,
+        "atk": 4187.9875,
         "def": 1672
       },
       "111": {
-        "hp": 4376236.2,
-        "atk": 1340.156,
+        "hp": 2030573.5968,
+        "atk": 4187.9875,
         "def": 1680
       },
       "112": {
-        "hp": 4402831.2,
-        "atk": 1340.156,
+        "hp": 2042913.6768,
+        "atk": 4187.9875,
         "def": 1688
       },
       "113": {
-        "hp": 4429426.8,
-        "atk": 1340.156,
+        "hp": 2055254.0352,
+        "atk": 4187.9875,
         "def": 1696
       },
       "114": {
-        "hp": 4456021.8,
-        "atk": 1340.156,
+        "hp": 2067594.1152,
+        "atk": 4187.9875,
         "def": 1704
       },
       "115": {
-        "hp": 4482617.399999999,
-        "atk": 1340.156,
+        "hp": 2079934.4736,
+        "atk": 4187.9875,
         "def": 1712
       },
       "116": {
-        "hp": 4509213,
-        "atk": 1340.156,
+        "hp": 2092274.832,
+        "atk": 4187.9875,
         "def": 1720
       },
       "117": {
-        "hp": 4535808,
-        "atk": 1340.156,
+        "hp": 2104614.912,
+        "atk": 4187.9875,
         "def": 1728
       },
       "118": {
-        "hp": 4562403.600000001,
-        "atk": 1340.156,
+        "hp": 2116955.2704000003,
+        "atk": 4187.9875,
         "def": 1736
       },
       "119": {
-        "hp": 4588998.6,
-        "atk": 1340.156,
+        "hp": 2129295.3504,
+        "atk": 4187.9875,
         "def": 1744.0000000000002
       },
       "120": {
-        "hp": 4615594.2,
-        "atk": 1340.156,
+        "hp": 2141635.7088,
+        "atk": 4187.9875,
         "def": 1752
       }
     }
   },
   {
     "Id": 340000251,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
+    "Name": "Sigillum",
+    "Desc": "A wordless black mech, lost and longing to return home.",
+    "DescOpen": "This enemy has a <span style=\"color:#ffd12f;\" class=\"font-bold\">higher RES</span> to <span style=\"color:#f8e56cff;\">Spectro DMG</span>.<br>When hit by an Echo Skill, Sigillum gains 1 stack of Off Course, up to 5 stacks. Echoes with the same name can only trigger this effect once.<br>Each stack of Off Course makes it take 10% more total DMG. At 5 stacks, Sigillum takes an additional 30% total DMG.<br><br>Rage and tears. Suffering and joy. Sorrow and pain. All are condensed, along with her sigh, into a single golden frequency.<br>It gazes at the sky, lost in memories worn thin by the ages. The lost voyager is still searching for the way home.",
     "Class": 4,
     "Element": 5,
     "ElementArray": [
-      5,
-      2
+      5
     ],
     "Icon": "/assets/enemies/340000251.webp",
     "baseData": {
@@ -119398,618 +120023,618 @@
         "2": 10,
         "3": 10,
         "4": 10,
-        "5": 10,
+        "5": 40,
         "6": 10
       }
     },
     "Stats": {
       "1": {
-        "hp": 6000,
-        "atk": 20,
+        "hp": 2784,
+        "atk": 62.5,
         "def": 800
       },
       "2": {
-        "hp": 6351.6,
-        "atk": 21.904,
+        "hp": 2947.1424,
+        "atk": 68.45,
         "def": 808
       },
       "3": {
-        "hp": 6706.799999999999,
-        "atk": 23.848,
+        "hp": 3111.9552,
+        "atk": 74.52499999999999,
         "def": 816
       },
       "4": {
-        "hp": 6741,
-        "atk": 25.823999999999998,
+        "hp": 3127.8239999999996,
+        "atk": 80.69999999999999,
         "def": 824
       },
       "5": {
-        "hp": 6774.6,
-        "atk": 27.832,
+        "hp": 3143.4144,
+        "atk": 86.975,
         "def": 832
       },
       "6": {
-        "hp": 7137,
-        "atk": 29.876,
+        "hp": 3311.568,
+        "atk": 93.3625,
         "def": 840
       },
       "7": {
-        "hp": 7503,
-        "atk": 31.951999999999998,
+        "hp": 3481.392,
+        "atk": 99.85,
         "def": 848
       },
       "8": {
-        "hp": 7872,
-        "atk": 34.064,
+        "hp": 3652.608,
+        "atk": 106.45,
         "def": 856
       },
       "9": {
-        "hp": 8244.6,
-        "atk": 36.208,
+        "hp": 3825.4944000000005,
+        "atk": 113.15,
         "def": 864
       },
       "10": {
-        "hp": 8620.800000000001,
-        "atk": 38.388,
+        "hp": 4000.0512000000003,
+        "atk": 119.9625,
         "def": 872.0000000000001
       },
       "11": {
-        "hp": 9450,
-        "atk": 40.599999999999994,
+        "hp": 4384.8,
+        "atk": 126.87499999999999,
         "def": 880.0000000000001
       },
       "12": {
-        "hp": 9852.599999999999,
-        "atk": 42.848,
+        "hp": 4571.6064,
+        "atk": 133.89999999999998,
         "def": 888.0000000000001
       },
       "13": {
-        "hp": 10283.4,
-        "atk": 45.132000000000005,
+        "hp": 4771.4976,
+        "atk": 141.03750000000002,
         "def": 896.0000000000001
       },
       "14": {
-        "hp": 10718.4,
-        "atk": 47.44799999999999,
+        "hp": 4973.3376,
+        "atk": 148.27499999999998,
         "def": 903.9999999999999
       },
       "15": {
-        "hp": 11182.199999999999,
-        "atk": 49.79599999999999,
+        "hp": 5188.5408,
+        "atk": 155.61249999999998,
         "def": 911.9999999999999
       },
       "16": {
-        "hp": 11700,
-        "atk": 52.18,
+        "hp": 5428.8,
+        "atk": 163.0625,
         "def": 919.9999999999999
       },
       "17": {
-        "hp": 12248.4,
-        "atk": 54.6,
+        "hp": 5683.2576,
+        "atk": 170.625,
         "def": 927.9999999999999
       },
       "18": {
-        "hp": 12801.000000000002,
-        "atk": 57.056,
+        "hp": 5939.664000000001,
+        "atk": 178.29999999999998,
         "def": 936
       },
       "19": {
-        "hp": 13410,
-        "atk": 59.544,
+        "hp": 6222.24,
+        "atk": 186.075,
         "def": 944
       },
       "20": {
-        "hp": 16029,
-        "atk": 62.072,
+        "hp": 7437.456,
+        "atk": 193.97500000000002,
         "def": 952
       },
       "21": {
-        "hp": 19023,
-        "atk": 84.12800000000001,
+        "hp": 8826.672,
+        "atk": 262.90000000000003,
         "def": 960
       },
       "22": {
-        "hp": 20344.2,
-        "atk": 87.128,
+        "hp": 9439.7088,
+        "atk": 272.275,
         "def": 968
       },
       "23": {
-        "hp": 21456.6,
-        "atk": 90.16,
+        "hp": 9955.8624,
+        "atk": 281.75,
         "def": 976
       },
       "24": {
-        "hp": 22431.6,
-        "atk": 93.236,
+        "hp": 10408.2624,
+        "atk": 291.3625,
         "def": 984
       },
       "25": {
-        "hp": 25326,
-        "atk": 96.608,
+        "hp": 11751.264000000001,
+        "atk": 301.9,
         "def": 992
       },
       "26": {
-        "hp": 26389.2,
-        "atk": 100.028,
+        "hp": 12244.5888,
+        "atk": 312.58750000000003,
         "def": 1000
       },
       "27": {
-        "hp": 30258,
-        "atk": 103.49199999999999,
+        "hp": 14039.712,
+        "atk": 323.41249999999997,
         "def": 1008
       },
       "28": {
-        "hp": 34426.200000000004,
-        "atk": 107,
+        "hp": 15973.756800000001,
+        "atk": 334.375,
         "def": 1016
       },
       "29": {
-        "hp": 36714.600000000006,
-        "atk": 110.78,
+        "hp": 17035.5744,
+        "atk": 346.1875,
         "def": 1024
       },
       "30": {
-        "hp": 40442.4,
-        "atk": 114.604,
+        "hp": 18765.2736,
+        "atk": 358.1375,
         "def": 1032
       },
       "31": {
-        "hp": 44256,
-        "atk": 118.26,
+        "hp": 20534.784,
+        "atk": 369.5625,
         "def": 1040
       },
       "32": {
-        "hp": 47839.8,
-        "atk": 122.19200000000001,
+        "hp": 22197.6672,
+        "atk": 381.85,
         "def": 1048
       },
       "33": {
-        "hp": 51502.8,
-        "atk": 126.16799999999999,
+        "hp": 23897.2992,
+        "atk": 394.275,
         "def": 1056
       },
       "34": {
-        "hp": 55371.6,
-        "atk": 130.436,
+        "hp": 25692.4224,
+        "atk": 407.6125,
         "def": 1064
       },
       "35": {
-        "hp": 59333.399999999994,
-        "atk": 134.628,
+        "hp": 27530.6976,
+        "atk": 420.7125,
         "def": 1072
       },
       "36": {
-        "hp": 63142.2,
-        "atk": 138.88400000000001,
+        "hp": 29297.9808,
+        "atk": 434.01250000000005,
         "def": 1080
       },
       "37": {
-        "hp": 67103.4,
-        "atk": 143.436,
+        "hp": 31135.9776,
+        "atk": 448.2375,
         "def": 1088
       },
       "38": {
-        "hp": 71149.8,
-        "atk": 148.052,
+        "hp": 33013.5072,
+        "atk": 462.66249999999997,
         "def": 1096
       },
       "39": {
-        "hp": 75282,
-        "atk": 152.49599999999998,
+        "hp": 34930.848,
+        "atk": 476.54999999999995,
         "def": 1104
       },
       "40": {
-        "hp": 79584.59999999999,
-        "atk": 157.24,
+        "hp": 36927.2544,
+        "atk": 491.375,
         "def": 1112
       },
       "41": {
-        "hp": 80511.59999999999,
-        "atk": 196.252,
+        "hp": 37357.3824,
+        "atk": 613.2875,
         "def": 1120
       },
       "42": {
-        "hp": 86567.4,
-        "atk": 202.132,
+        "hp": 40167.2736,
+        "atk": 631.6625,
         "def": 1128
       },
       "43": {
-        "hp": 92493,
-        "atk": 208.528,
+        "hp": 42916.752,
+        "atk": 651.65,
         "def": 1136
       },
       "44": {
-        "hp": 98578.2,
-        "atk": 214.61200000000002,
+        "hp": 45740.2848,
+        "atk": 670.6625,
         "def": 1144
       },
       "45": {
-        "hp": 104700.59999999999,
-        "atk": 220.796,
+        "hp": 48581.0784,
+        "atk": 689.9875,
         "def": 1152
       },
       "46": {
-        "hp": 111170.40000000001,
-        "atk": 227.084,
+        "hp": 51583.0656,
+        "atk": 709.6375,
         "def": 1160
       },
       "47": {
-        "hp": 120460.2,
-        "atk": 233.476,
+        "hp": 55893.53279999999,
+        "atk": 729.6125,
         "def": 1168
       },
       "48": {
-        "hp": 129916.79999999999,
-        "atk": 239.976,
+        "hp": 60281.3952,
+        "atk": 749.925,
         "def": 1176
       },
       "49": {
-        "hp": 139612.19999999998,
-        "atk": 246.576,
+        "hp": 64780.0608,
+        "atk": 770.55,
         "def": 1184
       },
       "50": {
-        "hp": 154444.8,
-        "atk": 271.232,
+        "hp": 71662.3872,
+        "atk": 847.6,
         "def": 1192
       },
       "51": {
-        "hp": 173038.8,
-        "atk": 310.076,
+        "hp": 80290.0032,
+        "atk": 968.9875,
         "def": 1200
       },
       "52": {
-        "hp": 189196.19999999998,
-        "atk": 317.99600000000004,
+        "hp": 87787.0368,
+        "atk": 993.7375000000001,
         "def": 1208
       },
       "53": {
-        "hp": 205697.4,
-        "atk": 325.356,
+        "hp": 95443.5936,
+        "atk": 1016.7375000000001,
         "def": 1216
       },
       "54": {
-        "hp": 223682.4,
-        "atk": 333.508,
+        "hp": 103788.6336,
+        "atk": 1042.2125,
         "def": 1224
       },
       "55": {
-        "hp": 238817.4,
-        "atk": 341.788,
+        "hp": 110811.2736,
+        "atk": 1068.0875,
         "def": 1232
       },
       "56": {
-        "hp": 252234.59999999998,
-        "atk": 350.19599999999997,
+        "hp": 117036.8544,
+        "atk": 1094.3625,
         "def": 1240
       },
       "57": {
-        "hp": 267261.6,
-        "atk": 358.024,
+        "hp": 124009.38239999999,
+        "atk": 1118.825,
         "def": 1248
       },
       "58": {
-        "hp": 288111,
-        "atk": 365.96400000000006,
+        "hp": 133683.50400000002,
+        "atk": 1143.6375,
         "def": 1256
       },
       "59": {
-        "hp": 310930.80000000005,
-        "atk": 374.74800000000005,
+        "hp": 144271.8912,
+        "atk": 1171.0875,
         "def": 1264
       },
       "60": {
-        "hp": 325318.2,
-        "atk": 385.072,
+        "hp": 150947.6448,
+        "atk": 1203.35,
         "def": 1272
       },
       "61": {
-        "hp": 346010.39999999997,
-        "atk": 505.112,
+        "hp": 160548.82559999998,
+        "atk": 1578.4750000000001,
         "def": 1280
       },
       "62": {
-        "hp": 376221,
-        "atk": 536.104,
+        "hp": 174566.544,
+        "atk": 1675.325,
         "def": 1288
       },
       "63": {
-        "hp": 405007.2,
-        "atk": 568.884,
+        "hp": 187923.3408,
+        "atk": 1777.7624999999998,
         "def": 1296
       },
       "64": {
-        "hp": 437588.39999999997,
-        "atk": 603.588,
+        "hp": 203041.0176,
+        "atk": 1886.2125,
         "def": 1304
       },
       "65": {
-        "hp": 485919.6,
-        "atk": 632.496,
+        "hp": 225466.69439999998,
+        "atk": 1976.55,
         "def": 1312
       },
       "66": {
-        "hp": 525226.2,
-        "atk": 653.904,
+        "hp": 243704.9568,
+        "atk": 2043.45,
         "def": 1320
       },
       "67": {
-        "hp": 561765.6,
-        "atk": 676.2439999999999,
+        "hp": 260659.2384,
+        "atk": 2113.2625,
         "def": 1328
       },
       "68": {
-        "hp": 606498,
-        "atk": 701.1239999999999,
+        "hp": 281415.072,
+        "atk": 2191.0125,
         "def": 1336
       },
       "69": {
-        "hp": 648911.4,
-        "atk": 725.548,
+        "hp": 301094.8896,
+        "atk": 2267.3375,
         "def": 1344
       },
       "70": {
-        "hp": 690874.2000000001,
-        "atk": 751.096,
+        "hp": 320565.6288,
+        "atk": 2347.175,
         "def": 1352
       },
       "71": {
-        "hp": 749838.6,
-        "atk": 844.32,
+        "hp": 347925.1104,
+        "atk": 2638.5,
         "def": 1360
       },
       "72": {
-        "hp": 826672.2,
-        "atk": 872.972,
+        "hp": 383575.90079999994,
+        "atk": 2728.0375,
         "def": 1368
       },
       "73": {
-        "hp": 908847.6000000001,
-        "atk": 899.204,
+        "hp": 421705.28640000004,
+        "atk": 2810.0125,
         "def": 1376
       },
       "74": {
-        "hp": 992903.4,
-        "atk": 926.456,
+        "hp": 460707.1776,
+        "atk": 2895.175,
         "def": 1384
       },
       "75": {
-        "hp": 1090509,
-        "atk": 954.792,
+        "hp": 505996.176,
+        "atk": 2983.7250000000004,
         "def": 1392
       },
       "76": {
-        "hp": 1180157.4000000001,
-        "atk": 984.288,
+        "hp": 547593.0336,
+        "atk": 3075.8999999999996,
         "def": 1400
       },
       "77": {
-        "hp": 1255507.7999999998,
-        "atk": 1015.008,
+        "hp": 582555.6192,
+        "atk": 3171.9,
         "def": 1408
       },
       "78": {
-        "hp": 1334122.8,
-        "atk": 1058.792,
+        "hp": 619032.9792000001,
+        "atk": 3308.725,
         "def": 1416
       },
       "79": {
-        "hp": 1416139.8,
-        "atk": 1088.452,
+        "hp": 657088.8672,
+        "atk": 3401.4125000000004,
         "def": 1424
       },
       "80": {
-        "hp": 1491801.6,
-        "atk": 1119.416,
+        "hp": 692195.9424,
+        "atk": 3498.1749999999997,
         "def": 1432
       },
       "81": {
-        "hp": 1573639.8,
-        "atk": 1213.248,
+        "hp": 730168.8672,
+        "atk": 3791.4,
         "def": 1440
       },
       "82": {
-        "hp": 1681605.6,
-        "atk": 1230.82,
+        "hp": 780264.9984,
+        "atk": 3846.3125,
         "def": 1448
       },
       "83": {
-        "hp": 1809361.2,
-        "atk": 1237.884,
+        "hp": 839543.5968,
+        "atk": 3868.3875,
         "def": 1456
       },
       "84": {
-        "hp": 1951484.4000000001,
-        "atk": 1255.472,
+        "hp": 905488.7616000001,
+        "atk": 3923.35,
         "def": 1464
       },
       "85": {
-        "hp": 2104606.8000000003,
-        "atk": 1273.0800000000002,
+        "hp": 976537.5552000001,
+        "atk": 3978.375,
         "def": 1472
       },
       "86": {
-        "hp": 2263606.1999999997,
-        "atk": 1280.152,
+        "hp": 1050313.2767999999,
+        "atk": 4000.475,
         "def": 1480
       },
       "87": {
-        "hp": 2388232.2,
-        "atk": 1297.772,
+        "hp": 1108139.7408,
+        "atk": 4055.5375,
         "def": 1488
       },
       "88": {
-        "hp": 2520451.2,
-        "atk": 1315.412,
+        "hp": 1169489.3568,
+        "atk": 4110.6625,
         "def": 1496
       },
       "89": {
-        "hp": 2657116.8,
-        "atk": 1322.492,
+        "hp": 1232902.1952,
+        "atk": 4132.7875,
         "def": 1504
       },
       "90": {
-        "hp": 2804631.6,
-        "atk": 1340.156,
+        "hp": 1301349.0624,
+        "atk": 4187.9875,
         "def": 1512
       },
       "91": {
-        "hp": 2947162.1999999997,
-        "atk": 1340.156,
+        "hp": 1367483.2608,
+        "atk": 4187.9875,
         "def": 1520
       },
       "92": {
-        "hp": 3095675.4000000004,
-        "atk": 1340.156,
+        "hp": 1436393.3856000002,
+        "atk": 4187.9875,
         "def": 1528
       },
       "93": {
-        "hp": 3222921,
-        "atk": 1340.156,
+        "hp": 1495435.344,
+        "atk": 4187.9875,
         "def": 1536
       },
       "94": {
-        "hp": 3330169.8,
-        "atk": 1340.156,
+        "hp": 1545198.7872,
+        "atk": 4187.9875,
         "def": 1544
       },
       "95": {
-        "hp": 3412151.4000000004,
-        "atk": 1340.156,
+        "hp": 1583238.2496,
+        "atk": 4187.9875,
         "def": 1552
       },
       "96": {
-        "hp": 3534801.6,
-        "atk": 1340.156,
+        "hp": 1640147.9424,
+        "atk": 4187.9875,
         "def": 1560
       },
       "97": {
-        "hp": 3634692.6,
-        "atk": 1340.156,
+        "hp": 1686497.3664,
+        "atk": 4187.9875,
         "def": 1568
       },
       "98": {
-        "hp": 3722370,
-        "atk": 1340.156,
+        "hp": 1727179.68,
+        "atk": 4187.9875,
         "def": 1576
       },
       "99": {
-        "hp": 3810117,
-        "atk": 1340.156,
+        "hp": 1767894.288,
+        "atk": 4187.9875,
         "def": 1584
       },
       "100": {
-        "hp": 3892318.8,
-        "atk": 1340.156,
+        "hp": 1806035.9231999998,
+        "atk": 4187.9875,
         "def": 1592
       },
       "101": {
-        "hp": 4110282.6,
-        "atk": 1340.156,
+        "hp": 1907171.1264,
+        "atk": 4187.9875,
         "def": 1600
       },
       "102": {
-        "hp": 4136878.1999999997,
-        "atk": 1340.156,
+        "hp": 1919511.4848,
+        "atk": 4187.9875,
         "def": 1607.9999999999998
       },
       "103": {
-        "hp": 4163473.1999999997,
-        "atk": 1340.156,
+        "hp": 1931851.5648,
+        "atk": 4187.9875,
         "def": 1616
       },
       "104": {
-        "hp": 4190068.8,
-        "atk": 1340.156,
+        "hp": 1944191.9231999998,
+        "atk": 4187.9875,
         "def": 1623.9999999999998
       },
       "105": {
-        "hp": 4216663.8,
-        "atk": 1340.156,
+        "hp": 1956532.0032,
+        "atk": 4187.9875,
         "def": 1632
       },
       "106": {
-        "hp": 4243259.399999999,
-        "atk": 1340.156,
+        "hp": 1968872.3616,
+        "atk": 4187.9875,
         "def": 1639.9999999999998
       },
       "107": {
-        "hp": 4269854.399999999,
-        "atk": 1340.156,
+        "hp": 1981212.4415999998,
+        "atk": 4187.9875,
         "def": 1648
       },
       "108": {
-        "hp": 4296450,
-        "atk": 1340.156,
+        "hp": 1993552.8,
+        "atk": 4187.9875,
         "def": 1655.9999999999998
       },
       "109": {
-        "hp": 4323045.600000001,
-        "atk": 1340.156,
+        "hp": 2005893.1584,
+        "atk": 4187.9875,
         "def": 1664
       },
       "110": {
-        "hp": 4349640.600000001,
-        "atk": 1340.156,
+        "hp": 2018233.2384000001,
+        "atk": 4187.9875,
         "def": 1672
       },
       "111": {
-        "hp": 4376236.2,
-        "atk": 1340.156,
+        "hp": 2030573.5968,
+        "atk": 4187.9875,
         "def": 1680
       },
       "112": {
-        "hp": 4402831.2,
-        "atk": 1340.156,
+        "hp": 2042913.6768,
+        "atk": 4187.9875,
         "def": 1688
       },
       "113": {
-        "hp": 4429426.8,
-        "atk": 1340.156,
+        "hp": 2055254.0352,
+        "atk": 4187.9875,
         "def": 1696
       },
       "114": {
-        "hp": 4456021.8,
-        "atk": 1340.156,
+        "hp": 2067594.1152,
+        "atk": 4187.9875,
         "def": 1704
       },
       "115": {
-        "hp": 4482617.399999999,
-        "atk": 1340.156,
+        "hp": 2079934.4736,
+        "atk": 4187.9875,
         "def": 1712
       },
       "116": {
-        "hp": 4509213,
-        "atk": 1340.156,
+        "hp": 2092274.832,
+        "atk": 4187.9875,
         "def": 1720
       },
       "117": {
-        "hp": 4535808,
-        "atk": 1340.156,
+        "hp": 2104614.912,
+        "atk": 4187.9875,
         "def": 1728
       },
       "118": {
-        "hp": 4562403.600000001,
-        "atk": 1340.156,
+        "hp": 2116955.2704000003,
+        "atk": 4187.9875,
         "def": 1736
       },
       "119": {
-        "hp": 4588998.6,
-        "atk": 1340.156,
+        "hp": 2129295.3504,
+        "atk": 4187.9875,
         "def": 1744.0000000000002
       },
       "120": {
-        "hp": 4615594.2,
-        "atk": 1340.156,
+        "hp": 2141635.7088,
+        "atk": 4187.9875,
         "def": 1752
       }
     }
   },
   {
     "Id": 340000260,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
+    "Name": "Nameless Explorer",
+    "Desc": "An ancient remnant entombed under the permafrost, a prisoner by its own hand.",
+    "DescOpen": "This enemy has a <span style=\"color:#ffd12f;\" class=\"font-bold\">higher RES</span> to <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><br>Resonators can inflict up to 2 additional stacks of Tune Strain - Interfered on the Nameless Explorer.<br>When the Nameless Explorer is under Tune Strain - Interfered and hit by Tune Break, it gains 1 additional stack of Tune Strain - Interfered.<br>Each stack of Tune Strain - Interfered makes it take 4% more total DMG.<br><br>The station fell like a dying star, burying the dream of its era beneath ice and soil.<br>The Explorer was one of those who dreamed, who once walked among the stars.<br>But now he hides in the dark, corrupted by the Void.<br>Before reason and strength slipped entirely from his grasp, he sealed himself away in the cabin.",
     "Class": 3,
     "Element": 4,
     "ElementArray": [
@@ -120629,34 +121254,5 @@
         "def": 1752
       }
     }
-  },
-  {
-    "Id": 350000360,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
-    "Class": 4,
-    "Element": 5,
-    "ElementArray": [
-      5,
-      2
-    ],
-    "Icon": "/assets/enemies/350000360.webp",
-    "baseData": {},
-    "Stats": {}
-  },
-  {
-    "Id": 350000370,
-    "Name": "Stay tuned",
-    "Desc": "Stay tuned",
-    "DescOpen": "Stay tuned",
-    "Class": 1,
-    "Element": 1,
-    "ElementArray": [
-      1
-    ],
-    "Icon": "/assets/enemies/350000370.webp",
-    "baseData": {},
-    "Stats": {}
   }
 ]

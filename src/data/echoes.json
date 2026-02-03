@@ -11897,7 +11897,7 @@
       "28": {
         "Id": 28,
         "Name": "Chromatic Foam",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA2.T_IconElementAttriFireA2",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -11907,7 +11907,7 @@
             ]
           },
           "5": {
-            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s.",
             "Param": [
               "10%",
               "15",
@@ -12059,7 +12059,7 @@
       "29": {
         "Id": 29,
         "Name": "Sound of True Name",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriWindVision.T_IconElementAttriWindVision",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -12193,7 +12193,7 @@
       "29": {
         "Id": 29,
         "Name": "Sound of True Name",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriWindVision.T_IconElementAttriWindVision",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -12349,7 +12349,7 @@
       "27": {
         "Id": 27,
         "Name": "Trailblazing Star",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA1.T_IconElementAttriFireA1",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -12483,7 +12483,7 @@
       "28": {
         "Id": 28,
         "Name": "Chromatic Foam",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA2.T_IconElementAttriFireA2",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -12493,7 +12493,7 @@
             ]
           },
           "5": {
-            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s.",
             "Param": [
               "10%",
               "15",
@@ -12506,7 +12506,7 @@
       "29": {
         "Id": 29,
         "Name": "Sound of True Name",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriWindVision.T_IconElementAttriWindVision",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -12671,7 +12671,7 @@
       "28": {
         "Id": 28,
         "Name": "Chromatic Foam",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA2.T_IconElementAttriFireA2",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -12681,7 +12681,7 @@
             ]
           },
           "5": {
-            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s.",
             "Param": [
               "10%",
               "15",
@@ -12854,7 +12854,7 @@
       "27": {
         "Id": 27,
         "Name": "Trailblazing Star",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA1.T_IconElementAttriFireA1",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -12876,7 +12876,7 @@
       "29": {
         "Id": 29,
         "Name": "Sound of True Name",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriWindVision.T_IconElementAttriWindVision",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -13289,7 +13289,7 @@
       "28": {
         "Id": 28,
         "Name": "Chromatic Foam",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA2.T_IconElementAttriFireA2",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -13299,7 +13299,7 @@
             ]
           },
           "5": {
-            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s.",
             "Param": [
               "10%",
               "15",
@@ -13312,7 +13312,7 @@
       "29": {
         "Id": 29,
         "Name": "Sound of True Name",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriWindVision.T_IconElementAttriWindVision",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -13446,7 +13446,7 @@
       "29": {
         "Id": 29,
         "Name": "Sound of True Name",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriWindVision.T_IconElementAttriWindVision",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -13580,7 +13580,7 @@
       "29": {
         "Id": 29,
         "Name": "Sound of True Name",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriWindVision.T_IconElementAttriWindVision",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14011,7 +14011,7 @@
       "28": {
         "Id": 28,
         "Name": "Chromatic Foam",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA2.T_IconElementAttriFireA2",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14021,7 +14021,7 @@
             ]
           },
           "5": {
-            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s.",
             "Param": [
               "10%",
               "15",
@@ -14044,43 +14044,48 @@
   {
     "id": "6000191",
     "Id": 6000191,
-    "Code": "T01-",
-    "Name": "Stay tuned",
+    "Code": "Z04-",
+    "Name": "Sigillum",
     "Type": "",
     "Intensity": "",
     "Place": "",
-    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34025_UI.T_IconMonsterHead_34025_UI",
+    "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34025_0_UI.T_IconMonsterHead_34025_0_UI",
     "Skill": {
       "Desc": "Summon Sigillum to unleash two attacks, dealing {0} and {1} Fusion DMG respectively.\nWhen equipped in the main slot by Aemeath, it grants {2} Resonance Liberation DMG Bonus.\nCD: {3}s",
       "SimpleDesc": "Summon Sigillum to attack enemies, dealing Fusion DMG.\nWhen equipped in the main slot by Aemeath, grant Resonance Liberation DMG Bonus.",
       "Param": [
         [
-          "152.00%",
+          "38.00%",
+          "114.00%",
           "25.00%",
           "20"
         ],
         [
+          "45.60%",
+          "136.80%",
+          "25.00%",
+          "20"
+        ],
+        [
+          "53.20%",
+          "159.60%",
+          "25.00%",
+          "20"
+        ],
+        [
+          "60.80%",
           "182.40%",
           "25.00%",
           "20"
         ],
         [
-          "212.80%",
-          "25.00%",
-          "20"
-        ],
-        [
-          "243.20%",
-          "25.00%",
-          "20"
-        ],
-        [
-          "273.60%",
+          "68.40%",
+          "205.20%",
           "25.00%",
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34025_UI.T_MstSkil_34025_UI",
       "Damage": {
         "28003701": {
           "Element": 2,
@@ -14098,6 +14103,23 @@
           "HardnessLv": 10000,
           "ToughLv": 3800,
           "WeaknessLvl": 0
+        },
+        "28003702": {
+          "Element": 2,
+          "RelatedProperty": "ATK",
+          "Type": 5,
+          "RateLv": [
+            11400,
+            13680,
+            15960,
+            18240,
+            20520
+          ],
+          "Energy": 213,
+          "ElementPower": 0,
+          "HardnessLv": 10000,
+          "ToughLv": 11400,
+          "WeaknessLvl": 0
         }
       }
     },
@@ -14105,7 +14127,7 @@
       "27": {
         "Id": 27,
         "Name": "Trailblazing Star",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA1.T_IconElementAttriFireA1",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14134,22 +14156,22 @@
     "IntensityCode": 3,
     "MonsterInfo": 340000250,
     "Phantom": {
-      "Name": "Stay tuned",
+      "Name": "Phantom: Sigillum",
       "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_34025_UI.T_IconMonsterGoods_SG_34025_UI"
     }
   },
   {
     "id": "6000192",
     "Id": 6000192,
-    "Code": "T01-",
-    "Name": "Stay tuned",
+    "Code": "W89-",
+    "Name": "Nameless Explorer",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34026_UI.T_IconMonsterHead_34026_UI",
     "Skill": {
-      "Desc": "Summon a Nameless Explorer to attack enemies along its path, dealing {0} Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains {1} Aero DMG Bonus and {2} Echo Skill DMG Bonus.\nCD: {3}s.",
-      "SimpleDesc": "Summon a Nameless Explorer to attack enemies, dealing Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains Aero DMG and Echo Skill DMG Bonus",
+      "Desc": "Summon Nameless Explorer to attack enemies along its path, dealing {0} Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains {1} Aero DMG Bonus and {2} Echo Skill DMG Bonus.\nCD: {3}s.",
+      "SimpleDesc": "Summon Nameless Explorer to attack enemies, dealing Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains Aero DMG and Echo Skill DMG Bonus",
       "Param": [
         [
           "152.00%",
@@ -14182,7 +14204,7 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34026_UI.T_MstSkil_34026_UI",
       "Damage": {
         "28003801": {
           "Element": 4,
@@ -14207,7 +14229,7 @@
       "29": {
         "Id": 29,
         "Name": "Sound of True Name",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriWindVision.T_IconElementAttriWindVision",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14239,61 +14261,39 @@
   {
     "id": "6000193",
     "Id": 6000193,
-    "Code": "T01-",
+    "Code": "R67-",
     "Name": "Kronablight",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32059_UI.T_IconMonsterHead_32059_UI",
     "Skill": {
-      "Desc": "Transform into a Kronablight, soar into the air to deal {0} Electro DMG, then dive to deal {0} Electro DMG 2 times and {1} Electro DMG 1 time.\nCD: {2}s",
+      "Desc": "Transform into a Kronablight, soar into the air, and dive to deal {0} Electro DMG to the enemies.\nCD: {1}s",
       "SimpleDesc": "Transform into a Kronablight to attack enemies, dealing Electro DMG.",
       "Param": [
         [
-          "37.25%",
-          "74.50%",
+          "149.00%",
           "15"
         ],
         [
-          "44.70%",
-          "89.40%",
+          "178.80%",
           "15"
         ],
         [
-          "52.15%",
-          "104.30%",
+          "208.60%",
           "15"
         ],
         [
-          "59.60%",
-          "119.20%",
+          "238.40%",
           "15"
         ],
         [
-          "67.05%",
-          "134.10%",
+          "268.20%",
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32059_UI.T_MstSkil_32059_UI",
       "Damage": {
-        "20012901": {
-          "Element": 3,
-          "RelatedProperty": "ATK",
-          "Type": 5,
-          "RateLv": [
-            2235,
-            2682,
-            3129,
-            3576,
-            4023
-          ],
-          "Energy": 8,
-          "ElementPower": 0,
-          "HardnessLv": 10000,
-          "ToughLv": 2235,
-          "WeaknessLvl": 0
-        },
         "20012902": {
           "Element": 3,
           "RelatedProperty": "ATK",
@@ -14317,7 +14317,7 @@
       "27": {
         "Id": 27,
         "Name": "Trailblazing Star",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA1.T_IconElementAttriFireA1",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14339,7 +14339,7 @@
       "28": {
         "Id": 28,
         "Name": "Chromatic Foam",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA2.T_IconElementAttriFireA2",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14349,7 +14349,7 @@
             ]
           },
           "5": {
-            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s.",
             "Param": [
               "10%",
               "15",
@@ -14372,48 +14372,48 @@
   {
     "id": "6000194",
     "Id": 6000194,
-    "Code": "T01-",
-    "Name": "Kronaclaw",
+    "Code": "X55-",
+    "Name": "Reminiscence: Kronaclaw",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32060_UI.T_IconMonsterHead_32060_UI",
     "Skill": {
-      "Desc": "Transform into a Kronaclaw, soar into the air to deal {0} Aero DMG up to 8 times and {1} Aero DMG 2 times, then dive to deal {1} Aero DMG 1 time and {2} Aero DMG 1 time.\nCD: {3}s",
+      "Desc": "Transform into a Kronaclaw and soar into the air to deal {0} Aero DMG up to 8 times and {1} Aero DMG 2 times, then dive to deal {2} Aero DMG 1 time.\nCD: {3}s",
       "SimpleDesc": "Transform into a Kronaclaw to attack enemies, dealing Aero DMG.",
       "Param": [
         [
           "4.47%",
           "13.41%",
-          "73.01%",
+          "86.42%",
           "15"
         ],
         [
           "5.36%",
           "16.09%",
-          "87.61%",
+          "103.70%",
           "15"
         ],
         [
           "6.25%",
           "18.77%",
-          "102.21%",
+          "120.98%",
           "15"
         ],
         [
           "7.15%",
           "21.45%",
-          "116.81%",
+          "138.27%",
           "15"
         ],
         [
           "8.04%",
           "24.13%",
-          "131.41%",
+          "155.55%",
           "15"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32060_UI.T_MstSkil_32060_UI",
       "Damage": {
         "20013001": {
           "Element": 4,
@@ -14449,23 +14449,6 @@
           "ToughLv": 1341,
           "WeaknessLvl": 0
         },
-        "20013005": {
-          "Element": 4,
-          "RelatedProperty": "ATK",
-          "Type": 5,
-          "RateLv": [
-            7301,
-            8761,
-            10221,
-            11681,
-            13141
-          ],
-          "Energy": 89,
-          "ElementPower": 0,
-          "HardnessLv": 10000,
-          "ToughLv": 7301,
-          "WeaknessLvl": 0
-        },
         "20013006": {
           "Element": 4,
           "RelatedProperty": "ATK",
@@ -14489,7 +14472,7 @@
       "27": {
         "Id": 27,
         "Name": "Trailblazing Star",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA1.T_IconElementAttriFireA1",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14511,7 +14494,7 @@
       "28": {
         "Id": 28,
         "Name": "Chromatic Foam",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA2.T_IconElementAttriFireA2",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14521,7 +14504,7 @@
             ]
           },
           "5": {
-            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s.",
             "Param": [
               "10%",
               "15",
@@ -14539,12 +14522,12 @@
       5
     ],
     "IntensityCode": 1,
-    "MonsterInfo": 320000600
+    "MonsterInfo": 320000601
   },
   {
     "id": "6000195",
     "Id": 6000195,
-    "Code": "T01-",
+    "Code": "R68-",
     "Name": "Glommoth",
     "Type": "",
     "Intensity": "",
@@ -14590,7 +14573,7 @@
           "20"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_32061_UI.T_MstSkil_32061_UI",
       "Damage": {
         "20013101": {
           "Element": 1,
@@ -14615,7 +14598,7 @@
       "27": {
         "Id": 27,
         "Name": "Trailblazing Star",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA1.T_IconElementAttriFireA1",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14647,15 +14630,15 @@
   {
     "id": "6000196",
     "Id": 6000196,
-    "Code": "T01-",
-    "Name": "Stay tuned",
+    "Code": "W38-",
+    "Name": "Iceglint Dancer",
     "Type": "",
     "Intensity": "",
     "Place": "",
     "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31083_UI.T_IconMonsterHead_31083_UI",
     "Skill": {
       "Desc": "Transform into an Iceglint Dancer to attack enemies, dealing {0} Glacio DMG.\nCD: {1}s.",
-      "SimpleDesc": "Summon an Iceglint Dancer to attack enemies, dealing Glacio DMG.",
+      "SimpleDesc": "Transform into an Iceglint Dancer to attack enemies, dealing Glacio DMG.",
       "Param": [
         [
           "114.00%",
@@ -14678,7 +14661,7 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31083_UI.T_MstSkil_31083_UI",
       "Damage": {
         "20013201": {
           "Element": 1,
@@ -14703,7 +14686,7 @@
       "27": {
         "Id": 27,
         "Name": "Trailblazing Star",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA1.T_IconElementAttriFireA1",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14732,15 +14715,15 @@
     "IntensityCode": 0,
     "MonsterInfo": 310000830,
     "Phantom": {
-      "Name": "Stay tuned",
+      "Name": "Phantom: Iceglint Dancer",
       "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_SG_31083_UI.T_IconMonsterGoods_SG_31083_UI"
     }
   },
   {
     "id": "6000197",
     "Id": 6000197,
-    "Code": "T01-",
-    "Name": "Stay tuned",
+    "Code": "W39-",
+    "Name": "Shadow Stepper",
     "Type": "",
     "Intensity": "",
     "Place": "",
@@ -14770,7 +14753,7 @@
           "8"
         ]
       ],
-      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_34020_UI.T_MstSkil_34020_UI",
+      "Icon": "/Game/Aki/UI/UIResources/Common/Image/MstSkill/T_MstSkil_31084_UI.T_MstSkil_31084_UI",
       "Damage": {
         "20013301": {
           "Element": 6,
@@ -14795,7 +14778,7 @@
       "27": {
         "Id": 27,
         "Name": "Trailblazing Star",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA1.T_IconElementAttriFireA1",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14817,7 +14800,7 @@
       "28": {
         "Id": 28,
         "Name": "Chromatic Foam",
-        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri128/T_IconElementAttri128_Ice.T_IconElementAttri128_Ice",
+        "Icon": "/Game/Aki/UI/UIResources/Common/Image/IconElementAttri/T_IconElementAttriFireA2.T_IconElementAttriFireA2",
         "Color": "FFFFFF00",
         "Set": {
           "2": {
@@ -14827,7 +14810,7 @@
             ]
           },
           "5": {
-            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s or until they're switched out.",
+            "Desc": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain {0} Fusion DMG Bonus for {1} s. While this effect is active, casting an Outro Skill grants the incoming Resonator {2} Fusion DMG Bonus for {3}s.",
             "Param": [
               "10%",
               "15",
