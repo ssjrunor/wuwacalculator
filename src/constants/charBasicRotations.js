@@ -617,5 +617,36 @@ const defaultRotationEntries = {
             { name: "Let's Hit the Road DMG", multiplier: 1 },
         ],
         link: 'https://www.prydwen.gg/wuthering-waves/characters/lynae'
+    },
+    '1209': {
+        entries: [
+            { name: "Convergence DMG", multiplier: 1 },
+            { name: "Basic Attack - Wide Field Observation Mode Stage 1 DMG", multiplier: 1 },
+            { name: "Basic Attack - Wide Field Observation Mode Stage 2 DMG", multiplier: 1 },
+            { name: "Basic Attack - Wide Field Observation Mode Stage 3 DMG", multiplier: 1 },
+            { name: "Distributed Array DMG", multiplier: 1 },
+            { name: "Heavy Attack - Inversion DMG", multiplier: 1 },
+            { name: "Critical Protocol DMG", multiplier: 1 },
+        ],
+        link: 'https://www.prydwen.gg/wuthering-waves/characters/mornye'
+    },
+    '1210': {
+        entries: [
+            { name: "Songs Across the Universe DMG", multiplier: 1 },
+            { name: "Basic Attack - Aemeath Stage 3 DMG", multiplier: 1 },
+            { name: "Basic Attack - Aemeath Stage 4 DMG", multiplier: 1 },
+            { name: "Heavenfall Edict: Overdrive DMG", multiplier: 1 },
+            { name: "Basic Attack - Mech Stage 2 DMG", multiplier: 1 },
+            { name: "Basic Attack - Mech Stage 3 DMG", multiplier: 1 },
+            { name: "Basic Attack - Mech Stage 4 DMG", multiplier: 1 },
+            { name: "Seraphic Duet: Encore DMG", multiplier: 1 },
+            { name: "Basic Attack - Aemeath Stage 2 DMG", multiplier: 1 },
+            { name: "Basic Attack - Aemeath Stage 3 DMG", multiplier: 1 },
+            { name: "Basic Attack - Aemeath Stage 4 DMG", multiplier: 1 },
+            { name: "Seraphic Duet: Overture DMG", multiplier: 1 },
+            { name: "Heavy Attack - Mech Charged II DMG", multiplier: 1 },
+            { name: "Heavenfall Edict: Finale DMG", multiplier: 1 }
+        ],
+        link: 'https://www.prydwen.gg/wuthering-waves/characters/aemeath'
     }
 };
