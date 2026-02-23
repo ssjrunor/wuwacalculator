@@ -84,7 +84,7 @@ export function buildMainEchoBuffsArray(reverseIds, echoes, charId) {
             buffs.aero = (buffs.aero ?? 0) + 10;
         }
 
-        if (echo.id === '6000191' && charId === '1210') buffs.resonanceLiberation = (buffs.resonanceLiberation ?? 0) + 20;
+        if (echo.id === '6000191' && charId === '1210') buffs.resonanceLiberation = (buffs.resonanceLiberation ?? 0) + 25;
 
         out[base]      = buffs.atkPercent   ?? 0;
         out[base + 1]  = buffs.atkFlat      ?? 0;
