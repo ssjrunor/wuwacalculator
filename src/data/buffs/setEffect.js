@@ -1,5 +1,4 @@
-import {echoSets, stateToSetId} from "@/constants/echoSetData2.js";
-import {normalizeLegacyEchoStats} from "@/utils/echoHelper.js";
+import {echoSets} from "@/constants/echoSetData2.js";
 
 export const elementMap = {
     1: 'glacio',
@@ -812,7 +811,7 @@ export function applyMainEchoBuffLogic({ equippedEchoes, mergedBuffs, characterS
     if (!mainEcho) return mergedBuffs;
 
     if (mainEcho.id === "6000191" && charId === "1210") {
-        applyStatToMerged(mergedBuffs, "resonanceLiberation", 20);
+        applyStatToMerged(mergedBuffs, "resonanceLiberation", 25);
     }
 
     const config = mainEchoBuffs?.[mainEcho.id];
@@ -872,7 +871,7 @@ export function applyTheoreticalMainEchoBuffs({ echoId, mergedBuffs, charId }) {
     if (!echoId || !mergedBuffs) return mergedBuffs;
 
     if (String(echoId) === "6000191" && charId === "1210") {
-        applyStatToMerged(mergedBuffs, "resonanceLiberation", 20);
+        applyStatToMerged(mergedBuffs, "resonanceLiberation", 25);
     }
 
     const config = mainEchoBuffs?.[String(echoId)];
@@ -930,7 +929,7 @@ export function removeMainEchoBuffLogic({
     const mainEcho = equippedEchoes?.[0];
     if (!mainEcho) return mergedBuffs;
     if (mainEcho.id === "6000191" && charId === "1210") {
-        applyStatToMerged(mergedBuffs, "resonanceLiberation", -20);
+        applyStatToMerged(mergedBuffs, "resonanceLiberation", -25);
     }
 
     const config = mainEchoBuffs?.[mainEcho.id];
