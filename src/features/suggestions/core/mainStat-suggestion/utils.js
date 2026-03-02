@@ -1,4 +1,4 @@
-import {echoes} from "@/data/ingest/getEchoes.js";
+import {echoes} from "@/data/runtime/getEchoes.js";
 
 const echoTemplates = echoes;
 

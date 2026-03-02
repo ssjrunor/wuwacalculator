@@ -1,4 +1,4 @@
-import { echoes } from '@/data/ingest/getEchoes.js';
+import { echoes } from '@/data/runtime/getEchoes.js';
 import { setIconMap } from '@shared/constants/echoSetData2.js';
 import {applyFixedSecondMainStat, getValidMainStats} from "./echoHelper.js";
 

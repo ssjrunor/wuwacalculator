@@ -1,5 +1,5 @@
 import {getWeight, getWeightObj} from '@shared/constants/charStatWeights.js';
-import {echoes} from "@/data/ingest/getEchoes.js";
+import {echoes} from "@/data/runtime/getEchoes.js";
 import {makeBaseBuffs, makeModBuffs} from "./getUnifiedStatPool.js";
 import {applyStatToMerged} from "@/data/buffs/setEffect.js";
 

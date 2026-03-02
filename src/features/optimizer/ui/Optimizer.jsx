@@ -21,7 +21,7 @@ import SkillMenu, {tabDisplayOrder} from "@/features/rotations/ui/SkillMenu.jsx"
 import {CharacterOptionsPanel} from "./CharacterOptionsPanel.jsx";
 import {EchoOptimizerControlBox} from "./EchoOptimizerControlBox.jsx";
 import EchoOptimizerRow from "./EchoOptimizerRow.jsx";
-import {echoes as allEchoes} from "@/data/ingest/getEchoes.js";
+import {echoes as allEchoes} from "@/data/runtime/getEchoes.js";
 import EchoMenu from "@/features/echoes/ui/EchoMenu.jsx";
 import {useComboCounter} from "./useComboCounter.js";
 import GuidesModal from "@/shared/ui/common/GuideModal.jsx";

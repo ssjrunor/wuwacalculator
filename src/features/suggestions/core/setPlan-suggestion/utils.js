@@ -1,4 +1,4 @@
-import { echoes as echoTemplates } from "@/data/ingest/getEchoes.js";
+import { echoes as echoTemplates } from "@/data/runtime/getEchoes.js";
 import {DEFAULT_THREE_PIECE_SETS} from "@shared/constants/echoSetData2.js";
 
 const THREE_PIECE_SET_IDS = new Set(DEFAULT_THREE_PIECE_SETS);

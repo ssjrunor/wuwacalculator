@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Split from 'split.js';
-import {fetchCharacters} from '@/data/ingest/wutheringFetch';
+import {fetchCharacters} from '@/data/runtime/wutheringFetch';
 import characterStatesRaw from '@/data/characterStates.json';
 import '@shared/styles';
 import CharacterSelector, {
@@ -33,7 +33,7 @@ import {
     Activity
 } from 'lucide-react';
 import {useNavigate} from 'react-router-dom';
-import {fetchWeapons} from '@/data/ingest/fetchWeapons';
+import {fetchWeapons} from '@/data/runtime/fetchWeapons';
 import {getWeaponOverride} from '@/data/weapons/behavior';
 import {applyEchoLogic} from '@/data/buffs/applyEchoLogic';
 import {applyWeaponBuffLogic} from "@/data/buffs/weaponBuffs.js";

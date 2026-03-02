@@ -5,7 +5,7 @@ import {formatNumber} from "./suggestionsViewUtils.js";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";
 import {setIconMap} from "@shared/constants/echoSetData2.js";
 import EchoMenu from "@/features/echoes/ui/EchoMenu.jsx";
-import {echoes as allEchoes} from "@/data/ingest/getEchoes.js";
+import {echoes as allEchoes} from "@/data/runtime/getEchoes.js";
 import {getEquippedEchoesScoreDetails} from "@/features/echoes/ui/EchoesPane.jsx";
 import {defaultRandGen} from "@/features/suggestions/core/randomEchoes/lib/constants.js";
 import {SonataSetPlanner} from "@/features/suggestions/ui/SonataSetPlanner.jsx";

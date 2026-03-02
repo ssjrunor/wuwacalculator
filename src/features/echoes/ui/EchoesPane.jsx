@@ -4,7 +4,7 @@ import EditSubstatsModal from './EchoEditModal.jsx';
 import {skillKeywords, statKeywords} from "@shared/constants/echoSetData.jsx";
 import {echoSetById, echoSetList, setIconMap} from "@shared/constants/echoSetData2.js";
 import {getEchoSetUIOverrides} from "@/data/echoes/sets/ui/index.js";
-import {echoes} from '@/data/ingest/getEchoes.js';
+import {echoes} from '@/data/runtime/getEchoes.js';
 import {attributeColors} from "@shared/utils/attributeHelpers.js";
 import {Info, Save, X} from "lucide-react";
 import {mainEchoBuffs} from "@/data/buffs/setEffect.js";

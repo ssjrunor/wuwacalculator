@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 
 const apiProxyTarget = process.env.WUWA_API_PROXY_TARGET || 'http://localhost:3001';
+const isNodeModulePackage = (id, pkg) =>
+  id.includes(`/node_modules/${pkg}/`) || id.includes(`\\node_modules\\${pkg}\\`);
 
 export default defineConfig({
   plugins: [
@@ -50,23 +52,29 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('tesseract.js')) return 'vendor-ocr';
-            if (id.includes('antd')) return 'vendor-antd';
-            if (id.includes('recharts')) return 'vendor-charts';
-            if (id.includes('@dnd-kit')) return 'vendor-dnd';
-            if (id.includes('react-select')) return 'vendor-select';
-            if (id.includes('html-to-image') || id.includes('html2canvas')) return 'vendor-image';
-            if (id.includes('framer-motion') || id.includes('styled-components')) return 'vendor-animation';
-            if (id.includes('@react-oauth/google') || id.includes('jwt-decode')) return 'vendor-auth';
+            if (isNodeModulePackage(id, 'tesseract.js')) return 'vendor-ocr';
+            if (isNodeModulePackage(id, 'antd')) return 'vendor-antd';
+            if (isNodeModulePackage(id, 'recharts')) return 'vendor-charts';
+            if (id.includes('/node_modules/@dnd-kit/') || id.includes('\\node_modules\\@dnd-kit\\')) return 'vendor-dnd';
+            if (isNodeModulePackage(id, 'react-select')) return 'vendor-select';
+            if (isNodeModulePackage(id, 'html-to-image') || isNodeModulePackage(id, 'html2canvas')) return 'vendor-image';
+            if (isNodeModulePackage(id, 'framer-motion') || isNodeModulePackage(id, 'styled-components')) return 'vendor-animation';
+            if (isNodeModulePackage(id, '@react-oauth/google') || isNodeModulePackage(id, 'jwt-decode')) return 'vendor-auth';
             if (
-              id.includes('react/') ||
-              id.includes('react-dom/') ||
-              id.includes('react-router') ||
-              id.includes('scheduler')
+              isNodeModulePackage(id, 'react') ||
+              isNodeModulePackage(id, 'react-dom') ||
+              isNodeModulePackage(id, 'scheduler')
             ) {
               return 'vendor-react';
             }
-            if (id.includes('lucide-react') || id.includes('lodash')) {
+            if (
+              isNodeModulePackage(id, 'react-router') ||
+              isNodeModulePackage(id, 'react-router-dom') ||
+              isNodeModulePackage(id, '@remix-run/router')
+            ) {
+              return 'vendor-router';
+            }
+            if (isNodeModulePackage(id, 'lucide-react') || isNodeModulePackage(id, 'lodash')) {
               return 'vendor-ui';
             }
             return 'vendor-misc';
