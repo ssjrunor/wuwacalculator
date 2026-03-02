@@ -61,13 +61,6 @@ export default defineConfig({
             if (isNodeModulePackage(id, 'framer-motion') || isNodeModulePackage(id, 'styled-components')) return 'vendor-animation';
             if (isNodeModulePackage(id, '@react-oauth/google') || isNodeModulePackage(id, 'jwt-decode')) return 'vendor-auth';
             if (
-              isNodeModulePackage(id, 'react') ||
-              isNodeModulePackage(id, 'react-dom') ||
-              isNodeModulePackage(id, 'scheduler')
-            ) {
-              return 'vendor-react';
-            }
-            if (
               isNodeModulePackage(id, 'react-router') ||
               isNodeModulePackage(id, 'react-router-dom') ||
               isNodeModulePackage(id, '@remix-run/router')
