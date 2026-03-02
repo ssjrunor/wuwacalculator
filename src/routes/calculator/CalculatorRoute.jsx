@@ -140,7 +140,7 @@ export default function CalculatorRoute(props) {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2026-01-24 23:00';
+    const LATEST_CHANGELOG_VERSION = '2026-03-02 18:18';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
