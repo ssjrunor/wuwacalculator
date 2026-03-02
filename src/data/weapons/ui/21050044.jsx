@@ -1,5 +1,5 @@
 import React from 'react';
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 
 export function WeaponUI({
                              activeStates,

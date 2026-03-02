@@ -45,6 +45,7 @@ import LynaeUI, {lynaeSequenceToggles, CustomInherentSkills as LynaeInherentSkil
 import MornyeUI, {MornyeSequenceToggles} from "./1209.jsx";
 import AemeathUI, {AemeathSequenceToggles, CustomInherentSkills as AemeathInherents} from "./1210.jsx";
 import LuukUI, {LuukSequenceToggles, CustomInherentSkills as LuukInherents} from "./1510.jsx";
+import SigrikaUI, {sigrikaSequenceToggles} from "@/data/characters/ui/1412.jsx";
 
 
 export function getCharacterUIComponent(characterId) {
@@ -78,6 +79,7 @@ export function getCharacterUIComponent(characterId) {
         case '1209': return MornyeUI;
         case '1210': return AemeathUI;
         case '1510': return LuukUI;
+        case '1412': return SigrikaUI;
         default: return null;
     }
 }
@@ -176,63 +178,24 @@ export function getSequenceToggleComponent(characterId) {
         case '1209': return MornyeSequenceToggles;
         case '1210': return AemeathSequenceToggles;
         case '1510': return LuukSequenceToggles;
+        case '1412': return sigrikaSequenceToggles;
         default: return null;
     }
 }
 
-const characterBuffUIMap = {
-    '1102': () => import('./1102.jsx').then(mod => mod.buffUI),
-    '1103': () => import('./1103.jsx').then(mod => mod.buffUI),
-    '1407': () => import('./1407.jsx').then(mod => mod.buffUI),
-    '1505': () => import('./1505.jsx').then(mod => mod.buffUI),
-    '1105': () => import('./1105.jsx').then(mod => mod.buffUI),
-    '1506': () => import('./1506.jsx').then(mod => mod.buffUI),
-    '1503': () => import('./1503.jsx').then(mod => mod.buffUI),
-    '1207': () => import('./1207.jsx').then(mod => mod.buffUI),
-    '1205': () => import('./1205.jsx').then(mod => mod.buffUI),
-    '1206': () => import('./1206.jsx').then(mod => mod.buffUI),
-    '1302': () => import('./1302.jsx').then(mod => mod.buffUI),
-    '1204': () => import('./1204.jsx').then(mod => mod.buffUI),
-    '1106': () => import('./1106.jsx').then(mod => mod.buffUI),
-    '1202': () => import('./1202.jsx').then(mod => mod.buffUI),
-    '1203': () => import('./1203.jsx').then(mod => mod.buffUI),
-    '1107': () => import('./1107.jsx').then(mod => mod.buffUI),
-    '1104': () => import('./1104.jsx').then(mod => mod.buffUI),
-    '1301': () => import('./1301.jsx').then(mod => mod.buffUI),
-    '1303': () => import('./1303.jsx').then(mod => mod.buffUI),
-    '1304': () => import('./1304.jsx').then(mod => mod.buffUI),
-    '1305': () => import('./1305.jsx').then(mod => mod.buffUI),
-    '1402': () => import('./1402.jsx').then(mod => mod.buffUI),
-    '1404': () => import('./1404.jsx').then(mod => mod.buffUI),
-    '1405': () => import('./1405.jsx').then(mod => mod.buffUI),
-    '1409': () => import('./1409.jsx').then(mod => mod.buffUI),
-    '1501': () => import('./1501.jsx').then(mod => mod.buffUI),
-    '1502': () => import('./1501.jsx').then(mod => mod.buffUI),
-    '1504': () => import('./1504.jsx').then(mod => mod.buffUI),
-    '1507': () => import('./1507.jsx').then(mod => mod.buffUI),
-    '1601': () => import('./1601.jsx').then(mod => mod.buffUI),
-    '1602': () => import('./1602.jsx').then(mod => mod.buffUI),
-    '1603': () => import('./1603.jsx').then(mod => mod.buffUI),
-    '1604': () => import('./1604.jsx').then(mod => mod.buffUI),
-    '1605': () => import('./1604.jsx').then(mod => mod.buffUI),
-    '1606': () => import('./1606.jsx').then(mod => mod.buffUI),
-    '1607': () => import('./1607.jsx').then(mod => mod.buffUI),
-    '1403': () => import('./1403.jsx').then(mod => mod.buffUI),
-    '1608': () => import('./1608.jsx').then(mod => mod.buffUI),
-    '1306': () => import('./1306.jsx').then(mod => mod.buffUI),
-    '1410': () => import('./1410.jsx').then(mod => mod.buffUI),
-    '1411': () => import('./1411.jsx').then(mod => mod.buffUI),
-    '1208': () => import('./1208.jsx').then(mod => mod.buffUI),
-    '1307': () => import('./1307.jsx').then(mod => mod.buffUI),
-    '1508': () => import('./1508.jsx').then(mod => mod.buffUI),
-    '1509': () => import('./1509.jsx').then(mod => mod.buffUI),
-    '1209': () => import('./1209.jsx').then(mod => mod.buffUI),
-    '1210': () => import('./1210.jsx').then(mod => mod.buffUI),
-    '1510': () => import('./1510.jsx').then(mod => mod.buffUI),
-};
+const characterBuffModules = import.meta.glob('./*.jsx', { eager: true });
+
+const characterBuffUIMap = Object.entries(characterBuffModules).reduce((accumulator, [path, module]) => {
+    const id = path.match(/\/(\d+)\.jsx$/)?.[1];
+    if (id) {
+        accumulator[id] = module?.buffUI ?? null;
+    }
+    return accumulator;
+}, {});
+
+characterBuffUIMap['1502'] = characterBuffUIMap['1501'] ?? null;
+characterBuffUIMap['1605'] = characterBuffUIMap['1604'] ?? null;
 
 export async function loadCharacterBuffUI(charId) {
-    const loader = characterBuffUIMap[String(charId)];
-    if (!loader) return null;
-    return loader();
+    return characterBuffUIMap[String(charId)] ?? null;
 }

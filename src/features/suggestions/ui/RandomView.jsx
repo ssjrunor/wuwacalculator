@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
-import {formatStatKey, getEchoScores, getTop5SubstatScoreDetails} from "@/utils/echoHelper.js";
-import {withOpacity} from "@/utils/attributeHelpers.js";
+import {formatStatKey, getEchoScores, getTop5SubstatScoreDetails} from "@shared/utils/echoHelper.js";
+import {withOpacity} from "@shared/utils/attributeHelpers.js";
 import {formatNumber} from "./suggestionsViewUtils.js";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";
-import {setIconMap} from "@/constants/echoSetData2.js";
+import {setIconMap} from "@shared/constants/echoSetData2.js";
 import EchoMenu from "@/features/echoes/ui/EchoMenu.jsx";
 import {echoes as allEchoes} from "@/data/ingest/getEchoes.js";
 import {getEquippedEchoesScoreDetails} from "@/features/echoes/ui/EchoesPane.jsx";

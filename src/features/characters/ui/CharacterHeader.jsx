@@ -1,5 +1,5 @@
 import React from 'react';
-import {imageCache} from "@/pages/Calculator.jsx";
+import {imageCache} from "@/features/calculator/runtime/visualResourceStore.js";
 
 const weaponMap = {
     broadblade: 1,

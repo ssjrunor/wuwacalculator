@@ -1,7 +1,7 @@
 import {
     snapToNearestSubstatValue,
     validSubstatRanges,
-} from "@/utils/echoHelper.js";
+} from "@shared/utils/echoHelper.js";
 
 const round1 = (n) => Math.round(n * 10) / 10;
 

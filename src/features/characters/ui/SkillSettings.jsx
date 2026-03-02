@@ -1,5 +1,5 @@
 import React from 'react';
-import skillTabs from '@/constants/skillTabs.js';
+import skillTabs from '@shared/constants/skillTabs.js';
 import {Info} from "lucide-react";
 
 export default function SkillSettings({

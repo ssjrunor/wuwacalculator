@@ -1,5 +1,5 @@
-import { echoSets } from "@/constants/echoSetData2.js";
-import { setIconMap } from "@/constants/echoSetData2.js";
+import { echoSets } from "@shared/constants/echoSetData2.js";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
 
 export function applyEchoLogic({ mergedBuffs, characterState }) {
     const echo = characterState?.activeStates ?? {};

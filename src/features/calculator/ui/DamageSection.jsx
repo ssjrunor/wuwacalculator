@@ -1,7 +1,7 @@
 import React from "react";
 import Rotations, { TeamRotation } from "@/features/rotations/ui/Rotations.jsx";
-import { attributeColors } from "@/utils/attributeHelpers.js";
-import {getSkillData} from "@/utils/computeSkillDamage.js";
+import { attributeColors } from "@shared/utils/attributeHelpers.js";
+import {getSkillData} from "@shared/utils/computeSkillDamage.js";
 import {i} from "framer-motion/m";
 
 export default function DamageSection({

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {echoSetById, echoSetList, setIconMap} from "@/constants/echoSetData2.js";
+import {echoSetById, echoSetList, setIconMap} from "@shared/constants/echoSetData2.js";
 import {createPortal} from "react-dom";
 
 export function SonataSetPlanner({ selectedSets, updateRandGenSettings }) {

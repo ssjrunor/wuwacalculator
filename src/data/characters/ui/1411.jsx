@@ -1,8 +1,8 @@
-import {formatDescription} from "@/utils/formatDescription.js";
+import {formatDescription} from "@shared/utils/formatDescription.js";
 import React, {useEffect} from 'react';
-import DropdownSelect from '@/components/common/DropdownSelect.jsx';
-import {attributeColors} from "@/utils/attributeHelpers.js";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
+import DropdownSelect from '@/shared/ui/common/DropdownSelect.jsx';
+import {attributeColors} from "@shared/utils/attributeHelpers.js";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 
 export default function QiuyuanUI({ activeStates, toggleState }) {
     return (

@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
-import {formatDescription} from "@/utils/formatDescription.js";
-import DropdownSelect from "@/components/common/DropdownSelect.jsx";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
-import {attributeColors} from "@/utils/attributeHelpers.js";
+import {formatDescription} from "@shared/utils/formatDescription.js";
+import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
+import {attributeColors} from "@shared/utils/attributeHelpers.js";
 
 export default function AugustaUI({
                                       activeStates,

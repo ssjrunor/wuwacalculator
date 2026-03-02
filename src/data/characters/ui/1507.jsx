@@ -1,8 +1,8 @@
 import React from "react";
-import {formatDescription} from "@/utils/formatDescription.js";
-import DropdownSelect from "@/components/common/DropdownSelect.jsx";
-import {attributeColors} from "@/utils/attributeHelpers.js";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
+import {formatDescription} from "@shared/utils/formatDescription.js";
+import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
+import {attributeColors} from "@shared/utils/attributeHelpers.js";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 
 export default function ZaniUI({ setCharacterRuntimeStates, charId, activeStates, toggleState }) {
 

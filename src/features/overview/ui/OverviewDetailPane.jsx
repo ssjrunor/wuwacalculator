@@ -1,25 +1,25 @@
 import React, {useRef, useState} from 'react';
-import {highlightKeywordsInText} from '@/constants/echoSetData.jsx';
-import {setIconMap} from '@/constants/echoSetData2.js';
-import {imageCache} from '@/pages/Calculator.jsx';
+import {highlightKeywordsInText} from '@shared/constants/echoSetData.jsx';
+import {setIconMap} from '@shared/constants/echoSetData2.js';
+import {imageCache} from '@/features/calculator/runtime/visualResourceStore.js';
 import {
     formatStatKey,
     getEchoScores,
     getEchoStatsFromEquippedEchoes,
     getTop5SubstatScoreDetails
-} from '@/utils/echoHelper.js';
+} from '@shared/utils/echoHelper.js';
 import {statIconMap} from '@/features/characters/ui/CharacterStats.jsx';
-import {attributeColors} from '@/utils/attributeHelpers.js';
+import {attributeColors} from '@shared/utils/attributeHelpers.js';
 import {formatStatValue} from "@/features/weapons/ui/WeaponPane.jsx";
 import {getActiveStateWeapons} from "@/data/buffs/weaponBuffs.js";
 import weaponsRaw from '@/data/weapons.json';
 import {getActiveEchoes} from "@/data/buffs/applyEchoLogic.js";
 import {getEquippedEchoesScoreDetails} from "@/features/echoes/ui/EchoesPane.jsx";
-import {downloadFixedSizePNG} from "@/utils/ScreenshotUtil.js";
+import {downloadFixedSizePNG} from "@shared/utils/ScreenshotUtil.js";
 import {Camera, Download} from 'lucide-react';
-import NotificationToast from "@/components/common/NotificationToast.jsx";
-import GuidesModal from "@/components/common/GuideModal.jsx";
-import ConfirmationModal from "@/components/common/ConfirmationModal.jsx";
+import NotificationToast from "@/shared/ui/common/NotificationToast.jsx";
+import GuidesModal from "@/shared/ui/common/GuideModal.jsx";
+import ConfirmationModal from "@/shared/ui/common/ConfirmationModal.jsx";
 
 export default function OverviewDetailPane({
                                                character,

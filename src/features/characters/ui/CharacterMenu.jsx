@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { imageCache } from '@/pages/Calculator.jsx';
-import {attributeMap, weaponMap} from "@/pages/Calculator.jsx";
+import { imageCache } from '@/features/calculator/runtime/visualResourceStore.js';
+import {attributeMap, weaponMap} from "@/features/calculator/runtime/visualResourceStore.js";
 
 export default function CharacterMenu({
                                           characters,

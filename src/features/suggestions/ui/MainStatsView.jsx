@@ -1,6 +1,6 @@
 import React from 'react';
-import {formatStatKey} from "@/utils/echoHelper.js";
-import {withOpacity} from "@/utils/attributeHelpers.js";
+import {formatStatKey} from "@shared/utils/echoHelper.js";
+import {withOpacity} from "@shared/utils/attributeHelpers.js";
 import {formatNumber} from "./suggestionsViewUtils.js";
 
 function normalizeMainStats(echo) {

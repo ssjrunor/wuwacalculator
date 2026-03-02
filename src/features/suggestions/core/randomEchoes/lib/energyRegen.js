@@ -1,7 +1,7 @@
 import {
     snapToNearestSubstatValue,
     validSubstatRanges,
-} from "@/utils/echoHelper.js";
+} from "@shared/utils/echoHelper.js";
 import { getSubstatScore } from "./substats.js";
 
 const ER_RANGE = validSubstatRanges.energyRegen;

@@ -2,8 +2,8 @@
 // 1. Group Echo Sets by piece type
 //------------------------------------------------------
 
-import { echoSets } from "@/constants/echoSetData2.js";
-import { setIconMap } from "@/constants/echoSetData2.js";
+import { echoSets } from "@shared/constants/echoSetData2.js";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
 
  export function computeAllowTable(selected, setOptions) {
     const solverSelections = convertUISelectionToSolver(selected, setOptions.grouped);

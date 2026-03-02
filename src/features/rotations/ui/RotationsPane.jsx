@@ -14,16 +14,16 @@ import {
 import {arrayMove, SortableContext, verticalListSortingStrategy} from '@dnd-kit/sortable';
 import {restrictToFirstScrollableAncestor} from '@dnd-kit/modifiers';
 import RotationItem, {BlockSubItem} from "./RotationItem.jsx";
-import {buildRotation, getSkillDamageCache, makeEntry} from '@/utils/skillDamageCache.js';
-import {getPersistentValue, setPersistentValue, usePersistentState} from "@/hooks/usePersistentState.js";
+import {buildRotation, getSkillDamageCache, makeEntry} from '@shared/utils/skillDamageCache.js';
+import {getPersistentValue, setPersistentValue, usePersistentState} from "@shared/hooks/usePersistentState.js";
 import {calculateRotationTotals} from "./Rotations.jsx";
-import NotificationToast from "@/components/common/NotificationToast.jsx";
+import NotificationToast from "@/shared/ui/common/NotificationToast.jsx";
 import {isEqual} from "lodash";
-import GuidesModal from "@/components/common/GuideModal.jsx";
-import ConfirmationModal from "@/components/common/ConfirmationModal.jsx";
+import GuidesModal from "@/shared/ui/common/GuideModal.jsx";
+import ConfirmationModal from "@/shared/ui/common/ConfirmationModal.jsx";
 import Select from 'react-select';
 import SkillMenu, {tabDisplayOrder} from "./SkillMenu.jsx";
-import PlainModal from "@/components/common/PlainModal.jsx";
+import PlainModal from "@/shared/ui/common/PlainModal.jsx";
 
 const errorMessages = [
     "Pro Tip: Try using this on {character} instead, unless you enjoy seeing these alerts.",

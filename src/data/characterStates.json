@@ -428,7 +428,7 @@
       "critRate": 5,
       "critDmg": 150,
       "energyRegen": 100,
-      "tuneBreakBoost": 10,
+      "tuneBreakBoost": 0,
       "basicAttackBonus": 0,
       "heavyAttackBonus": 0,
       "resonanceSkillBonus": 0,
@@ -460,7 +460,7 @@
       "critRate": 5,
       "critDmg": 150,
       "energyRegen": 100,
-      "tuneBreakBoost": 10,
+      "tuneBreakBoost": 0,
       "basicAttackBonus": 0,
       "heavyAttackBonus": 0,
       "resonanceSkillBonus": 0,
@@ -1024,6 +1024,38 @@
     "sprite": "/assets/sprite/1411.webp"
   },
   "32": {
+    "Name": "Sigrika",
+    "Id": 1412,
+    "Rarity": 5,
+    "Attribute": 4,
+    "WeaponType": 4,
+    "Stats": {
+      "hp": 862,
+      "atk": 35,
+      "def": 93,
+      "critRate": 5,
+      "critDmg": 150,
+      "energyRegen": 100,
+      "tuneBreakBoost": 0,
+      "basicAttackBonus": 0,
+      "heavyAttackBonus": 0,
+      "resonanceSkillBonus": 0,
+      "resonanceLiberationBonus": 0,
+      "glacioDmgBonus": 0,
+      "fusionDmgBonus": 0,
+      "electroDmgBonus": 0,
+      "aeroDmgBonus": 0,
+      "spectroDmgBonus": 0,
+      "havocDmgBonus": 0,
+      "healingBonus": 0
+    },
+    "CurrentLevelMultipliers": {},
+    "CurrentSequenceLevel": 0,
+    "CurrentWeapon": null,
+    "CharacterLevel": 1,
+    "sprite": "/assets/sprite/1412.webp"
+  },
+  "33": {
     "Name": "Rover: Spectro",
     "Id": 1501,
     "Rarity": 5,
@@ -1055,7 +1087,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1501.webp"
   },
-  "33": {
+  "34": {
     "Name": "Rover: Spectro",
     "Id": 1502,
     "Rarity": 5,
@@ -1087,7 +1119,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1502.webp"
   },
-  "34": {
+  "35": {
     "Name": "Verina",
     "Id": 1503,
     "Rarity": 5,
@@ -1119,7 +1151,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1503.webp"
   },
-  "35": {
+  "36": {
     "Name": "Lumi",
     "Id": 1504,
     "Rarity": 4,
@@ -1151,7 +1183,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1504.webp"
   },
-  "36": {
+  "37": {
     "Name": "Shorekeeper",
     "Id": 1505,
     "Rarity": 5,
@@ -1183,7 +1215,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1505.webp"
   },
-  "37": {
+  "38": {
     "Name": "Phoebe",
     "Id": 1506,
     "Rarity": 5,
@@ -1215,7 +1247,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1506.webp"
   },
-  "38": {
+  "39": {
     "Name": "Zani",
     "Id": 1507,
     "Rarity": 5,
@@ -1247,7 +1279,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1507.webp"
   },
-  "39": {
+  "40": {
     "Name": "Chisa",
     "Id": 1508,
     "Rarity": 5,
@@ -1279,7 +1311,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1508.webp"
   },
-  "40": {
+  "41": {
     "Name": "Lynae",
     "Id": 1509,
     "Rarity": 5,
@@ -1292,7 +1324,7 @@
       "critRate": 5,
       "critDmg": 150,
       "energyRegen": 100,
-      "tuneBreakBoost": 10,
+      "tuneBreakBoost": 0,
       "basicAttackBonus": 0,
       "heavyAttackBonus": 0,
       "resonanceSkillBonus": 0,
@@ -1311,7 +1343,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1509.webp"
   },
-  "41": {
+  "42": {
     "Name": "Luuk Herssen",
     "Id": 1510,
     "Rarity": 5,
@@ -1324,7 +1356,7 @@
       "critRate": 5,
       "critDmg": 150,
       "energyRegen": 100,
-      "tuneBreakBoost": 10,
+      "tuneBreakBoost": 0,
       "basicAttackBonus": 0,
       "heavyAttackBonus": 0,
       "resonanceSkillBonus": 0,
@@ -1343,7 +1375,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1510.webp"
   },
-  "42": {
+  "43": {
     "Name": "Taoqi",
     "Id": 1601,
     "Rarity": 4,
@@ -1375,7 +1407,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1601.webp"
   },
-  "43": {
+  "44": {
     "Name": "Danjin",
     "Id": 1602,
     "Rarity": 4,
@@ -1407,7 +1439,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1602.webp"
   },
-  "44": {
+  "45": {
     "Name": "Camellya",
     "Id": 1603,
     "Rarity": 5,
@@ -1439,7 +1471,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1603.webp"
   },
-  "45": {
+  "46": {
     "Name": "Rover: Havoc",
     "Id": 1604,
     "Rarity": 5,
@@ -1471,7 +1503,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1604.webp"
   },
-  "46": {
+  "47": {
     "Name": "Rover: Havoc",
     "Id": 1605,
     "Rarity": 5,
@@ -1503,7 +1535,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1605.webp"
   },
-  "47": {
+  "48": {
     "Name": "Roccia",
     "Id": 1606,
     "Rarity": 5,
@@ -1535,7 +1567,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1606.webp"
   },
-  "48": {
+  "49": {
     "Name": "Cantarella",
     "Id": 1607,
     "Rarity": 5,
@@ -1567,7 +1599,7 @@
     "CharacterLevel": 1,
     "sprite": "/assets/sprite/1607.webp"
   },
-  "49": {
+  "50": {
     "Name": "Phrolova",
     "Id": 1608,
     "Rarity": 5,

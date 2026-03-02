@@ -1,7 +1,7 @@
-import {getEchoStatsFromEquippedEchoes, statLabelMap} from "@/utils/echoHelper.js";
+import {getEchoStatsFromEquippedEchoes, statLabelMap} from "@shared/utils/echoHelper.js";
 import {extractMainEchoBuffs} from "./EchoFilters.js";
 import {applyBuffArray, applyBuffByPath, getSetPlanFromEchoes} from "@/data/buffs/setEffect.js";
-import {echoSets} from "@/constants/echoSetData2.js";
+import {echoSets} from "@shared/constants/echoSetData2.js";
 
 export const SKILL_MASK = {
     NONE: 0,

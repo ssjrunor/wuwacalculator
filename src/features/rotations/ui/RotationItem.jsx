@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Eye, EyeClosed, Lock, LockOpen, Pencil, Trash2, Power, PowerOff} from 'lucide-react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
-import {attributeColors} from "@/utils/attributeHelpers.js";
+import {attributeColors} from "@shared/utils/attributeHelpers.js";
 import {useDraggable, useDroppable} from '@dnd-kit/core';
 
 export default function RotationItem({

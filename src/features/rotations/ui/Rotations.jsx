@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { getSkillDamageCache } from '@/utils/skillDamageCache.js';
+import { getSkillDamageCache } from '@shared/utils/skillDamageCache.js';
 
 
 function formatNumber(raw) {

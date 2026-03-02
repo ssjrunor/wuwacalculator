@@ -3,28 +3,15 @@ import SequenceSkillsBox from './SequenceSkillsBox.jsx';
 import CharacterHeader from './CharacterHeader.jsx';
 import CharacterMenu from './CharacterMenu.jsx';
 import SkillSettings from './SkillSettings.jsx';
-import { formatDescription } from '@/utils/formatDescription.js';
+import { formatDescription } from '@shared/utils/formatDescription.js';
 import { getCharacterUIComponent } from '@/data/characters/ui/index.js';
 import { getCustomInherentSkillsComponent } from '@/data/characters/ui/index.js';
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
-import {makeBaseBuffs, makeModBuffs} from "@/utils/getUnifiedStatPool.js";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
+import {makeBaseBuffs, makeModBuffs} from "@shared/utils/getUnifiedStatPool.js";
 
 const cleanTooltipText = html => html.replace(/<[^>]*>?/gm, '');
 
-const traceNodeIconMap = {
-    'ATK+': 'atk', 'HP+': 'hp', 'HP Up': 'hp','DEF+': 'def',
-    'Healing Bonus+': 'healing-bonus',
-    'Crit. Rate+': 'crit-rate', 'Crit. Rate Up': 'crit-rate',
-    'Crit. DMG+': 'crit-dmg',
-    'Aero DMG Bonus+': 'aero-bonus',
-    'Glacio DMG Bonus+': 'glacio-bonus',
-    'Spectro DMG Bonus+': 'spectro-bonus',
-    'Fusion DMG Bonus+': 'fusion-bonus',
-    'Electro DMG Bonus+': 'electro-bonus',
-    'Havoc DMG Bonus+': 'havoc-bonus'
-};
-
-export const traceIcons = Object.values(traceNodeIconMap);
+import { traceNodeIconMap } from '@/features/characters/model/traceNodeIcons.js';
 
 // ---- NEW: trace buff mapping into unified structure ----
 const traceBuffMap = {

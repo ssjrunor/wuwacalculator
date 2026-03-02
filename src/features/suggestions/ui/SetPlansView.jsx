@@ -1,8 +1,8 @@
 import React from 'react';
 import {Tooltip} from "antd";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
-import {echoSetById, setIconMap} from "@/constants/echoSetData2.js";
-import {withOpacity} from "@/utils/attributeHelpers.js";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
+import {echoSetById, setIconMap} from "@shared/constants/echoSetData2.js";
+import {withOpacity} from "@shared/utils/attributeHelpers.js";
 import {formatNumber} from "./suggestionsViewUtils.js";
 
 const pieces = {

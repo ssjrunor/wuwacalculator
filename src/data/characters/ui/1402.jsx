@@ -1,6 +1,6 @@
-import {formatDescription} from "@/utils/formatDescription.js";
+import {formatDescription} from "@shared/utils/formatDescription.js";
 import React from "react";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 
 export default function YangUI() {
     const hasToggles = false;

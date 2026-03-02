@@ -1,7 +1,7 @@
-import {formatDescription} from "@/utils/formatDescription.js";
+import {formatDescription} from "@shared/utils/formatDescription.js";
 import React from "react";
-import {attributeColors} from "@/utils/attributeHelpers.js";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
+import {attributeColors} from "@shared/utils/attributeHelpers.js";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 
 export default function LingYangUI({ activeStates, toggleState }) {
     return (

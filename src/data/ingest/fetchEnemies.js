@@ -6,13 +6,8 @@ import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Try these in order until one returns a usable index
-const INDEX_URLS = [
-    'https://api.hakush.in/ww/data/monster.json',
-    'https://api.hakush.in/ww/data/en/monster.json'
-];
-
-const DETAIL_BASE = 'https://api-v2.encore.moe/en/monster';
+const INDEX_URL = 'https://api.encore.moe/en/monster';
+const DETAIL_BASE = 'https://api.encore.moe/en/monster';
 const OUTPUT_PATH = path.resolve(__dirname, '../enemies.json');
 
 // Set to true to keep existing entries and only fetch missing ones
@@ -37,25 +32,21 @@ const RES_FIELD_TO_ELEMENT_ID = {
 };
 
 async function loadIndex() {
-    for (const url of INDEX_URLS) {
-        try {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const res = await fetch(INDEX_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-            const data = await res.json();
-            const ids = Array.isArray(data)
-                ? data.map(String)
-                : Object.keys(data ?? {}).map(String);
-
-            if (!ids.length) throw new Error('Empty index');
-
-            console.log(`Loaded ${ids.length} ids from ${url}`);
-            return ids;
-        } catch (err) {
-            console.warn(`Index fetch failed from ${url}: ${err.message}`);
-        }
+    const data = await res.json();
+    const monsterList = Array.isArray(data?.monsterList) ? data.monsterList : [];
+    if (!monsterList.length) {
+        throw new Error('Empty monsterList in encore index payload');
     }
-    throw new Error('Unable to load enemy index from Hakushin');
+
+    const ids = monsterList
+        .map(entry => String(entry?.Id ?? ''))
+        .filter(Boolean);
+
+    console.log(`Loaded ${ids.length} ids from ${INDEX_URL}`);
+    return ids;
 }
 
 async function fetchEnemyDetail(id) {

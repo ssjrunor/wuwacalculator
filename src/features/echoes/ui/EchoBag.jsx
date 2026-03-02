@@ -1,9 +1,9 @@
-import {imageCache} from "@/pages/Calculator.jsx";
-import { setIconMap } from "@/constants/echoSetData2.js";
-import {removeEchoFromBag} from "@/state/echoBagStore.js";
+import {imageCache} from "@/features/calculator/runtime/visualResourceStore.js";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
+import {removeEchoFromBag} from "@shared/state/echoBagStore.js";
 import {X} from "lucide-react";
-import {formatStatKey, statIconMap} from "@/utils/echoHelper.js";
-import {ExpandableEchoSection} from "@/components/common/Expandable.jsx";
+import {formatStatKey, statIconMap} from "@shared/utils/echoHelper.js";
+import {ExpandableEchoSection} from "@/shared/ui/common/Expandable.jsx";
 import React, {useEffect, useState} from "react";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";
 

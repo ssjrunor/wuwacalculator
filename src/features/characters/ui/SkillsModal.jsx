@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { formatDescription } from "@/utils/formatDescription.js";
-import skillTabs from "@/constants/skillTabs.js";
-import { highlightKeywordsInText } from "@/constants/echoSetData.jsx";
+import { formatDescription } from "@shared/utils/formatDescription.js";
+import skillTabs from "@shared/constants/skillTabs.js";
+import { highlightKeywordsInText } from "@shared/constants/echoSetData.jsx";
 
 export default function SkillsModal({
                                         skillsModalOpen,

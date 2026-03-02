@@ -1,27 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import WeaponMenu from './WeaponMenu.jsx';
 import { getWeaponUIComponent } from '@/data/weapons/ui/index.js';
-import {preloadImages} from "@/pages/Calculator.jsx";
-import {highlightKeywordsInText, statKeywords} from "@/constants/echoSetData.jsx";
-
-export function mapExtraStatToCombat(stat) {
-    if (!stat || !stat.Name) return {};
-
-    const value = stat.Value ?? 0;
-    const name = stat.Name.toLowerCase();
-
-    const scaled = stat.IsRatio ? value * 100 : stat.IsPercent ? value / 100 : value;
-
-    switch (name) {
-        case 'atk': return stat.IsRatio ? { atkPercent: scaled } : { atk: scaled };
-        case 'hp': return stat.IsRatio ? { hpPercent: scaled } : { hp: scaled };
-        case 'def': return stat.IsRatio ? { defPercent: scaled } : { def: scaled };
-        case 'crit. rate': return { critRate: scaled };
-        case 'crit. dmg': return { critDmg: scaled };
-        case 'energy regen': return { energyRegen: scaled };
-        default: return {};
-    }
-}
+import {preloadImages} from "@/features/calculator/runtime/visualResourceStore.js";
+import {highlightKeywordsInText, statKeywords} from "@shared/constants/echoSetData.jsx";
+import { mapExtraStatToCombat } from "@/features/weapons/lib/mapExtraStatToCombat.js";
 
 export default function WeaponPane({
                                        activeCharacter,

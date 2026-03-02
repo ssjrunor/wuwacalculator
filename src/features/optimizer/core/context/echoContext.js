@@ -3,7 +3,7 @@ import {
     removeMainEchoBuffLogic,
     removeSetEffectsFromBuffs,
 } from "@/data/buffs/setEffect.js";
-import {removeEchoArrayFromBuffs} from "@/utils/echoHelper.js";
+import {removeEchoArrayFromBuffs} from "@shared/utils/echoHelper.js";
 export { bitValue } from "../cpu/helpers.js";
 
 export function flipOn(value , bitIndex) {

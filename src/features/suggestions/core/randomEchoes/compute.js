@@ -1,4 +1,4 @@
-import { getSkillData } from "@/utils/computeSkillDamage.js";
+import { getSkillData } from "@shared/utils/computeSkillDamage.js";
 import { generateEchoContext } from "@/features/optimizer/core/context/echoContext.js";
 import { prepareGpuContext } from "@/features/optimizer/core/context/gpuContext.js";
 import { createCpuScratch } from "@/features/optimizer/core/cpu/scratch.js";
@@ -11,7 +11,7 @@ import { applyErPlanToEchoes } from "./lib/energyRegen.js";
 import { buildEchoSetForCombination } from "./lib/echoSetBuilder.js";
 import { buildZeroMainEchoBuffs, evaluateEchoSet } from "./lib/evaluation.js";
 import { pickUniqueLoadoutResults } from "./lib/signatures.js";
-import {buildMultipleRandomEchoes} from "@/utils/echoHelper.js";
+import {buildMultipleRandomEchoes} from "@shared/utils/echoHelper.js";
 import {applyEchoSetBuffLogic, applySetEffect, applyTheoreticalMainEchoBuffs} from "@/data/buffs/setEffect.js";
 import {buildRotationTargets} from "@/features/optimizer/core/engine/rotationOptimizer.js";
 

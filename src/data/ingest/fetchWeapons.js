@@ -7,7 +7,7 @@ export async function fetchWeapons() {
 
         acc[id] = {
             ...weapon,
-            icon: `https://api.hakush.in/ww/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon${id}_UI.webp`
+            icon: weapon.icon ?? `https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon${id}_UI.png`
         };
 
         return acc;

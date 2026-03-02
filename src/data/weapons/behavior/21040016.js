@@ -1,4 +1,4 @@
-import {elementToAttribute} from "@/utils/attributeHelpers.js";
+import {elementToAttribute} from "@shared/utils/attributeHelpers.js";
 
 export function applyWeaponLogic({
                                      mergedBuffs,

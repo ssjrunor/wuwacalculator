@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { attributeColors } from '@/utils/attributeHelpers';
-import { preloadImages } from "@/pages/Calculator.jsx";
+import { attributeColors } from '@shared/utils/attributeHelpers';
+import { preloadImages } from "@/features/calculator/runtime/visualResourceStore.js";
 
 export const statIconMap = {
     'ATK': '/assets/stat-icons/atk.png',

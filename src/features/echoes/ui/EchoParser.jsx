@@ -1,14 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Tesseract from 'tesseract.js';
-import { echoImageMap, setNameImageMap } from '@/utils/autoEchoImageMap.js';
-import { applyParsedEchoesToEquipped } from "@/utils/buildEchoObjectsFromParsedResults.js";
+import { echoImageMap, setNameImageMap } from '@shared/utils/autoEchoImageMap.js';
+import { applyParsedEchoesToEquipped } from "@shared/utils/buildEchoObjectsFromParsedResults.js";
 import {useNavigate} from "react-router-dom";
-import {getEchoScores, getTop5SubstatScoreDetails} from "@/utils/echoHelper.js";
-import { setIconMap } from "@/constants/echoSetData2.js";
+import {getEchoScores, getTop5SubstatScoreDetails} from "@shared/utils/echoHelper.js";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";
-import {imageCache} from "@/pages/Calculator.jsx";
+import {imageCache} from "@/features/calculator/runtime/visualResourceStore.js";
 import {getEquippedEchoesScoreDetails} from "./EchoesPane.jsx";
-import {addEchoPreset} from "@/state/echoPresetStore.js";
+import {addEchoPreset} from "@shared/state/echoPresetStore.js";
 
 const echoImageCache = {};
 const setIconImageCache = {};

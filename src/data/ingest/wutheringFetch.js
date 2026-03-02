@@ -1,7 +1,7 @@
 import iconLinks from '../iconLinks.json';
 
 const LOCAL_ICON_MAP = Object.fromEntries(iconLinks.map(entry => [String(entry.id), entry.url]));
-const DEFAULT_API_PREFIX = 'https://api.hakush.in/ww/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_';
+const DEFAULT_API_PREFIX = 'https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_';
 
 export async function fetchCharacters() {
     try {
@@ -14,7 +14,7 @@ export async function fetchCharacters() {
         const characters = data.default.map(char => {
             const charId = String(char.Id ?? char.id ?? char.link ?? '');
             const localIcon = LOCAL_ICON_MAP[charId];
-            const fallbackIcon = `${DEFAULT_API_PREFIX}${charId}_UI.webp`;
+            const fallbackIcon = `${DEFAULT_API_PREFIX}${charId}_UI.png`;
 
             return {
                 displayName: char.Name ?? 'Unknown',

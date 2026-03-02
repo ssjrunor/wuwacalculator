@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import GuidesModal from "@/components/common/GuideModal.jsx";
-import ConfirmationModal from "@/components/common/ConfirmationModal.jsx";
-import NotificationToast from "@/components/common/NotificationToast.jsx";
+import GuidesModal from "@/shared/ui/common/GuideModal.jsx";
+import ConfirmationModal from "@/shared/ui/common/ConfirmationModal.jsx";
+import NotificationToast from "@/shared/ui/common/NotificationToast.jsx";
 
 const percentageFields = new Set([
     'atkPercent', 'hpPercent', 'defPercent',

@@ -1,6 +1,6 @@
 import {generateSetPlanContext, generateRotationSetPlanContexts} from "./ctx-builder.js";
 import {computeSetPlanDamage, computeRotationSetPlanDamage} from "./compute.js";
-import {DEFAULT_FIVE_PIECE_SETS, DEFAULT_THREE_PIECE_SETS} from "@/constants/echoSetData2.js";
+import {DEFAULT_FIVE_PIECE_SETS, DEFAULT_THREE_PIECE_SETS} from "@shared/constants/echoSetData2.js";
 import {isSetPlanFeasible} from "./utils.js";
 
 export function suggestSetPlans({

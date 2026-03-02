@@ -1,4 +1,4 @@
-import { getValidMainStats } from "@/utils/echoHelper.js";
+import { getValidMainStats } from "@shared/utils/echoHelper.js";
 import { ALL_COST_COMBOS, COST_PLAN_DEFAULT } from "./constants.js";
 
 export function buildCostPlans(requiredCost) {

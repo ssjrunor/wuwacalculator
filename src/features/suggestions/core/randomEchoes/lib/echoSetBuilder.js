@@ -1,7 +1,7 @@
 import {
     applyFixedSecondMainStat,
     getValidMainStats,
-} from "@/utils/echoHelper.js";
+} from "@shared/utils/echoHelper.js";
 import { getRandomSubstat, randomSubValue } from "./substats.js";
 
 export function buildEchoSetForCombination({

@@ -1,8 +1,8 @@
-import {deleteEchoPreset, updateEchoPreset} from "@/state/echoPresetStore.js";
+import {deleteEchoPreset, updateEchoPreset} from "@shared/state/echoPresetStore.js";
 import {X} from "lucide-react";
-import { setIconMap } from "@/constants/echoSetData2.js";
-import {imageCache} from "@/pages/Calculator.jsx";
-import {getEchoScores, getTop5SubstatScoreDetails} from "@/utils/echoHelper.js";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
+import {imageCache} from "@/features/calculator/runtime/visualResourceStore.js";
+import {getEchoScores, getTop5SubstatScoreDetails} from "@shared/utils/echoHelper.js";
 import {getEquippedEchoesScoreDetails} from "@/features/echoes/ui/EchoesPane.jsx";
 import React, {useEffect, useRef, useState} from "react";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";

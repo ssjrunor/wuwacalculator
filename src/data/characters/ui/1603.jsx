@@ -1,5 +1,5 @@
 import React from "react";
-import DropdownSelect from "@/components/common/DropdownSelect.jsx";
+import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
 
 export default function CamellyaUI({ characterRuntimeStates, setCharacterRuntimeStates, charId, activeStates, toggleState }) {
     const crimsonBud = characterRuntimeStates?.[charId]?.activeStates?.crimsonBud ?? 0;

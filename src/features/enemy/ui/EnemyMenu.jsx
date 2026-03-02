@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { imageCache } from '@/pages/Calculator.jsx';
+import { imageCache } from '@/features/calculator/runtime/visualResourceStore.js';
 
 export default function EnemyMenu({
                                       enemies = [],

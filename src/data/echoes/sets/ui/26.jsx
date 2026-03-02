@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { setIconMap } from "@/constants/echoSetData2.js";
-import DropdownSelect from "@/components/common/DropdownSelect.jsx";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
+import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
 
 export default function five26({
                                    setInfo,

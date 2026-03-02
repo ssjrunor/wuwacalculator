@@ -7,7 +7,7 @@ import {
     calc1209Conversion,
     computeAvgDamage,
 } from "@/features/optimizer/core/cpu/damageCore.js";
-import { getElementIdFromSkillId } from "@/utils/computeSkillDamage.js";
+import { getElementIdFromSkillId } from "@shared/utils/computeSkillDamage.js";
 import {bitValue} from "@/features/optimizer/core/cpu/helpers.js";
 
 export function computeMainStatDamage(params, mainStats) {

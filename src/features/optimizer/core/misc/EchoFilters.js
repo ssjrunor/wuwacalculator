@@ -1,6 +1,6 @@
-import {normalizeLegacyEchoStats, validSubstatRanges} from "@/utils/echoHelper.js";
+import {normalizeLegacyEchoStats, validSubstatRanges} from "@shared/utils/echoHelper.js";
 import {elementMap, mainEchoBuffs} from "@/data/buffs/setEffect.js";
-import {echoSets} from "@/constants/echoSetData2.js";
+import {echoSets} from "@shared/constants/echoSetData2.js";
 
 export const EchoFilters = {
     applyStatWorthFilter(form, echoes) {

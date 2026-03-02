@@ -1,14 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import CharacterMenu from '@/features/characters/ui/CharacterMenu.jsx';
-import ExpandableSection from "@/components/common/Expandable.jsx";
+import ExpandableSection from "@/shared/ui/common/Expandable.jsx";
 import EchoBuffs, {echoBuffList} from "./EchoBuffs.jsx";
 import WeaponBuffs, {weaponBuffList} from "./WeaponBuffs.jsx";
 import {loadCharacterBuffUI} from "@/data/characters/ui/index.js";
-import {attributeColors} from '@/utils/attributeHelpers.js';
+import {attributeColors} from '@shared/utils/attributeHelpers.js';
 import {X} from 'lucide-react';
-import {preloadImages} from "@/pages/Calculator.jsx";
+import {preloadImages} from "@/features/calculator/runtime/visualResourceStore.js";
 import {calculateRotationTotals} from "@/features/rotations/ui/Rotations.jsx";
-import GuidesModal from "@/components/common/GuideModal.jsx";
+import GuidesModal from "@/shared/ui/common/GuideModal.jsx";
 
 export default function BuffsPane({
                                       characters,

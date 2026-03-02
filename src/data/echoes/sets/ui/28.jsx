@@ -1,6 +1,6 @@
 import React from "react";
-import { highlightKeywordsInText } from "@/constants/echoSetData.jsx";
-import { setIconMap } from "@/constants/echoSetData2.js";
+import { highlightKeywordsInText } from "@shared/constants/echoSetData.jsx";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
 
 export default function five28({
                                     setInfo,

@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const ICONS_DIR = path.resolve(__dirname, '../../assets/characters/icons');
 const OUTPUT_JSON = path.resolve(__dirname, '../iconLinks.json');
-const baseUrl = 'https://api.hakush.in/ww/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_';
+const baseUrl = 'https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_';
 
 if (!fs.existsSync(ICONS_DIR)) {
     fs.mkdirSync(ICONS_DIR, { recursive: true });
@@ -35,13 +35,13 @@ async function run() {
     const foundIcons = [];
 
     for (let id = 1; id <= 60; id++) {
-        const url = `${baseUrl}${id}_UI.webp`;
-        const dest = path.join(ICONS_DIR, `${id}.webp`);
+        const url = `${baseUrl}${id}_UI.png`;
+        const dest = path.join(ICONS_DIR, `${id}.png`);
         const downloaded = await downloadImage(url, dest);
 
         if (downloaded) {
             console.log(`Downloaded icon ${id}`);
-            foundIcons.push({ id, url: `/icons/${id}.webp` });
+            foundIcons.push({ id, url: `/icons/${id}.png` });
         } else {
             console.log(`Not found: ${id}`);
         }

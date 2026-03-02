@@ -11,7 +11,7 @@ import {
 import {
     getElementIdFromSkillId,
     getSkillTypeMaskFromSkillId,
-} from "@/utils/computeSkillDamage.js";
+} from "@shared/utils/computeSkillDamage.js";
 import {bitValue} from "@/features/optimizer/core/cpu/helpers.js";
 import {OPTIMIZER_CTX_TOGGLES} from "@/features/optimizer/core/misc/index.js";
 

@@ -1,7 +1,7 @@
-import {formatDescription} from "@/utils/formatDescription.js";
-import DropdownSelect from "@/components/common/DropdownSelect.jsx";
+import {formatDescription} from "@shared/utils/formatDescription.js";
+import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
 import React from "react";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 
 export default function ChangliUI() {
     const hasToggles = false;

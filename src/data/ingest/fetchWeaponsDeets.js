@@ -7,18 +7,20 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const outputPath = path.resolve(__dirname, '../weapons.json');
-const weaponApiUrl = 'https://api.hakush.in/ww/data/weapon.json';
+const weaponApiUrl = 'https://api.encore.moe/en/weapon';
+const weaponDetailBase = 'https://api.encore.moe/en/weapon/';
 
 async function fetchAndSaveWeapons() {
     try {
-        console.log('Fetching weapon data from Hakushin...');
+        console.log('Fetching weapon data from Encore...');
         const response = await fetch(weaponApiUrl);
         if (!response.ok) throw new Error(`HTTP error ${response.status}`);
 
         const weaponRaw = await response.json();
+        const weaponList = Array.isArray(weaponRaw?.weapons) ? weaponRaw.weapons : [];
 
-        if (typeof weaponRaw !== 'object' || Array.isArray(weaponRaw)) {
-            throw new Error('Unexpected weapon data format: expected object');
+        if (!weaponList.length) {
+            throw new Error('Unexpected weapon data format: expected { weapons: [...] }');
         }
 
         // Load existing file if available
@@ -39,23 +41,38 @@ async function fetchAndSaveWeapons() {
             return weapon;
         });
 
-        for (const [id, weapon] of Object.entries(weaponRaw)) {
-            const idStr = String(id);
-
-            const name = weapon.en;
+        for (const weapon of weaponList) {
+            const idStr = String(weapon?.Id ?? '');
+            if (!idStr) continue;
+            const name = weapon?.Name ?? '';
 
             if (projectionPrefixes.some(prefix => name?.startsWith(prefix))) {
                 console.log(`Skipping ${idStr} (${name})`);
                 continue;
             }
 
+            let description = '';
+            try {
+                const detailRes = await fetch(`${weaponDetailBase}${idStr}`);
+                if (detailRes.ok) {
+                    const detail = await detailRes.json();
+                    description =
+                        detail?.AttributesDescription ??
+                        detail?.BgDescription ??
+                        detail?.Desc ??
+                        '';
+                }
+            } catch {
+                // Keep summary-only payload if detail fetch fails.
+            }
+
             const nextEntry = {
                 id: idStr,
                 name,
-                description: weapon.desc,
-                icon: `https://api.hakush.in/ww${weapon.icon}.webp`,
-                rank: weapon.rank,
-                type: weapon.type
+                description,
+                icon: weapon?.Icon ?? `https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/IconWeapon/T_IconWeapon${idStr}_UI.png`,
+                rank: weapon?.QualityId ?? 1,
+                type: weapon?.Type ?? 0
             };
 
             if (weaponIndexById.has(idStr)) {

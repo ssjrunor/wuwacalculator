@@ -1,7 +1,7 @@
 import React from 'react';
-import { formatDescription } from '@/utils/formatDescription.js';
+import { formatDescription } from '@shared/utils/formatDescription.js';
 import { getSequenceToggleComponent } from '@/data/characters/ui/index.js';
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 
 export default function SequenceSkillsBox({
                                               activeCharacter,

@@ -1,6 +1,6 @@
 import React from "react";
-import { highlightKeywordsInText } from "@/constants/echoSetData.jsx";
-import { setIconMap } from "@/constants/echoSetData2.js";
+import { highlightKeywordsInText } from "@shared/constants/echoSetData.jsx";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
 
 export default function five27({ setInfo, activeStates, toggleState }) {
     const keywords = ['Fusion Burst', 'Tune Rupture', 'Crit. Rate', 'Fusion DMG Bonus', 'Fusion DMG'];

@@ -45,6 +45,7 @@ import {applyLynaeLogic, lynaeBuffsLogic, lynaeMultipliers} from "./1509.js";
 import {applyMornyeLogic, mornyeBuffsLogic, mornyeMultipliers} from "./1209.js";
 import {applyAemeathLogic, aemeathBuffsLogic, aemeathMultipliers} from "./1210.js";
 import {applyLuukLogic, luukBuffsLogic, luukMultipliers} from "./1510.js";
+import {applySigrikaLogic, sigrikaBuffsLogic, sigrikaMultipliers} from "@/data/characters/behavior/1412.js";
 
 const overrides = {
     '1506': {
@@ -288,6 +289,11 @@ const overrides = {
         logic: applyAemeathLogic,
         multipliers: aemeathMultipliers,
         buffsLogic: aemeathBuffsLogic
+    },
+    "1412": {
+        logic: applySigrikaLogic,
+        multipliers: sigrikaMultipliers,
+        buffsLogic: sigrikaBuffsLogic
     }
 };
 

@@ -9,13 +9,13 @@ import {
     groupEchoSetsByPiece,
     resolveEchoesFromIds,
 } from "@/features/optimizer/core/misc/index.js";
-import {getEchoBag} from "@/state/echoBagStore.js";
+import {getEchoBag} from "@shared/state/echoBagStore.js";
 import {getSetPlanFromEchoes} from "@/data/buffs/setEffect.js";
-import { setIconMap } from "@/constants/echoSetData2.js";
-import {getEchoScores, getTop5SubstatScoreDetails} from "@/utils/echoHelper.js";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
+import {getEchoScores, getTop5SubstatScoreDetails} from "@shared/utils/echoHelper.js";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";
-import {attributeColors, elementToAttribute} from "@/utils/attributeHelpers.js";
-import ExpandableSection from "@/components/common/Expandable.jsx";
+import {attributeColors, elementToAttribute} from "@shared/utils/attributeHelpers.js";
+import ExpandableSection from "@/shared/ui/common/Expandable.jsx";
 import CharacterMenu from "@/features/characters/ui/CharacterMenu.jsx";
 import SkillMenu, {tabDisplayOrder} from "@/features/rotations/ui/SkillMenu.jsx";
 import {CharacterOptionsPanel} from "./CharacterOptionsPanel.jsx";
@@ -24,10 +24,10 @@ import EchoOptimizerRow from "./EchoOptimizerRow.jsx";
 import {echoes as allEchoes} from "@/data/ingest/getEchoes.js";
 import EchoMenu from "@/features/echoes/ui/EchoMenu.jsx";
 import {useComboCounter} from "./useComboCounter.js";
-import GuidesModal from "@/components/common/GuideModal.jsx";
-import PlainModal from "@/components/common/PlainModal.jsx";
+import GuidesModal from "@/shared/ui/common/GuideModal.jsx";
+import PlainModal from "@/shared/ui/common/PlainModal.jsx";
 import {modalContent} from "./modalContent.jsx";
-import {getGroupedSkillOptions} from "@/utils/prepareDamageData.js";
+import {getGroupedSkillOptions} from "@shared/utils/prepareDamageData.js";
 import {detectWebGPUSupport} from "@/features/optimizer/core/gpu/getDevice.js";
 import OptimizerRules from "./OptimizerRules.jsx";
 

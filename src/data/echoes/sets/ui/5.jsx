@@ -1,5 +1,5 @@
-import { highlightKeywordsInText } from "@/constants/echoSetData.jsx";
-import { setIconMap } from "@/constants/echoSetData2.js";
+import { highlightKeywordsInText } from "@shared/constants/echoSetData.jsx";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
 import React from "react";
 
 export default function five5({ setInfo, activeStates, toggleState }) {

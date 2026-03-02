@@ -1,8 +1,8 @@
 // src/data/echo-set-ui/five25.jsx (or wherever your other 5p UIs live)
 
 import React from "react";
-import { setIconMap } from "@/constants/echoSetData2.js";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 
 export default function five25({
                                    setInfo,

@@ -1,10 +1,10 @@
 import React from "react";
-import { highlightKeywordsInText } from "@/constants/echoSetData.jsx";
-import { echoSetById, echoSetList, setPieceTypeMap, setIconMap } from "@/constants/echoSetData2.js";
-import {typeMap} from "@/constants/skillTabs.js";
+import { highlightKeywordsInText } from "@shared/constants/echoSetData.jsx";
+import { echoSetById, echoSetList, setPieceTypeMap, setIconMap } from "@shared/constants/echoSetData2.js";
+import {typeMap} from "@shared/constants/skillTabs.js";
 import {applySpecialBuffs} from "@/features/optimizer/core/context/echoContext.js";
 import {Tooltip} from "antd";
-import {formatDescription} from "@/utils/echoHelper.js";
+import {formatDescription} from "@shared/utils/echoHelper.js";
 import {normalizedSkillTypeNames} from "@/features/rotations/ui/Rotations.jsx";
 
 export function accumulateSkillStatBonus(skillType, stats, skillMetaBonus = 0, bonusType = 'dmgBonus') {

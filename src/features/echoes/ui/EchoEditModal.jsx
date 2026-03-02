@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { setIconMap } from '@/constants/echoSetData2.js';
-import {getSubstatStepOptions, snapToNearestSubstatValue, validSubstatRanges} from "@/utils/echoHelper.js";
+import { setIconMap } from '@shared/constants/echoSetData2.js';
+import {getSubstatStepOptions, snapToNearestSubstatValue, validSubstatRanges} from "@shared/utils/echoHelper.js";
 
 const ALL_SUBSTAT_KEYS = [
     'atkPercent', 'atkFlat', 'hpPercent', 'hpFlat',

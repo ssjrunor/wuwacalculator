@@ -1,4 +1,4 @@
-import { calculateSupportEffect} from "@/utils/supportCalculator.js";
+import { calculateSupportEffect} from "@shared/utils/supportCalculator.js";
 
 export function applyYouhuLogic({
                                    mergedBuffs,

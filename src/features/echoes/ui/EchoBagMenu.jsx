@@ -1,18 +1,18 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import EditSubstatsModal from '@/features/echoes/ui/EchoEditModal.jsx';
-import { setIconMap } from "@/constants/echoSetData2.js";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
 import {isEqual} from 'lodash';
-import {clearEchoBag, getEchoBag, subscribeEchoBag, updateEchoInBag} from '@/state/echoBagStore.js';
-import {getValidMainStats} from "@/utils/echoHelper.js";
-import {imageCache} from "@/pages/Calculator.jsx";
+import {clearEchoBag, getEchoBag, subscribeEchoBag, updateEchoInBag} from '@shared/state/echoBagStore.js';
+import {getValidMainStats} from "@shared/utils/echoHelper.js";
+import {imageCache} from "@/features/calculator/runtime/visualResourceStore.js";
 import {
     buildPresetFilterOptions,
     clearEchoStore,
     getEchoPresets,
     subscribeEchoPresets,
-} from "@/state/echoPresetStore.js";
+} from "@shared/state/echoPresetStore.js";
 import Select from 'react-select';
-import {usePersistentState} from "@/hooks/usePersistentState.js";
+import {usePersistentState} from "@shared/hooks/usePersistentState.js";
 import {EchoPresetPreview, PresetsView} from "./EchoPresets.jsx";
 import {BagView} from "./EchoBag.jsx";
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { attributeColors } from '@/utils/attributeHelpers.js';
-import DropdownSelect from "@/components/common/DropdownSelect.jsx";
+import { attributeColors } from '@shared/utils/attributeHelpers.js';
+import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
 
 export const echoBuffList = [];
 

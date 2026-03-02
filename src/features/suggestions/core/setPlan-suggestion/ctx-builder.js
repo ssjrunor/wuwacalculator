@@ -2,7 +2,7 @@ import {prepareGpuContext} from "@/features/optimizer/core/context/gpuContext.js
 import {getSetPlanFromEchoes, removeSetEffectsFromBuffs} from "@/data/buffs/setEffect.js";
 import {flipOn, removeSpecialBuffs} from "@/features/optimizer/core/context/echoContext.js";
 import {buildRotationTargets} from "@/features/optimizer/core/engine/rotationOptimizer.js";
-import {getSkillData} from "@/utils/computeSkillDamage.js";
+import {getSkillData} from "@shared/utils/computeSkillDamage.js";
 
 export function generateSetPlanContext(form) {
     const charId = form.charId;

@@ -1,4 +1,4 @@
-import {imageCache} from "@/pages/Calculator.jsx";
+import {imageCache} from "@/features/calculator/runtime/visualResourceStore.js";
 import React, {useMemo} from "react";
 import AllowedSetDropdown from "./EchoSetSelector.jsx";
 import {Info, X} from "lucide-react";

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { setIconMap } from "@/constants/echoSetData2.js";
-import { imageCache } from '@/pages/Calculator.jsx';
+import { setIconMap } from "@shared/constants/echoSetData2.js";
+import { imageCache } from '@/features/calculator/runtime/visualResourceStore.js';
 
 export default function EchoMenu({ echoes, handleEchoSelect, menuRef, menuOpen, setMenuOpen, onClickOut = null }) {
     const [selectedCost, setSelectedCost] = useState(null);

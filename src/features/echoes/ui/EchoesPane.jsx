@@ -1,18 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
 import EchoMenu from './EchoMenu.jsx';
 import EditSubstatsModal from './EchoEditModal.jsx';
-import {skillKeywords, statKeywords} from "@/constants/echoSetData.jsx";
-import {echoSetById, echoSetList, setIconMap} from "@/constants/echoSetData2.js";
+import {skillKeywords, statKeywords} from "@shared/constants/echoSetData.jsx";
+import {echoSetById, echoSetList, setIconMap} from "@shared/constants/echoSetData2.js";
 import {getEchoSetUIOverrides} from "@/data/echoes/sets/ui/index.js";
 import {echoes} from '@/data/ingest/getEchoes.js';
-import {attributeColors} from "@/utils/attributeHelpers.js";
+import {attributeColors} from "@shared/utils/attributeHelpers.js";
 import {Info, Save, X} from "lucide-react";
 import {mainEchoBuffs} from "@/data/buffs/setEffect.js";
-import DropdownSelect from "@/components/common/DropdownSelect.jsx";
-import {addEchoToBag, getEchoBag, subscribeEchoBag,} from '@/state/echoBagStore.js';
-import ExpandableSection from "@/components/common/Expandable.jsx";
+import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
+import {addEchoToBag, getEchoBag, subscribeEchoBag,} from '@shared/state/echoBagStore.js';
+import ExpandableSection from "@/shared/ui/common/Expandable.jsx";
 import EchoParser from "./EchoParser.jsx";
-import {applyParsedEchoesToEquipped} from "@/utils/buildEchoObjectsFromParsedResults.js";
+import {applyParsedEchoesToEquipped} from "@shared/utils/buildEchoObjectsFromParsedResults.js";
 import {
     applyFixedSecondMainStat,
     computeRollForStat,
@@ -25,11 +25,11 @@ import {
     getValidMainStats,
     statDisplayOrder,
     statIconMap
-} from "@/utils/echoHelper.js";
-import {preloadImages} from "@/pages/Calculator.jsx";
-import NotificationToast from "@/components/common/NotificationToast.jsx";
-import GuidesModal from "@/components/common/GuideModal.jsx";
-import ConfirmationModal from "@/components/common/ConfirmationModal.jsx";
+} from "@shared/utils/echoHelper.js";
+import {preloadImages} from "@/features/calculator/runtime/visualResourceStore.js";
+import NotificationToast from "@/shared/ui/common/NotificationToast.jsx";
+import GuidesModal from "@/shared/ui/common/GuideModal.jsx";
+import ConfirmationModal from "@/shared/ui/common/ConfirmationModal.jsx";
 
 export default function EchoesPane({
                                        charId,

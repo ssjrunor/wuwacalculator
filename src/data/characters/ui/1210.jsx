@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
-import DropdownSelect from "@/components/common/DropdownSelect.jsx";
-import {formatDescription} from "@/utils/formatDescription.js";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
-import {attributeColors} from "@/utils/attributeHelpers.js";
+import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
+import {formatDescription} from "@shared/utils/formatDescription.js";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
+import {attributeColors} from "@shared/utils/attributeHelpers.js";
 export default function AemeathUI({ activeStates, toggleState, charId, setCharacterRuntimeStates }) {
     const ruptureMode = activeStates.tuneRupture;
     const burstMode = activeStates.fusionBurst;

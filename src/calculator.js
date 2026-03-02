@@ -1,20 +1,20 @@
 // Centralized calculator-level helpers so heavy per-render work can be done
 // once in Calculator.jsx and passed into child components as props.
 
-import { getSetCounts } from "@/utils/echoHelper.js";
-import { echoSetList } from "@/constants/echoSetData2.js";
+import { getSetCounts } from "@shared/utils/echoHelper.js";
+import { echoSetList } from "@shared/constants/echoSetData2.js";
 import {
   getEchoStatsFromEquippedEchoes,
   getEchoScores,
   getTop5SubstatScoreDetails,
-} from "@/utils/echoHelper.js";
-import { statKeywords } from "@/constants/echoSetData.jsx";
+} from "@shared/utils/echoHelper.js";
+import { statKeywords } from "@shared/constants/echoSetData.jsx";
 import { groupEchoSetsByPiece } from "@/features/optimizer/core/misc/index.js";
 import {
   getGroupedSkillOptions,
   getRotationGroupedSkillOptions
-} from "@/utils/prepareDamageData.js";
-import { getEchoPresetById } from "@/state/echoPresetStore.js";
+} from "@shared/utils/prepareDamageData.js";
+import { getEchoPresetById } from "@shared/state/echoPresetStore.js";
 
 const DEFAULT_ENEMY_RES = {
   0: 20,

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { attributeColors } from '@/utils/attributeHelpers.js';
+import { attributeColors } from '@shared/utils/attributeHelpers.js';
 import EnemyMenu from './EnemyMenu.jsx';
 
 const defaultEnemyResLocal = () => ({
@@ -257,7 +257,7 @@ export default function EnemyPane({
                     if (!resolvedEnemy?.custom) return;
                     const currentId = String(resolvedEnemy?.Id ?? resolvedEnemy?.id ?? resolvedEnemy?.monsterId ?? '');
                     setCustomEnemies(prev => prev.filter(e => String(e?.Id ?? e?.id ?? e?.monsterId ?? '') !== currentId));
-                    const fallbackId = '340000020';
+                    const fallbackId = '340000240';
                     const fallbackEnemy = enemyMap[fallbackId];
                     const baseRes = buildResForProfile(fallbackEnemy, fallbackEnemy?.baseData?.res ?? defaultEnemyResLocal(), enemyProfile?.toa);
                     setEnemyProfile(prev => ({

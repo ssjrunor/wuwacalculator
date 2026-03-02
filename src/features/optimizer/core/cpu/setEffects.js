@@ -62,7 +62,7 @@ export function applySetEffectsFast(s, skillMask = 0) {
         defF: 0,
         critRate: 20 * s11_5 + 10 * s17_5 + 20 * s19_3 + 20 * s22_3 *
             (((skillMask & (SKILL_MASK.HEAVY | SKILL_MASK.ECHO_SKILL)) !== 0) ? 1 : 0) + 20 * s27_5
-            + (((skillMask & SKILL_MASK.ECHO_SKILL) !== 0) ? 1 : 0) * s29_5,
+            + (((skillMask & SKILL_MASK.ECHO_SKILL) !== 0) ? 1 : 0) * 20 * s29_5,
         critDmg: 20 * s20_3,
         er: 0,
         erSetBonus: 10 * s8_2 + 10 * s13_2 + 10 * s14_2,

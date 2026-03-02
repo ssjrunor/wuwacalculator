@@ -1,9 +1,9 @@
 import {prepareGpuContext} from "@/features/optimizer/core/context/gpuContext.js";
 import {getDefaultMainStatFilter} from "@/features/optimizer/core/misc/utils.js";
-import {applyFixedSecondMainStat, getValidMainStats, removeMainStatsFromBuffs} from "@/utils/echoHelper.js";
+import {applyFixedSecondMainStat, getValidMainStats, removeMainStatsFromBuffs} from "@shared/utils/echoHelper.js";
 import {flipOn, removeSpecialBuffs} from "@/features/optimizer/core/context/echoContext.js";
 import {buildRotationTargets} from "@/features/optimizer/core/engine/rotationOptimizer.js";
-import {getSkillData} from "@/utils/computeSkillDamage.js";
+import {getSkillData} from "@shared/utils/computeSkillDamage.js";
 
 export function generateMainStatsContext(form) {
     const charId = form.charId;

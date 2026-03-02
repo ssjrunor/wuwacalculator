@@ -1,6 +1,6 @@
 import React from "react";
-import {formatDescription} from "@/utils/formatDescription.js";
-import {highlightKeywordsInText} from "@/constants/echoSetData.jsx";
+import {formatDescription} from "@shared/utils/formatDescription.js";
+import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 
 export default function SkUI({ activeStates, toggleState }) {
 

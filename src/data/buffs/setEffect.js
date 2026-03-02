@@ -1,4 +1,4 @@
-import {echoSets} from "@/constants/echoSetData2.js";
+import {echoSets} from "@shared/constants/echoSetData2.js";
 
 export const elementMap = {
     1: 'glacio',

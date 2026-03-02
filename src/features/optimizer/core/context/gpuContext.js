@@ -1,9 +1,9 @@
-import { getFinalStats } from "@/utils/getStatsForLevel.js";
+import { getFinalStats } from "@shared/utils/getStatsForLevel.js";
 import {
     computeSkillDamage,
     getElementIdFromSkillId,
     getSkillTypeMaskFromSkillId
-} from "@/utils/computeSkillDamage.js";
+} from "@shared/utils/computeSkillDamage.js";
 
 export function prepareGpuContext({
                                       activeCharacter,

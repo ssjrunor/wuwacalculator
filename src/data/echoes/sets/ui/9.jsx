@@ -1,8 +1,8 @@
-import { highlightKeywordsInText } from "@/constants/echoSetData.jsx";
-import { setIconMap } from "@/constants/echoSetData2.js";
+import { highlightKeywordsInText } from "@shared/constants/echoSetData.jsx";
+import { setIconMap } from "@shared/constants/echoSetData2.js";
 import React from "react";
-import DropdownSelect from "@/components/common/DropdownSelect.jsx";
-import {attributeColors} from "@/utils/attributeHelpers.js";
+import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
+import {attributeColors} from "@shared/utils/attributeHelpers.js";
 
 export default function five9 ({ setInfo, activeStates, charId, setCharacterRuntimeStates }) {
     const lingeringValue = activeStates?.lingering5p1 ?? 0;
