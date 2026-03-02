@@ -1,0 +1,264 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --body-font: "Onest", sans-serif;
+    --preview-font: var(--body-font);
+}
+
+html, body, #root {
+    font-family: var(--body-font);
+    font-optical-sizing: auto;
+}
+
+/*h1, h2, h3, h4, h5, h6 {
+    font-family: "Poppins", sans-serif;
+}*/
+
+.layout {
+    --sidebar-width: 12.5rem;
+    --sidebar-collapsed-width: 3.75rem;
+}
+
+html, body, #root {
+    height: auto;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+html {
+    transition: none !important;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+body {
+    position: relative;
+    z-index: 0;
+}
+
+#root {
+    position: relative;
+    z-index: 1;
+}
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.layout, html, body, #root {
+    background: #f9f9f9;
+}
+
+.dark .layout, .dark html, .dark body, .dark #root {
+    background: #131922;
+}
+
+.layout.collapsed-mode {
+    overflow-y: auto;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    overflow: auto;
+    transition: all 0.3s ease;
+}
+
+.horizontal-layout {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.split {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+#left-pane {
+    min-width: 24rem;
+}
+
+.dark #left-pane,
+.dark #right-pane {
+    background: #131922;
+}
+
+@media (max-width: 570px) {
+    html {
+        font-size: clamp(0.75rem, 2vw, 1rem);
+    }
+}
+
+.inherent-skills-box,
+.stat-label,
+.damage-grid,
+.stat-value,
+.stat-total,
+.slider-group,
+.header-with-icon,
+.damage-text,
+.layout,
+.main-content,
+.toolbar,
+.sidebar {
+    color: #222;
+}
+
+.dark .slider-group,
+.dark .buff-grid,
+.dark .character-settings,
+.dark .header-with-icon,
+.dark .damage-text,
+.dark .layout,
+.dark .main-content,
+.dark .toolbar,
+.sidebar {
+    color: #ddd;
+}
+
+button,
+button:focus,
+button:active,
+button:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button img {
+    user-select: none !important;
+}
+
+input[type="button"],
+input[type="submit"],
+input[type="file"] {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.modern-checkbox.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.cookie-notice {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-weight: bold;
+    backdrop-filter: blur(1px);
+    background: rgba(43, 55, 59, 0.56);
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(100%);
+}
+
+.cookie-notice.slide-in {
+    animation: slideUp 0.4s ease-out forwards;
+}
+
+.cookie-notice.slide-out {
+    animation: slideDown 0.4s ease-in forwards;
+}
+
+.cookie-notice a {
+    transition: ease all 0.3s;
+    color: #fff;
+    text-decoration: underline;
+}
+
+.cookie-close-btn {
+    transition: ease all 0.3s;
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.cookie-close-btn:hover {
+    transform: scale(1.2);
+    color: #ff2c57;
+}
+
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 0.95;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(0);
+        opacity: 0.95;
+    }
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #888 transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+ul {
+    padding-inline-start: 20px;
+    margin-block-start: 0.25em;
+}

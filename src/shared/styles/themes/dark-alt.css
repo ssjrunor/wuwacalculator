@@ -1,0 +1,608 @@
+.dark-alt .character-name {
+    color: #ccc;
+}
+
+.dark-alt .changelog-entries p,
+.dark-alt .changelog-entries li,
+.dark-alt .changelog-modal h2 {
+    color: #f3f4f6;
+}
+
+.dark-alt .changelog-entries p {
+    color: lightseagreen;
+}
+
+.dark-alt .mini-weapon-icon {
+    filter: none;
+    opacity: 1;
+}
+
+.dark-alt .weapon-button img,
+.dark-alt .attribute-button img,
+.dark-alt .weapon-icon {
+    filter: none;
+}
+
+.dark-alt .menu-header {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #ddd;
+}
+
+.dark-alt .dropdown-label {
+    color: #ddd !important;
+}
+
+.dark-alt .dropdown-item,
+.dark-alt .character-row-item {
+    background-color: rgba(19, 20, 23, 0.38);
+    color: #ddd;
+}
+
+.dark-alt .dropdown-item:hover,
+.dark-alt .character-row-item:hover {
+    background-color: rgba(19, 20, 23, 0.62);
+}
+
+.dark-alt .character-settings input[type="number"],
+.dark-alt .character-level-input,
+.dark-alt .custom-select.small {
+    border-color: rgba(85, 85, 85, 0.3);
+    background: rgba(0, 0, 0, 0.34);
+    color: #ddd;
+}
+
+.dark-alt .btn-primary.max:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark-alt .slider-label-with-input {
+    color: #ddd;
+}
+
+.dark-alt .character-settings,
+.dark-alt .skills-settings,
+.dark-alt .inherent-skills-box,
+.dark-alt .stats-box,
+.dark-alt .damage-box,
+.dark-alt .buffs-box {
+    background: black;
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+    color: #ddd;
+}
+
+.dark-alt .modern-checkbox {
+    color: #eee;
+}
+.dark-alt .modern-checkbox input[type="checkbox"] {
+    background-color: #1f1f1f;
+    border-color: #777;
+}
+
+.dark-alt .buff-row {
+    background: rgba(19, 20, 23, 0.38);
+}
+
+.dark-alt .buff-row input {
+    border-color: #000000;
+    background-color: #000000;
+    color: #ddd;
+}
+
+.dark-alt .clear-button {
+    background: transparent;
+    border-color: red;
+    color: red;
+}
+
+.dark-alt .clear-button:hover {
+    transform: scale(1.01);
+}
+
+.dark-alt .clear-button:focus {
+    box-shadow: 0 0 0 2px #555;
+    transform: scale(0.99);
+}
+
+.dark-alt .damage-inner-box {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-alt .stats-grid {
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-alt .stat-row:nth-child(even) {
+    background-color: rgba(2, 3, 4, 0.31);
+}
+
+.dark-alt .stat-row:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.dark-alt .stat-label,
+.dark-alt .stat-value,
+.dark-alt .stat-bonus,
+.dark-alt .stat-total,
+.dark-alt .damage-grid div,
+.dark-alt .panel-title,
+.dark-alt .stat-group-title,
+.dark-alt #right-pane h2,
+.dark-alt .damage-box-title {
+    color: #ddd;
+}
+
+.dark-alt .dropdown-arrow {
+    color: #ccc;
+}
+
+.dark-alt .echo-bag-modal .echo-tile {
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+    background: rgba(14, 14, 14, 0.86);
+}
+
+.dark-alt .save-to-bag-button.inline:hover {
+    color: white;
+}
+
+.dark-alt .echo-buff {
+    background: rgba(255, 255, 255, 0.03);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-alt .highlight {
+    color: lightgoldenrodyellow !important;
+}
+
+.dark-alt .echo-slot-icon.empty-slot {
+    background-color: #444;
+    opacity: 0.5;
+}
+
+.dark-alt .echo-slot-title,
+.dark-alt .echo-name {
+    color: blanchedalmond;
+}
+
+.dark-alt .echo-details {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-alt .echo-stat-label {
+    color: #bdbdbd;
+}
+
+.dark-alt .main-echo-description:hover {
+    color: #ccc;
+}
+
+.dark-alt .main-echo-description {
+    background: rgba(154, 154, 154, 0.04);
+    color: rgba(200, 200, 200, 0.7);
+}
+
+.dark-alt .layout {
+    background: black;
+}
+
+.dark-alt #left-pane,
+.dark-alt #right-pane {
+    background: black;
+}
+
+.dark-alt .slider-group,
+.dark-alt .buff-grid,
+.dark-alt .character-settings,
+.dark-alt .header-with-icon,
+.dark-alt .damage-text,
+.dark-alt .layout,
+.dark-alt .main-content,
+.dark-alt .toolbar,
+.sidebar {
+    color: #ddd;
+}
+
+.dark-alt .sidebar-button .icon-slot svg,
+.dark-alt .sidebar-sub-button .icon-slot svg {
+    color: #ddd;
+}
+
+.dark-alt .sidebar-button:hover .icon-slot svg,
+.dark-alt .sidebar-sub-button:hover .icon-slot svg {
+    color: lightseagreen;
+}
+
+.dark-alt .sidebar-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-alt .inherent-skills-box {
+    color: #ddd;
+}
+
+.dark-alt .inherent-skills-box h3,
+.dark-alt .inherent-skills .inherent-skill h4 {
+    color: #ffffff;
+}
+
+.dark-alt .inherent-skills .inherent-skill p {
+    color: #bbbbbb;
+}
+
+.dark-alt .buff-icon {
+    border: 0.01rem solid rgba(255, 255, 255, 0.26);
+    background-color: rgba(0, 0, 0, 0.84);
+}
+
+.dark-alt .buff-icon:hover {
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.25);
+}
+
+.dark-alt .buff-icon.active {
+    background: rgba(2, 3, 4, 0.09);
+    border: 1px solid var(--slider-color);
+    border-radius: 20px !important;
+    box-shadow: 0 1px 4px rgba(255, 255, 255, 0.13);
+}
+
+.dark-alt .dropzone-click-text:hover {
+    color: rgba(249, 250, 251, 0.42);
+}
+
+.dark-alt .spinner {
+    border: 6px solid rgba(96, 255, 250, 0.43);
+    border-top: 6px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.dark-alt .partition {
+    background-color: #1a1a1a;
+    border-right-color: #333;
+}
+
+.dark-alt :root {
+    color: #213547;
+    background-color: #ffffff;
+}
+
+.dark-alt a:hover {
+    color: #747bff;
+}
+
+.dark-alt .icon-menu-vertical,
+.dark-alt .skills-modal-content,
+.dark-alt .skills-modal-content,
+.dark-alt .notification-toast {
+    background-color: black;
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+    color: #f9fafb;
+}
+
+.dark-alt .rotation-button {
+    background: rgba(161, 156, 156, 0.65);
+    color: #ddd;
+}
+
+.dark-alt .rotation-button.clear {
+    background: #dd2046;
+}
+
+.dark-alt .rotation-button.clear:hover {
+    background: crimson;
+}
+
+.dark-alt .rotation-button:hover {
+    background: rgba(161, 156, 156, 0.85);
+}
+
+.dark-alt .rotation-item,
+.dark-alt .saved-rotation-item {
+    background: rgba(11, 11, 11, 0.97);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+    color: lightgray;
+}
+
+.dark-alt select {
+    background: rgba(100, 100, 100, 0.3);
+    color: #ddd;
+}
+
+.dark-alt .view-toggle-button {
+    background: rgba(73, 73, 73, 0.8);
+    color: #ddd;
+}
+
+.dark-alt .view-toggle-button.active {
+    background: rgba(255, 255, 255, 0.8);
+    color: #2a2a2a;
+}
+
+.dark-alt .avg {
+    color: #ff461e;
+}
+
+.dark-alt .sort-controls label {
+    color: #ccc;
+}
+
+.dark-alt select:focus {
+    border-color: #888;
+}
+
+.dark-alt .entry-name-edit:hover,
+.dark-alt .entry-name-edit:focus {
+    color: white;
+}
+
+.dark-alt .entry-name {
+    color: #aaa;
+}
+
+.dark-alt .menu-header-with-buttons {
+    border-bottom: 1px solid rgba(207, 207, 207, 0.1);
+}
+
+.dark-alt .skill-tab-label {
+    color: #eee;
+    border-left-color: rgba(255, 70, 30, 0.25);
+}
+.dark-alt .collapsible-label::after {
+    background-color: #ff461e;
+}
+
+.dark-alt .skill-option:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dark-alt .skill-option:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.dark-alt .skill-menu-panel {
+    background: black;
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-alt .collapsible-label:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-alt .skill-type-icon {
+    filter: none;
+}
+
+.dark-alt .settings-header {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #ddd;
+}
+
+.dark-alt .btn-primary:hover {
+    background-color: rgba(255, 255, 255, 0.45);
+}
+
+.dark-alt .btn-primary {
+    background-color: rgba(161, 156, 156, 0.35);
+    color: #f9fafb;
+}
+
+.dark-alt .skills-modal-content-area {
+    background-color: rgba(4, 5, 7, 0.18);
+    color: #ddd;
+}
+
+.dark-alt .multipliers-table td {
+    border-bottom: 1px solid #444;
+}
+
+.dark-alt input[type="range"] {
+    background: linear-gradient(
+            to right,
+            var(--slider-fill-color) 0%,
+            var(--slider-fill-color) var(--slider-fill, 0%),
+            rgba(51, 51, 51, 0.3) var(--slider-fill, 0%),
+            rgba(51, 51, 51, 0.3) 100%
+    );
+    box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.05);
+}
+
+.dark-alt .gutter {
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+.dark-alt .gutter:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark-alt .edit-substats-modal {
+    background: rgba(9, 9, 9, 0.85);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-alt .edit-substats-modal .substat-edit-row {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.dark-alt .edit-substats-modal .stat-toggle {
+    background: rgba(120, 120, 120, 0.35);
+}
+
+.dark-alt .edit-substats-modal .stat-toggle:hover {
+    background: rgba(161, 156, 156, 0.85);
+}
+
+.dark-alt .edit-substats-modal .stat-toggle.active {
+    background: rgba(32, 191, 185, 0.66);
+}
+
+.dark-alt .edit-substats-modal .add-substat:hover {
+    color: white;
+}
+
+.edit-substats-modal .add-substat:hover {
+    color: #222;
+}
+
+.dark-alt .edit-substats-modal .add-substat {
+    color: rgba(255, 255, 255, 0.53);
+}
+
+.dark-alt .edit-substats-modal .edit-substat-button {
+    background: rgba(32, 191, 185, 0.44);
+}
+
+.dark-alt .edit-substats-modal .edit-substat-button:hover {
+    background: rgba(32, 191, 185, 0.66);
+}
+
+.dark-alt .main-stat-select {
+    background: rgba(161, 156, 156, 0.35);
+}
+
+.dark-alt .remove-substat-button {
+    color: rgba(255, 255, 255, 0.53);
+}
+
+.dark-alt .remove-substat-button:hover {
+    color: white;
+}
+
+.dark-alt .sidebar-button .icon-slot svg,
+.dark-alt .sidebar-sub-button .icon-slot svg {
+    color: #ddd;
+}
+
+.dark-alt .toolbar {
+    background: black;
+    box-shadow: none;
+}
+
+.dark-alt .toolbar-icon-button {
+    background: none;
+    box-shadow: none;
+}
+
+.dark-alt .hamburger-button span {
+    background-color: white;
+}
+
+.dark-alt .sidebar {
+    background: black;
+    border-right-color: #444;
+    box-shadow: none;
+    color: #ddd;
+}
+
+.dark-alt .theme-toggle-icon .icon-sun {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+.dark-alt .theme-toggle-icon .icon-moon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.dark-alt .dropdown-subtext {
+    color: #aaa;
+}
+
+.dark-alt .star.active {
+    color: #ffc400;
+}
+
+.dark-alt .echo-card-section {
+    color: #a6a6a6;
+}
+
+.dark-alt .edit-substats-modal.echo-bag-modal {
+    background: rgba(0, 0, 0, 0.73) !important;
+    backdrop-filter: blur(10px);
+}
+
+.dark-alt .custom-select__control,
+.dark-alt .custom-select__menu,
+.dark-alt .ant-tooltip-inner {
+    border: 1px solid rgba(85, 85, 85, 0.3) !important;
+    background: black !important;
+    color: #ddd !important;
+}
+
+.dark-alt .custom-select__menu span {
+    color: #ddd !important;
+}
+
+.dark-alt .custom-select__multi-value {
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.64) !important;
+}
+
+.dark-alt .overview-buffs::before {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.14) 0%, transparent 100%);
+}
+
+.dark-alt .scroll-icon .header-icon {
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-alt .import-overview-mini {
+    background: rgba(0, 0, 0, 0.05);
+    border:1px solid transparent;
+}
+
+.dark-alt .preset-preview .echo-tile,
+.dark-alt .import-echo-grid .echo-tile {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.dark-alt .rv-container {
+    border-color: rgba(204, 216, 221, 0.41) !important;
+}
+
+.dark-alt .preset-tile.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.29);
+}
+
+.dark-alt .preset-tile.dropdown-item {
+    background-color: rgba(14, 14, 14, 0.86);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+}
+
+.dark-alt .preset-tile .echo-slot-icon {
+    background-color: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.62);
+}
+
+.dark-alt .notification-toast {
+    border: 0.1rem solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.94);
+}
+
+.dark-alt .overview-weapon.mini {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+}
+
+.dark-alt .modern-checkbox input[type="checkbox"]:checked {
+    background-color: #a015f3;
+    border-color: #a015f3;
+}
+
+.dark-alt .character-overview-pane {
+    background: rgba(9, 9, 9, 0.85);
+    color: #ddd;
+}
+
+.dark-alt .btn-primary.max.maxed {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+.dark-alt .layout, .dark-alt html, .dark-alt body, .dark-alt #root {
+    background: black;
+}
+
+.dark-alt .header-icon.overview,
+.dark-alt .gear-icon.overview-weapon {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 0%, black 100%);
+    border: 0.01rem solid rgba(255, 255, 255, 0.1);
+}

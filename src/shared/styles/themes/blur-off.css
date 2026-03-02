@@ -1,0 +1,81 @@
+.blur-off.frosted-aurora .character-settings,
+.blur-off.frosted-aurora .skills-settings,
+.blur-off.frosted-aurora .inherent-skills-box,
+.blur-off.frosted-aurora .stats-box,
+.blur-off.frosted-aurora .damage-box,
+.blur-off.frosted-aurora .buffs-box,
+.frosted-aurora.blur-off .stat-row:nth-child(odd),
+.frosted-aurora.blur-off .stat-row:nth-child(even),
+.frosted-aurora.blur-off .damage-inner-box,
+.frosted-aurora.blur-off .echo-buff,
+.frosted-aurora.blur-off .rotation-item,
+.frosted-aurora.blur-off .saved-rotation-item,
+.frosted-aurora.blur-off .buff-icon,
+.frosted-aurora.blur-off .toolbar,
+.frosted-aurora.blur-off .sidebar,
+.frosted-aurora.blur-off .buff-row,
+.frosted-aurora.blur-off .edit-substat-button {
+    backdrop-filter: unset; -webkit-backdrop-filter: unset;
+}
+
+.frosted-aurora.blur-off .inherent-skills-box,
+.frosted-aurora.blur-off .skills-settings,
+.frosted-aurora.blur-off .buffs-box,
+.frosted-aurora.blur-off .damage-inner-box,
+.frosted-aurora.blur-off .character-settings {
+    background-color: rgba(255, 255, 255, 0.09);
+}
+
+.blur-off.frosted-aurora .character-settings,
+.blur-off.frosted-aurora .skills-settings,
+.blur-off.frosted-aurora .inherent-skills-box,
+.blur-off.frosted-aurora .stats-box,
+.blur-off.frosted-aurora .damage-box,
+.frosted-aurora.blur-off .damage-inner-box,
+.frosted-aurora.blur-off .echo-buff,
+.frosted-aurora.blur-off .rotation-item,
+.frosted-aurora.blur-off .saved-rotation-item,
+.blur-off.frosted-aurora .buffs-box,
+.frosted-aurora.blur-off .stats-grid,
+.frosted-aurora.blur-off input[type='number'],
+.frosted-aurora.blur-off input[type='text'],
+.frosted-aurora.blur-off select,
+.frosted-aurora.blur-off .custom-select__control,
+.frosted-aurora.blur-off .custom-select__menu,
+.frosted-aurora.blur-off .ant-tooltip-inner,
+.frosted-aurora.blur-off .echo-details {
+    border: 1px solid floralwhite !important;
+}
+
+.frosted-aurora.blur-off .toolbar,
+.frosted-aurora.blur-off .echo-card-section.main {
+    border-bottom: 1px solid white;
+}
+
+.frosted-aurora.blur-off .sidebar {
+    border-right: 1px solid white;
+}
+
+.frosted-aurora.blur-off .icon-menu-vertical,
+.frosted-aurora.blur-off .skills-modal-content,
+.frosted-aurora.blur-off .notification-toast,
+.frosted-aurora.blur-off .edit-substats-modal,
+.frosted-aurora.blur-off .skill-menu-panel {
+    backdrop-filter: unset; -webkit-backdrop-filter: unset; background: var(--bg-main-color);
+}
+
+.frosted-aurora.blur-off .skills-modal-overlay,
+.frosted-aurora.blur-off .skill-menu-overlay,
+.frosted-aurora.blur-off .menu-overlay {
+    background: rgba(0,0,0,0.5);
+}
+
+.frosted-aurora.blur-off .light-text .edit-substat-button,
+.frosted-aurora.blur-off .light-text .btn-primary,
+.frosted-aurora.blur-off .light-text .view-toggle-button {
+    border: 1px solid rgba(42, 42, 42, 0.09) !important;
+}
+
+.frosted-aurora.blur-off .light-text .edit-substat-button:hover {
+    background: rgba(42, 42, 42, 0.63);
+}

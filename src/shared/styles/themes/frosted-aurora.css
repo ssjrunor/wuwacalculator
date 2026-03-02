@@ -1,0 +1,727 @@
+.frosted-aurora .dark-text button,
+.frosted-aurora .dark-text svg,
+.frosted-aurora .dark-text span,
+.frosted-aurora .dark-text div,
+.frosted-aurora .dark-text h1,
+.frosted-aurora .dark-text h2,
+.frosted-aurora .dark-text h3,
+.frosted-aurora .dark-text h4,
+.frosted-aurora .dark-text h5,
+.frosted-aurora .dark-text p,
+.frosted-aurora .dark-text li,
+.frosted-aurora .dark-text label,
+.frosted-aurora .dark-text input[type="number"],
+.frosted-aurora .dark-text input[type="text"],
+.frosted-aurora .dark-text textarea,
+.frosted-aurora .dark-text input {
+    color: floralwhite;
+}
+
+.frosted-aurora .dark-text .weapon-button img,
+.frosted-aurora .dark-text .weapon-icon {
+    filter: none;
+}
+
+.frosted-aurora .dark-text .dropdown-label {
+    color: floralwhite !important;
+}
+
+.frosted-aurora .dark-text .hamburger-button span {
+    background-color: floralwhite;
+}
+
+.frosted-aurora .light-text button,
+.frosted-aurora .light-text svg,
+.frosted-aurora .light-text span,
+.frosted-aurora .light-text div,
+.frosted-aurora .light-text h1,
+.frosted-aurora .light-text h2,
+.frosted-aurora .light-text h3,
+.frosted-aurora .light-text h4,
+.frosted-aurora .light-text h5,
+.frosted-aurora .light-text p,
+.frosted-aurora .light-text li,
+.frosted-aurora .light-text input[type="number"],
+.frosted-aurora .light-text input[type="text"],
+.frosted-aurora .light-text label {
+    color: #001f37;
+}
+
+.frosted-aurora .custom-select__single-value__label,
+.frosted-aurora .custom-select__multi-value__label {
+    color: #001f37 !important;
+}
+
+.frosted-aurora .light-text .hamburger-button span {
+    background-color: #001f37;
+}
+
+.frosted-aurora .toggle {
+    background: none;
+}
+
+.frosted-aurora body,
+.frosted-aurora #root {
+    background: unset;
+}
+
+/* Keyframes for moving prism shimmer */
+@keyframes frosted-prism {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Typography */
+.frosted-aurora h1,
+.frosted-aurora h2,
+.frosted-aurora h3,
+.frosted-aurora h4,
+.frosted-aurora h5 {
+    color: #333;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.35);
+}
+
+.frosted-aurora p,
+.frosted-aurora li,
+.frosted-aurora label {
+    color: #222;
+}
+
+/* Base containers with glass reflection */
+.frosted-aurora .panel,
+.frosted-aurora .box,
+.frosted-aurora .container {
+    backdrop-filter: blur(12px) saturate(160%);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08),
+    inset 0 0 12px rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+.frosted-aurora .mini-weapon-icon {
+    filter: brightness(1.05);
+}
+
+/* Menu header */
+.frosted-aurora .menu-header {
+    border-color: rgba(0,0,0,0.05);
+}
+
+/* Dropdown + rows */
+.frosted-aurora .character-row-item {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.frosted-aurora .character-row-item:hover,
+.frosted-aurora .dropdown-item:hover {
+    background: linear-gradient(135deg, rgba(255, 250, 255, 0.45), rgba(230, 255, 250, 0.47));
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Character + settings boxes */
+.frosted-aurora .character-settings,
+.frosted-aurora .skills-settings,
+.frosted-aurora .inherent-skills-box,
+.frosted-aurora .stats-box,
+.frosted-aurora .damage-box,
+.frosted-aurora .buffs-box {
+    background: transparent; -webkit-backdrop-filter: blur(10px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08),
+    0 0 15px rgba(120,160,255,0.1);
+    backdrop-filter: blur(10px) saturate(160%);
+}
+
+.blur-off {
+    backdrop-filter: unset;
+}
+
+/* Checkbox styling */
+.frosted-aurora .modern-checkbox {
+    color: #333;
+}
+.frosted-aurora .modern-checkbox input[type="checkbox"] {
+    background: rgba(255,255,255,0.45); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, #ffffff, #f5f8ff);
+    border-color: rgba(0,150,255,0.3);
+}
+.frosted-aurora .modern-checkbox input[type="checkbox"]:checked {
+    background: rgba(255,255,255,0.45); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, #00d4ff, #ff00c6, #ffe066);
+    border-color: rgba(150,80,255,0.5);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Buff rows */
+.frosted-aurora .buff-row {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(240, 250, 255, 0.22));
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+}
+.frosted-aurora .buff-row input {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255,255,255,0.75), rgba(235,245,255,0.85));
+    border: 1px solid rgba(0,120,255,0.25);
+}
+
+/* Clear buttons */
+.frosted-aurora .clear-button {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, #ffffff, #f3fcff);
+    border: 1px solid rgb(255, 0, 0);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+.frosted-aurora .clear-button:hover {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, #fff0f9, #f0fff6);
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.frosted-aurora .dark-text .clear-button {
+    background: rgba(255, 255, 255, 0.09); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(235, 245, 255, 0.31));
+}
+
+/* Stats grid + rows */
+.frosted-aurora .stats-grid {
+    border: 1px solid rgba(255, 255, 255, 0.49);
+}
+.frosted-aurora .stat-row:nth-child(even) {
+    background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+}
+.frosted-aurora .stat-row:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.19); backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+}
+
+.frosted-aurora .highlight,
+.frosted-aurora .echo-slot-title,
+.frosted-aurora .echo-name {
+    color: white !important;
+    text-shadow: 0 0 1px rgb(0, 0, 0),
+    0 0 2px rgb(0, 0, 0) !important;
+}
+
+.frosted-aurora .dark-text .highlight,
+.frosted-aurora .dark-text .echo-slot-title,
+.frosted-aurora .dark-text .echo-name {
+    color: rgba(255, 176, 75, 0.89) !important;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.41),
+    0 0 10px rgba(0,190,255,0.3);
+}
+
+.frosted-aurora .grid-stat-icon {
+    background-color: var(--stat-color, #001f37);
+}
+.frosted-aurora .dark-text .grid-stat-icon {
+    background-color: var(--stat-color, floralwhite);
+}
+
+/* Layout + chrome */
+.frosted-aurora .toolbar,
+.frosted-aurora .sidebar {
+    background: transparent; -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+.frosted-aurora .toolbar {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+.frosted-aurora .sidebar {
+    border-right: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.frosted-aurora .sidebar-button:hover {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: rgba(0, 0, 0, 0.13);
+}
+.frosted-aurora .dark-text .sidebar-button:hover {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: rgba(255, 255, 255, 0.09);
+}
+
+/* Partition */
+.frosted-aurora .partition,
+.frosted-aurora .layout {
+    background: transparent; /*backdrop-filter: blur(2px) saturate(160%); -webkit-backdrop-filter: blur(4px) saturate(160%);*/
+}
+
+/* Generic text & number fields */
+.frosted-aurora input[type="number"],
+.frosted-aurora input[type="text"],
+.frosted-aurora textarea {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.21);
+    color: floralwhite;
+}
+.frosted-aurora .dark-text .buff-row input[type="number"],
+.frosted-aurora .dark-text .buff-row input[type="text"],
+.frosted-aurora .dark-text .buff-row textarea {
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    color: black;
+}
+.frosted-aurora input[type="number"]:focus,
+.frosted-aurora input[type="text"]:focus {
+    outline: none;
+}
+/* Range sliders */
+.frosted-aurora input[type="range"] {
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(
+            to right,
+            var(--slider-fill-color) 0%,
+            var(--slider-fill-color) var(--slider-fill, 0%),
+            rgba(255, 255, 255, 0.25) var(--slider-fill, 0%),
+            rgba(255, 255, 255, 0.25) 100%
+    );
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.frosted-aurora .dark-text input[type="range"] {
+    background: linear-gradient(
+            to right,
+            var(--slider-fill-color) 0%,
+            var(--slider-fill-color) var(--slider-fill, 0%),
+            rgba(0, 0, 0, 0.25) var(--slider-fill, 0%),
+            rgba(0, 0, 0, 0.25) 100%
+    );
+}
+
+/* Select boxes */
+.frosted-aurora select {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(245, 248, 255, 0.29)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.11) !important;
+}
+
+/* Dropdown items */
+.frosted-aurora .dropdown-item {
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+}
+.frosted-aurora .view-toggle-button:hover,
+.frosted-aurora .btn-primary:hover,
+.frosted-aurora .edit-substats-modal .stat-toggle:hover {
+    background: linear-gradient(145deg, rgba(255,245,255,0.9), rgba(230,255,250,0.95));
+}
+
+/* Primary buttons */
+.frosted-aurora .btn-primary {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(240,250,255,0.95));
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    color: #001f37;
+}
+.frosted-aurora .btn-primary:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.frosted-aurora .dark-text .btn-primary {
+    background: rgba(255, 255, 255, 0.09); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(235, 245, 255, 0.31));
+}
+.frosted-aurora .dark-text .btn-primary:hover {
+    background: rgba(255, 255, 255, 0.29); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255, 255, 255, 0.49), rgba(235, 245, 255, 0.64));
+}
+.frosted-aurora .buff-icon {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(135deg, rgba(255, 235, 248, 0.42), rgba(230, 250, 255, 0.46), rgba(255, 249, 230, 0.79));
+}
+.frosted-aurora .dark-text .buff-icon {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(235, 245, 255, 0.31));
+}
+
+/* View toggle buttons */
+.frosted-aurora .view-toggle-button {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255,255,255,0.8), rgba(235,245,255,0.9));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.frosted-aurora .dark-text .view-toggle-button {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(235, 245, 255, 0.31));
+    border: 1px solid rgba(255, 255, 255, 0.11);
+}
+.frosted-aurora .dark-text .view-toggle-button.active {
+    color: #000000;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.33);
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255, 255, 255, 0.79), rgba(255, 255, 255, 0.62));
+}
+.frosted-aurora .view-toggle-button.active {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.58));
+    text-shadow: 0 0 6px floralwhite;
+    color: floralwhite;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Rotation controls */
+.frosted-aurora .rotation-button {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255,255,255,0.8), rgba(235,245,255,0.9));
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+}
+.frosted-aurora .dark-text .rotation-button {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(235, 245, 255, 0.31));
+    border: 1px solid rgba(255, 255, 255, 0.11);
+}
+.frosted-aurora .rotation-button:hover {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255,245,255,0.9), rgba(230,255,250,0.95));
+}
+.frosted-aurora .dark-text .rotation-button:hover {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255, 255, 255, 0.49), rgba(235, 245, 255, 0.64));
+}
+.frosted-aurora .rotation-button.clear {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: rgba(220, 20, 60, 0.77);
+    color: floralwhite;
+    text-shadow: 0 0 6px floralwhite;
+}
+.frosted-aurora .rotation-button.clear:hover {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: crimson;
+}
+
+/* Checkboxes */
+.frosted-aurora .modern-checkbox input[type="checkbox"] {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(245, 248, 255, 0.57));
+    border-color: rgba(0, 0, 0, 0.3);
+}
+.frosted-aurora .dark-text .modern-checkbox input[type="checkbox"]:checked {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(180deg, rgba(255, 255, 255, 0.79), rgba(113, 113, 113, 0.62));
+}
+.frosted-aurora .dark-text .modern-checkbox input[type="checkbox"] {
+    background: rgba(0, 0, 0, 0.48);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Gutter / drag handles */
+.frosted-aurora .gutter {
+    background-color: rgba(0,0,0,0.05);
+    backdrop-filter: blur(3px);
+}
+.frosted-aurora .gutter:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+
+/* Text colors in controls */
+.frosted-aurora .entry-name { color: #666; }
+.frosted-aurora .entry-name-edit:hover,
+.frosted-aurora .entry-name-edit:focus { color: #000; }
+
+.frosted-aurora .sort-controls label { color: #444; }
+
+/* Rotation items */
+.frosted-aurora .rotation-item:hover,
+.frosted-aurora .saved-rotation-item:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08),
+            0 0 10px rgba(0,180,255,0.15);
+}
+
+/* Damage boxes */
+.frosted-aurora .damage-inner-box,
+.frosted-aurora .echo-buff,
+.frosted-aurora .rotation-item,
+.frosted-aurora .saved-rotation-item {
+    background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.49);
+}
+.frosted-aurora .damage-grid div {
+    color: #001f37;
+}
+.frosted-aurora .dark-text .damage-grid div {
+    color: rgba(255, 250, 240, 0.45);
+}
+.frosted-aurora .damage-box-title {
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
+}
+
+/* Stats box */
+.frosted-aurora .stat-label,
+.frosted-aurora .stat-value,
+.frosted-aurora .stat-bonus,
+.frosted-aurora .stat-total {
+    color: #002244;
+}
+
+/* Averages and emphasis */
+.frosted-aurora .avg {
+    color: #00a8ff;
+    text-shadow: 0 0 6px rgba(0,200,255,0.4);
+}
+
+/* Multipliers & skills */
+.frosted-aurora .multipliers-table td {
+    border-bottom: 1px solid rgba(150,150,255,0.15);
+}
+.frosted-aurora .skill-menu-panel {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: floralwhite;
+}
+
+.frosted-aurora .skill-option:hover {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg, rgba(255, 245, 255, 0.34), rgba(230, 255, 250, 0.4));
+}
+.frosted-aurora .skill-tab-label {
+    color: #003350;
+    border-left: 2px solid rgba(0, 168, 255, 0.25);
+}
+.frosted-aurora .collapsible-label::after {
+    background-color: #00a8ff;
+}
+
+/* Notifications & toasts */
+.frosted-aurora .notification-toast {
+    text-shadow: 0 0 6px rgba(255, 205, 0, 0.4);
+    color: #002244;
+}
+
+/* Echo cards and overview */
+.frosted-aurora .echo-card-section {
+    color: #002244;
+}
+.frosted-aurora .import-overview-mini {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: rgba(255,255,255,0.3);
+    border: 1px solid transparent;
+}
+.frosted-aurora .overview-buffs::before {
+    background-image: linear-gradient(
+            to right,
+            rgba(255,255,255,0.4) 0%,
+            transparent 100%
+    );
+}
+.frosted-aurora .overview-weapon.mini {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.frosted-aurora .header-icon.overview,
+.frosted-aurora .gear-icon.overview-weapon {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Shared modal base */
+.frosted-aurora .icon-menu-vertical,
+.frosted-aurora .skills-modal-content,
+.frosted-aurora .notification-toast,
+.frosted-aurora .edit-substats-modal {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+
+.frosted-aurora .dark-text .icon-menu-vertical,
+.frosted-aurora .dark-text.skills-modal-content,
+.frosted-aurora .dark-text .skills-modal-content,
+.frosted-aurora .dark-text .notification-toast,
+.frosted-aurora .dark-text .edit-substats-modal {
+    background: unset; backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+}
+
+/* Skills modal content */
+.frosted-aurora .skills-modal-content-area {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg,
+rgba(255, 255, 255, 0.3),
+rgba(235, 245, 255, 0.24)
+    );
+    color: #002244;
+}
+.frosted-aurora .skills-modal-content h2,
+.frosted-aurora .skills-modal-content h3 {
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
+}
+
+/* Edit Substats modal */
+.frosted-aurora .edit-substats-modal .substat-edit-row {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(240, 250, 255, 0.22));
+    backdrop-filter: blur(20px) saturate(160%);
+}
+.frosted-aurora .edit-substats-modal .stat-toggle {
+    background: rgba(255, 255, 255, 0.56);
+    border-radius: 6px;
+    color: #003350;
+    border: 1px solid rgba(100,160,255,0.3);
+}
+.frosted-aurora .dark-text .edit-substats-modal .stat-toggle.active {
+    background: rgba(255, 255, 255, 0.56);
+}
+.frosted-aurora .edit-substats-modal .stat-toggle.active {
+    background: rgba(0, 0, 0, 0.32);
+    color: floralwhite;
+    text-shadow: 0 0 6px floralwhite;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.frosted-aurora .dark-text .edit-substats-modal .stat-toggle.active {
+    background: rgba(0, 0, 0, 0.56);
+}
+.frosted-aurora .edit-substats-modal .add-substat,
+.frosted-aurora .remove-substat-button {
+    color: rgba(0,0,0,0.5);
+}
+.frosted-aurora .edit-substats-modal .add-substat:hover,
+.frosted-aurora .remove-substat-button:hover {
+    color: #000;
+}
+.frosted-aurora .edit-substat-button {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: rgba(255, 255, 255, 0.56);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.frosted-aurora .edit-substat-button:hover {
+    background: rgba(0, 0, 0, 0.56);
+    text-shadow: 0 0 6px white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08)!important;
+}
+
+.frosted-aurora .skills-modal-overlay,
+.frosted-aurora .skill-menu-overlay,
+.frosted-aurora .menu-overlay {
+    background: transparent;
+}
+
+/* Echo Bag modal */
+.frosted-aurora .echo-bag-modal .echo-tile,
+.frosted-aurora .preset-tile.dropdown-item {
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(120,180,255,0.25);
+}
+.frosted-aurora .save-to-bag-button.inline:hover {
+    color: #000;
+}
+
+/* Preset tiles */
+.frosted-aurora .preset-tile.dropdown-item {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.frosted-aurora .preset-tile.dropdown-item:hover {
+    backdrop-filter: blur(8px) saturate(160%); -webkit-backdrop-filter: blur(8px) saturate(160%); background: linear-gradient(145deg, rgba(255, 255, 255, 0.58), rgba(240, 250, 255, 0.74));
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+.frosted-aurora .preset-tile .echo-slot-icon {
+    background-color: rgba(255,255,255,0.4);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Character overview */
+.frosted-aurora .character-overview-pane {
+    background: transparent;
+    color: #002244;
+}
+.frosted-aurora .overview-weapon.mini {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Misc overlay elements */
+.frosted-aurora .rv-container {
+    border-color: rgba(150,120,255,0.25) !important;
+}
+.frosted-aurora .import-overview-mini {
+    background: transparent; backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid transparent;
+}
+.frosted-aurora .preset-preview .echo-tile,
+.frosted-aurora .import-echo-grid .echo-tile {
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: transparent;
+}
+.frosted-aurora .custom-select__menu {
+    background: rgba(255,255,255,0.7) !important;
+    color: #003350 !important;
+}
+.frosted-aurora .custom-select__control {
+    background: none !important;
+    color: #003350 !important;
+}
+.frosted-aurora .dark-text .custom-select__control,
+.frosted-aurora .dark-text .custom-select__menu {
+    background: rgba(255, 255, 255, 0.31) !important;
+}
+.frosted-aurora .custom-select__multi-value {
+    background: rgba(255,255,255,0.7) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+}
+
+/* Star and highlight color */
+.frosted-aurora .star.active { color: #ffd500; }
+
+/* Optional prismatic aurora overlay (subtle, slow-moving light bands) */
+.frosted-aurora .prism-layer {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.45); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(
+            120deg,
+            rgba(255, 0, 150, 0.06),
+            rgba(0, 200, 255, 0.06),
+            rgba(255, 255, 150, 0.06),
+            rgba(0, 255, 200, 0.06),
+            rgba(255, 0, 200, 0.06)
+    );
+    background-size: 400% 400%;
+    animation: frosted-aurora 60s ease-in-out infinite;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Fine sparkle overlay for panels */
+.frosted-aurora .sparkle-layer {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: 0.02;
+    animation: sparkle-drift 90s linear infinite;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    z-index: 1;
+}
+
+/* Hover reflection for any clickable surface */
+.frosted-aurora .hover-reflect:hover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.45); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: radial-gradient(circle at var(--reflect-x,50%) var(--reflect-y,50%),
+    rgba(255,255,255,0.4) 0%,
+    transparent 60%);
+    opacity: 0.35;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    animation: reflect-fade 1.5s ease-out forwards;
+}
+
+/* Reusable glow utilities */
+.frosted-aurora .glow-cyan    { text-shadow: 0 0 6px rgba(0,255,255,0.4); }
+.frosted-aurora .glow-magenta { text-shadow: 0 0 6px rgba(255,100,255,0.4); }
+.frosted-aurora .glow-gold    { text-shadow: 0 0 6px rgba(255,200,0,0.4); }
+.frosted-aurora .glow-white   { text-shadow: 0 0 6px rgba(255,255,255,0.4); }
+
+/* Gradient border utility for cards or buttons */
+.frosted-aurora .gradient-border {
+    position: relative;
+    border: 1px solid transparent;
+    border-radius: inherit;
+    background: rgba(255,255,255,0.45); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(135deg, rgba(255,0,200,0.4), rgba(0,200,255,0.4)) border-box;
+    -webkit-mask:
+            linear-gradient(#fff 0 0) padding-box,
+            linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+/* Shimmering background (apply to major panels) */
+.frosted-aurora .shimmer-background {
+    background: rgba(255,255,255,0.45); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%); background: linear-gradient(145deg,
+    rgba(255,255,255,0.85),
+    rgba(245,250,255,0.9),
+    rgba(255,245,255,0.85));
+    background-size: 400% 400%;
+    animation: shimmer-flow 120s ease infinite;
+}
+
+/* Keyframes */
+@keyframes frosted-aurora {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes sparkle-drift {
+    0%   { transform: translateY(0);   opacity: 0.02; }
+    50%  { transform: translateY(-20px); opacity: 0.03; }
+    100% { transform: translateY(0);   opacity: 0.02; }
+}
+@keyframes reflect-fade {
+    0%   { opacity: 0.4; transform: scale(1); }
+    80%  { opacity: 0.15; transform: scale(1.3); }
+    100% { opacity: 0; transform: scale(1.5); }
+}
+@keyframes shimmer-flow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

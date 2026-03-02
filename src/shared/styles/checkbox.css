@@ -1,0 +1,122 @@
+.modern-checkbox {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
+    color: #333;
+}
+
+.modern-checkbox input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #888;
+    border-radius: 6px;
+    transition: all 0.4s ease;
+    background-color: #fff;
+    position: relative;
+    flex-shrink: 0;
+}
+
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.modern-checkbox input[type="checkbox"]::after {
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    transform: rotate(45deg) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
+    content: none;
+}
+
+/* When checked — play the draw animation */
+.modern-checkbox input[type="checkbox"]:checked::after {
+    content: '';
+}
+
+/* When unchecked — play the erase animation */
+.modern-checkbox input[type="checkbox"]:not(:checked)::after {
+    animation: eraseCheck 0.3s ease forwards;
+}
+
+.modern-checkbox input[type="checkbox"]:checked::after {
+    display: block;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) scale(0);
+    animation: drawCheck 0.3s ease forwards;
+    opacity: 1;
+}
+
+.modern-checkbox input[type="checkbox"]:checked {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+    animation: pulseCheck 0.3s ease;
+}
+
+@keyframes pulseCheck {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+@keyframes drawCheck {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.5) rotate(45deg);
+        border-width: 0 0 0 0;
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.7) rotate(45deg);
+        border-width: 0 2px 0 0;
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(45deg);
+        border-width: 0 2px 2px 0;
+    }
+}
+
+@keyframes eraseCheck {
+    0% {
+        opacity: 1;
+        transform: scale(1) rotate(45deg);
+        border-width: 0 2px 2px 0;
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.7) rotate(45deg);
+        border-width: 0 2px 0 0;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5) rotate(45deg);
+        border-width: 0 0 0 0;
+    }
+}
+
+.dark .modern-checkbox {
+    color: #eee;
+}
+.dark .modern-checkbox input[type="checkbox"] {
+    background-color: #1f1f1f;
+    border-color: #777;
+}
+.dark .modern-checkbox input[type="checkbox"]:checked {
+    background-color: #6366f1;
+    border-color: #6366f1;
+}
