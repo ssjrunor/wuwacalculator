@@ -5,7 +5,7 @@ import {
     calc1206ErToAtk,
     calc1306CritConversion,
     calc1209Conversion,
-    computeAvgDamage,
+    computeAvgDamage, calc1412Conversion,
 } from "@/features/optimizer/core/cpu/damageCore.js";
 import { getElementIdFromSkillId } from "@shared/utils/computeSkillDamage.js";
 import {bitValue} from "@/features/optimizer/core/cpu/helpers.js";
@@ -70,6 +70,8 @@ export function computeMainStatDamage(params, mainStats) {
         ? getElementIdFromSkillId(skillId)
         : (elementId | 0);
 
+    const skillMask = skillId & 0x7fff;
+
     // Element bonus via array lookup (branchless)
     const elemBonuses = [aero, glacio, fusion, spectro, havoc, electro];
     const elemIdx = Math.max(0, Math.min(5, elementIdEff | 0));
@@ -103,6 +105,7 @@ export function computeMainStatDamage(params, mainStats) {
         finalDef * scalingDef +
         finalER * scalingER;
 
+    const sigrikaBonus = calc1412Conversion(charId, finalER) * ((skillMask >>> 6) & 1);
 
     // Use shared damage computation
     return computeAvgDamage({
@@ -113,7 +116,7 @@ export function computeMainStatDamage(params, mainStats) {
         defMult,
         dmgReduction: dmgReductionTotal,
         dmgBonus: dmgBonusTotal +
-            conv1209.mornyeDmgBonus * bitValue(toggles, 0),
+            conv1209.mornyeDmgBonus * bitValue(toggles, 0) + sigrikaBonus,
         dmgAmplify,
         special,
         critRateTotal,

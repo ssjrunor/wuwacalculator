@@ -732,44 +732,49 @@ export const mainEchoBuffs = {
             }
             return skillMeta;
         }
+    },
+    // TODO: implement skill's specific dmg bonus
+    '6000179': {
+        always: { spectro: 12, basicAtk: 12 },
+        stackable: {
+            label: "Stacks",
+            key: "mainEchoStacks",
+            max: 6,
+    /*
+            buffsPerStack: { echoSkill: 10 }
+    */
         },
-        '6000179': {
-            always: { spectro: 12, basicAtk: 12 },
-            stackable: {
-                label: "Stacks",
-                key: "mainEchoStacks",
-                max: 6,
-                buffsPerStack: { echoSkill: 10 }
-            },
-            skillMetaModifier: (skillMeta, { characterState }) => {
-                const nebulousCannon = !!characterState?.nebulousCannon;
-                if (skillMeta.name.includes('Twin Nova: Nebulous Cannon Skill 2')) {
-                    skillMeta.visible = nebulousCannon;
-                    skillMeta.label = 'Twin Nova: Collapsar Blade';
-                } else if (skillMeta.name.includes('Twin Nova: Nebulous Cannon Skill 1')) {
-                    skillMeta.label = 'Twin Nova: Nebulous Cannon';
-                }
-                return skillMeta;
+        skillMetaModifier: (skillMeta, { characterState }) => {
+            const nebulousCannon = !!characterState?.nebulousCannon;
+            if (skillMeta.name.includes('Twin Nova: Nebulous Cannon Skill 2')) {
+                skillMeta.visible = nebulousCannon;
+                skillMeta.label = 'Twin Nova: Collapsar Blade';
+            } else if (skillMeta.name.includes('Twin Nova: Nebulous Cannon Skill 1')) {
+                skillMeta.label = 'Twin Nova: Nebulous Cannon';
             }
+            return skillMeta;
+        }
+    },
+    '6000180': {
+        always: { electro: 12, basicAtk: 12 },
+        stackable: {
+            label: "Stacks",
+            key: "mainEchoStacks",
+            max: 6,
+    /*
+            buffsPerStack: { echoSkill: 10 }
+    */
         },
-        '6000180': {
-            always: { electro: 12, basicAtk: 12 },
-            stackable: {
-                label: "Stacks",
-                key: "mainEchoStacks",
-                max: 6,
-                buffsPerStack: { echoSkill: 10 }
-            },
-            skillMetaModifier: (skillMeta, { characterState }) => {
-                const collapsarBlade = !!characterState?.collapsarBlade;
-                if (skillMeta.name.includes('Twin Nova: Collapsar Blade Skill 2')) {
-                    skillMeta.visible = collapsarBlade;
-                    skillMeta.label = 'Twin Nova: Nebulous Cannon';
-                } else if (skillMeta.name.includes('Twin Nova: Collapsar Blade Skill 1')) {
-                    skillMeta.label = 'Twin Nova: Collapsar Blade';
-                }
-                return skillMeta;
+        skillMetaModifier: (skillMeta, { characterState }) => {
+            const collapsarBlade = !!characterState?.collapsarBlade;
+            if (skillMeta.name.includes('Twin Nova: Collapsar Blade Skill 2')) {
+                skillMeta.visible = collapsarBlade;
+                skillMeta.label = 'Twin Nova: Nebulous Cannon';
+            } else if (skillMeta.name.includes('Twin Nova: Collapsar Blade Skill 1')) {
+                skillMeta.label = 'Twin Nova: Collapsar Blade';
             }
+            return skillMeta;
+        }
     },
     '6000184': {
         skillMetaModifier: (skillMeta) => {

@@ -13,6 +13,8 @@ import {
     setWorkerLockedEchoIndex,
     setWorkerRotationContext,
 } from "../misc/index.js";
+import { computeDamageForCombo } from "../cpu/computeDamage.js";
+import { createCpuScratch } from "../cpu/scratch.js";
 import {
     createProgressTracker,
     createResultCollector,
@@ -203,6 +205,10 @@ export async function runRotationOptimizer({
             ctxLen,
             ctxCount,
             runCount,
+            rotationContexts,
+            encoded,
+            mainEchoBuffs,
+            echoKindIds,
         });
     } else {
         return runRotationCpuPath({
@@ -237,6 +243,10 @@ async function runRotationGpuPath({
     ctxLen,
     ctxCount,
     runCount,
+    rotationContexts,
+    encoded,
+    mainEchoBuffs,
+    echoKindIds,
 }) {
     const comboCountPerRun = comboIndexing?.totalCombos ?? 0;
     const targetCombosPerJob = ECHO_OPTIMIZER_JOB_TARGET_COMBOS_ROTATION_GPU;
@@ -302,7 +312,15 @@ async function runRotationGpuPath({
         }
     }
 
-    return resultCollector.toResults({ echoes, limit: resultsLimit });
+    const gpuResults = resultCollector.toResults({ echoes, limit: resultsLimit });
+    return alignRotationResultsWithCpu({
+        results: gpuResults,
+        rotationContexts,
+        encoded,
+        mainEchoBuffs,
+        echoKindIds,
+        statConstraints,
+    });
 }
 
 // CPU path: uses batch-based enumeration
@@ -430,4 +448,60 @@ async function runRotationCpuPath({
     }
 
     return resultCollector.toResults({ echoes, limit: resultsLimit });
+}
+
+function alignRotationResultsWithCpu({
+    results,
+    rotationContexts,
+    encoded,
+    mainEchoBuffs,
+    echoKindIds,
+    statConstraints,
+}) {
+    if (!Array.isArray(results) || results.length === 0) return results;
+    if (!Array.isArray(rotationContexts) || rotationContexts.length === 0) return results;
+    if (!encoded || !mainEchoBuffs || !echoKindIds) return results;
+
+    const scratch = createCpuScratch();
+
+    const refined = results.map((result) => {
+        const ids = result?.ids;
+        if (!Array.isArray(ids) || ids.length !== OPTIMIZER_ECHOS_PER_COMBO) {
+            return result;
+        }
+
+        const combos = new Int32Array(OPTIMIZER_ECHOS_PER_COMBO);
+        combos[0] = ids[0];
+        combos[1] = ids[1];
+        combos[2] = ids[2];
+        combos[3] = ids[3];
+        combos[4] = ids[4];
+
+        let totalDamage = 0;
+        for (let i = 0; i < rotationContexts.length; i++) {
+            const rotationContext = rotationContexts[i];
+            const packedContext = rotationContext?.packedContext;
+            if (!packedContext) continue;
+
+            const { dmg } = computeDamageForCombo({
+                index: 0,
+                combos,
+                packedContext,
+                encoded,
+                mainEchoBuffs,
+                echoKindIds,
+                statConstraints,
+                scratch,
+            });
+
+            totalDamage += dmg * (rotationContext?.target?.n ?? 1);
+        }
+
+        return {
+            ...result,
+            damage: totalDamage,
+        };
+    });
+
+    return refined.sort((a, b) => b.damage - a.damage);
 }

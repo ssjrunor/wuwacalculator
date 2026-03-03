@@ -184,7 +184,7 @@ export function CustomInherentSkills({
                 const isBetweenStars = lowerName.includes('between the stars');
 
                 if (locked) {
-                    if (isBetweenStars && activeStates.inherent2) updateState('inherent1', false);
+                    if (isBetweenStars && activeStates.inherent2) updateState('inherent2', false);
                 }
 
                 return (

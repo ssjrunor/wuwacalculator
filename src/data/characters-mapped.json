@@ -50582,7 +50582,7 @@
         "Skill": {
           "Type": "Inherent Skill",
           "Name": "True Names Aligned",
-          "Desc": "When Resonators in the team cast Echo Skill, they gain 6% <span style=\"color:#c7ffed\";>Aero DMG</span> Bonus and 6% Echo Skill DMG Bonus for 6s, stacking up to <SapTag=3>125%</SapTag> times. Echoes with the same name can only trigger this effect once. Casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Outro Skill - In This Very Moment</span> resets the record of Echo triggering this effect.<br><br>For every 1.5% of Sigirka's Energy Regen over 1%, this skill grants her 37.5% Echo Skill DMG Bonus, up to 150%.",
+          "Desc": "When Resonators in the team cast Echo Skill, they gain 6% <span style=“color:#c7ffed”;>Aero DMG Bonus and 6% Echo Skill DMG Bonus for 6s, stacking up to <SapTag=3>6 times. Echoes with the same name can only trigger this effect once. Adding a Resonator to the team resets the record of Echo triggering this effect.<br>For every 1% of Sigirka’s Energy Regen over 125%, this skill grants her 1.5% Echo Skill DMG Bonus, up to 37.5%.<br>For every 1% of Sigirka’s Energy Regen over 150%, this skill grants her 0.5% Echo Skill DMG Bonus, up to 17.5%.",
           "Param": [
             "6%",
             "6%",

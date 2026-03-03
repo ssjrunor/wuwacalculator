@@ -301,7 +301,7 @@ export function getDefaultMainStatFilter(statWeight = {}, charId = null) {
         }
     }
 
-    if (Number(charId) === 1206 || Number(charId) === 1209) result.energyRegen = true;
+    if (Number(charId) === 1206 || Number(charId) === 1209 || Number(charId) === 1412) result.energyRegen = true;
 
     return result;
 }

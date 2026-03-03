@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import '@shared/styles/appStatusModal.css';
 
 const data = {
-    lastUpdated: '03-02-2026',
+    lastUpdated: '03-03-2026',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
     patchVersion: '3.2.0 (Beta)',
@@ -11,7 +11,8 @@ const data = {
     coverage: [
         {
             title: 'Note',
-            desc: 'Hello hello, idk what\'s up with Sigrika\'s inherent skill but till i do... it won\'t do anything for now. Asides from that, new beta, yada yada... yk the drill.',
+            desc: "Well... when in doubt, learn Chinese. Sigrik's 2nd inherent skill's text description has been updated and it's effect does what it does. " +
+                "She should also be working on all the calculator features as well :3.",
         },
         {
             title: 'Character Coverage',

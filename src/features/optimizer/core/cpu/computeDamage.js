@@ -33,7 +33,7 @@ import {
 import { passesConstraints } from "./constraints.js";
 import { countOneBits } from "./helpers.js";
 import { applySetEffectsFast } from "./setEffects.js";
-import { calc1206ErToAtk, calc1306CritConversion, calc1209Conversion } from "./damageCore.js";
+import {calc1206ErToAtk, calc1306CritConversion, calc1209Conversion, calc1412Conversion} from "./damageCore.js";
 
 const packedContextU32Cache = new WeakMap();
 
@@ -237,7 +237,8 @@ export function computeDamageForCombo({
         bonus += mainEchoBuffs[b + 13] * ((skillMask >>> 6) & 1); // echoSkill
         bonus += mainEchoBuffs[b + 14] * ((skillMask >>> 7) & 1); // coord
 
-        const dmgBonus = packedContext[OPTIMIZER_CTX_DMG_BONUS] + bonus / 100;
+        let dmgBonus = packedContext[OPTIMIZER_CTX_DMG_BONUS] + bonus / 100 +
+            calc1412Conversion(charId, finalER) * ((skillMask >>> 6) & 1);
 
         // Final ATK with the main echo and 1206 conversion
         let finalAtk = atkBaseTerm + (baseAtk * (mainAtkP / 100)) + mainAtkF;

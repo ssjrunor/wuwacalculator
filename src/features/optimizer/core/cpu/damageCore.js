@@ -64,11 +64,11 @@ export function calc1306CritConversion(charId, sequence, critRateTotal) {
 }
 
 /**
- * Character 1209 (Xiangli Yao): ER → Vulnerability + Crit conversion
+ * Character 1209 (Mornye): ER → Dmg Bonus + Crit conversion
  * @param {number} charId - Character ID
  * @param {number} finalER - Final energy regen value
  * @param {number} id - skill id
- * @returns {Object} { dmgVuln, critRateBonus, critDmgBonus }
+ * @returns {Object} { mornyeDmgBonus, critRateBonus, critDmgBonus }
  */
 export function calc1209Conversion(charId, finalER, id) {
     if (charId !== 1209 || finalER <= 0) return { mornyeDmgBonus: 0, critRateBonus: 0, critDmgBonus: 0 };
@@ -87,6 +87,18 @@ export function calc1209Conversion(charId, finalER, id) {
     }
 
     return { mornyeDmgBonus: mornyeDmgBonus / 100, critRateBonus, critDmgBonus };
+}
+
+/**
+ * Character 1412 (Sigrika): ER → dmg bonus
+ * @param {number} charId - Character ID
+ * @param {number} finalER - Final energy regen value
+ * @returns {number} - dmg bonus
+ */
+export function calc1412Conversion(charId, finalER) {
+    if (charId !== 1412 || finalER <= 125) return 0;
+    return (Math.min((finalER - 125) * 1.5, 37.5) + (finalER > 150 ?
+        Math.min((finalER - 150) * .5, 17.5) : 0)) / 100;
 }
 
 /**

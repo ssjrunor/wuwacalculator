@@ -45,7 +45,7 @@ import LynaeUI, {lynaeSequenceToggles, CustomInherentSkills as LynaeInherentSkil
 import MornyeUI, {MornyeSequenceToggles} from "./1209.jsx";
 import AemeathUI, {AemeathSequenceToggles, CustomInherentSkills as AemeathInherents} from "./1210.jsx";
 import LuukUI, {LuukSequenceToggles, CustomInherentSkills as LuukInherents} from "./1510.jsx";
-import SigrikaUI, {sigrikaSequenceToggles} from "@/data/characters/ui/1412.jsx";
+import SigrikaUI, {CustomInherentSkills as SigrikaInherents, sigrikaSequenceToggles} from "@/data/characters/ui/1412.jsx";
 
 
 export function getCharacterUIComponent(characterId) {
@@ -123,6 +123,7 @@ export function getCustomInherentSkillsComponent(characterId) {
         case '1509': return LynaeInherentSkills;
         case '1210': return AemeathInherents;
         case '1510': return LuukInherents;
+        case '1412': return SigrikaInherents;
         default: return null;
     }
 }

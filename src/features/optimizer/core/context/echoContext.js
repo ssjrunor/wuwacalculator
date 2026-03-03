@@ -129,6 +129,16 @@ export function removeSpecialBuffs(
             }
             buffs.critDmg = (original.critDmg ?? 0) - bonusCd;
             break;
+        case 1412: {
+            if (original.energyRegen > 25) {
+                buffs.skillType.echoSkill.dmgBonus = (buffs.skillType.echoSkill.dmgBonus ?? 0) -
+                    Math.min((original.energyRegen - 25) * 1.5, 37.5);
+                if (original.energyRegen > 50)
+                    buffs.skillType.echoSkill.dmgBonus = (buffs.skillType.echoSkill.dmgBonus ?? 0) -
+                        Math.min((original.energyRegen - 50) * .5, 17.5);
+            }
+        }
+            break;
     }
     return buffs;
 }

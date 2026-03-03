@@ -1,11 +1,55 @@
 export const formatDescription = (desc, param = [], currentSliderColor = '#888') => {
     if (!desc) return '';
 
+    const hasFontBoldClass = (tag) => {
+        const quotedClassMatch = tag.match(/\bclass\s*=\s*(['"])(.*?)\1/i);
+        if (quotedClassMatch && /\bfont-bold\b/i.test(quotedClassMatch[2])) {
+            return true;
+        }
+
+        const unquotedClassMatch = tag.match(/\bclass\s*=\s*([^\s>]+)/i);
+        return Boolean(unquotedClassMatch && /\bfont-bold\b/i.test(unquotedClassMatch[1]));
+    };
+
+    const stripInjectedMarkup = (text) => {
+        const normalized = text.replace(/(?:<br\s*\/?>\s*)+/gi, '\n');
+        const tagRegex = /<\/?[^>]+>/gi;
+        const spanStack = [];
+        let result = '';
+        let lastIndex = 0;
+        let match;
+
+        while ((match = tagRegex.exec(normalized))) {
+            result += normalized.slice(lastIndex, match.index);
+            const tag = match[0];
+
+            if (/^<span\b/i.test(tag)) {
+                const isBoldSpan = hasFontBoldClass(tag);
+                spanStack.push(isBoldSpan);
+                if (isBoldSpan) result += '<span class="highlight">';
+            } else if (/^<\/span\s*>/i.test(tag)) {
+                const isBoldSpan = spanStack.pop();
+                if (isBoldSpan) result += '</span>';
+            } else if (/^<strong\b[^>]*>/i.test(tag)) {
+                result += '<span class="highlight">';
+            } else if (/^<\/strong\s*>/i.test(tag)) {
+                result += '</span>';
+            }
+
+            lastIndex = tagRegex.lastIndex;
+        }
+
+        result += normalized.slice(lastIndex);
+        return result;
+    };
+
     desc = desc
-        .replace(/<size=\d+>|<\/size>/g, '')
-        .replace(/<color=[^>]+>|<\/color>/g, '')
-        .replace(/<a\s+href=.*?>/gi, '')
-        .replace(/<\/a>/gi, '')
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n');
+
+    desc = stripInjectedMarkup(desc)
+        .replace(/[ \t]+\n/g, '\n')
+        .replace(/\n[ \t]+/g, '\n')
         .replace(/\n/g, '<br>');
 
     desc = desc.replace(/\{Cus:[^}]*S=([^ ]+)\s+P=([^ ]+)\s+SapTag=(\d+)[^}]*\}/g, (_, singular, plural, tagIndex) => {

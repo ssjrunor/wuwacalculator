@@ -5,7 +5,6 @@ export function applySigrikaLogic({
                                        characterState,
                                        isActiveSequence = () => false,
                                        isToggleActive = () => false,
-                                       characterLevel = 1,
                                    }) {
     skillMeta = {
         ...skillMeta,
@@ -22,6 +21,7 @@ export function applySigrikaLogic({
 
     const name = skillMeta.name?.toLowerCase() ?? '';
     const tab = skillMeta.tab ?? '';
+    const state = characterState?.activeStates ?? {};
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
 
     if (tab === 'normalAttack') skillMeta.skillType = 'basic';
@@ -46,9 +46,15 @@ export function applySigrikaLogic({
         name.includes('runic soliskin')))
         skillMeta.multiplier *= 1.25;
 
+    const inherent2Stacks = Math.min(Number(state.sigrikaInherent2 ?? 0), 6);
+    mergedBuffs.attribute.aero.dmgBonus += inherent2Stacks * 6;
+    mergedBuffs.skillType.echoSkill.dmgBonus += inherent2Stacks * 6;
 
-    if (isToggleActiveLocal('inherent1')) {
-    }
+    const erBonus = mergedBuffs.energyRegen > 25 ?
+        Math.min((mergedBuffs.energyRegen - 25) * 1.5, 37.5) :
+        mergedBuffs.energyRegen > 50 ?
+        Math.min((mergedBuffs.energyRegen - 50) * 0.5, 17.5) : 0;
+    mergedBuffs.skillType.echoSkill.dmgBonus += erBonus;
 
     const s1Skills = [
         'basic attack stage 5',
@@ -78,6 +84,12 @@ export function sigrikaBuffsLogic({
                                        mergedBuffs, characterState
                                    }) {
     const state = characterState?.activeStates ?? {};
+
+    const stacks = state.trueNamesAligned ?? 0;
+    const trueNamesAligned = Math.min(stacks * 6, 36);
+
+    mergedBuffs.skillType.echoSkill.dmgBonus += trueNamesAligned;
+    mergedBuffs.attribute.aero.dmgBonus += trueNamesAligned;
 
     if (state.iLoseIGain) mergedBuffs.atk.percent += 20;
 

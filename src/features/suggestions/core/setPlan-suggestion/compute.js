@@ -6,7 +6,7 @@ import {
     calc1206ErToAtk,
     calc1306CritConversion,
     calc1209Conversion,
-    computeAvgDamage,
+    computeAvgDamage, calc1412Conversion,
 } from "@/features/optimizer/core/cpu/damageCore.js";
 import {
     getElementIdFromSkillId,
@@ -130,6 +130,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}) {
         finalDef * scalingDef +
         finalER * scalingER;
 
+    const sigrikaBonus = calc1412Conversion(charId, finalER) * ((skillMask >>> 6) & 1);
 
     // Use shared damage computation
     const avgDamage = computeAvgDamage({
@@ -140,7 +141,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}) {
         defMult,
         dmgReduction: dmgReductionTotal,
         dmgBonus: dmgBonusTotal +
-            conv1209.mornyeDmgBonus * bitValue(toggles, 0),
+            conv1209.mornyeDmgBonus * bitValue(toggles, 0) + sigrikaBonus,
         dmgAmplify,
         special,
         critRateTotal,

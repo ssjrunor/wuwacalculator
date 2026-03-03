@@ -705,6 +705,15 @@ fn evalMainPos(
         finalAtk += extraAtk;
     }
 
+    if (pre.charId == 1412.0) {
+        let erOver = max((finalER - 125.0), 0);
+        var extraDmgBonus = min(erOver * 1.5, 37.5);
+        if (erOver > 25.0) {
+            extraDmgBonus += min(erOver * 0.5, 17.5);
+        }
+        dmgBonus += extraDmgBonus * INV_100 * f32((mask >> 6u) & 1u);
+    }
+
     var critRateForDmg = pre.critRateTotal;
     var critDmgForDmg = pre.critDmgTotal;
     let baseMul = pre.resDefAmp * pre.dmgReductionTotal;
