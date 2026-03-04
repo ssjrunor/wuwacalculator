@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import '@/main.css';
 import '@shared/styles';
 // @ts-ignore
 import AppRoot from '@app/AppRoot.jsx';
