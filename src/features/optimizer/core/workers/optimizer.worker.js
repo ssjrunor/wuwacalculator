@@ -10,7 +10,13 @@ import {
 } from "../gpu/createPipeline.js";
 import { runEchoGpuPipeline } from "../gpu/runPipeline.js";
 import { getGpuDevice } from "../gpu/getDevice.js";
-import { computeDamageForCombo } from "../cpu/computeDamage.js";
+import {
+    computeDamageForCombo,
+    evaluatePreparedComboDamage,
+    prepareComboDamageState,
+    preparePackedDamageContext,
+} from "../cpu/computeDamage.js";
+import { areConstraintsDisabled } from "../cpu/constraints.js";
 import { createCpuScratch } from "../cpu/scratch.js";
 import { unrankCombinadic } from "../combos/combinadic.js";
 import {
@@ -22,7 +28,9 @@ import {
     OPTIMIZER_ROTATION_WORKGROUP_SIZE,
     OPTIMIZER_REDUCE_K,
     OPTIMIZER_ENABLE_TIMING_LOGS,
-    OPTIMIZER_WORKGROUP_SIZE, makeSortedKey5BigInt,
+    OPTIMIZER_WORKGROUP_SIZE,
+    TopKHeap,
+    makeSortedKey5BigInt,
 } from "../misc/index.js";
 
 let device = null;
@@ -34,6 +42,7 @@ let pipelineReduce = null;
 let reduceLayout = null;
 
 let statsBuf = null;
+let setConstLutBuf = null;
 let setsBuf = null;
 let mainBuffsBuf = null;
 let defaultConstraintBuf = null;
@@ -56,8 +65,6 @@ let candReduceBufSize = 0;
 let reduceParamsBuf = null;
 let rotationCtxBuf = null;
 let rotationCtxBufSize = 0;
-let rotationWeightsBuf = null;
-let rotationWeightsBufSize = 0;
 let rotationMetaBuf = null;
 
 let bindGroup = null;
@@ -83,6 +90,7 @@ let rotationCtxLen = 0;
 // CPU rotation context storage
 let cpuRotationContexts = null;  // Array of Float32Array packed contexts
 let cpuRotationWeights = null;   // Float32Array of weights
+let cpuRotationPreparedContexts = null; // Array<{ context, weight }>
 
 const defaultConstraints = OPTIMIZER_DEFAULT_CONSTRAINTS;
 
@@ -170,6 +178,18 @@ async function initGpu(encoded, mainEchoBuffsArray, echoKindIdsArray, comboIndex
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
     });
     device.queue.writeBuffer(setsBuf, 0, encoded.sets);
+
+    // Set constant LUT buffer (shared with CPU encoding path)
+    const setConstLut = encoded.setConstLut instanceof Float32Array
+        ? encoded.setConstLut
+        : new Float32Array();
+    setConstLutBuf = device.createBuffer({
+        size: Math.max(4, setConstLut.byteLength),
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+    });
+    if (setConstLut.byteLength > 0) {
+        device.queue.writeBuffer(setConstLutBuf, 0, setConstLut);
+    }
 
     // Kind/id buffer
     kindBuf = device.createBuffer({
@@ -272,6 +292,7 @@ self.onmessage = async (e) => {
             mainEchoBuffs = msg.mainEchoBuffs;
             echoKindIds = msg.echoKindIds;
             comboIndexing = msg.comboIndexing ?? null;
+            cpuRotationPreparedContexts = null;
 
             if (backend === "gpu") {
                 await initGpu(encodedData, mainEchoBuffs, echoKindIds, comboIndexing);
@@ -325,13 +346,26 @@ self.onmessage = async (e) => {
             cpuRotationContexts.push(packedContexts.slice(i * ctxLen, (i + 1) * ctxLen));
         }
         cpuRotationWeights = weights.slice(0, ctxCount);
+        cpuRotationPreparedContexts = [];
+        for (let i = 0; i < cpuRotationContexts.length; i++) {
+            const weight = cpuRotationWeights[i] ?? 1;
+            if (weight === 0) continue;
+            cpuRotationPreparedContexts.push({
+                context: preparePackedDamageContext(cpuRotationContexts[i], encodedData),
+                weight,
+            });
+        }
         rotationCtxCount = ctxCount;
         rotationCtxLen = ctxLen;
 
         // GPU-specific buffer setup
         if (backend === "gpu") {
             {
-                const neededSize = packedContexts.byteLength;
+                const merged = new Float32Array(ctxCount * ctxLen + ctxCount);
+                merged.set(packedContexts, 0);
+                merged.set(weights, ctxCount * ctxLen);
+
+                const neededSize = merged.byteLength;
                 const res = ensureStorageBuffer(
                     rotationCtxBuf,
                     rotationCtxBufSize,
@@ -340,20 +374,7 @@ self.onmessage = async (e) => {
                 );
                 rotationCtxBuf = res.buffer;
                 rotationCtxBufSize = res.size;
-                device.queue.writeBuffer(rotationCtxBuf, 0, packedContexts);
-            }
-
-            {
-                const neededSize = weights.byteLength;
-                const res = ensureStorageBuffer(
-                    rotationWeightsBuf,
-                    rotationWeightsBufSize,
-                    neededSize,
-                    GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST
-                );
-                rotationWeightsBuf = res.buffer;
-                rotationWeightsBufSize = res.size;
-                device.queue.writeBuffer(rotationWeightsBuf, 0, weights);
+                device.queue.writeBuffer(rotationCtxBuf, 0, merged);
             }
 
             if (!rotationMetaBuf) {
@@ -384,8 +405,21 @@ self.onmessage = async (e) => {
             try {
                 const combos = new Int32Array(msg.combosBuf, msg.combosOffset ?? 0, msg.combosLen);
                 const cpuComboCount = (combos.length / OPTIMIZER_ECHOS_PER_COMBO) | 0;
-                const constraints = activeConstraints ?? defaultConstraints;
+                const constraintsRaw = activeConstraints ?? defaultConstraints;
+                const constraints = areConstraintsDisabled(constraintsRaw) ? null : constraintsRaw;
                 const bestBySet = new Map();
+                const preparedContexts =
+                    (cpuRotationPreparedContexts?.length > 0)
+                        ? cpuRotationPreparedContexts
+                        : cpuRotationContexts.map((ctx, i) => ({
+                            context: preparePackedDamageContext(ctx, encodedData),
+                            weight: cpuRotationWeights?.[i] ?? 1,
+                        })).filter((entry) => entry.weight !== 0);
+
+                if (!preparedContexts.length) {
+                    self.postMessage({ type: "done", cancelled: false, topK: [] });
+                    return;
+                }
 
                 for (let index = 0; index < cpuComboCount; index++) {
                     if (CANCEL) {
@@ -393,23 +427,29 @@ self.onmessage = async (e) => {
                         return;
                     }
 
+                    const preparedCombo = prepareComboDamageState(
+                        index,
+                        combos,
+                        encodedData,
+                        echoKindIds,
+                        cpuScratch,
+                    );
+
                     // Sum weighted damage across all rotation contexts
                     let totalDmg = 0;
                     let bestMainPos = 0;
                     let bestSingleDmg = 0;
 
-                    for (let c = 0; c < cpuRotationContexts.length; c++) {
-                        const { dmg, mainPos } = computeDamageForCombo({
-                            index,
-                            combos,
-                            packedContext: cpuRotationContexts[c],
-                            encoded: encodedData,
+                    for (let c = 0; c < preparedContexts.length; c++) {
+                        const prepared = preparedContexts[c];
+                        const { dmg, mainPos } = evaluatePreparedComboDamage(
+                            preparedCombo,
+                            prepared.context,
                             mainEchoBuffs,
-                            echoKindIds,
-                            statConstraints: constraints,
-                            scratch: cpuScratch,
-                        });
-                        totalDmg += dmg * (cpuRotationWeights[c] ?? 1);
+                            constraints,
+                            cpuScratch
+                        );
+                        totalDmg += dmg * prepared.weight;
                         if (dmg > bestSingleDmg) {
                             bestSingleDmg = dmg;
                             bestMainPos = mainPos;
@@ -420,19 +460,25 @@ self.onmessage = async (e) => {
 
                     // Dedup & track best
                     const base = index * OPTIMIZER_ECHOS_PER_COMBO;
-                    const ids = [combos[base], combos[base + 1], combos[base + 2], combos[base + 3], combos[base + 4]];
-                    const { mainId, a, b, c: c2, d } = extractMainAndRest(ids, bestMainPos);
-                    const key = makeSortedKey5BigInt(mainId, a, b, c2, d);
+                    const id0 = combos[base];
+                    const id1 = combos[base + 1];
+                    const id2 = combos[base + 2];
+                    const id3 = combos[base + 3];
+                    const id4 = combos[base + 4];
 
-                    const prev = bestBySet.get(key);
-                    if (!prev || totalDmg > prev.dmg) {
-                        bestBySet.set(key, { dmg: totalDmg, ids: [mainId, a, b, c2, d] });
+                    let mainId, a, b, c2, d;
+                    switch (bestMainPos) {
+                    case 0: mainId = id0; a = id1; b = id2; c2 = id3; d = id4; break;
+                    case 1: mainId = id1; a = id0; b = id2; c2 = id3; d = id4; break;
+                    case 2: mainId = id2; a = id0; b = id1; c2 = id3; d = id4; break;
+                    case 3: mainId = id3; a = id0; b = id1; c2 = id2; d = id4; break;
+                    default: mainId = id4; a = id0; b = id1; c2 = id2; d = id3; break;
                     }
+                    const key = makeSortedKey5BigInt(mainId, a, b, c2, d);
+                    upsertBestBySet(bestBySet, key, totalDmg, mainId, a, b, c2, d);
                 }
 
-                const topK = [...bestBySet.values()]
-                    .sort((a, b) => b.dmg - a.dmg)
-                    .slice(0, msg.resultsLimit);
+                const topK = selectTopKBestBySet(bestBySet, msg.resultsLimit);
 
                 self.postMessage({ type: "done", cancelled: false, topK });
                 return;
@@ -452,7 +498,8 @@ self.onmessage = async (e) => {
             if (msg.encodedConstraints) {
                 activeConstraints = msg.encodedConstraints;
             }
-            const constraints = activeConstraints ?? defaultConstraints;
+            const constraintsRaw = activeConstraints ?? defaultConstraints;
+            const constraints = areConstraintsDisabled(constraintsRaw) ? null : constraintsRaw;
 
             const packed = new Float32Array(msg.paramsBuf, msg.paramsOffset ?? 0, msg.paramsLen);
             const ctxLen   = msg.rotationCtxLen ?? msg.ctxLen ?? 0;
@@ -514,6 +561,7 @@ self.onmessage = async (e) => {
 
             const group = getRotationBindGroup({
                 echoStats: statsBuf,
+                setConstLut: setConstLutBuf,
                 echoSets: setsBuf,
                 comboIndexMap: comboIndexMapBuf,
                 context: ctxBuf,
@@ -524,7 +572,6 @@ self.onmessage = async (e) => {
                 comboBinom: comboBinomBuf,
                 echoCosts: echoCostsBuf,
                 rotationContexts: rotationCtxBuf,
-                rotationWeights: rotationWeightsBuf,
                 rotationMeta: rotationMetaBuf,
             });
 
@@ -574,12 +621,14 @@ self.onmessage = async (e) => {
         if (msg.encodedConstraints) {
             activeConstraints = msg.encodedConstraints;
         }
-        const constraints = activeConstraints ?? defaultConstraints;
+        const constraintsRaw = activeConstraints ?? defaultConstraints;
+        const constraints = areConstraintsDisabled(constraintsRaw) ? null : constraintsRaw;
 
         if (backend !== "gpu") {
             const combos = new Int32Array(msg.combosBuf, msg.combosOffset ?? 0, msg.combosLen);
             const cpuComboCount = (combos.length / OPTIMIZER_ECHOS_PER_COMBO) | 0;
             const bestBySet = new Map();
+            const preparedContext = preparePackedDamageContext(packed, encodedData);
 
             for (let index = 0; index < cpuComboCount; index++) {
                 if (CANCEL) {
@@ -590,7 +639,7 @@ self.onmessage = async (e) => {
                 const { dmg, mainPos } = computeDamageForCombo({
                     index,
                     combos,
-                    packedContext: packed,
+                    preparedContext,
                     encoded: encodedData,
                     mainEchoBuffs,
                     echoKindIds,
@@ -601,19 +650,26 @@ self.onmessage = async (e) => {
                 if (dmg <= 0) continue;
 
                 const base = index * OPTIMIZER_ECHOS_PER_COMBO;
-                const ids = [combos[base], combos[base + 1], combos[base + 2], combos[base + 3], combos[base + 4]];
-                const { mainId, a, b, c, d } = extractMainAndRest(ids, mainPos);
+                const id0 = combos[base];
+                const id1 = combos[base + 1];
+                const id2 = combos[base + 2];
+                const id3 = combos[base + 3];
+                const id4 = combos[base + 4];
+
+                let mainId, a, b, c, d;
+                switch (mainPos) {
+                case 0: mainId = id0; a = id1; b = id2; c = id3; d = id4; break;
+                case 1: mainId = id1; a = id0; b = id2; c = id3; d = id4; break;
+                case 2: mainId = id2; a = id0; b = id1; c = id3; d = id4; break;
+                case 3: mainId = id3; a = id0; b = id1; c = id2; d = id4; break;
+                default: mainId = id4; a = id0; b = id1; c = id2; d = id3; break;
+                }
 
                 const key = makeSortedKey5BigInt(mainId, a, b, c, d);
-                const prev = bestBySet.get(key);
-                if (!prev || dmg > prev.dmg) {
-                    bestBySet.set(key, { dmg, ids: [mainId, a, b, c, d] });
-                }
+                upsertBestBySet(bestBySet, key, dmg, mainId, a, b, c, d);
             }
 
-            const topK = [...bestBySet.values()]
-                .sort((a, b) => b.dmg - a.dmg)
-                .slice(0, msg.resultsLimit);
+            const topK = selectTopKBestBySet(bestBySet, msg.resultsLimit);
 
             self.postMessage({ type: "done", cancelled: false, topK });
             return;
@@ -674,6 +730,7 @@ self.onmessage = async (e) => {
         // Bind group (must include binding 9 = candidates)
         const group = getBindGroup({
             echoStats: statsBuf,
+            setConstLut: setConstLutBuf,
             echoSets: setsBuf,
             comboIndexMap: comboIndexMapBuf,
             context: ctxBuf,
@@ -735,6 +792,41 @@ function extractMainAndRest(ids, mainPos) {
         default: a = ids[0]; b = ids[1]; c = ids[2]; d = ids[3]; break;
     }
     return { mainId, a, b, c, d };
+}
+
+function upsertBestBySet(bestBySet, key, dmg, i0, i1, i2, i3, i4) {
+    const prev = bestBySet.get(key);
+    if (!prev) {
+        bestBySet.set(key, { dmg, i0, i1, i2, i3, i4 });
+        return;
+    }
+    if (dmg > prev.dmg) {
+        prev.dmg = dmg;
+        prev.i0 = i0;
+        prev.i1 = i1;
+        prev.i2 = i2;
+        prev.i3 = i3;
+        prev.i4 = i4;
+    }
+}
+
+function selectTopKBestBySet(bestBySet, limit) {
+    const k = Math.max(1, limit | 0);
+    const heap = new TopKHeap(k);
+    for (const entry of bestBySet.values()) {
+        heap.push(entry);
+    }
+
+    const sorted = heap.sorted();
+    const out = new Array(sorted.length);
+    for (let i = 0; i < sorted.length; i++) {
+        const entry = sorted[i];
+        out[i] = {
+            dmg: entry.dmg,
+            ids: [entry.i0, entry.i1, entry.i2, entry.i3, entry.i4],
+        };
+    }
+    return out;
 }
 
 // Run reduce pass if needed, returns { buffer, count }
@@ -800,13 +892,8 @@ function processCandidatesToTopK(cand, comboBaseIndex, comboIndexing, resultsLim
         }
 
         const key = makeSortedKey5BigInt(mainId, a, b, c, d);
-        const prev = bestBySet.get(key);
-        if (!prev || dmg > prev.dmg) {
-            bestBySet.set(key, { dmg, ids: [mainId, a, b, c, d] });
-        }
+        upsertBestBySet(bestBySet, key, dmg, mainId, a, b, c, d);
     }
 
-    return [...bestBySet.values()]
-        .sort((a, b) => b.dmg - a.dmg)
-        .slice(0, resultsLimit);
+    return selectTopKBestBySet(bestBySet, resultsLimit);
 }

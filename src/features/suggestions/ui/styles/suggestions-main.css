@@ -1,7 +1,10 @@
 .suggestions-pane {
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
+    height: 100%;
     min-height: 0;
+    overflow: hidden;
 }
 
 .loader-wrapper {
@@ -353,6 +356,10 @@
     grid-template-columns: repeat(auto-fit, minmax(19%, 1fr));
 }
 
+.set-plan .suggestions-controls {
+    grid-template-columns: repeat(auto-fit, minmax(24%, 1fr));
+}
+
 .random-view .toggle.custom-select.small{
     max-width: 290px !important;
     width: 290px;
@@ -366,6 +373,12 @@
 .suggestions-controls .custom-select.small {
     margin: unset;
     width: unset;
+}
+
+.suggestions-controls .toggle.custom-select.small {
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
 }
 
 .suggestions-pane .panel-title {

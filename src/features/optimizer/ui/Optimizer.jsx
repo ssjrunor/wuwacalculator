@@ -14,7 +14,6 @@ import {getSetPlanFromEchoes} from "@/data/buffs/setEffect.js";
 import { setIconMap } from "@shared/constants/echoSetData2.js";
 import {getEchoScores, getTop5SubstatScoreDetails} from "@shared/utils/echoHelper.js";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";
-import {attributeColors, elementToAttribute} from "@shared/utils/attributeHelpers.js";
 import ExpandableSection from "@/shared/ui/common/Expandable.jsx";
 import CharacterMenu from "@/features/characters/ui/CharacterMenu.jsx";
 import SkillMenu, {tabDisplayOrder} from "@/features/rotations/ui/SkillMenu.jsx";
@@ -30,6 +29,8 @@ import {modalContent} from "./modalContent.jsx";
 import {getGroupedSkillOptions} from "@shared/utils/prepareDamageData.js";
 import {detectWebGPUSupport} from "@/features/optimizer/core/gpu/getDevice.js";
 import OptimizerRules from "./OptimizerRules.jsx";
+import SetPartsModal from "@features/suggestions/ui/SetPartsModal.jsx";
+import AppLoaderOverlay from "@/shared/ui/common/AppLoaderOverlay.jsx";
 
 const HEADER_TITLES = [
     "Set",
@@ -415,6 +416,8 @@ export default function Optimizer({
         setSuccess(false);
         const results = await EchoOptimizer.optimize({
             ...form,
+            charId,
+            characterRuntimeStates,
             filtered,
             combinations,
             resultsLimit,
@@ -519,6 +522,8 @@ export default function Optimizer({
 
     const rotationExclude = rotationMode ? ["∑ BNS%", "∑ AMP%"] : [];
 
+    const [openPartsModal, setOpenPartsModal] = useState(false);
+
     if (!activeCharacter || !form) return null;
 
     return (
@@ -548,6 +553,15 @@ export default function Optimizer({
                 menuOpen={menuOpen}
                 setMenuOpen={setMenuOpen}
                 rarityMap={rarityMap}
+            />
+
+            <SetPartsModal
+                open={openPartsModal}
+                onClose={() => setOpenPartsModal(false)}
+                title={'Sonata Set Config'}
+                charId={charId}
+                setCharacterRuntimeStates={setCharacterRuntimeStates}
+                characterRuntimeStates={characterRuntimeStates}
             />
 
             <EchoMenu
@@ -606,6 +620,7 @@ export default function Optimizer({
                     <ExpandableSection title="Character Settings" defaultOpen={true} className="optimizer-character-settings">
                         <div className="echo-buff character-options-container">
                             <CharacterOptionsPanel
+                                setOpenPartsModal={setOpenPartsModal}
                                 statLimits={statLimits}
                                 handleStatLimitChange={handleStatLimitChange}
                                 activeCharacter={activeCharacter}
@@ -668,7 +683,7 @@ export default function Optimizer({
                                 />
                             </div>
 
-                            <div className="optimizer-results">
+                            <div className={`optimizer-results app-loader-host ${isLoading ? "running" : ""}`}>
                                 {!isLoading ? (
                                     <>
                                         {visibleResults.map((res, i) => {
@@ -726,19 +741,7 @@ export default function Optimizer({
                                         )}
                                     </>
                                 ) : (
-                                    <div className="fancy-loader-container">
-                                        <div
-                                            className="fancy-loader"
-                                            style={{
-                                                borderTopColor:
-                                                    attributeColors[elementToAttribute[activeCharacter?.attribute]] ??
-                                                    "#66ccff",
-                                            }}
-                                        ></div>
-                                        <span className="loader-text">
-                                            hold on
-                                        </span>
-                                    </div>
+                                    <AppLoaderOverlay text="Optimizing..." />
                                 )}
                             </div>
                         </div>

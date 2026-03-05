@@ -13,13 +13,18 @@ import {
     setWorkerLockedEchoIndex,
     setWorkerRotationContext,
 } from "../misc/index.js";
-import { computeDamageForCombo } from "../cpu/computeDamage.js";
+import {
+    evaluatePreparedComboDamage,
+    prepareComboDamageState,
+    preparePackedDamageContext,
+} from "../cpu/computeDamage.js";
 import { createCpuScratch } from "../cpu/scratch.js";
 import {
     createProgressTracker,
     createResultCollector,
     flushPendingBatches,
 } from "./shared.js";
+import { areConstraintsDisabled } from "../cpu/constraints.js";
 
 function findLevelData(allSkillLevels, tab, label) {
     const levelList = allSkillLevels?.[tab];
@@ -60,7 +65,7 @@ export function buildRotationTargets({ rotationEntries, skillResults, allSkillLe
     return targets;
 }
 
-function buildRotationContextForTarget({ form, target, lockedIndex }) {
+function buildRotationContextForTarget({ form, target, lockedIndex, setRuntimeMask }) {
     const entry = {
         label: target.levelData?.Name ?? target.levelData?.label ?? target.label,
         detail: target.levelData?.Type ?? target.tab,
@@ -78,6 +83,7 @@ function buildRotationContextForTarget({ form, target, lockedIndex }) {
     const packedContext = packOptimizerContext({
         ...ctx,
         charId: form.charId,
+        setRuntimeMask,
         comboCount: 1,
         lockedEchoIndex: lockedIndex,
         comboMode: 0,
@@ -109,9 +115,9 @@ function findBaseRotationContext(rotationContexts) {
     return baseCtx;
 }
 
-export function buildRotationContexts({ targets, form, lockedIndex = -1 }) {
+export function buildRotationContexts({ targets, form, lockedIndex = -1, setRuntimeMask }) {
     return targets.map((target) =>
-        buildRotationContextForTarget({ form, target, lockedIndex })
+        buildRotationContextForTarget({ form, target, lockedIndex, setRuntimeMask })
     );
 }
 
@@ -152,6 +158,7 @@ export async function runRotationOptimizer({
         targets,
         form,
         lockedIndex,
+        setRuntimeMask: encoded.setRuntimeMask,
     });
     const ctxCount = rotationContexts.length;
     if (!ctxCount) return [];
@@ -224,6 +231,7 @@ export async function runRotationOptimizer({
             ctxLen,
             ctxCount,
             comboBatchGeneratorFactory,
+            setRuntimeMask: encoded.setRuntimeMask,
         });
     }
 }
@@ -284,6 +292,7 @@ async function runRotationGpuPath({
                 comboBaseIndex: start,
                 lockedEchoIndex: runLockedIndex,
                 charId: form.charId,
+                setRuntimeMask: encoded.setRuntimeMask,
                 sequence: form.sequence ?? 0,
             });
 
@@ -337,6 +346,7 @@ async function runRotationCpuPath({
     ctxLen,
     ctxCount,
     comboBatchGeneratorFactory,
+    setRuntimeMask,
 }) {
     const targetCombosPerJob = ECHO_OPTIMIZER_JOB_TARGET_COMBOS_CPU;
     const targetIntsPerJob = targetCombosPerJob * OPTIMIZER_ECHOS_PER_COMBO;
@@ -358,6 +368,7 @@ async function runRotationCpuPath({
         const packedContext = packOptimizerContext({
             comboCount,
             charId: form.charId,
+            setRuntimeMask,
             lockedEchoIndex: runLockedIndex,
             comboMode: 0,
             comboN: 0,
@@ -463,6 +474,18 @@ function alignRotationResultsWithCpu({
     if (!encoded || !mainEchoBuffs || !echoKindIds) return results;
 
     const scratch = createCpuScratch();
+    const combos = new Int32Array(OPTIMIZER_ECHOS_PER_COMBO);
+    const constraintsForEval = areConstraintsDisabled(statConstraints) ? null : statConstraints;
+    const preparedContexts = rotationContexts
+        .map((rotationContext) => {
+            const packedContext = rotationContext?.packedContext;
+            if (!packedContext) return null;
+            return {
+                context: preparePackedDamageContext(packedContext, encoded),
+                weight: rotationContext?.target?.n ?? 1,
+            };
+        })
+        .filter(Boolean);
 
     const refined = results.map((result) => {
         const ids = result?.ids;
@@ -470,31 +493,32 @@ function alignRotationResultsWithCpu({
             return result;
         }
 
-        const combos = new Int32Array(OPTIMIZER_ECHOS_PER_COMBO);
         combos[0] = ids[0];
         combos[1] = ids[1];
         combos[2] = ids[2];
         combos[3] = ids[3];
         combos[4] = ids[4];
 
+        const preparedCombo = prepareComboDamageState(
+            0,
+            combos,
+            encoded,
+            echoKindIds,
+            scratch,
+        );
+
         let totalDamage = 0;
-        for (let i = 0; i < rotationContexts.length; i++) {
-            const rotationContext = rotationContexts[i];
-            const packedContext = rotationContext?.packedContext;
-            if (!packedContext) continue;
-
-            const { dmg } = computeDamageForCombo({
-                index: 0,
-                combos,
-                packedContext,
-                encoded,
+        for (let i = 0; i < preparedContexts.length; i++) {
+            const prepared = preparedContexts[i];
+            const { dmg } = evaluatePreparedComboDamage(
+                preparedCombo,
+                prepared.context,
                 mainEchoBuffs,
-                echoKindIds,
-                statConstraints,
+                constraintsForEval,
                 scratch,
-            });
+            );
 
-            totalDamage += dmg * (rotationContext?.target?.n ?? 1);
+            totalDamage += dmg * prepared.weight;
         }
 
         return {

@@ -72,6 +72,7 @@ export function createBindGroup(device, layout, buffers) {
         layout,
         entries: [
             { binding: 0, resource: { buffer: buffers.echoStats } },
+            { binding: 1, resource: { buffer: buffers.setConstLut } },
             { binding: 2, resource: { buffer: buffers.echoSets } },
             { binding: 3, resource: { buffer: buffers.comboIndexMap } },
             { binding: 4, resource: { buffer: buffers.context } },
@@ -90,6 +91,7 @@ export function createRotationBindGroup(device, layout, buffers) {
         layout,
         entries: [
             { binding: 0, resource: { buffer: buffers.echoStats } },
+            { binding: 1, resource: { buffer: buffers.setConstLut } },
             { binding: 2, resource: { buffer: buffers.echoSets } },
             { binding: 3, resource: { buffer: buffers.comboIndexMap } },
             { binding: 4, resource: { buffer: buffers.context } },
@@ -100,7 +102,6 @@ export function createRotationBindGroup(device, layout, buffers) {
             { binding: 9, resource: { buffer: buffers.candidates } },
             { binding: 10, resource: { buffer: buffers.comboBinom } },
             { binding: 11, resource: { buffer: buffers.rotationContexts } },
-            { binding: 12, resource: { buffer: buffers.rotationWeights } },
             { binding: 13, resource: { buffer: buffers.rotationMeta } },
         ],
     });
@@ -110,6 +111,9 @@ export function createBindGroupLayout(device) {
     return device.createBindGroupLayout({
         entries: [
             { binding: 0, visibility: GPUShaderStage.COMPUTE,
+                buffer: { type: "read-only-storage" } },
+
+            { binding: 1, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "read-only-storage" } },
 
             { binding: 2, visibility: GPUShaderStage.COMPUTE,
@@ -148,6 +152,9 @@ export function createRotationBindGroupLayout(device) {
             { binding: 0, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "read-only-storage" } },
 
+            { binding: 1, visibility: GPUShaderStage.COMPUTE,
+                buffer: { type: "read-only-storage" } },
+
             { binding: 2, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "read-only-storage" } },
 
@@ -176,9 +183,6 @@ export function createRotationBindGroupLayout(device) {
                 buffer: { type: "read-only-storage" } },
 
             { binding: 11, visibility: GPUShaderStage.COMPUTE,
-                buffer: { type: "read-only-storage" } },
-
-            { binding: 12, visibility: GPUShaderStage.COMPUTE,
                 buffer: { type: "read-only-storage" } },
 
             { binding: 13, visibility: GPUShaderStage.COMPUTE,

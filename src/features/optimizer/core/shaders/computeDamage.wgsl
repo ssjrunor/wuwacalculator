@@ -2,6 +2,7 @@ fn computeDamageForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
     let skillId: u32 = unpackSkillIdFromParams();
     let skillMask: u32 = skillMaskFromSkillId(skillId);
     let elementId: u32 = elementFromSkillId(skillId);
+    let setRuntimeMask: u32 = decodeSetRuntimeMask(params);
     let lockedIndex: i32 = decodeLockedIndex(params);
 
     let base = buildEchoBase(echoIds);
@@ -9,7 +10,7 @@ fn computeDamageForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
         return ComboEval(0.0, 0u);
     }
 
-    let sonata = applySetEffects(base, skillMask);
+    let sonata = applySetEffects(base, skillMask, setRuntimeMask);
     let pre = buildPreMain(params, sonata, skillMask, elementId, skillId);
 
     var best: f32 = 0.0;
@@ -54,6 +55,7 @@ fn computeDamageForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
         let avg = evalMainPos(
             pre,
             base.setCount,
+            setRuntimeMask,
             mainAtkP / 100.0, mainAtkF, mainER,
             mainElem0, mainElem1,
             mainType0, mainType1

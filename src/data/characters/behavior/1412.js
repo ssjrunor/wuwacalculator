@@ -33,18 +33,29 @@ export function applySigrikaLogic({
         skillMeta.skillType = 'echoSkill';
 
     const stacks = characterState?.activeStates?.innateGift ?? 0;
-    const innateGift = Math.min(stacks * 15, 150);
+    const innateGift = Math.min(stacks * 30, 60);
     const innateGiftS3 = Math.min(stacks * 5, 50);
 
     if (tab === 'forteCircuit')
         skillMeta.amplify += innateGift;
 
 
+    const soliskinVitality2 = state.soliskinVitality2 ?? 0;
     if (isToggleActiveLocal('soliskinVitality')
     && (name.includes('runic outburst') ||
         name.includes('runic chain whip') ||
         name.includes('runic soliskin')))
         skillMeta.multiplier *= 1.25;
+    if (name.includes('runic outburst') ||
+        name.includes('runic chain whip') ||
+        name.includes('runic soliskin')) {
+        if (isToggleActiveLocal('soliskinVitality'))
+            skillMeta.multiplier *= 1.25;
+        else
+            skillMeta.amplify = (skillMeta.amplify ?? 0) +
+            Math.min(Math.floor((soliskinVitality2 * 15) / 15) * 15, 30);
+        console.log(soliskinVitality2)
+    }
 
     const inherent2Stacks = Math.min(Number(state.sigrikaInherent2 ?? 0), 6);
     mergedBuffs.attribute.aero.dmgBonus += inherent2Stacks * 6;

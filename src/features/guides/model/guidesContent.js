@@ -488,7 +488,16 @@ export const guides = [
           <strong>equipped Echoes</strong> for that character.</li>
         </ul>
 
-        <h4>5. Tips & Use Cases</h4>
+        <h4>5. Set Conditionals</h4>
+        <p>In the <strong>Sonata Sets</strong> view, click <strong>Config</strong> to open <strong>Set Conditionals</strong>.</p>
+        <ul>
+          <li>Each set is split into condition parts (base piece effects, stack components, and trigger-based parts).</li>
+          <li>Turn parts <strong>on/off</strong> to match your scenario before ranking suggestions.</li>
+          <li>Disabled parts are excluded from set-plan scoring, so recommendations stop assuming unrealistic uptime.</li>
+          <li>These toggles are saved per character and reused by Optimizer, keeping both tools aligned.</li>
+        </ul>
+
+        <h4>6. Tips & Use Cases</h4>
         <ul>
           <li>Use <strong>Main Stats</strong> to answer questions like 
           “Should I run Crit Rate / Crit DMG or ATK% / Crit DMG on this character?”</li>
@@ -592,6 +601,15 @@ export const guides = [
                     <li>If you get <strong>no valid combinations</strong>, your filters may be too strict. Loosen set restrictions or reduce filter strength.</li>
                     <li>If results look “worse” than your current build, verify that your <strong>Echo Bag</strong> and equipped echoes are in sync with what you actually want to optimize.</li>
                     <li>If you change your character’s build (weapons, buffs, or level), rerun the optimizer to update damage estimates.</li>
+                </ul>
+
+                <h4>10. Set Conditionals</h4>
+                <p>Open <strong>Set Conditionals</strong> from Character Settings to control which Sonata effect parts are allowed during optimization.</p>
+                <ul>
+                    <li>Each set part can be toggled on/off (base piece effects, stack parts, and trigger-based parts).</li>
+                    <li>Disabled parts are excluded from scoring, which is useful for realistic uptime testing.</li>
+                    <li>Enabled parts are counted normally when set-piece requirements are met.</li>
+                    <li>These values are shared with Suggestions for the same character, so both tools compare with the same assumptions.</li>
                 </ul>
 
                 <p>The optimizer is meant to feel like an automated theorycrafter: you can tell it which stats and sets you care about, and it sifts through the combinatorial chaos to surface the most promising builds.</p>

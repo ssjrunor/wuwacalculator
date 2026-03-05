@@ -9,6 +9,7 @@ import {echoes as allEchoes} from "@/data/runtime/getEchoes.js";
 import {getEquippedEchoesScoreDetails} from "@/features/echoes/ui/EchoesPane.jsx";
 import {defaultRandGen} from "@/features/suggestions/core/randomEchoes/lib/constants.js";
 import {SonataSetPlanner} from "@/features/suggestions/ui/SonataSetPlanner.jsx";
+import AppLoaderOverlay from "@/shared/ui/common/AppLoaderOverlay.jsx";
 
 function normalizeStatBlock(stats, emptyToken) {
     if (!stats) return emptyToken;
@@ -109,7 +110,7 @@ export default function RandomView({
                 <h2 className="panel-title">Random Echo Builds</h2>
             </div>
 
-            <div className={`main-stats random-view suggestions-list ${isRunning ? 'running' : ''}`}>
+            <div className={`main-stats random-view suggestions-list app-loader-host ${isRunning ? 'running' : ''}`}>
                 <div className="main-stats suggestions-controls buffs-box">
                     <button className="rotation-button" onClick={() => setShowConfigModal(true)}>
                         Config
@@ -145,6 +146,9 @@ export default function RandomView({
                         Reset
                     </button>
                 </div>
+                {isRunning && (
+                    <AppLoaderOverlay text="Generating random builds..." />
+                )}
                 {randomResults.map((plan, index) => {
                     const current = haveSameMainStats(echoData, plan?.echoes || []);
                     const substatTotals = buildSubstatTotals(plan?.echoes ?? []);

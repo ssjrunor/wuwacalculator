@@ -9,14 +9,13 @@ import {getGroupedSkillOptions} from "@shared/utils/prepareDamageData.js";
 import {applyMainStatRecipesToEchoes} from "@/features/suggestions/core/mainStat-suggestion/utils.js";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";
 import {applySetPlanToEchoes} from "@/features/suggestions/core/setPlan-suggestion/utils.js";
-import {runMainStatSuggestor} from "@/features/suggestions/core/mainStat-suggestion/suggestMainStat.js";
-import {runSetSuggestor} from "@/features/suggestions/core/setPlan-suggestion/suggestSetPlan.js";
 import {getSetPlanFromEchoes} from "@/data/buffs/setEffect.js";
 import {setIconMap} from "@shared/constants/echoSetData2.js";
 import MainStatsView from "./MainStatsView.jsx";
 import SetPlansView from "./SetPlansView.jsx";
 import RandomView from "./RandomView.jsx";
-import {runEchoGenerator} from "@/features/suggestions/core/randomEchoes/compute.js";
+import SetPartsModal from "@features/suggestions/ui/SetPartsModal.jsx";
+import {runSuggestionsWorkerJob} from "@/features/suggestions/core/workers/client.js";
 
 export default function SuggestionsPane({
                                             currentSliderColor,
@@ -142,7 +141,11 @@ export default function SuggestionsPane({
 
     const statWeight = skill.statWeight ?? skill.custSkillMeta?.statWeight ?? {};
 
-    const [isRunning, setIsRunning] = useState(false);
+    const [runningViews, setRunningViews] = useState({
+        mainStats: false,
+        setPlans: false,
+        random: false,
+    });
 
     const [setSuggestions, setSetSuggestions] = useState(null);
     const [selectedPlanIndex, setSelectedPlanIndex] = useState(0);
@@ -151,6 +154,16 @@ export default function SuggestionsPane({
     const [mainStatResults, setMainStatResults] = useState([]);
     const [selectedMainStatIndex, setSelectedMainStatIndex] = useState(0);
     const baseDamage = skill?.avg ?? 1;
+    const pendingJobCountByTypeRef = useRef({
+        mainStats: 0,
+        setPlans: 0,
+        random: 0,
+    });
+    const latestJobSeqRef = useRef({
+        mainStats: 0,
+        setPlans: 0,
+        random: 0,
+    });
 
     const [newEquipped, setNewEquipped] = useState(null)
     const bestMainStatsPlan = mainStatResults[selectedMainStatIndex];
@@ -197,6 +210,7 @@ export default function SuggestionsPane({
         const skillResultsSig = rotationMode
             ? skillResults?.map(s => `${s?.skillId ?? s?.name}|${s?.avg ?? ''}`) ?? []
             : [];
+        const setDataSig = runtime?.setData ? JSON.stringify(runtime.setData) : "";
 
         const parts = [
             'c', charId ?? '',
@@ -204,6 +218,7 @@ export default function SuggestionsPane({
             'lt', level?.Type ?? '',
             'sk', skill?.skillId ?? skill?.name ?? '',
             'rot', rotationMode ? 1 : 0,
+            'sd', setDataSig,
             ...echoSig,
             ...rotationSig,
             ...skillResultsSig,
@@ -222,9 +237,29 @@ export default function SuggestionsPane({
         skill?.name,
         level?.Name,
         level?.Type,
+        runtime?.setData,
     ]);
 
-    function run(type = 'mainStats') {
+    const beginWorkerJob = useCallback((type) => {
+        const currentCount = pendingJobCountByTypeRef.current[type] ?? 0;
+        pendingJobCountByTypeRef.current[type] = currentCount + 1;
+        setRunningViews((prev) => ({
+            ...prev,
+            [type]: true,
+        }));
+    }, []);
+
+    const endWorkerJob = useCallback((type) => {
+        const currentCount = pendingJobCountByTypeRef.current[type] ?? 0;
+        const nextCount = Math.max(0, currentCount - 1);
+        pendingJobCountByTypeRef.current[type] = nextCount;
+        setRunningViews((prev) => ({
+            ...prev,
+            [type]: nextCount > 0,
+        }));
+    }, []);
+
+    async function run(type = 'mainStats') {
         if (noEchoes) return;
         if (!skill) return;
 
@@ -256,25 +291,36 @@ export default function SuggestionsPane({
         const optionsMain = { minSlots: nonNullCount, maxSlots: nonNullCount };
         const optionsSet  = {};
 
-        setIsRunning(true);
+        const seq = (latestJobSeqRef.current[type] ?? 0) + 1;
+        latestJobSeqRef.current[type] = seq;
+        beginWorkerJob(type);
         try {
             if (type === 'mainStats') {
-                const suggestions = runMainStatSuggestor(payload, optionsMain) || [];
+                const suggestions = await runSuggestionsWorkerJob("mainStats", {
+                    form: payload,
+                    options: optionsMain,
+                });
+                if (latestJobSeqRef.current.mainStats !== seq) return;
                 setMainStatResults(suggestions);
                 setSelectedMainStatIndex(0);
             } else if (type === 'setPlans') {
-                const suggestions = runSetSuggestor(payload, optionsSet) || null;
+                const suggestions = await runSuggestionsWorkerJob("setPlans", {
+                    form: payload,
+                    options: optionsSet,
+                });
+                if (latestJobSeqRef.current.setPlans !== seq) return;
                 setSetSuggestions(suggestions);
                 setSelectedPlanIndex(0);
             }
         } catch (err) {
-            console.error('[SuggestionsPane] non-worker suggestor error:', err);
+            console.error('[SuggestionsPane] worker suggestor error:', err);
         } finally {
-            setIsRunning(false);
+            endWorkerJob(type);
         }
     }
 
     async function runRandomizer() {
+        if (!skill) return;
         const form = {
             charId,
             activeCharacter,
@@ -297,20 +343,32 @@ export default function SuggestionsPane({
             enemyProfile
         }
 
-        const result = await runEchoGenerator({
-            form,
-            bias: randGen.bias,
-            mainEcho: randGen.mainEcho ?? null,
-            rollQuality: randGen.rollQuality,
-            targetEnergyRegen: randGen.targetEnergyRegen,
-            setId: randGen.setId ?? null,
-        })
-        setRandomResults(result?.results ?? []);
+        const seq = (latestJobSeqRef.current.random ?? 0) + 1;
+        latestJobSeqRef.current.random = seq;
+        beginWorkerJob("random");
+        try {
+            const result = await runSuggestionsWorkerJob("random", {
+                params: {
+                    form,
+                    bias: randGen.bias,
+                    mainEcho: randGen.mainEcho ?? null,
+                    rollQuality: randGen.rollQuality,
+                    targetEnergyRegen: randGen.targetEnergyRegen,
+                    setId: randGen.setId ?? null,
+                },
+            });
+            if (latestJobSeqRef.current.random !== seq) return;
+            setRandomResults(result?.results ?? []);
+        } catch (err) {
+            console.error('[SuggestionsPane] worker randomizer error:', err);
+        } finally {
+            endWorkerJob("random");
+        }
     }
 
     function runSuggestions() {
-        run("mainStats");
-        run("setPlans");
+        void run("mainStats");
+        void run("setPlans");
     }
 
     // Store results in cache after they're computed (via useEffect to capture state updates)
@@ -431,6 +489,8 @@ export default function SuggestionsPane({
         setIsMainStatsModalOpen(true);
     };
 
+    const [openPartsModal, setOpenPartsModal] = useState(false);
+
     return (
         <div className="suggestions-pane">
             <SkillMenu
@@ -475,7 +535,7 @@ export default function SuggestionsPane({
             {viewMode === 'mainStats' && (
                 <MainStatsView
                     currentSliderColor={currentSliderColor}
-                    isRunning={isRunning}
+                    isRunning={runningViews.mainStats}
                     noEchoes={noEchoes}
                     skillName={skill?.name}
                     baseDamage={baseDamage}
@@ -492,7 +552,7 @@ export default function SuggestionsPane({
             {viewMode === 'setPlans' && (
                 <SetPlansView
                     currentSliderColor={currentSliderColor}
-                    isRunning={isRunning}
+                    isRunning={runningViews.setPlans}
                     noEchoes={noEchoes}
                     skillName={skill?.name}
                     baseDamage={baseDamage}
@@ -504,6 +564,7 @@ export default function SuggestionsPane({
                     onResetSelection={() => setSelectedPlanIndex(0)}
                     keywords={keywords}
                     setData={setData}
+                    setOpenPartsModal={setOpenPartsModal}
                 />
             )}
 
@@ -511,7 +572,7 @@ export default function SuggestionsPane({
                 <RandomView
                     currentSliderColor={currentSliderColor}
                     randomResults={randomResults}
-                    isRunning={isRunning}
+                    isRunning={runningViews.random}
                     skillName={skill?.name}
                     baseDamage={baseDamage}
                     randomResultsIndex={randomResultsIndex}
@@ -575,6 +636,15 @@ export default function SuggestionsPane({
                     currentSliderColor={currentSliderColor}
                 />
             )}
+            <SetPartsModal
+                open={openPartsModal}
+                onClose={() => setOpenPartsModal(false)}
+                title={'Sonata Set Config'}
+                charId={charId}
+                setCharacterRuntimeStates={setCharacterRuntimeStates}
+                characterRuntimeStates={characterRuntimeStates}
+                rerun={() => {run("setPlans")}}
+            />
         </div>
     );
 }

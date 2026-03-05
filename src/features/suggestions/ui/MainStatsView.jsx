@@ -2,6 +2,7 @@ import React from 'react';
 import {formatStatKey} from "@shared/utils/echoHelper.js";
 import {withOpacity} from "@shared/utils/attributeHelpers.js";
 import {formatNumber} from "./suggestionsViewUtils.js";
+import AppLoaderOverlay from "@/shared/ui/common/AppLoaderOverlay.jsx";
 
 function normalizeMainStats(echo) {
     if (!echo || !echo.mainStats) return '__NO_MAIN_STATS__';
@@ -48,7 +49,7 @@ export default function MainStatsView({
                 <h2 className="panel-title">Suggested Main Stats</h2>
             </div>
 
-            <div className={`main-stats suggestions-list ${isRunning ? 'running' : ''}`}>
+            <div className={`main-stats suggestions-list app-loader-host ${isRunning ? 'running' : ''}`}>
                 <div className="main-stats suggestions-controls buffs-box">
                     <div className="toggle custom-select small" onClick={onOpenSkillMenu}>
                         {skillName ? skillName : "Target Skill"}
@@ -60,6 +61,9 @@ export default function MainStatsView({
                         Reset Selection
                     </button>
                 </div>
+                {isRunning && (
+                    <AppLoaderOverlay text="Generating main stat suggestions..." />
+                )}
                 {noEchoes ? (
                     <span className="empty-state">
                         No main stat suggestions yet. Make sure you have echoes equipped!

@@ -1,7 +1,11 @@
 // Set plan suggestion damage computation
 // Uses shared modules for branchless set effects and character-specific logic
 
-import { applySetEffectsFast } from "@/features/optimizer/core/cpu/setEffects.js";
+import { applySetEffectsEncoded } from "@/features/optimizer/core/cpu/setEffects.js";
+import {
+    buildSetRuntimeToggleMask,
+    SET_RUNTIME_TOGGLE_SET14_FIVE,
+} from "@features/optimizer/core/encode/setLutEncoding.js";
 import {
     calc1206ErToAtk,
     calc1306CritConversion,
@@ -13,9 +17,10 @@ import {
     getSkillTypeMaskFromSkillId,
 } from "@shared/utils/computeSkillDamage.js";
 import {bitValue} from "@/features/optimizer/core/cpu/helpers.js";
-import {OPTIMIZER_CTX_TOGGLES} from "@/features/optimizer/core/misc/index.js";
 
-export function computeSetPlanDamage(ctx, setPlan = {}) {
+export function computeSetPlanDamage(ctx, setPlan = {}, options = {}) {
+    const setConstLut = options?.setConstLut ?? null;
+    const setData = options?.setData ?? ctx?.setData ?? null;
     const {
         baseAtk = 0,
         baseHp = 0,
@@ -71,15 +76,17 @@ export function computeSetPlanDamage(ctx, setPlan = {}) {
     const elementIdEff = skillId
         ? getElementIdFromSkillId(skillId)
         : (elementId | 0);
+    const setRuntimeMask = buildSetRuntimeToggleMask(setData);
 
-    // Apply set effects branchlessly
-    const setBonus = applySetEffectsFast(setCount, skillMask);
+    // Apply set effects using encoded LUT (with hardcoded fallback).
+    const setBonus = applySetEffectsEncoded(setCount, skillMask, setConstLut, setRuntimeMask);
 
     // Calculate finalER including set bonuses
     let finalER = baseER + setBonus.erSetBonus;
 
     // Check set 14 ER threshold (branchless)
-    const s14_er_bonus = 30 * ((setCount[14] >= 5 && finalER >= 250) ? 1 : 0);
+    const set14FiveEnabled = (setRuntimeMask & SET_RUNTIME_TOGGLE_SET14_FIVE) !== 0;
+    const s14_er_bonus = 30 * ((setCount[14] >= 5 && finalER >= 250 && set14FiveEnabled) ? 1 : 0);
 
     // Element bonus via array lookup (branchless)
     const elemBonuses = [
@@ -113,7 +120,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}) {
     let finalAtk = baseAtk * (setBonus.atkP / 100) + setBonus.atkF + baseFinalAtk;
     finalAtk += calc1206ErToAtk(charId, finalER, toggles);
 
-    // Crit totals with 1306 conversion (FIX: was missing before)
+    // Crit totals with 1306 conversion
     let critRateTotal = critRate + setBonus.critRate / 100;
     let critDmgTotal = critDmg + setBonus.critDmg / 100;
     critDmgTotal += calc1306CritConversion(charId, sequence, critRateTotal);
@@ -165,7 +172,7 @@ export function computeSetPlanDamage(ctx, setPlan = {}) {
  * Compute total damage across multiple rotation contexts for set plans
  * Returns sum of (damage * multiplier) to match buildRotationBreakdown totals
  */
-export function computeRotationSetPlanDamage(rotationContexts, setPlan = {}) {
+export function computeRotationSetPlanDamage(rotationContexts, setPlan = {}, options = {}) {
     if (!rotationContexts || !rotationContexts.length) {
         return { avgDamage: 0, baseDamage: 0 };
     }
@@ -174,7 +181,7 @@ export function computeRotationSetPlanDamage(rotationContexts, setPlan = {}) {
     let firstResult = null;
 
     for (const { ctx, weight } of rotationContexts) {
-        const result = computeSetPlanDamage(ctx, setPlan);
+        const result = computeSetPlanDamage(ctx, setPlan, options);
 
         if (result && typeof result.avgDamage === "number") {
             totalWeightedDamage += result.avgDamage * weight;

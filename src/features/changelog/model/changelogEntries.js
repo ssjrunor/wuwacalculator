@@ -596,7 +596,7 @@ export const changelogEntries = [
         shortDesc: `New year tune-up: faster optimizer + rotation-ready Suggestions (〜^∇^)〜`
     },
     {
-        date: '19/01/2025',
+        date: '19/01/2026',
         patchVersion: '3.1.2 (Beta)',
         entries: [
             {
@@ -620,7 +620,7 @@ export const changelogEntries = [
         shortDesc: `3.1.2 beta content~! (and some other stuff) (〜^∇^)〜`,
     },
     {
-        date: '24/01/2025',
+        date: '24/01/2026',
         patchVersion: '3.1.4 (Beta)',
         entries: [
             {
@@ -638,7 +638,7 @@ export const changelogEntries = [
         shortDesc: `3.1.4 beta content~! | New enemy section (〜^∇^)〜`,
     },
     {
-        date: '24/01/2025',
+        date: '02/03/2026',
         patchVersion: '3.2.0 (Beta)',
         entries: [
             {
@@ -654,7 +654,30 @@ export const changelogEntries = [
         ],
         shortDesc: `3.2.0 beta content~! (〜^∇^)〜`,
     },
-
+    {
+        date: '05/03/2025',
+        patchVersion: '3.2.0 (Beta)',
+        entries: [
+            {
+                type: 'paragraph',
+                content: `UX pass for <strong>Suggestions</strong> and <strong>Optimizer</strong> around Sonata set planning and run feedback.`,
+            },
+            {
+                type: 'paragraph',
+                content: `
+                - Added a shared <strong>Set Conditionals</strong> configuration flow so <strong>YOU</strong> can now toggle what buffs a set should factor in Suggestions and Optimizer calculations.<br/>
+                - Due to this, Set-plan suggestion and Optimizer damage/ranking now follows your active condition toggles for more realistic comparisons.<br/>
+            `
+            },
+            {
+                type: 'paragraph',
+                content: `
+                Updated text descriptions and their intended effects for <strong>Sigrika</strong><br/>
+            `
+            },
+        ],
+        shortDesc: `NEW Set Config options (〜^∇^)〜`,
+    },
 ];
 
 export const changelog = changelogEntries;

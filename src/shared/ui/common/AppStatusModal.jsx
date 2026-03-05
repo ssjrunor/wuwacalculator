@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import '@shared/styles/appStatusModal.css';
 
 const data = {
-    lastUpdated: '03-03-2026',
+    lastUpdated: '05-03-2026',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
     patchVersion: '3.2.0 (Beta)',
@@ -11,8 +11,8 @@ const data = {
     coverage: [
         {
             title: 'Note',
-            desc: "Well... when in doubt, learn Chinese. Sigrik's 2nd inherent skill's text description has been updated and it's effect does what it does. " +
-                "She should also be working on all the calculator features as well :3.",
+            desc: "MORE en text discrepancy. I had the time so i thought \"why not translate all of her sigrika's forte circuit's chinese description\" so i did" +
+                "Updated the effects/buffs for it as well. The en texts will eventually be corrected and i will use those when they do.",
         },
         {
             title: 'Character Coverage',
@@ -40,7 +40,8 @@ const data = {
         "That's kinda it tbh.",
     ],
     recentChanges: [
-        "Added new beta stuff.",
+        "TLDR. Sigrika's forte circuit description and effects are less not accurate now. You are welcome.",
+        "Oh Oh, also, added set conditional config. Check them out in the set plan suggestions or the optimizer... or don't ¯\\_(ツ)_/¯",
     ],
 };
 

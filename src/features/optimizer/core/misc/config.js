@@ -59,6 +59,7 @@ export const OPTIMIZER_CTX_META0 = 24;
 export const OPTIMIZER_CTX_META1 = 25;
 export const OPTIMIZER_CTX_LOCKED_PACKED = 26;
 export const OPTIMIZER_CTX_BASE_INDEX = 27;
+export const OPTIMIZER_CTX_SET_RUNTIME_MASK = 28;
 
 export const WORKER_COUNT = {
     cpu: OPTIMIZER_WORKER_COUNT_CPU,

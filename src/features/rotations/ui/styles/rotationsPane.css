@@ -608,7 +608,7 @@ select:focus {
 
 .custom-select__value-container {
     font-size: 0.85rem;
-    overflow-x: auto !important;
+    overflow: auto !important;
     padding: 5px 4px 5px 2px !important;
     gap: 6px;
     flex-direction: row !important;

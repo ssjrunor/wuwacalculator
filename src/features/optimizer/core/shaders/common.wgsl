@@ -1,4 +1,5 @@
 @group(0) @binding(0) var<storage, read> echoStats: array<vec4<f32>>;
+@group(0) @binding(1) var<storage, read> setConstLut: array<f32>;
 @group(0) @binding(2) var<storage, read> echoSets: array<f32>;
 @group(0) @binding(3) var<storage, read> comboIndexMap: array<i32>;
 @group(0) @binding(5) var<storage, read> echoCosts: array<f32>;
@@ -94,7 +95,14 @@ var<uniform> params : Params;
 const STATS_VEC4S_PER_ECHO : u32 = 5u;
 const ECHOS_PER_COMBO: u32 = 5u;
 const BUFFS_PER_ECHO : u32 = 15u;
-const SET_SLOTS : u32 = 30u; // supports set ids 0..29 inclusive
+const SET_SLOTS : u32 = 32u; // supports set ids 0..31 inclusive
+const SET_CONST_LUT_BUCKETS: u32 = 4u;
+const SET_CONST_LUT_ROW_STRIDE: u32 = 23u;
+
+const SET_RUNTIME_TOGGLE_SET14_FIVE: u32 = 1u << 0u;
+const SET_RUNTIME_TOGGLE_SET22_P1: u32 = 1u << 1u;
+const SET_RUNTIME_TOGGLE_SET22_P2: u32 = 1u << 2u;
+const SET_RUNTIME_TOGGLE_SET29_FIVE: u32 = 1u << 3u;
 
 override CYCLES_PER_INVOCATION : u32 = 16u;
 
@@ -107,6 +115,7 @@ fn decodeComboCount(p: Params) -> u32 { return p.meta1 & 0xffffffu; }
 fn decodeComboN(p: Params) -> u32 { return (p.meta1 >> 24u) & 0xffu; }
 fn decodeLockedIndex(p: Params) -> i32 { return i32(p.lockedPacked) - 1; }
 fn comboBaseIndex(p: Params) -> u32 { return p.comboBaseIndex; }
+fn decodeSetRuntimeMask(p: Params) -> u32 { return p._pad0; }
 fn toggleValue(toggles: f32, bit: u32) -> f32 {
     let mask = 1u << (bit & 31u);
     return f32((bitcast<u32>(toggles) & mask) != 0u);
@@ -454,83 +463,71 @@ fn applySetEffectsBase(base: EchoBase) -> SetApplied {
     s.bonusBase  = 0.0;
     s.erSetBonus = 0.0;
 
-    // =========================================================================
-    // Cache threshold checks (
-    // Format: s{ID}_{threshold} = has{threshold}(base.setCount[{ID}u])
-    // =========================================================================
-    let c = base.setCount;
+    for (var setId: u32 = 0u; setId < SET_SLOTS; setId = setId + 1u) {
+        let count = base.setCount[setId];
+        if (count < 2u) { continue; }
 
-    // 2pc/5pc sets
-    let s1_2 = has2(c[1u]);   let s1_5 = has5(c[1u]);   // Freezing Frost (Glacio)
-    let s2_2 = has2(c[2u]);   let s2_5 = has5(c[2u]);   // Molten Rift (Fusion)
-    let s3_2 = has2(c[3u]);   let s3_5 = has5(c[3u]);   // Void Thunder (Electro)
-    let s4_2 = has2(c[4u]);   let s4_5 = has5(c[4u]);   // Sierra Gale (Aero)
-    let s5_2 = has2(c[5u]);   let s5_5 = has5(c[5u]);   // Celestial Light (Spectro)
-    let s6_2 = has2(c[6u]);   let s6_5 = has5(c[6u]);   // Sun-sinking Eclipse (Havoc)
-    let s7_5 = has5(c[7u]);                             // Rejuvenating Glow
-    let s8_2 = has2(c[8u]);                             // Moonlit Clouds
-    let s9_2 = has2(c[9u]);   let s9_5 = has5(c[9u]);   // Lingering Tunes
-    let s10_2 = has2(c[10u]); let s10_5 = has5(c[10u]); // Frosty Resolve
-    let s11_2 = has2(c[11u]); let s11_5 = has5(c[11u]); // Eternal Radiance
-    let s12_2 = has2(c[12u]);                           // Midnight Veil
-    let s13_2 = has2(c[13u]); let s13_5 = has5(c[13u]); // Empyrean Anthem
-    let s14_2 = has2(c[14u]); let s14_5 = has5(c[14u]); // Tidebreaking Courage
-    let s16_2 = has2(c[16u]); let s16_5 = has5(c[16u]); // Gusts of Welkin
-    let s17_2 = has2(c[17u]); let s17_5 = has5(c[17u]); // Windward Pilgrimage
-    let s18_2 = has2(c[18u]); let s18_5 = has5(c[18u]); // Flaming Clawprint
-    let s24_2 = has2(c[24u]);                           // Pact of Neonlight Leap
-    let s25_5 = has5(c[25u]);                           // Halo of Starry Radiance
-    let s26_2 = has2(c[26u]); let s26_5 = has5(c[26u]); // Rite of Gilded Revelation
-    let s27_2 = has2(c[27u]); let s27_5 = has5(c[27u]); // Trailblazing Star
-    let s28_2 = has2(c[28u]);                           // Chromatic Foam
-    let s29_2 = has2(c[29u]); let s29_5 = has5(c[29u]); // Sound of True Name (conditional handled separately)
+        let bucket =
+            u32(count >= 2u) +
+            u32(count >= 3u) +
+            u32(count >= 5u);
+        if (bucket == 0u) { continue; }
 
-    // 3pc sets
-    let s19_3 = has3(c[19u]); // Dream of the Lost
-    let s20_3 = has3(c[20u]); // Crown of Valor
-    let s21_3 = has3(c[21u]); // Law of Harmony
-    let s22_3 = has3(c[22u]); // Flamewing's Shadow (conditional handled separately)
-    let s23_3 = has3(c[23u]); // Thread of Severed Fate
+        let row = ((setId * SET_CONST_LUT_BUCKETS + bucket) * SET_CONST_LUT_ROW_STRIDE);
 
-    // =========================================================================
-    // Apply set bonuses
-    // =========================================================================
+        s.atkP      += setConstLut[row + 0u];
+        s.atkF      += setConstLut[row + 1u];
+        s.hpP       += setConstLut[row + 2u];
+        s.hpF       += setConstLut[row + 3u];
+        s.defP      += setConstLut[row + 4u];
+        s.defF      += setConstLut[row + 5u];
+        s.critRate  += setConstLut[row + 6u];
+        s.critDmg   += setConstLut[row + 7u];
+        s.er        += setConstLut[row + 8u];
+        s.basic     += setConstLut[row + 9u];
+        s.heavy     += setConstLut[row + 10u];
+        s.skill     += setConstLut[row + 11u];
+        s.lib       += setConstLut[row + 12u];
+        s.aero      += setConstLut[row + 13u];
+        s.spectro   += setConstLut[row + 14u];
+        s.fusion    += setConstLut[row + 15u];
+        s.glacio    += setConstLut[row + 16u];
+        s.havoc     += setConstLut[row + 17u];
+        s.electro   += setConstLut[row + 18u];
+        s.echoSkill += setConstLut[row + 19u];
+        s.coord     += setConstLut[row + 20u];
+        s.bonusBase += setConstLut[row + 21u];
+        s.erSetBonus += setConstLut[row + 22u];
+    }
 
-    // Element bonuses
-    s.glacio += 10.0 * s1_2 + 30.0 * s1_5 + 22.5 * s10_5;
-    s.fusion += 10.0 * s2_2 + 30.0 * s2_5 + 10.0 * s18_2 + 15.0 * s18_5 + 16.0 * s22_3 + 10.0 * s27_2 + 20.0 * s27_5 + 10.0 * s28_2;
-    s.electro += 10.0 * s3_2 + 30.0 * s3_5;
-    s.aero += 10.0 * s4_2 + 30.0 * s4_5 + 10.0 * s16_2 + 30.0 * s16_5 + 10.0 * s17_2 + 30.0 * s17_5 + 10.0 * s29_2 + 15.0 * s29_5;
-    s.spectro += 10.0 * s5_2 + 30.0 * s5_5 + 10.0 * s11_2 + 15.0 * s11_5 + 10.0 * s24_2 + 10.0 * s26_2 + 30.0 * s26_5;
-    s.havoc += 10.0 * s6_2 + 30.0 * s6_5 + 10.0 * s12_2;
-
-    // Stat bonuses
-    s.atkP += 15.0 * s7_5 + 10.0 * s9_2 + 20.0 * s9_5 + 20.0 * s13_5 + 15.0 * s14_5 + 30.0 * s20_3 + 20.0 * s23_3 + 25.0 * s25_5;
-    s.critRate += 20.0 * s11_5 + 10.0 * s17_5 + 20.0 * s19_3 + 20.0 * s27_5;
-    s.critDmg += 20.0 * s20_3;
-    s.erSetBonus += 10.0 * s8_2 + 10.0 * s13_2 + 10.0 * s14_2;
-
-    // Skill type bonuses
-    s.skill += 12.0 * s10_2 + 36.0 * s10_5;
-    s.lib += 20.0 * s18_5 + 30.0 * s23_3;
-    s.heavy += 30.0 * s21_3;
-    s.basic += 40.0 * s26_5;
-    s.echoSkill += 35.0 * s19_3 + 16.0 * s21_3;
-    s.coord += 80.0 * s13_5;
     return s;
 }
 
-fn applySetEffectsConditional(s: ptr<function, SetApplied>, setCount: array<u32, SET_SLOTS>, skillMask: u32) {
-    let set22 = has3(setCount[22u]);
-    let set29 = has5(setCount[29u]);
-    let set22Cond = set22 * f32(u32(hasSkill(skillMask, SKILL_HEAVY | SKILL_ECHO_SKILL)));
-    let set29Cond = set29 * f32(u32(hasSkill(skillMask, SKILL_ECHO_SKILL)));
+fn applySetEffectsConditional(
+    s: ptr<function, SetApplied>,
+    setCount: array<u32, SET_SLOTS>,
+    skillMask: u32,
+    setRuntimeMask: u32,
+) {
+    let heavyTriggered = hasSkill(skillMask, SKILL_HEAVY);
+    let echoTriggered = hasSkill(skillMask, SKILL_ECHO_SKILL);
+
+    let set22P1Enabled = (setRuntimeMask & SET_RUNTIME_TOGGLE_SET22_P1) != 0u;
+    let set22P2Enabled = (setRuntimeMask & SET_RUNTIME_TOGGLE_SET22_P2) != 0u;
+    let set29Enabled = (setRuntimeMask & SET_RUNTIME_TOGGLE_SET29_FIVE) != 0u;
+
+    let set22EnabledForSkill =
+        (heavyTriggered && set22P1Enabled) ||
+        (echoTriggered && set22P2Enabled);
+    let set22Cond = has3(setCount[22u]) * f32(u32(set22EnabledForSkill));
+    let set29Cond = has3(setCount[29u]) * f32(u32(echoTriggered && set29Enabled));
+
     (*s).critRate += 20.0 * set22Cond + 20.0 * set29Cond;
 }
 
-fn applySetEffects(base: EchoBase, skillMask: u32) -> SetApplied {
+fn applySetEffects(base: EchoBase, skillMask: u32, setRuntimeMask: u32) -> SetApplied {
     var s = applySetEffectsBase(base);
-    applySetEffectsConditional(&s, base.setCount, skillMask);
+    applySetEffectsConditional(&s, base.setCount, skillMask, setRuntimeMask);
     return s;
 }
 
@@ -659,6 +656,7 @@ fn buildPreMain(p: Params, s: SetApplied, skillMask: u32, elementId: u32, skillI
 fn evalMainPos(
     pre: PreMain,
     setCount: array<u32, SET_SLOTS>,
+    setRuntimeMask: u32,
     mainAtkPRatio: f32,
     mainAtkF: f32,
     mainER: f32,
@@ -672,7 +670,8 @@ fn evalMainPos(
     var bonus = pre.bonusBaseTotal;
 
     // 14pc ER threshold clause (branchless)
-    let s14_er_bonus = 30.0 * f32(u32(setCount[14u] >= 5u && finalER >= 250.0));
+    let set14Enabled = (setRuntimeMask & SET_RUNTIME_TOGGLE_SET14_FIVE) != 0u;
+    let s14_er_bonus = 30.0 * f32(u32(set14Enabled && setCount[14u] >= 5u && finalER >= 250.0));
     bonus += s14_er_bonus;
 
     // main element bonus (branchless via array indexing)

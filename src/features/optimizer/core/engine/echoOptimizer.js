@@ -6,6 +6,8 @@ import {generateEchoCombinationBatches} from "../combos/batches.js";
 import {
     buildEchoKindIdArray,
     buildMainEchoBuffsArray,
+    buildSetConstLut,
+    buildSetRuntimeToggleMask,
     buildStatConstraintArray,
     ECHO_OPTIMIZER_BATCH_SIZE_CAP,
     ECHO_OPTIMIZER_JOB_TARGET_COMBOS_CPU,
@@ -52,21 +54,47 @@ function djb2(str) {
     return (hash >>> 0).toString(16);
 }
 
+function hashFloat32Array(arr) {
+    if (!(arr instanceof Float32Array)) return "";
+    let hash = 5381;
+    const u32 = new Uint32Array(arr.buffer, arr.byteOffset, arr.length);
+    for (let i = 0; i < u32.length; i++) {
+        hash = ((hash << 5) + hash) + u32[i];
+    }
+    return (hash >>> 0).toString(16);
+}
+
+function stringifyCacheInput(value) {
+    if (value == null) return "";
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+        return String(value);
+    }
+
+    try {
+        return JSON.stringify(value);
+    } catch {
+        return String(value);
+    }
+}
+
 function buildOptimizerCacheKey({
     echoes,
     charId,
     tab,
     levelLabel,
     rotationMode,
-    lockedEchoId
+    lockedEchoId,
+    setConstLutConfig
 }) {
     const echoSig = echoes.map(hashEcho).join("~");
+    const setConstLutSig = djb2(stringifyCacheInput(setConstLutConfig));
     const meta = [
         charId ?? "",
         tab ?? "",
         levelLabel ?? "",
         rotationMode ? 1 : 0,
-        lockedEchoId ?? ""
+        lockedEchoId ?? "",
+        setConstLutSig
     ].join("|");
     return `${meta}|${djb2(echoSig)}`;
 }
@@ -112,6 +140,7 @@ export const EchoOptimizer = {
         if (!filtered || !filtered.length) {
             return [];
         }
+        const runtimeSetData = form.characterRuntimeStates?.[form.charId]?.setData ?? null;
 
         const cacheKey = buildOptimizerCacheKey({
             echoes: filtered,
@@ -119,7 +148,16 @@ export const EchoOptimizer = {
             tab: form.tab ?? form.entry?.tab ?? form.levelData?.Type ?? form.levelData?.tab,
             levelLabel: form.levelData?.Name ?? form.levelData?.label ?? form.level?.Name ?? form.level?.label,
             rotationMode: !!form.rotationMode,
-            lockedEchoId: form.lockedEchoId
+            lockedEchoId: form.lockedEchoId,
+            setConstLutConfig:
+                (form.setConstLutKey ?? form.setConstRules ?? hashFloat32Array(form.setConstLut))
+                ? {
+                    setConstLutKey: form.setConstLutKey ?? null,
+                    setConstRules: form.setConstRules ?? null,
+                    setConstLutHash: hashFloat32Array(form.setConstLut),
+                    setData: runtimeSetData,
+                }
+                : runtimeSetData
         });
 
         // Shared setup for both modes
@@ -131,6 +169,13 @@ export const EchoOptimizer = {
         }
         if (!entry) {
             const encoded = encodeEchoStats(filtered);
+            encoded.setConstLut = (form.setConstLut instanceof Float32Array)
+                ? form.setConstLut
+                : buildSetConstLut({
+                    rules: form.setConstRules,
+                    setData: runtimeSetData
+                });
+            encoded.setRuntimeMask = buildSetRuntimeToggleMask(runtimeSetData);
             const mainEchoBuffs = buildMainEchoBuffsArray(
                 Array.from({ length: encoded.count }, (_, i) => i),
                 filtered,
@@ -268,6 +313,7 @@ export const EchoOptimizer = {
             targetCombosPerJob,
             mergeBatches: enableGpu,
             useComboIndexing: enableGpu,
+            setRuntimeMask: encoded.setRuntimeMask,
         });
     }
 };

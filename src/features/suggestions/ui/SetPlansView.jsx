@@ -4,6 +4,7 @@ import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 import {echoSetById, setIconMap} from "@shared/constants/echoSetData2.js";
 import {withOpacity} from "@shared/utils/attributeHelpers.js";
 import {formatNumber} from "./suggestionsViewUtils.js";
+import AppLoaderOverlay from "@/shared/ui/common/AppLoaderOverlay.jsx";
 
 const pieces = {
     2: 'twoPiece',
@@ -29,19 +30,20 @@ function setsEqual(a, b) {
 }
 
 export default function SetPlansView({
-    currentSliderColor,
-    isRunning,
-    noEchoes,
-    skillName,
-    baseDamage,
-    setSuggestions,
-    selectedPlanIndex,
-    onSelectPlan,
-    onOpenSkillMenu,
-    onInspect,
-    onResetSelection,
-    keywords,
-    setData,
+                                         currentSliderColor,
+                                         isRunning,
+                                         noEchoes,
+                                         skillName,
+                                         baseDamage,
+                                         setSuggestions,
+                                         selectedPlanIndex,
+                                         onSelectPlan,
+                                         onOpenSkillMenu,
+                                         onInspect,
+                                         onResetSelection,
+                                         keywords,
+                                         setData,
+                                         setOpenPartsModal
 }) {
     const getSetMeta = (setId) => echoSetById?.[setId] ?? null;
 
@@ -51,11 +53,14 @@ export default function SetPlansView({
                 <h2 className="panel-title">Suggested Sonata Sets</h2>
             </div>
 
-            <div className={`set-plan suggestions-list ${isRunning ? 'running' : ''}`}>
+            <div className={`set-plan suggestions-list app-loader-host ${isRunning ? 'running' : ''}`}>
                 <div className="set-plan suggestions-controls buffs-box">
                     <div className="toggle custom-select small" onClick={onOpenSkillMenu}>
                         {skillName ? skillName : "Target Skill"}
                     </div>
+                    <button className="rotation-button" onClick={() => setOpenPartsModal(true)}>
+                        Config
+                    </button>
                     <button className="rotation-button" onClick={onInspect}>
                         Inspect
                     </button>
@@ -63,6 +68,9 @@ export default function SetPlansView({
                         Reset Selection
                     </button>
                 </div>
+                {isRunning && (
+                    <AppLoaderOverlay text="Generating set plans..." />
+                )}
 
                 {noEchoes || !setSuggestions?.results || setSuggestions?.results?.length === 0 ? (
                     <span className="empty-state">

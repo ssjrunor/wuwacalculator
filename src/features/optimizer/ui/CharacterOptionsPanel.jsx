@@ -38,7 +38,8 @@ export function CharacterOptionsPanel({
                                           statLimits,
                                           echoBag,
                                           enableGpu,
-                                          rotationMode
+                                          rotationMode,
+                                          setOpenPartsModal
 }) {
     const rarity = rarityMap[charId];
     const displayName = activeCharacter.displayName.toUpperCase();
@@ -142,7 +143,7 @@ export function CharacterOptionsPanel({
 
 
                         <div className="dial-row">Target Job</div>
-                        <div className="toggle custom-select small"
+                        <div className="skill-name toggle custom-select small"
                              onClick={() => setShowSkillOptions(true)}
                         >{skill?.name ? ' ◉ ' + skill?.name : "Target Skill"}</div>
 
@@ -182,6 +183,10 @@ export function CharacterOptionsPanel({
                                 <span> ◉ Main Echo</span>
                             )}
                         </div>
+
+                        <div className="skill-name toggle custom-select small"
+                             onClick={() => setOpenPartsModal(true)}
+                        > ◉ Set Conditionals</div>
 
                         <div className="dial-row">Main Stat Filters</div>
                         <Select

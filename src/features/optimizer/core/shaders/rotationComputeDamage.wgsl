@@ -6,7 +6,6 @@ struct RotationMeta {
 };
 
 @group(0) @binding(11) var<storage, read> rotationContexts: array<f32>;
-@group(0) @binding(12) var<storage, read> rotationWeights: array<f32>;
 @group(0) @binding(13) var<uniform> rotationMeta: RotationMeta;
 
 const CTX_BASE_ATK: u32 = 0u;
@@ -36,6 +35,7 @@ const CTX_META0: u32 = 24u;
 const CTX_META1: u32 = 25u;
 const CTX_LOCKED_PACKED: u32 = 26u;
 const CTX_BASE_INDEX: u32 = 27u;
+const CTX_SET_RUNTIME_MASK: u32 = 28u;
 
 fn loadParams(ctxIndex: u32) -> Params {
     var p: Params;
@@ -77,8 +77,8 @@ fn loadParams(ctxIndex: u32) -> Params {
     p.meta1 = bitcast<u32>(rotationContexts[base + CTX_META1]);
     p.lockedPacked = bitcast<u32>(rotationContexts[base + CTX_LOCKED_PACKED]);
     p.comboBaseIndex = bitcast<u32>(rotationContexts[base + CTX_BASE_INDEX]);
+    p._pad0 = bitcast<u32>(rotationContexts[base + CTX_SET_RUNTIME_MASK]);
 
-    p._pad0 = 0u;
     p._pad1 = 0u;
     p._pad2 = 0u;
     p._pad3 = 0u;
@@ -202,18 +202,19 @@ fn computeRotationForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
     // Evaluate each rotation context once, accumulate into totals[mainPos]
     // -------------------------
     for (var c: u32 = 0u; c < ctxCount; c = c + 1u) {
-        let w = rotationWeights[c];
+        let w = rotationContexts[rotationMeta.ctxCount * rotationMeta.ctxStride + c];
         if (w == 0.0) { continue; }
 
         let p = loadParams(c);
+        let setRuntimeMask = decodeSetRuntimeMask(p);
 
-    let skillId: u32 = p.skillId;
-    let skillMask: u32 = skillMaskFromSkillId(skillId);
-    let elementId: u32 = elementFromSkillId(skillId);
+        let skillId: u32 = p.skillId;
+        let skillMask: u32 = skillMaskFromSkillId(skillId);
+        let elementId: u32 = elementFromSkillId(skillId);
 
         // Copy base and add conditional effects
         var sonata = sonataBase;
-        applySetEffectsConditional(&sonata, base.setCount, skillMask);
+        applySetEffectsConditional(&sonata, base.setCount, skillMask, setRuntimeMask);
         let pre = buildPreMain(p, sonata, skillMask, elementId, skillId);
 
         for (var mainPos: u32 = 0u; mainPos < 5u; mainPos = mainPos + 1u) {
@@ -222,6 +223,7 @@ fn computeRotationForEchoIds(echoIds: array<i32, 5>) -> ComboEval {
             let avg = evalMainPos(
                 pre,
                 base.setCount,
+                setRuntimeMask,
                 mainAtkPRatio[mainPos], mainAtkF[mainPos], mainER[mainPos],
                 mainElem0[mainPos], mainElem1[mainPos],
                 mainType0[mainPos], mainType1[mainPos]

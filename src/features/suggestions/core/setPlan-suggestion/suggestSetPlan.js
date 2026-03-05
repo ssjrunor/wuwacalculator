@@ -2,6 +2,7 @@ import {generateSetPlanContext, generateRotationSetPlanContexts} from "./ctx-bui
 import {computeSetPlanDamage, computeRotationSetPlanDamage} from "./compute.js";
 import {DEFAULT_FIVE_PIECE_SETS, DEFAULT_THREE_PIECE_SETS} from "@shared/constants/echoSetData2.js";
 import {isSetPlanFeasible} from "./utils.js";
+import { buildSetConstLut } from "@features/optimizer/core/encode/setLutEncoding.js";
 
 export function suggestSetPlans({
                                     ctx,
@@ -10,14 +11,27 @@ export function suggestSetPlans({
                                     threePieceSets = [],
                                     topK = 10,
                                     exhaustive = false,
+                                    setConstLut = null,
+                                    setConstRules = null,
+                                    setData = null,
                                 }) {
     const results = [];
     const isRotationMode = rotationContexts && rotationContexts.length > 0;
+    const resolvedSetConstLut = (setConstLut instanceof Float32Array)
+        ? setConstLut
+        : buildSetConstLut({
+            rules: setConstRules ?? undefined,
+            setData
+        });
+    const computeOpts = {
+        setConstLut: resolvedSetConstLut,
+        setData
+    };
 
     // Compute damage function based on mode
     const computeDamage = isRotationMode
-        ? (setPlan) => computeRotationSetPlanDamage(rotationContexts, setPlan)
-        : (setPlan) => computeSetPlanDamage(ctx, setPlan);
+        ? (setPlan) => computeRotationSetPlanDamage(rotationContexts, setPlan, computeOpts)
+        : (setPlan) => computeSetPlanDamage(ctx, setPlan, computeOpts);
 
     const baseDmg = computeDamage({});
     const baseAvg =
@@ -171,6 +185,11 @@ export function runSetSuggestor(form, options = {}) {
     const fivePieceSets  = options.fivePieceSets  ?? DEFAULT_FIVE_PIECE_SETS;
     const threePieceSets = options.threePieceSets ?? DEFAULT_THREE_PIECE_SETS;
     const topK           = options.topK          ?? 10;
+    const setConstLut    = options.setConstLut   ?? form.setConstLut ?? null;
+    const setConstRules  = options.setConstRules ?? form.setConstRules ?? null;
+    const setData        = options.setData
+        ?? form.characterRuntimeStates?.[form.charId]?.setData
+        ?? null;
 
     const nonNullCount = current.reduce(
         (count, e) => (e != null ? count + 1 : count),
@@ -184,6 +203,9 @@ export function runSetSuggestor(form, options = {}) {
         threePieceSets,
         topK,
         exhaustive: true,
+        setConstLut,
+        setConstRules,
+        setData,
     });
 
     const filtered = results.filter(r =>

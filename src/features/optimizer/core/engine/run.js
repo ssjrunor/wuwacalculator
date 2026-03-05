@@ -34,6 +34,7 @@ export async function runEchoOptimizer({
     targetCombosPerJob = ECHO_OPTIMIZER_JOB_TARGET_COMBOS_GPU,
     mergeBatches = true,
     useComboIndexing = false,
+    setRuntimeMask,
 }) {
     const totalForProgress = progressCombinations ?? combinations;
     const targetIntsPerJob = targetCombosPerJob * OPTIMIZER_ECHOS_PER_COMBO;
@@ -63,6 +64,7 @@ export async function runEchoOptimizer({
             ...ctxObj,
             comboCount,
             charId,
+            setRuntimeMask,
             lockedEchoIndex: runLockedIndex,
             comboMode: 0,
             comboN: 0,
@@ -106,6 +108,7 @@ export async function runEchoOptimizer({
             ...ctxObj,
             comboCount,
             charId,
+            setRuntimeMask,
             lockedEchoIndex: runLockedIndex,
             comboMode: 2,
             comboN: comboIndexingData.comboN,

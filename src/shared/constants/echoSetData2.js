@@ -5,7 +5,7 @@ export const echoSets = {
         name: 'Freezing Frost',
         desc: {
             twoPiece: 'Glacio DMG +10%',
-            fivePiece: 'Upon using Basic Attack or Heavy Attack, Glacio DMG increases by 10%, stacking up to three times, lasting for15s.'
+            fivePiece: 'Upon using Basic Attack or Heavy Attack, Glacio DMG increases by 10%, stacking up to three times, lasting for 15s.'
         },
         twoPiece: [
             { value: 10, path: ['attribute', 'glacio', 'dmgBonus'] }
@@ -21,25 +21,19 @@ export const echoSets = {
                     { value: 30, path: ['attribute', 'glacio', 'dmgBonus'] }
                 ]
             },
-            // frosty5p1: 7.5% Glacio per stack, max 22.5%
-            frosty5p1: {
-                perStack: [
-                    { value: 7.5, path: ['attribute', 'glacio', 'dmgBonus'] }
-                ],
-                max: [
-                    { value: 22.5, path: ['attribute', 'glacio', 'dmgBonus'] }
-                ]
-            },
-            // frosty5p2: 18% Skill per stack, max 36%
-            frosty5p2: {
-                perStack: [
-                    { value: 18, path: ['skillType', 'resonanceSkill', 'dmgBonus'] }
-                ],
-                max: [
-                    { value: 36, path: ['skillType', 'resonanceSkill', 'dmgBonus'] }
-                ]
-            }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'frost5pc',
+                desc: '10% Glacio DMG Bonus (3 Stacks Max).',
+                trigger: 'Triggered by using Basic Attack or Heavy Attack.',
+            },
+        ],
+
         icon: '/assets/echo-icons/freezingFrost.webp'
     },
 
@@ -64,6 +58,18 @@ export const echoSets = {
                 ]   // just a flat 30
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'molten5',
+                desc: '30% Fusion DMG Bonus.',
+                trigger: 'Triggered by using Resonance Skill.',
+            },
+        ],
+
         icon: '/assets/echo-icons/moltenRift.webp'
     },
 
@@ -88,6 +94,18 @@ export const echoSets = {
                 ]  // 2 stacks
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'void5pc',
+                desc: '15% Electro DMG Bonus (2 Stacks Max).',
+                trigger: 'Triggered by using Heavy Attack or Resonance Skill.',
+            },
+        ],
+
         icon: '/assets/echo-icons/voidThunder.webp'
     },
 
@@ -112,6 +130,18 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'sierra5',
+                desc: '30% Aero DMG Bonus.',
+                trigger: 'Triggered by using Intro Skill.',
+            },
+        ],
+
         icon: '/assets/echo-icons/sierraGale.webp'
     },
 
@@ -136,6 +166,18 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'celestial5',
+                desc: '30% Spectro DMG Bonus.',
+                trigger: 'Triggered by using Intro Skill.',
+            },
+        ],
+
         icon: '/assets/echo-icons/celestialLight.webp'
     },
 
@@ -160,6 +202,18 @@ export const echoSets = {
                 ]   // 4 stacks
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'eclipse5pc',
+                desc: '7.5% Havoc DMG Bonus (4 Stacks Max).',
+                trigger: 'Triggered by using Basic Attack or Heavy Attack.',
+            },
+        ],
+
         icon: '/assets/echo-icons/sun-sinkingEclipse.webp'
     },
 
@@ -184,6 +238,18 @@ export const echoSets = {
                 ] // flat
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'rejuvenating5',
+                desc: '15% ATK.',
+                trigger: 'Triggered when healing allies.',
+            },
+        ],
+
         icon: '/assets/echo-icons/rejuvenatingGlow.webp'
     },
 
@@ -199,6 +265,13 @@ export const echoSets = {
         ],
         fivePiece: null,
         states: {},
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+        ],
+
         icon: '/assets/echo-icons/moonlitClouds.webp'
     },
 
@@ -225,6 +298,23 @@ export const echoSets = {
                 ] // 4 stacks
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'fivePiece',
+                desc: '60% Outro Skill DMG Bonus',
+                trigger: 'Always active while meeting the 5-piece requirement.',
+            },
+            {
+                key: 'lingering5p1',
+                desc: '5% ATK (4 Stacks Max).',
+                trigger: 'Triggered while on-field every 1.5s.',
+            },
+        ],
+
         icon: '/assets/echo-icons/lingeringTunes.webp'
     },
 
@@ -257,6 +347,23 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'frosty5p1',
+                desc: '22.5% Glacio DMG Bonus.',
+                trigger: 'Triggered by casting Resonance Skill.',
+            },
+            {
+                key: 'frosty5p2',
+                desc: '18% Resonance Skill DMG Bonus (2 Stacks Max).',
+                trigger: 'Triggered by casting Resonance Liberation.',
+            },
+        ],
+
         icon: '/assets/echo-icons/frostyResolve.webp'
     },
 
@@ -289,6 +396,23 @@ export const echoSets = {
                 ] // conditional on 10 stacks, handled outside
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'radiance5p1',
+                desc: '20% CRIT Rate.',
+                trigger: 'Triggered by inflicting Spectro Frazzle.',
+            },
+            {
+                key: 'radiance5p2',
+                desc: '15% Spectro DMG Bonus.',
+                trigger: 'Triggered by attacking enemies with 10 Spectro Frazzle stacks.',
+            },
+        ],
+
         icon: '/assets/echo-icons/eternalRadiance.webp'
     },
 
@@ -304,6 +428,13 @@ export const echoSets = {
         ],
         fivePiece: null, // 5p is “big nuke” in damage logic, not here
         states: {},
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+        ],
+
         icon: '/assets/echo-icons/midnightVeil.webp'
     },
 
@@ -330,6 +461,23 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'fivePiece',
+                desc: '80% Coordinated Attack DMG Bonus.',
+                trigger: 'Always active while meeting the 5-piece requirement.',
+            },
+            {
+                key: 'empyrean5',
+                desc: '20% ATK.',
+                trigger: 'Triggered when a Coordinated Attack lands a CRIT hit.',
+            },
+        ],
+
         icon: '/assets/echo-icons/empyreanAnthem.webp'
     },
 
@@ -348,6 +496,17 @@ export const echoSets = {
         ], // always on, extra element DMG handled with condition
         states: {
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'fivePiece',
+                trigger: 'Always active while meeting the 5-piece requirement.',
+            },
+        ],
+
         icon: '/assets/echo-icons/tidebreakingCourage.webp'
     },
 
@@ -372,6 +531,18 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'welkin5',
+                desc: '30% Aero DMG Bonus.',
+                trigger: 'Triggered by inflicting Aero Erosion.',
+            },
+        ],
+
         icon: '/assets/echo-icons/gustsOfWelkin.webp'
     },
 
@@ -398,6 +569,18 @@ export const echoSets = {
                 ] // conditional on Aero Erosion
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'windward5',
+                desc: '10% CRIT Rate, 30% Aero DMG Bonus.',
+                trigger: 'Triggered by hitting a target with Aero Erosion.',
+            },
+        ],
+
         icon: '/assets/echo-icons/windwardPilgrimage.webp'
     },
 
@@ -424,6 +607,18 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'clawprint5',
+                desc: '15% Fusion DMG Bonus, 20% Resonance Liberation DMG Bonus.',
+                trigger: 'Triggered by casting Resonance Liberation.',
+            },
+        ],
+
         icon: '/assets/echo-icons/flamingClawprint.webp'
     },
 
@@ -449,6 +644,14 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'dreamOfTheLost3pc',
+                desc: '20% CRIT Rate, 35% Echo Skill DMG Bonus.',
+                trigger: 'Triggered while Resonance Energy is 0.',
+            },
+        ],
+
         icon: '/assets/echo-icons/dreamOfTheLost.webp'
     },
 
@@ -472,6 +675,14 @@ export const echoSets = {
                 ] // 5 stacks
             }
         },
+        parts: [
+            {
+                key: 'crownOfValor3pc',
+                desc: '6% ATK, 4% CRIT DMG (both 5 Stacks Max).',
+                trigger: 'Triggered upon gaining a Shield.',
+            },
+        ],
+
         icon: '/assets/echo-icons/crownOfValor.webp'
     },
 
@@ -495,6 +706,14 @@ export const echoSets = {
                 ] // heavy flat, echoSkill stacks
             }
         },
+        parts: [
+            {
+                key: 'lawOfHarmony3p',
+                desc: '30% Heavy Attack DMG Bonus, 4% Echo Skill DMG Bonus (4 Stacks Max).',
+                trigger: 'Triggered by casting Echo Skill.',
+            },
+        ],
+
         icon: '/assets/echo-icons/lawOfHarmony.webp'
     },
 
@@ -524,6 +743,19 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'flamewingsShadow2pcP1',
+                desc: '20% Heavy Attack CRIT Rate.',
+                trigger: 'Triggered by dealing Echo Skill DMG.',
+            },
+            {
+                key: 'flamewingsShadow2pcP2',
+                desc: '20% Echo Skill CRIT Rate.',
+                trigger: 'Triggered by dealing Heavy Attack DMG.',
+            },
+        ],
+
         icon: '/assets/echo-icons/flamewing\'sShadow.webp'
     },
 
@@ -547,6 +779,14 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'threadOfSeveredFate3pc',
+                desc: '20% ATK, 30% Havoc DMG Bonus.',
+                trigger: 'Triggered by inflicting Havoc Bane.',
+            },
+        ],
+
         icon: '/assets/echo-icons/threadOfSeveredFate.webp'
     },
 
@@ -562,6 +802,13 @@ export const echoSets = {
         ],
         fivePiece: null,
         states: {},
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+        ],
+
         icon: '/assets/echo-icons/pactOfNeonlightLeap.webp'
     },
 
@@ -586,6 +833,18 @@ export const echoSets = {
                 ]
             }
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'starryRadiance5pc',
+                desc: '0.2% ATK (125 Stacks Max).',
+                trigger: 'Triggered when healing an ally (scales with Off-Tune Buildup Rate).',
+            },
+        ],
+
         icon: '/assets/echo-icons/haloOfStarryRadiance.webp'
     },
 
@@ -619,6 +878,23 @@ export const echoSets = {
                 ],
             },
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'gildedRevelationStacks',
+                desc: '10% Spectro DMG Bonus (3 Stacks Max).',
+                trigger: 'Triggered by dealing Basic Attack DMG.',
+            },
+            {
+                key: 'gildedRevelationBasicBuff',
+                desc: '40% Basic Attack DMG Bonus.',
+                trigger: 'Triggered by casting Resonance Liberation at 3 stacks.',
+            },
+        ],
+
         icon: '/assets/echo-icons/riteOfGildedRevelation.webp',
     },
 
@@ -645,6 +921,18 @@ export const echoSets = {
                 ],
             },
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'trailblazingStar5pc',
+                desc: '20% CRIT Rate, 20% Fusion DMG Bonus.',
+                trigger: 'Triggered by inflicting Fusion Burst or Tune Rupture - Shifting.',
+            },
+        ],
+
         icon: '/assets/echo-icons/trailblazingStar.webp',
     },
 
@@ -669,6 +957,18 @@ export const echoSets = {
                 ],
             },
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'chromaticFoamSelf',
+                desc: '10% Fusion DMG Bonus.',
+                trigger: 'Triggered by inflicting Fusion Burst.',
+            },
+        ],
+
         icon: '/assets/echo-icons/chromaticFoam.webp',
     },
 
@@ -695,6 +995,18 @@ export const echoSets = {
                 ],
             },
         },
+        parts: [
+            {
+                key: 'twoPiece',
+                trigger: 'Always active while meeting the 2-piece requirement.',
+            },
+            {
+                key: 'soundOfTrueName5pc',
+                desc: '20% Echo Skill CRIT Rate, 15% Aero DMG Bonus.',
+                trigger: 'Triggered by dealing Echo Skill DMG.',
+            },
+        ],
+
         icon: '/assets/echo-icons/soundOfTrueName.webp',
     }
 };
@@ -721,6 +1033,7 @@ export const echoSetMap = Object.fromEntries(
             twoPiece: cfg.desc?.twoPiece,
             threePiece: cfg.desc?.threePiece,
             fivePiece: cfg.desc?.fivePiece,
+            parts: cfg.parts ?? [],
         }
     ])
 );

@@ -59,6 +59,7 @@ import {buildRotation, getSkillDamageCache} from '@shared/utils/skillDamageCache
 import {getDefaultRotationEntries} from '@shared/constants/charBasicRotations.js';
 import AppStatusModal from "@/shared/ui/common/AppStatusModal.jsx";
 import {defaultRandGen} from "@/features/suggestions/core/randomEchoes/lib/constants.js";
+import { loadCharSetData } from "@shared/constants/charSetData.js";
 import enemies from '@/data/enemies.json';
 import {
     echoesService,
@@ -140,7 +141,7 @@ export default function CalculatorRoute(props) {
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
-    const LATEST_CHANGELOG_VERSION = '2026-03-02 18:18';
+    const LATEST_CHANGELOG_VERSION = '2026-03-05 10:25';
     const latest = changelog[changelog.length - 1];
     const latestMessage = latest?.shortDesc || 'New stuff\'s been added~! (〜^∇^)〜';
 
@@ -1225,6 +1226,11 @@ export default function CalculatorRoute(props) {
                 changed = true;
             }
 
+            if (!newChar.setData) {
+                newChar.setData = loadCharSetData(charId);
+                changed = true;
+            }
+
             if (JSON.stringify(newChar.groupedSkillOptions) !== JSON.stringify(groupedSkillOptions)) {
                 newChar.groupedSkillOptions = groupedSkillOptions;
                 changed = true;
@@ -1384,9 +1390,7 @@ export default function CalculatorRoute(props) {
         }));
     }, [equippedEchoes]);
 
-/*
     console.log(runtime);
-*/
 
     // -----------------------------
     // Render

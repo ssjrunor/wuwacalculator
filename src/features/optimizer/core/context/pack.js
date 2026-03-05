@@ -1,5 +1,6 @@
 // packOptimizerContext.js
-import { OPTIMIZER_CONTEXT_FLOATS } from "../misc/index.js";
+import { OPTIMIZER_CONTEXT_FLOATS } from "../misc/config.js";
+import { SET_RUNTIME_TOGGLE_ALL } from "../encode/setLutEncoding.js";
 
 export function packOptimizerContext(ctx) {
     // 36 floats = 144 bytes; tail packed into meta words to free pad space.
@@ -19,6 +20,7 @@ export function packOptimizerContext(ctx) {
     const comboBaseIndex = (ctx.comboBaseIndex ?? 0) >>> 0;
     const lockedRaw = ctx.lockedEchoIndex ?? -1;
     const lockedPacked = lockedRaw < 0 ? 0 : ((lockedRaw + 1) >>> 0);
+    const setRuntimeMask = (ctx.setRuntimeMask ?? SET_RUNTIME_TOGGLE_ALL) >>> 0;
 
     // meta0: charId(12) | sequence(4) | comboMode(2) | comboK(3) | comboMaxCost(6) | spare(5)
     const meta0 =
@@ -68,6 +70,7 @@ export function packOptimizerContext(ctx) {
     u32[i++] = meta1;
     u32[i++] = lockedPacked;
     u32[i++] = comboBaseIndex;
+    u32[i++] = setRuntimeMask;
 
     return data;
 }

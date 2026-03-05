@@ -10,6 +10,7 @@ export * from "../context/pack.js";
 export * from "./EchoFilters.js";
 export * from "./setSolver.js";
 export * from "../encode/echoEncoding.js";
+export * from "../encode/setLutEncoding.js";
 export * from "./utils.js";
 export * from "../cpu/computeDamage.js";
 export * from "../cpu/constraints.js";

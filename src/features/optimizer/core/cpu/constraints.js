@@ -3,6 +3,20 @@ function inRange(value, min, max) {
     return value >= min && value <= max;
 }
 
+export function areConstraintsDisabled(constraints) {
+    if (!constraints) return true;
+    return (
+        constraints[0] > constraints[1] &&
+        constraints[2] > constraints[3] &&
+        constraints[4] > constraints[5] &&
+        constraints[6] > constraints[7] &&
+        constraints[8] > constraints[9] &&
+        constraints[10] > constraints[11] &&
+        constraints[12] > constraints[13] &&
+        constraints[14] > constraints[15]
+    );
+}
+
 export function passesConstraints(
     constraints,
     finalAtk,

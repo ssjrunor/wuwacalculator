@@ -662,9 +662,6 @@ export default function OverviewDetailPane({
                                                                             fontSize: '0.85rem',
                                                                             opacity: '0.7',
                                                                             fontWeight: 'bold',
-                                                                            whiteSpace: 'nowrap',
-                                                                            overflow: 'hidden',
-                                                                            textOverflow: 'ellipsis',
                                                                         }}
                                                                         title={`R${value} ${weaponData.name}`}
                                                                     >
@@ -719,9 +716,7 @@ export default function OverviewDetailPane({
                                                                         fontSize: '0.85rem',
                                                                         opacity: '0.7',
                                                                         fontWeight: 'bold',
-                                                                        whiteSpace: 'nowrap',
-                                                                        overflow: 'hidden',
-                                                                        textOverflow: 'ellipsis',
+                                                                        textOverflow: 'fade'
                                                                     }}
                                                                     title={name}
                                                                 >

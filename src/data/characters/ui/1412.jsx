@@ -44,6 +44,44 @@ export default function SigrikaUI({
                     />
                     Enable
                 </label>
+
+                <div>
+                    <p>
+                        When casting <span className="highlight">Heavy Attack - Schemata of Runes</span>, if <span className="highlight">Sigrika</span> holds less than 30 points of <span className="highlight">Soliskin Vitality</span>, consume all <span className="highlight">Soliskin Vitality</span>. For every 10 points of <span className="highlight">Soliskin Vitality</span> consumed, the current <span className="highlight">Runic Outburst</span>, <span className="highlight">Runic Chain Whip</span>, and <span className="highlight">Runic Soliskin</span> gain <span className="highlight">15%</span> DMG Amplification.
+                    </p>
+                </div>
+                <div className="slider-label-with-input" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <label style={{ fontWeight: 'bold' }}>
+                        Soliskin Vitality
+                    </label>
+                    <input
+                        type="number"
+                        className="character-level-input"
+                        min="0"
+                        step="10"
+                        max="29"
+                        style={{
+                            opacity: activeStates.soliskinVitality ? 0.5 : 1,
+                            cursor: !activeStates.soliskinVitality ? "text" : "not-allowed",
+                        }}
+                        disabled={activeStates.soliskinVitality || false}
+                        value={(activeStates.soliskinVitality2 ?? 0) * 10}
+                        onChange={(e) => {
+                            const raw = Number(e.target.value) || 0;
+                            const stacks = Math.max(0, Math.min(2, Math.floor(raw / 10)));
+                            setCharacterRuntimeStates((prev) => ({
+                                ...prev,
+                                [charId]: {
+                                    ...(prev[charId] ?? {}),
+                                    activeStates: {
+                                        ...(prev[charId]?.activeStates ?? {}),
+                                        soliskinVitality2: stacks,
+                                    },
+                                },
+                            }));
+                        }}
+                    />
+                </div>
             </div>
 
             <div
@@ -52,12 +90,12 @@ export default function SigrikaUI({
                 <h4 className={'highlight'} style={{ fontSize: '16px', fontWeight: 'bold' }}>Innate Gift?</h4>
                 <div>
                     <p>
-                        <span className="highlight">Sigrika</span> can hold up to 10 stacks of <span className="highlight">Innate Gift?</span>. Each stack grants <span className="highlight">Heavy Attack - Schemata of Runes</span>, <span className="highlight">Runic Outburst</span>, <span className="highlight">Runic Chain Whip</span>, <span className="highlight">Runic Soliskin</span> and <span className="highlight">Resonance Skill - Learn My True Name 15%</span> DMG Amplification.
+                        <span className="highlight">Sigrika</span> can hold up to 2 stacks of <span className="highlight">Innate Gift?</span>. Each stack grants <span className="highlight">Heavy Attack - Schemata of Runes</span>, <span className="highlight">Runic Outburst</span>, <span className="highlight">Runic Chain Whip</span>, <span className="highlight">Runic Soliskin</span> and <span className="highlight">Resonance Skill - Learn My True Name 30%</span> DMG Amplification.
                     </p>
                 </div>
                 <DropdownSelect
                     label=""
-                    options={[0, 1, 2, 3, 4, 5, 7, 8, 9, 10]}
+                    options={[0, 1, 2]}
                     value={innateGift}
                     onChange={handleChange}
                     width="80px"

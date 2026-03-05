@@ -8,6 +8,7 @@ import '../../features/characters/ui/styles/characterSettings.css';
 import '../../features/characters/ui/styles/skillsModal.css';
 import './splitGutter.css';
 import './animations.css';
+import './appLoader.css';
 import './damageSection.css';
 import '../../features/characters/ui/styles/inherentSkills.css';
 import './reset.css';

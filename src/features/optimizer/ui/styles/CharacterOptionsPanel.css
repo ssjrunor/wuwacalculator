@@ -82,7 +82,16 @@
     margin-bottom: 0.1rem;
 }
 
-/* TOGGLES */
+.skill-name.toggle.custom-select.small {
+    overflow: hidden;
+    max-width: 300px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.optimizer-pane .custom-select__value-container {
+    max-height: 4rem;
+}
 
 .compact-root .custom-select.small {
     padding: 3px 7px;
