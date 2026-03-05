@@ -41,11 +41,6 @@ export function applySigrikaLogic({
 
 
     const soliskinVitality2 = state.soliskinVitality2 ?? 0;
-    if (isToggleActiveLocal('soliskinVitality')
-    && (name.includes('runic outburst') ||
-        name.includes('runic chain whip') ||
-        name.includes('runic soliskin')))
-        skillMeta.multiplier *= 1.25;
     if (name.includes('runic outburst') ||
         name.includes('runic chain whip') ||
         name.includes('runic soliskin')) {
@@ -54,7 +49,6 @@ export function applySigrikaLogic({
         else
             skillMeta.amplify = (skillMeta.amplify ?? 0) +
             Math.min(Math.floor((soliskinVitality2 * 15) / 15) * 15, 30);
-        console.log(soliskinVitality2)
     }
 
     const inherent2Stacks = Math.min(Number(state.sigrikaInherent2 ?? 0), 6);

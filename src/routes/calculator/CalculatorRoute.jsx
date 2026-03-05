@@ -1390,7 +1390,7 @@ export default function CalculatorRoute(props) {
         }));
     }, [equippedEchoes]);
 
-    console.log(runtime);
+    //console.log(runtime);
 
     // -----------------------------
     // Render
