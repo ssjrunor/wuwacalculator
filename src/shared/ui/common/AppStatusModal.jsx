@@ -3,16 +3,15 @@ import React, { useEffect, useState } from 'react';
 import '@shared/styles/appStatusModal.css';
 
 const data = {
-    lastUpdated: '05-03-2026',
+    lastUpdated: '06-03-2026',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
-    patchVersion: '3.2.0 (Beta)',
+    patchVersion: '3.2.2 (Beta)',
     calculatorState: 'Fully updated for the current patch.',
     coverage: [
         {
             title: 'Note',
-            desc: "MORE en text discrepancy. I had the time so i thought \"why not translate all of her sigrika's forte circuit's chinese description\" so i did" +
-                "Updated the effects/buffs for it as well. The en texts will eventually be corrected and i will use those when they do.",
+            desc: "Beta updates.",
         },
         {
             title: 'Character Coverage',
@@ -40,8 +39,7 @@ const data = {
         "That's kinda it tbh.",
     ],
     recentChanges: [
-        "TLDR. Sigrika's forte circuit description and effects are less not accurate now. You are welcome.",
-        "Oh Oh, also, added set conditional config. Check them out in the set plan suggestions or the optimizer... or don't ¯\\_(ツ)_/¯",
+        "Added set conditional config. Check them out in the set plan suggestions or the optimizer... or don't ¯\\_(ツ)_/¯",
     ],
 };
 

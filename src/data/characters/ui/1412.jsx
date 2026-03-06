@@ -239,7 +239,7 @@ export function buffUI({ activeStates, toggleState, setCharacterRuntimeStates, c
                     <div className="echo-buff-name">True Names Aligned</div>
                 </div>
                 <div className="echo-buff-effect">
-                    When Resonators in the team cast <span className="highlight">Echo Skill</span>, they gain 6% Aero DMG Bonus and <span className="highlight">6% Echo Skill DMG Bonus</span> for 6s, stacking up to 6 times. Echoes with the same name can only trigger this effect once.
+                    When any nearby Resonators in the team cast <span className="highlight">Echo Skill</span>, all nearby Resonators in the team gain 6% Aero DMG Bonus and <span className="highlight">6% Echo Skill DMG Bonus</span> for 6s, stacking up to 6 times. Echoes with the same name can only trigger this effect once.
                 </div>
                 <DropdownSelect
                     label=""

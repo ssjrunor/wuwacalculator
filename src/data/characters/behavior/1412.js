@@ -28,7 +28,7 @@ export function applySigrikaLogic({
     if (tab === 'resonanceSkill') skillMeta.skillType = 'skill';
     if (tab === 'resonanceLiberation') skillMeta.skillType = 'ultimate';
     if (name.toUpperCase().includes('BIG BOOMY BOOM!') ||
-        name.includes('soliskin to the aid') || name.includes('basic attack stage 5') ||
+        name.includes('soliskin to the aid') || name.includes('basic attack - elucidated') ||
         tab === 'forteCircuit' || tab === 'resonanceLiberation')
         skillMeta.skillType = 'echoSkill';
 
@@ -61,14 +61,19 @@ export function applySigrikaLogic({
         Math.min((mergedBuffs.energyRegen - 50) * 0.5, 17.5) : 0;
     mergedBuffs.skillType.echoSkill.dmgBonus += erBonus;
 
+    if (name.includes('in this very moment')) skillMeta.multiplier = 7.95;
+
     const s1Skills = [
-        'basic attack stage 5',
+        'basic attack - elucidated',
         'resonance skill - big boomy boom!',
         'resonance skill - soliskin to the aid'
     ].some(n => name.includes(n));
     if (isActiveSequence(1) && s1Skills) skillMeta.multiplier *= 1.7;
 
-    if (isActiveSequence(2) && name.includes('resonance skill - learn my true name')) skillMeta.multiplier *= 1.25;
+    if (isActiveSequence(2)) {
+        mergedBuffs.energyRegen += 25;
+        if (name.includes('resonance skill - learn my true name')) skillMeta.multiplier *= 2.15;
+    }
 
     if (isActiveSequence(3) && tab === 'forteCircuit') skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + innateGiftS3;
 
@@ -82,6 +87,12 @@ export function applySigrikaLogic({
 }
 
 export const sigrikaMultipliers = {
+    outroSkill: [
+        {
+            name: "In This Very Moment DMG",
+            scaling: { atk: 1}
+        }
+    ]
 };
 
 
