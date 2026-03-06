@@ -39,7 +39,7 @@ const data = {
         "That's kinda it tbh.",
     ],
     recentChanges: [
-        "Added set conditional config. Check them out in the set plan suggestions or the optimizer... or don't ¯\\_(ツ)_/¯",
+        "Added set conditional config. Check it out in the set plan suggestions or the optimizer... or don't ¯\\_(ツ)_/¯",
     ],
 };
 
