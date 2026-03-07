@@ -73,7 +73,6 @@ export function applySigrikaLogic({
     if (isActiveSequence(1) && s1Skills) skillMeta.multiplier *= 1.7;
 
     if (isActiveSequence(2)) {
-        mergedBuffs.energyRegen += 25;
         if (name.includes('forte circuit - learn my true name')) skillMeta.multiplier *= 2.15;
     }
 
