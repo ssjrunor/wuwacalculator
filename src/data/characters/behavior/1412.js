@@ -57,11 +57,8 @@ export function applySigrikaLogic({
     mergedBuffs.attribute.aero.dmgBonus += inherent2Stacks * 3 + (inherent2Stacks >= 6 ? 30 : 0);
     mergedBuffs.skillType.echoSkill.dmgBonus += inherent2Stacks * 3 + (inherent2Stacks >= 6 ? 30 : 0);
 
-    const erBonus = mergedBuffs.energyRegen > 25 ?
-        Math.min((mergedBuffs.energyRegen - 25) * 1.5, 37.5) :
-        mergedBuffs.energyRegen > 50 ?
-        Math.min((mergedBuffs.energyRegen - 50) * 0.5, 17.5) : 0;
-    mergedBuffs.skillType.echoSkill.dmgBonus += erBonus;
+    mergedBuffs.skillType.echoSkill.dmgBonus += mergedBuffs.energyRegen > 25 ?
+        Math.min((mergedBuffs.energyRegen - 25) * 2, 50) : 0;
 
     if (name.includes('in this very moment')) skillMeta.multiplier = 7.95;
 
