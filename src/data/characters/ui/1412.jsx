@@ -2,6 +2,7 @@ import React from "react";
 import DropdownSelect from "@shared/ui/common/DropdownSelect.jsx";
 import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 import {formatDescription} from "@shared/utils/formatDescription.js";
+import {attributeColors} from "@shared/utils/attributeHelpers.js";
 
 export default function SigrikaUI({
                                       activeStates,
@@ -11,6 +12,10 @@ export default function SigrikaUI({
                                       characterRuntimeStates
 }) {
     const innateGift = characterRuntimeStates?.[charId]?.activeStates?.innateGift ?? 0;
+
+    const sequence = characterRuntimeStates?.[charId]?.SkillLevels?.sequence;
+    const dropOpt = sequence >= 3 ? [0, 1, 2, 3, 4] : [0, 1, 2];
+
 
     const handleChange = (newValue) => {
         setCharacterRuntimeStates(prev => ({
@@ -33,7 +38,7 @@ export default function SigrikaUI({
                 <h4 className={'highlight'} style={{ fontSize: '16px', fontWeight: 'bold' }}>Soliskin Vitality</h4>
                 <div>
                     <p>
-                        When casting <span className="highlight">Heavy Attack - Schemata of Runes</span>, if <span className="highlight">Sigrika</span> holds at least 30 points of <span className="highlight">Soliskin Vitality</span>, consume 30 points to increase the DMG Multipliers of the current <span className="highlight">Runic Outburst</span>, <span className="highlight">Runic Chain Whip</span>, and <span className="highlight">Runic Soliskin</span> by <span className="highlight">25%</span>.
+                        When consuming <span className="highlight">Runes</span>, if <span className="highlight">Sigrika</span> holds at least 30 points of <span className="highlight">Soliskin Vitality</span>, consume 30 points to increase the DMG Multipliers of the current <span className="highlight">Runic Outburst</span>, <span className="highlight">Runic Chain Whip</span>, and <span className="highlight">Runic Soliskin</span> by <span className="highlight">50%</span>.
                     </p>
                 </div>
                 <label className="modern-checkbox" onClick={(e) => e.stopPropagation()}>
@@ -47,7 +52,7 @@ export default function SigrikaUI({
 
                 <div>
                     <p>
-                        When casting <span className="highlight">Heavy Attack - Schemata of Runes</span>, if <span className="highlight">Sigrika</span> holds less than 30 points of <span className="highlight">Soliskin Vitality</span>, consume all <span className="highlight">Soliskin Vitality</span>. For every 10 points of <span className="highlight">Soliskin Vitality</span> consumed, the current <span className="highlight">Runic Outburst</span>, <span className="highlight">Runic Chain Whip</span>, and <span className="highlight">Runic Soliskin</span> gain <span className="highlight">15%</span> DMG Amplification.
+                        When consuming <span className="highlight">Runes</span>, if <span className="highlight">Sigrika</span> holds less than 30 points of <span className="highlight">Soliskin Vitality</span>, consume all <span className="highlight">Soliskin Vitality</span>. Every 10 points of <span className="highlight">Soliskin Vitality</span> consumed grants the current <span className="highlight">Runic Outburst</span>, <span className="highlight">Runic Chain Whip</span>, and <span className="highlight">Runic Soliskin</span> gain <span className="highlight">15%</span> DMG Amplification.
                     </p>
                 </div>
                 <div className="slider-label-with-input" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -95,7 +100,7 @@ export default function SigrikaUI({
                 </div>
                 <DropdownSelect
                     label=""
-                    options={[0, 1, 2]}
+                    options={dropOpt}
                     value={innateGift}
                     onChange={handleChange}
                     width="80px"
@@ -117,11 +122,6 @@ export function CustomInherentSkills({
     const charId = character?.Id ?? character?.id ?? character?.link;
     const activeStates = characterRuntimeStates?.[charId]?.activeStates ?? {};
     const currentLevel = characterRuntimeStates?.[charId]?.CharacterLevel ?? charLevel;
-    const sequence = characterRuntimeStates?.[charId]?.SkillLevels?.sequence;
-
-    const ruptureMode = activeStates.tuneRupture;
-
-    const dropOpt = ruptureMode ? [0, 1, 2, 3] : [0, 1, 2];
 
     const updateState = (key, value) => {
         setCharacterRuntimeStates(prev => ({
@@ -239,7 +239,12 @@ export function buffUI({ activeStates, toggleState, setCharacterRuntimeStates, c
                     <div className="echo-buff-name">True Names Aligned</div>
                 </div>
                 <div className="echo-buff-effect">
-                    When any nearby Resonators in the team cast <span className="highlight">Echo Skill</span>, all nearby Resonators in the team gain 6% Aero DMG Bonus and <span className="highlight">6% Echo Skill DMG Bonus</span> for 6s, stacking up to 6 times. Echoes with the same name can only trigger this effect once.
+                    When any nearby Resonators in the team cast <span className="highlight">Echo Skill</span>, <span className="highlight">Sigrika</span> gains a stack <span className="highlight">Blessing of Runes</span>, up to 6 stacks. Echoes with the same name can only trigger this effect once.
+                </div>
+
+                <div className="echo-buff-name">Blessing of Runes</div>
+                <div className="echo-buff-effect">
+                    Each stack of <span className="highlight">Blessing of Runes</span> grants the active Resonator in the team <span className="highlight">3%</span> <span style={{ color: attributeColors['aero'], fontWeight: 'bold' }}>Aero DMG Bonus</span> and <span className="highlight">3% Echo Skill DMG Bonus</span>.
                 </div>
                 <DropdownSelect
                     label=""
@@ -255,7 +260,7 @@ export function buffUI({ activeStates, toggleState, setCharacterRuntimeStates, c
                     <div className="echo-buff-name">S4: I Lose, Yet I Gain</div>
                 </div>
                 <div className="echo-buff-effect">
-                    When Resonators in the team cast <span className="highlight">Echo Skill</span>, all Resonators in the team have their ATK increased by <span className="highlight">20%</span> for 20s.
+                    When Resonators in the team cast <span className="highlight">Echo Skill</span>, Resonators in the team gain an <span className="highlight">20%</span> ATK increase for 20s.
                 </div>
                 <label className="modern-checkbox">
                     <input

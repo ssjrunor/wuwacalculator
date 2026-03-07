@@ -6,7 +6,7 @@ const data = {
     lastUpdated: '06-03-2026',
     overallState: 'stable', // 'stable' | 'degraded' | 'wip'
     overallColor: '#22c55e',
-    patchVersion: '3.2.2 (Beta)',
+    patchVersion: '3.2.3 (Beta)',
     calculatorState: 'Fully updated for the current patch.',
     coverage: [
         {

@@ -149,10 +149,7 @@ export function CustomInherentSkills({
     const currentLevel = characterRuntimeStates?.[charId]?.CharacterLevel ?? charLevel;
     const sequence = characterRuntimeStates?.[charId]?.SkillLevels?.sequence;
 
-    const ruptureMode = activeStates.tuneRupture;
-    const burstMode = activeStates.fusionBurst;
-
-    const dropOpt = ruptureMode ? [0, 1, 2, 3] : [0, 1, 2];
+    const dropOpt = activeStates.tuneRupture ? [0, 1, 2, 3] : [0, 1, 2];
 
     const updateState = (key, value) => {
         setCharacterRuntimeStates(prev => ({

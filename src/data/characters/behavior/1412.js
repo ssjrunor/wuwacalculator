@@ -33,11 +33,13 @@ export function applySigrikaLogic({
         skillMeta.skillType = 'echoSkill';
 
     const stacks = characterState?.activeStates?.innateGift ?? 0;
-    const innateGift = Math.min(stacks * 30, 60);
-    const innateGiftS3 = Math.min(stacks * 5, 50);
+    const inateMax = isActiveSequence(3) ? 4 : 2;
+    const innateGift = Math.min(stacks * 30, inateMax * 30);
+    const innateGiftAmp = Math.min(stacks * 15, inateMax * 15);
+    const innateGiftDef = Math.min(stacks * 5, inateMax * 5);
 
     if (tab === 'forteCircuit')
-        skillMeta.amplify += innateGift;
+        skillMeta.amplify = (skillMeta.amplify ?? 0) + innateGift;
 
 
     const soliskinVitality2 = state.soliskinVitality2 ?? 0;
@@ -45,15 +47,15 @@ export function applySigrikaLogic({
         name.includes('runic chain whip') ||
         name.includes('runic soliskin')) {
         if (isToggleActiveLocal('soliskinVitality'))
-            skillMeta.multiplier *= 1.25;
+            skillMeta.multiplier *= 1.5;
         else
             skillMeta.amplify = (skillMeta.amplify ?? 0) +
             Math.min(Math.floor((soliskinVitality2 * 15) / 15) * 15, 30);
     }
 
     const inherent2Stacks = Math.min(Number(state.sigrikaInherent2 ?? 0), 6);
-    mergedBuffs.attribute.aero.dmgBonus += inherent2Stacks * 6;
-    mergedBuffs.skillType.echoSkill.dmgBonus += inherent2Stacks * 6;
+    mergedBuffs.attribute.aero.dmgBonus += inherent2Stacks * 3 + (inherent2Stacks >= 6 ? 30 : 0);
+    mergedBuffs.skillType.echoSkill.dmgBonus += inherent2Stacks * 3 + (inherent2Stacks >= 6 ? 30 : 0);
 
     const erBonus = mergedBuffs.energyRegen > 25 ?
         Math.min((mergedBuffs.energyRegen - 25) * 1.5, 37.5) :
@@ -72,16 +74,20 @@ export function applySigrikaLogic({
 
     if (isActiveSequence(2)) {
         mergedBuffs.energyRegen += 25;
-        if (name.includes('resonance skill - learn my true name')) skillMeta.multiplier *= 2.15;
+        if (name.includes('forte circuit - learn my true name')) skillMeta.multiplier *= 2.15;
     }
-
-    if (isActiveSequence(3) && tab === 'forteCircuit') skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + innateGiftS3;
 
     if (isActiveSequence(4) && isToggleActive(4)) mergedBuffs.atk.percent += 20;
 
     if (isActiveSequence(5) && tab === 'resonanceLiberation') skillMeta.multiplier *= 1.30;
 
-    if (isActiveSequence(6)) mergedBuffs.special += 30;
+    if (isActiveSequence(6)) {
+        if (tab === 'forteCircuit' && !name.includes('heavy')) {
+            skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + innateGiftDef;
+            skillMeta.amplify = (skillMeta.amplify ?? 0) + innateGiftAmp;
+        }
+        mergedBuffs.attribute.all.dmgVuln += 30;
+    }
 
     return {mergedBuffs, combatState, skillMeta};
 }
@@ -102,7 +108,7 @@ export function sigrikaBuffsLogic({
     const state = characterState?.activeStates ?? {};
 
     const stacks = state.trueNamesAligned ?? 0;
-    const trueNamesAligned = Math.min(stacks * 6, 36);
+    const trueNamesAligned = Math.min(stacks * 3, 18);
 
     mergedBuffs.skillType.echoSkill.dmgBonus += trueNamesAligned;
     mergedBuffs.attribute.aero.dmgBonus += trueNamesAligned;

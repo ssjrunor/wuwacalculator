@@ -49909,31 +49909,32 @@
     "Chains": {
       "1": {
         "Name": "The Gleam Meant for Radiance",
-        "Desc": "The DMG Multipliers of <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counterl - Decipher</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - BIG BOOMY BOOM!</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span> are increased by 70%.<br>Sigrika becomes immune to interruptions while casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - BIG BOOMY BOOM!</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span>.<br>Sigrika may gain an extra stack of <span style=\"color:#ffd12f;\" class=\"font-bold\">Encapsulated</span> after casting Outro Skill <span style=\"color:#ffd12f;\" class=\"font-bold\">In This Very Moment</span>.",
+        "Desc": "The DMG Multipliers of <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counterl - Decipher</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - BIG BOOMY BOOM!</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span> are increased by 70%.<br>Sigrika becomes immune to interruptions while casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - BIG BOOMY BOOM!</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141208>Encapsulated</te></span> now stacks up to 3 times. After casting Outro Skill <span style=\"color:#ffd12f;\" class=\"font-bold\">In This Very Moment</span>, Sigrika obtains 1 additional stacks.",
         "Param": [
-          "70%"
+          "70%",
+          "3",
+          "1"
         ]
       },
       "2": {
         "Name": "The Bitterness Steeped in Hope",
-        "Desc": "Energy Regen is increased by 25%.<br>The DMG Multiplier of <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Learn My True Name</span> is increased by 115%. When not in combat for over 4s, Sigrika gains <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141205>Divergent</te></span>.",
+        "Desc": "The DMG Multiplier of <span style=\"color:#ffd12f;\" class=\"font-bold\">Forte Circuit - Learn My True Name</span> is increased by 115%. <br>When not in combat for over 4s, Sigrika gains <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141205>Convergent</te></span>.",
         "Param": [
-          "25%",
           "115%",
           "4"
         ]
       },
       "3": {
         "Name": "I Flee, Yet I Seek",
-        "Desc": "<span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141203>Innate Gift?</te></span> now gains the following effects:<br>- Each stack grants <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack - Schemata of Runes</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Learn My True Name</span> 15% DMG Amplification.<br>- Each stack makes <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack - Schemata of Runes</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Learn My True Name</span> ignore 5% of the target's DEF when dealing damage.",
+        "Desc": "<span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141203>Innate Gift?</te></span> now stacks up to 4 times and is no longer removed after Sigrika casts <span style=\"color:#ffd12f;\" class=\"font-bold\">Forte Circuit - Learn My True Name</span> or is switched off the field.<br><span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141203>Innate Gift?</te></span> now ends when Sigrika stays out of combat for over 30s.",
         "Param": [
-          "15%",
-          "5%"
+          "4",
+          "30"
         ]
       },
       "4": {
         "Name": "I Lose, Yet I Gain",
-        "Desc": "When Resonators in the team cast Echo Skill, all Resonators in the team have their ATK increased by 20% for 20s.",
+        "Desc": "When Resonators in the team cast Echo Skill, Resonators in the team gain an 20% ATK increase for 20s.",
         "Param": [
           "20%",
           "20"
@@ -49948,11 +49949,13 @@
       },
       "6": {
         "Name": "True Names Resurfaced, Rising in Light",
-        "Desc": "Sigrika now deals 30% more DMG to enemies.<br>The max stack limit of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141203>Innate Gift?</te></span> now becomes 4. Casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Learn My True Name</span> or switching to another Resonator no longer ends this effect.<br>When Sigrika is not in combat for over 30s, <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141203>Innate Gift?</te></span> is removed.",
+        "Desc": "Enemies take 30% more DMG from Sigrika.<br><span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141203>Innate Gift?</te></span> gains following effects:<br>- Each stack grants <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span>, and<span style=\"color:#ffd12f;\" class=\"font-bold\">Forte Circuit - Learn My True Name</span> 15% DMG Amplification, up to 60%.<br>- Each stack causes <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span>, and<span style=\"color:#ffd12f;\" class=\"font-bold\">Forte Circuit - Learn My True Name</span> to ignore 5% of the target's DEF when dealing damage, up to 20%.",
         "Param": [
           "30%",
-          "4",
-          "30"
+          "15%",
+          "60%",
+          "5%",
+          "20%"
         ]
       }
     },
@@ -49962,7 +49965,7 @@
         "Skill": {
           "Type": "Normal Attack",
           "Name": "One, Two, Three",
-          "Desc": "<span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Basic Attack</span></span><br><br>Perform up to 4 consecutive attacks, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br>Enter <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state for 5s after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 4</span>.<br>When Sigrika has at least 50 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span>, her Basic Attack cycle starts from Stage 2.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Basic Attack - Elucidated</span></span><br><br>In the <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state, press Normal Attack on the ground to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br>Leave the <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state upon casting this skill.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Heavy Attack</span></span><br><br>Consume STA to attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack</span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 2</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Mid-air Attack</span></span><br><br>Consume STA to perform Plunging Attack, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting Plunging Attack to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 2</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Dodge Counter</span></span><br><br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after a successful Dodge on the ground to attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counter</span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 4</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Dodge Counter -  Decipher</span></span><br><br>In the <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state, <span style=\"color:#ffd12f;\" class=\"font-bold\">press Normal Attack</span> shortly after a successful Dodge on the ground to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counter -  Decipher</span> to attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br>Leave the <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state upon casting this skill.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Mid-air Dodge Counter</span></span><br><br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after a successful Dodge in mid-air to attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counter</span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 2</span>.",
+          "Desc": "<span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Basic Attack</span></span><br><br>Perform up to 4 consecutive attacks, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br>Enter <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state for 5s after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 4</span>.<br>When Sigrika has at least 50 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span>, her Basic Attack cycle starts from Stage 2.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Basic Attack - Elucidated</span></span><br><br>In the <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141207>Decipher</te></span> state, press Normal Attack on the ground to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br>Leave the <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141207>Decipher</te></span> state upon casting this skill.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Heavy Attack</span></span><br><br>Consume STA to attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack</span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 2</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Mid-air Attack</span></span><br><br>Consume STA to perform Plunging Attack, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting Plunging Attack to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 2</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Dodge Counter</span></span><br><br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after a successful Dodge on the ground to attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counter</span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 4</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Dodge Counter - Decipher</span></span><br><br>In the <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141207>Decipher</te></span> state, <span style=\"color:#ffd12f;\" class=\"font-bold\">press Normal Attack</span> shortly after a successful Dodge on the ground to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counter - Decipher</span> to attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br>Leave the <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141207>Decipher</te></span> state upon casting this skill.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Mid-air Dodge Counter</span></span><br><br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after a successful Dodge in mid-air to attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Mid-air Dodge Counter</span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 2</span>.",
           "Param": [
             "5",
             "50"
@@ -50161,26 +50164,26 @@
               "Name": "Dodge Counter DMG",
               "Param": [
                 [
-                  "52.41%+52.41%",
-                  "56.70%+56.70%",
-                  "61.00%+61.00%",
-                  "67.02%+67.02%",
-                  "71.31%+71.31%",
-                  "76.26%+76.26%",
-                  "83.13%+83.13%",
-                  "90.01%+90.01%",
-                  "96.88%+96.88%",
-                  "104.19%+104.19%",
-                  "112.78%+112.78%",
-                  "121.37%+121.37%",
-                  "129.97%+129.97%",
-                  "138.56%+138.56%",
-                  "147.16%+147.16%",
-                  "155.75%+155.75%",
-                  "164.34%+164.34%",
-                  "172.94%+172.94%",
-                  "181.53%+181.53%",
-                  "190.13%+190.13%"
+                  "33.15%+33.15%+44.20%",
+                  "35.87%+35.87%+47.83%",
+                  "38.59%+38.59%+51.45%",
+                  "42.40%+42.40%+56.53%",
+                  "45.12%+45.12%+60.15%",
+                  "48.24%+48.24%+64.32%",
+                  "52.59%+52.59%+70.12%",
+                  "56.94%+56.94%+75.92%",
+                  "61.29%+61.29%+81.72%",
+                  "65.91%+65.91%+87.88%",
+                  "71.35%+71.35%+95.13%",
+                  "76.78%+76.78%+102.38%",
+                  "82.22%+82.22%+109.63%",
+                  "87.66%+87.66%+116.87%",
+                  "93.09%+93.09%+124.12%",
+                  "98.53%+98.53%+131.37%",
+                  "103.97%+103.97%+138.62%",
+                  "109.40%+109.40%+145.87%",
+                  "114.84%+114.84%+153.12%",
+                  "120.28%+120.28%+160.37%"
                 ]
               ]
             },
@@ -50327,7 +50330,7 @@
         "Skill": {
           "Type": "Resonance Skill",
           "Name": "Royan Close Quarters Combat",
-          "Desc": "<span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">BOOMY BOOM!</span></span><br><br>Attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">BOOMY BOOM!</span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 3</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">BIG BOOMY BOOM!</span></span><br><br>While in the <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state, <span style=\"color:#ffd12f;\" class=\"font-bold\">press Resonance Skill</span> on the ground to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">BIG BOOMY BOOM!</span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br>Leave the <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state upon casting this skill.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Soliskin to the Aid</span></span><br><br>While in the <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state, with at least 50 points of <span style=\"color:#ffd12f;\" class=\"font-bold\">Full Stop</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">press Resonance Skill</span> on the ground to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Soliskin to the Aid</span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br>Leave the <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state upon casting this skill.",
+          "Desc": "<span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">BOOMY BOOM!</span></span><br><br>Attack the target, dealing <span style=\"color:#c7ffed\";>Aero DMG</span>.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Press Normal Attack</span> shortly after casting <span style=\"color:#ffd12f;\" class=\"font-bold\">BOOMY BOOM!</span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack Stage 3</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">BIG BOOMY BOOM!</span></span><br><br>While in the <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141207>Decipher</te></span> state, <span style=\"color:#ffd12f;\" class=\"font-bold\">press Resonance Skill</span> on the ground to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">BIG BOOMY BOOM!</span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br>Leave the <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141207>Decipher</te></span> state upon casting this skill.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Soliskin to the Aid</span></span><br><br>While in the <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141207>Decipher</te></span> state, with at least 50 points of <span style=\"color:#ffd12f;\" class=\"font-bold\">Full Stop</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">press Resonance Skill</span> on the ground to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Soliskin to the Aid</span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br>Leave the <span style=\"color:#ffd12f;\" class=\"font-bold\">Decipher</span> state upon casting this skill.",
           "Param": [
             "50"
           ],
@@ -50448,7 +50451,7 @@
         "Skill": {
           "Type": "Resonance Liberation",
           "Name": "Where Trust Leads Me!",
-          "Desc": "Deal <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG). Gain <span style=\"color:#ffd12f;\" class=\"font-bold\">Divergent</span> for 20s.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Divergent</span></span><br><br>The next time Sigrika casts <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counter - Decipher</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - BIG BOOMY BOOM!</span>, or <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span>, she additionally obtains one <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Rune</te></span> of the other type and removes <span style=\"color:#ffd12f;\" class=\"font-bold\">Divergent</span>.<br>When Sigrika holds <span style=\"color:#ffd12f;\" class=\"font-bold\">Divergent</span> and <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141204>Convergent</te></span> at the same time, <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span> takes priority.<br>When Sigrika holds 100 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Divergent</span> doesn't take effect.",
+          "Desc": "Deal <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG). Gain <span style=\"color:#ffd12f;\" class=\"font-bold\">Divergent</span> for 20s.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Divergent</span></span><br><br>The next time Sigrika obtains a <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Rune</te></span>, she additionally obtains a <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Rune</te></span> of the opposite type and removes <span style=\"color:#ffd12f;\" class=\"font-bold\">Divergent</span>.<br>When Sigrika holds <span style=\"color:#ffd12f;\" class=\"font-bold\">Divergent</span> and <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141205>Convergent</te></span> at the same time, <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141205>Convergent</te></span> takes priority.<br>When Sigrika holds 100 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Divergent</span> doesn't take effect.",
           "Param": [
             "20",
             "100"
@@ -50570,7 +50573,7 @@
         "Skill": {
           "Type": "Inherent Skill",
           "Name": "True Names Invoked",
-          "Desc": "Casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Intro Skill - Solsworn Etymology</span> grants <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span> for 20s.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Convergent</span></span><br><br>The next time Sigrika casts <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counter - Decipher</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - BIG BOOMY BOOM!</span>, or <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span>, she obtains one additional <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Rune</te></span> of the same type and removes <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span>.<br>When Sigrika holds <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141205>Divergent</te></span> and <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span> at the same time, <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span> takes priority.<br>When Sigrika holds 100 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span> doesn't take effect.",
+          "Desc": "Casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Intro Skill - Solsworn Etymology</span> grants <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span> for 20s.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Convergent</span></span><br><br>The next time Sigrika obtains a <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Rune</te></span>, she additionally obtains a <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Rune</te></span> of the same type and removes <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span>.<br>When Sigrika holds <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141204>Divergent</te></span> and <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span> at the same time, <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span> takes priority.<br>When Sigrika holds 100 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Convergent</span> doesn't take effect.",
           "Param": [
             "20",
             "100"
@@ -50582,19 +50585,17 @@
         "Skill": {
           "Type": "Inherent Skill",
           "Name": "True Names Aligned",
-          "Desc": "When any nearby Resonators in the team cast Echo Skill, all nearby Resonators in the team gain 6% Aero DMG Bonus and 6% Echo Skill DMG Bonus for 6s, stacking up to 6 times. Echoes with the same name can only trigger this effect once. <br>This effect resets upon a lineup change.<br><br>When Sigirka's Energy Regen exceeds 125%, every 1% excessive Energy Regen grants her 1.5% Echo Skill DMG Bonus, up to 37.5%.<br>When Sigirka's Energy Regen exceeds 150%, every 1% excessive Energy Regen grants her 0.5% Echo Skill DMG Bonus, up to 17.5%.",
+          "Desc": "When any nearby Resonators in the team cast Echo Skill, Sigrika gains a stack <span style=\"color:#ffd12f;\" class=\"font-bold\">Blessing of Runes</span>, up to 6 stacks. Echoes with the same name can only trigger this effect once. <br>This effect resets upon a lineup change.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Blessing of Runes</span></span><br><br>Each stack of <span style=\"color:#ffd12f;\" class=\"font-bold\">Blessing of Runes</span> grants the active Resonator in the team 3% Aero DMG Bonus and 3% Echo Skill DMG Bonus.<br>When <span style=\"color:#ffd12f;\" class=\"font-bold\">Blessing of Runes</span> reaches 6 stacks. Sigrika gain an additional 30% increase in Aero DMG Bonus and Echo Skill DMG Bonus.<br><size=10></span><br><br>For every 1% of Sigrika's Energy Regen over 125%, Sigrika gains 2% Echo Skill DMG Bonus for up to 50%.",
           "Param": [
-            "6%",
-            "6%",
             "6",
+            "3%",
+            "3%",
+            "6",
+            "30%",
             "125%",
             "1%",
-            "1.5%",
-            "37.5%",
-            "150%",
-            "1%",
-            "0.5%",
-            "17.5%"
+            "2%",
+            "50%"
           ]
         }
       },
@@ -50668,11 +50669,11 @@
         "Skill": {
           "Type": "Forte Circuit",
           "Name": "Within Infinity's Embrace",
-          "Desc": "<span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Heavy Attack - Schemata of Runes</span></span><br><br><span style=\"color:#ffd12f;\" class=\"font-bold\">Hold Normal Attack</span> to consume two <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Rune</te></span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG). Based on the types of the <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Runes</te></span> consumed, Sigrika gains the following effects:<br>- When consuming <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune: Trust</span> and <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune: Answer</span>, this skill gains the effect of <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>.<br>- When consuming two <span style=\"color:#ffd12f;\" class=\"font-bold\">Runes - Trust</span>, this skill gains the effect of <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>.<br>- When consuming two <span style=\"color:#ffd12f;\" class=\"font-bold\">Runes - Answer</span>, this skill gains the effect of <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span>.<br>When casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack - Schemata of Runes</span>, if Sigrika holds at least 30 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141206>Soliskin Vitality</te></span>, consume 30 points to increase the DMG Multipliers of the current <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span> by 25%. Obtain a stack of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141203>Innate Gift?</te></span>.<br>When casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack - Schemata of Runes</span>, if <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141206>Soliskin Vitality</te></span> is lower than 30 points, consume all <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141206>Soliskin Vitality</te></span> and grant the current <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span> 15% DMG Amplification for every 10 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141206>Soliskin Vitality</te></span> consumed.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Runic Outburst</span></span><br><br>Deal <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Runic Chain Whip</span></span><br><br>Pull in nearby targets and deal <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Runic Soliskin</span></span><br><br>Stagnate nearby targets and deal <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Resonance Skill - Learn My True Name</span></span><br><br>When <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span> reaches 100 points, if <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Learn My True Name</span> is not on Cooldown, press Resonance Skill to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span>. <span style=\"color:#ffd12f;\" class=\"font-bold\">Hold Resonance Skill</span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Learn My True Name</span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Innate Gift?</span></span><br><br>Sigrika can hold up to 2 stacks of <span style=\"color:#ffd12f;\" class=\"font-bold\">Innate Gift?</span>. Each stack grants <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack - Schemata of Runes</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span> and <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Learn My True Name</span> 30% DMG Amplification.<br>This effect ends when Sigrika casts <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Learn My True Name</span> or is switched off the field.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Rune</span></span><br><br>Sigrika holds up to <span style=\"color:#ffd12f;\" class=\"font-bold\">4 Runes</span>. Without <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span>, Sigrika can only hold up to 2 Runes</span>. When Sigrika gains a new <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune</span> at max capacity, the existing <span style=\"color:#ffd12f;\" class=\"font-bold\">Runes</span> shift one slot to the left, removing the leftmost <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune</span>. With at least 50 points of <span style=\"color:#ffd12f;\" class=\"font-bold\">Full Stop</span>, Sigrika can hold 2 additional Runes.<br>Hitting a target with <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span> or <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counter - Decipher</span> grants one <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune: Trust</span>.<br>Hitting a target with <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - BIG BOOMY BOOM!</span> or <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span> grants one <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune: Answer</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Full Stop</span></span><br><br>Casting Enhanced <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack</span> grants 2 points of <span style=\"color:#ffd12f;\" class=\"font-bold\">Full Stop</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Soliskin Vitality</span></span><br><br>When nearby Resonators in the team cast Echo Skill, Sigrika gains 10 points of <span style=\"color:#ffd12f;\" class=\"font-bold\">Soliskin Vitality</span>, up to 60 points. Echoes with the same name can only trigger this effect once. Casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Outro Skill - In This Very Moment</span> resets the record of Echo triggering this effect.",
+          "Desc": "<span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Heavy Attack - Schemata of Runes</span></span><br><br><span style=\"color:#ffd12f;\" class=\"font-bold\">Hold Normal Attack</span> to consume two <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Runes</te></span> and cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack - Schemata of Runes</span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG). Based on the types of the <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Runes</te></span> consumed, Sigrika gains the following effects:<br>- When consuming <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune: Trust</span> and <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune: Answer</span>, this skill gains the effect of <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>.<br>- When consuming two <span style=\"color:#ffd12f;\" class=\"font-bold\">Runes - Trust</span>, this skill gains the effect of <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>.<br>- When consuming two <span style=\"color:#ffd12f;\" class=\"font-bold\">Runes - Answer</span>, this skill gains the effect of <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span>.<br>When consuming <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Runes</te></span>, if Sigrika holds at least 30 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141206>Soliskin Vitality</te></span>, consume 30 points to increase the DMG Multipliers of the current <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span> by 50%. Obtain a stack of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141203>Innate Gift?</te></span>.<br>When consuming <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141201>Runes</te></span>, if <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141206>Soliskin Vitality</te></span> is lower than 30 points, consume all <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141206>Soliskin Vitality</te></span>. Every 10 points of <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141206>Soliskin Vitality</te></span> consumed grants the current <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, and <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span> 15% DMG Amplification.<br><span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack - Schemata of Runes</span> deals Echo Skill DMG.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Runic Outburst</span></span><br><br>Deal <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Runic Chain Whip</span></span><br><br>Stagnate nearby targets and deal <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Runic Soliskin</span></span><br><br>Pull in nearby targets and deal <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Forte Circuit - Learn My True Name</span></span><br><br>When <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span> reaches 100 points, if <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Learn My True Name</span> is not on Cooldown, press Resonance Skill to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span>. <span style=\"color:#ffd12f;\" class=\"font-bold\">Hold Resonance Skill</span> to consume all <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span> to cast <span style=\"color:#ffd12f;\" class=\"font-bold\">Forte Circuit - Learn My True Name</span>, dealing <span style=\"color:#c7ffed\";>Aero DMG</span> (considered Echo Skill DMG).<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Innate Gift?</span></span><br><br>Sigrika can hold up to 2 stacks of <span style=\"color:#ffd12f;\" class=\"font-bold\">Innate Gift?</span>. Each stack grants <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Outburst</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Chain Whip</span>, <span style=\"color:#ffd12f;\" class=\"font-bold\">Runic Soliskin</span> and <span style=\"color:#ffd12f;\" class=\"font-bold\">Forte Circuit - Learn My True Name</span> 30% DMG Amplification.<br>This effect ends after Sigrika casts <span style=\"color:#ffd12f;\" class=\"font-bold\">Forte Circuit - Learn My True Name</span> or is switched off the field.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Rune</span></span><br><br>Sigrika holds up to <span style=\"color:#ffd12f;\" class=\"font-bold\">4 Runes</span>. Without <span style=\"color:#ffd12f;\" class=\"font-bold\"><te href=141202>Full Stop</te></span>, Sigrika can only hold up to 2 Runes</span>. When Sigrika gains a new <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune</span> at max capacity, the existing <span style=\"color:#ffd12f;\" class=\"font-bold\">Runes</span> shift one slot to the left, removing the leftmost <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune</span>. With at least 50 points of <span style=\"color:#ffd12f;\" class=\"font-bold\">Full Stop</span>, Sigrika can hold 2 additional Runes.<br>Hitting a target with <span style=\"color:#ffd12f;\" class=\"font-bold\">Basic Attack - Elucidated</span> or <span style=\"color:#ffd12f;\" class=\"font-bold\">Dodge Counter - Decipher</span> grants one <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune: Trust</span>.<br>Hitting a target with <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - BIG BOOMY BOOM!</span> or <span style=\"color:#ffd12f;\" class=\"font-bold\">Resonance Skill - Soliskin to the Aid</span> grants one <span style=\"color:#ffd12f;\" class=\"font-bold\">Rune: Answer</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Full Stop</span></span><br><br>Casting Enhanced <span style=\"color:#ffd12f;\" class=\"font-bold\">Heavy Attack</span> grants 50 points of <span style=\"color:#ffd12f;\" class=\"font-bold\">Full Stop</span>.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Soliskin Vitality</span></span><br><br>When any nearby Resonators in the team cast Echo Skill, Sigrika gains 10 points of <span style=\"color:#ffd12f;\" class=\"font-bold\">Soliskin Vitality</span>, up to 60 points. Echoes with the same name can only trigger this effect once. Casting <span style=\"color:#ffd12f;\" class=\"font-bold\">Outro Skill - In This Very Moment</span> resets the record of Echo triggering this effect.",
           "Param": [
             "30",
             "30",
-            "25%",
+            "50%",
             "30",
             "10",
             "15%",
@@ -50719,26 +50720,26 @@
               "Name": "Runic Outburst DMG",
               "Param": [
                 [
-                  "39.99%*4+53.32%*3",
-                  "43.27%*4+57.70%*3",
-                  "46.55%*4+62.07%*3",
-                  "51.14%*4+68.19%*3",
-                  "54.42%*4+72.56%*3",
-                  "58.19%*4+77.59%*3",
-                  "63.44%*4+84.59%*3",
-                  "68.69%*4+91.58%*3",
-                  "73.93%*4+98.58%*3",
-                  "79.51%*4+106.01%*3",
-                  "86.07%*4+114.75%*3",
-                  "92.63%*4+123.50%*3",
-                  "99.18%*4+132.24%*3",
-                  "105.74%*4+140.99%*3",
-                  "112.30%*4+149.73%*3",
-                  "118.86%*4+158.48%*3",
-                  "125.42%*4+167.22%*3",
-                  "131.98%*4+175.97%*3",
-                  "138.53%*4+184.71%*3",
-                  "145.09%*4+193.46%*3"
+                  "59.19%+103.58%+133.17%",
+                  "64.04%+112.07%+144.09%",
+                  "68.90%+120.57%+155.01%",
+                  "75.69%+132.46%+170.30%",
+                  "80.54%+140.95%+181.22%",
+                  "86.13%+150.72%+193.78%",
+                  "93.89%+164.30%+211.25%",
+                  "101.66%+177.89%+228.72%",
+                  "109.42%+191.48%+246.19%",
+                  "117.67%+205.92%+264.75%",
+                  "127.38%+222.91%+286.59%",
+                  "137.08%+239.89%+308.43%",
+                  "146.79%+256.88%+330.27%",
+                  "156.50%+273.87%+352.11%",
+                  "166.20%+290.85%+373.95%",
+                  "175.91%+307.84%+395.79%",
+                  "185.62%+324.82%+417.63%",
+                  "195.32%+341.81%+439.47%",
+                  "205.03%+358.80%+461.31%",
+                  "214.73%+375.78%+483.15%"
                 ]
               ]
             },
@@ -50746,26 +50747,26 @@
               "Name": "Runic Chain Whip DMG",
               "Param": [
                 [
-                  "24.00%+36.00%*4+71.99%",
-                  "25.97%+38.95%*4+77.89%",
-                  "27.93%+41.90%*4+83.79%",
-                  "30.69%+46.03%*4+92.06%",
-                  "32.66%+48.98%*4+97.96%",
-                  "34.92%+52.38%*4+104.75%",
-                  "38.07%+57.10%*4+114.19%",
-                  "41.21%+61.82%*4+123.63%",
-                  "44.36%+66.54%*4+133.08%",
-                  "47.71%+71.56%*4+143.11%",
-                  "51.64%+77.46%*4+154.92%",
-                  "55.58%+83.36%*4+166.72%",
-                  "59.51%+89.27%*4+178.53%",
-                  "63.45%+95.17%*4+190.33%",
-                  "67.38%+101.07%*4+202.14%",
-                  "71.32%+106.97%*4+213.94%",
-                  "75.25%+112.88%*4+225.75%",
-                  "79.19%+118.78%*4+237.55%",
-                  "83.12%+124.68%*4+249.36%",
-                  "87.06%+130.58%*4+261.16%"
+                  "25.00%*4+33.33%*3",
+                  "27.05%*4+36.06%*3",
+                  "29.10%*4+38.80%*3",
+                  "31.97%*4+42.62%*3",
+                  "34.02%*4+45.35%*3",
+                  "36.37%*4+48.50%*3",
+                  "39.65%*4+52.87%*3",
+                  "42.93%*4+57.24%*3",
+                  "46.21%*4+61.61%*3",
+                  "49.70%*4+66.26%*3",
+                  "53.79%*4+71.72%*3",
+                  "57.89%*4+77.19%*3",
+                  "61.99%*4+82.65%*3",
+                  "66.09%*4+88.12%*3",
+                  "70.19%*4+93.58%*3",
+                  "74.29%*4+99.05%*3",
+                  "78.39%*4+104.52%*3",
+                  "82.49%*4+109.98%*3",
+                  "86.59%*4+115.45%*3",
+                  "90.68%*4+120.91%*3"
                 ]
               ]
             },
@@ -50773,58 +50774,58 @@
               "Name": "Runic Soliskin DMG",
               "Param": [
                 [
-                  "47.99%+83.98%+107.98%",
-                  "51.93%+90.87%+116.83%",
-                  "55.86%+97.76%+125.69%",
-                  "61.37%+107.40%+138.08%",
-                  "65.31%+114.28%+146.93%",
-                  "69.83%+122.20%+157.12%",
-                  "76.13%+133.22%+171.28%",
-                  "82.42%+144.24%+185.45%",
-                  "88.72%+155.26%+199.61%",
-                  "95.41%+166.96%+214.67%",
-                  "103.28%+180.74%+232.37%",
-                  "111.15%+194.51%+250.08%",
-                  "119.02%+208.28%+267.79%",
-                  "126.89%+222.05%+285.50%",
-                  "134.76%+235.83%+303.20%",
-                  "142.63%+249.60%+320.91%",
-                  "150.50%+263.37%+338.62%",
-                  "158.37%+277.14%+356.33%",
-                  "166.24%+290.92%+374.03%",
-                  "174.11%+304.69%+391.74%"
+                  "20.00%+30.00%*4+59.99%",
+                  "21.64%+32.46%*4+64.91%",
+                  "23.28%+34.92%*4+69.83%",
+                  "25.57%+38.36%*4+76.71%",
+                  "27.21%+40.82%*4+81.63%",
+                  "29.10%+43.65%*4+87.29%",
+                  "31.72%+47.58%*4+95.16%",
+                  "34.35%+51.52%*4+103.03%",
+                  "36.97%+55.45%*4+110.90%",
+                  "39.76%+59.63%*4+119.26%",
+                  "43.04%+64.55%*4+129.10%",
+                  "46.32%+69.47%*4+138.94%",
+                  "49.59%+74.39%*4+148.77%",
+                  "52.87%+79.31%*4+158.61%",
+                  "56.15%+84.23%*4+168.45%",
+                  "59.43%+89.15%*4+178.29%",
+                  "62.71%+94.06%*4+188.12%",
+                  "65.99%+98.98%*4+197.96%",
+                  "69.27%+103.90%*4+207.80%",
+                  "72.55%+108.82%*4+217.64%"
                 ]
               ]
             },
             "1412025": {
-              "Name": "Resonance Skill - Learn My True Name DMG",
+              "Name": "Forte Circuit - Learn My True Name DMG",
               "Param": [
                 [
-                  "205.87%+617.60%",
-                  "222.75%+668.24%",
-                  "239.63%+718.89%",
-                  "263.27%+789.79%",
-                  "280.15%+840.43%",
-                  "299.56%+898.67%",
-                  "326.57%+979.70%",
-                  "353.58%+1060.72%",
-                  "380.59%+1141.75%",
-                  "409.29%+1227.85%",
-                  "443.05%+1329.13%",
-                  "476.81%+1430.42%",
-                  "510.57%+1531.70%",
-                  "544.33%+1632.99%",
-                  "578.09%+1734.27%",
-                  "611.86%+1835.56%",
-                  "645.62%+1936.84%",
-                  "679.38%+2038.13%",
-                  "713.14%+2139.42%",
-                  "746.90%+2240.70%"
+                  "152.35%+457.03%",
+                  "164.84%+494.50%",
+                  "177.33%+531.98%",
+                  "194.82%+584.44%",
+                  "207.31%+621.92%",
+                  "221.68%+665.02%",
+                  "241.66%+724.98%",
+                  "261.65%+784.94%",
+                  "281.64%+844.90%",
+                  "302.87%+908.61%",
+                  "327.86%+983.56%",
+                  "352.84%+1058.51%",
+                  "377.82%+1133.46%",
+                  "402.81%+1208.41%",
+                  "427.79%+1283.36%",
+                  "452.78%+1358.32%",
+                  "477.76%+1433.27%",
+                  "502.74%+1508.22%",
+                  "527.73%+1583.17%",
+                  "552.71%+1658.12%"
                 ]
               ]
             },
             "1412026": {
-              "Name": "Resonance Skill - Learn My True Name Cooldown",
+              "Name": "Forte Circuit - Learn My True Name Cooldown",
               "Param": [
                 [
                   "25",
@@ -50851,7 +50852,7 @@
               ]
             },
             "1412027": {
-              "Name": "Resonance Skill - Learn My True Name Concerto Regen",
+              "Name": "Forte Circuit - Learn My True Name Concerto Regen",
               "Param": [
                 [
                   "10",
@@ -50894,10 +50895,13 @@
         "Skill": {
           "Type": "Outro Skill",
           "Name": "In This Very Moment",
-          "Desc": "Attack the target, deal <span style=\"color:#c7ffed\";>Aero DMG</span> equal to 795% of Sigrika's ATK. Gain 1 stack of <span style=\"color:#ffd12f;\" class=\"font-bold\">Encapsulated</span> for 30s.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Encapsulated</span></span><br><br>When any nearby Resonators in the team cast Echo Skills, stagnate the target and consume a stack of <span style=\"color:#ffd12f;\" class=\"font-bold\">Encapsulated</span>.",
+          "Desc": "Attack the target, deal <span style=\"color:#c7ffed\";>Aero DMG</span> equal to 795% of Sigrika's ATK. Gain 2 stacks of <span style=\"color:#ffd12f;\" class=\"font-bold\">Encapsulated</span> for 30s.<br><size=10></span><br><br><span class=\"font-bold font-whitney text-3xl style=\"color:aliceblue;\">Encapsulated</span></span><br><br>When any nearby Resonators in the team cast Echo Skills, Stagnate the target and consume 1 stacks of <span style=\"color:#ffd12f;\" class=\"font-bold\">Encapsulated</span>. <span style=\"color:#ffd12f;\" class=\"font-bold\">Encapsulated</span> stacks up to 2 times.",
           "Param": [
             "795%",
-            "30"
+            "2",
+            "30",
+            "1",
+            "2"
           ]
         }
       },
