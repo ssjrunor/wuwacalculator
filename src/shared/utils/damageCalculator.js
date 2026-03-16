@@ -61,7 +61,6 @@ function aggregateBuffMods(finalStats, { element, skillTypes }) {
     // Global "all"
     if (skillTypeBucket.all) buckets.push(skillTypeBucket.all);
 
-    // 🔹 Normalize skillTypes using SKILLTYPE_MAP
     const mappedSkillTypes = (skillTypes || [])
         .filter(Boolean)
         .map(t => SKILLTYPE_MAP[t] ?? t);
@@ -199,9 +198,8 @@ export function calculateDamage({
     const charLevel = characterLevel ?? 1;
 
     const totalDefIgnore = (defIgnore ?? 0) + (skillDefIgnore ?? 0);
-    const totalDefShred = defShred ?? 0;
 
-    let enemyDef = ((8 * enemyLevel) + 792) * (1 - (totalDefIgnore + totalDefShred) / 100);
+    let enemyDef = ((8 * enemyLevel) + 792) * (1 - (totalDefIgnore + defShred) / 100);
     if (enemyDef < 0) enemyDef = 0;
 
     const defMult = (800 + 8 * charLevel) / (800 + 8 * charLevel + enemyDef);
@@ -295,6 +293,15 @@ export function calculateDamage({
             ? crit
             : (crit * cr) + (normal * (1 - cr));
     }
+
+
+/*
+    console.log({
+        baseAbility,
+        skillMeta
+    })
+*/
+
 
     return {
         normal,

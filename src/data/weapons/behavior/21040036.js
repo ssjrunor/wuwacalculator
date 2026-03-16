@@ -2,7 +2,6 @@ export function applyWeaponLogic({
                                      mergedBuffs,
                                      combatState,
                                      characterState,
-                                     skillMeta = {},
                                      currentParamValues = []
                                  }) {
     const atkBonus = parseFloat(currentParamValues[0]);
@@ -11,26 +10,8 @@ export function applyWeaponLogic({
 
     if (characterState?.activeStates?.darknessBreaker) {
         mergedBuffs.skillType.spectroFrazzle.amplify += amplify;
+        mergedBuffs.attribute.all.defIgnore += parseFloat(currentParamValues[1]);
     }
 
-    return { mergedBuffs, combatState, skillMeta };
-}
-
-export function updateSkillMeta({
-                                    characterState,
-                                    skillMeta = {},
-                                    currentParamValues = []
-                                } ) {
-    const defIgnore = parseFloat(currentParamValues[1]);
-    if (
-        characterState?.activeStates?.darknessBreaker &&
-        (
-            skillMeta.skillType.includes('basic') ||
-            skillMeta.tab === 'forteCircuit'
-        )
-    ) {
-        skillMeta.skillDefIgnore = (skillMeta.skillDefIgnore ?? 0) + defIgnore;
-    }
-
-    return skillMeta;
+    return { mergedBuffs, combatState };
 }

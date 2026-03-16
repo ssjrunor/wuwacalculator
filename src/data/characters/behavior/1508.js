@@ -136,7 +136,7 @@ export const chisaMultipliers = {
 
 
 export function chisaBuffsLogic({
-                                   mergedBuffs, characterState, combatState
+                                   mergedBuffs, characterState
                                }) {
     const state = characterState?.activeStates ?? {};
 

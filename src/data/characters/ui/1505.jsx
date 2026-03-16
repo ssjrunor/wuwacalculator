@@ -216,8 +216,8 @@ export function buffUI({ activeStates, toggleState, charId, setCharacterRuntimeS
     };
 
     const character = characterRuntimeStates?.[charId];
-    const name = character?.Name.toLowerCase();
-    const isRover = name.includes("rover");
+    const name = character?.Name?.toLowerCase();
+    const isRover = name?.includes("rover");
 
     return (
         <div className="echo-buffs">

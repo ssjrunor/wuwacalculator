@@ -15,6 +15,9 @@ import BackgroundModalGuide from "@/features/settings/ui/BackgroundModalGuide.js
 import { FONT_LINKS, LOCAL_STORAGE_DATA_MAP } from "@/features/settings/model/settingsConstants.js";
 import { useResponsiveSidebar } from "@routes/shared/useResponsiveSidebar.js";
 
+const KARMITIS_ENABLED = false;
+const KARMITIS_DISABLED_DETAIL = 'Cloud backup is still in development.';
+
 export default function SettingsRoute(props) {
     const { user: googleUser, accessToken: googleAccessToken, login: googleLogin, logout: googleLogout } = useGoogleAuth();
     const { user: karmitisUser, accessToken: karmitisAccessToken, error: karmitisError, login: karmitisLogin, logout: karmitisLogout, exchangeCode: exchangeKarmitisCode } = useKarmitisAuth();
@@ -93,6 +96,16 @@ export default function SettingsRoute(props) {
 
     
     function startProviderLogin(provider) {
+        if (provider === 'karmitis' && !KARMITIS_ENABLED) {
+            setPopupMessage({
+                message: 'Karmitis backup is still in development... (￣ω￣;)',
+                icon: '✘',
+                color: 'red'
+            });
+            setShowToast(true);
+            return;
+        }
+
         setPendingProvider(provider);
         try {
             localStorage.setItem('cloud_pending_provider', provider);
@@ -138,6 +151,10 @@ export default function SettingsRoute(props) {
             return;
         }
         if (selectedProvider === 'karmitis') {
+            if (!KARMITIS_ENABLED) {
+                startProviderLogin('karmitis');
+                return;
+            }
             if (karmitisSignedIn) {
                 setActiveProvider('karmitis');
                 clearPendingProvider();
@@ -157,6 +174,8 @@ export default function SettingsRoute(props) {
         }
         if (activeProvider === 'karmitis') {
             karmitisLogout();
+            clearPendingProvider();
+            setActiveProvider(null);
             setSelectedProvider(null);
         }
     }
@@ -358,11 +377,11 @@ export default function SettingsRoute(props) {
             setActiveProvider('google');
             clearPendingProvider();
         }
-        if (pendingProvider === 'karmitis' && karmitisSignedIn) {
+        if (KARMITIS_ENABLED && pendingProvider === 'karmitis' && karmitisSignedIn) {
             setActiveProvider('karmitis');
             clearPendingProvider();
         }
-    }, [pendingProvider, googleSignedIn, karmitisSignedIn]);
+    }, [pendingProvider, googleSignedIn, karmitisSignedIn, clearPendingProvider]);
 
     useEffect(() => {
         if (activeProvider || pendingProvider) return;
@@ -370,14 +389,14 @@ export default function SettingsRoute(props) {
             setActiveProvider('google');
             return;
         }
-        if (karmitisSignedIn && !googleSignedIn) {
+        if (KARMITIS_ENABLED && karmitisSignedIn && !googleSignedIn) {
             setActiveProvider('karmitis');
         }
     }, [activeProvider, pendingProvider, googleSignedIn, karmitisSignedIn]);
 
     useEffect(() => {
         if (activeProvider === 'google' && !googleSignedIn) setActiveProvider(null);
-        if (activeProvider === 'karmitis' && !karmitisSignedIn) setActiveProvider(null);
+        if (activeProvider === 'karmitis' && (!KARMITIS_ENABLED || !karmitisSignedIn)) setActiveProvider(null);
     }, [activeProvider, googleSignedIn, karmitisSignedIn]);
 
 
@@ -386,11 +405,18 @@ export default function SettingsRoute(props) {
         const params = new URLSearchParams(location.search);
         const code = params.get('code');
         if (code) {
+            if (!KARMITIS_ENABLED) {
+                params.delete('code');
+                params.delete('state');
+                const newSearch = params.toString();
+                navigate(newSearch ? `${location.pathname}?${newSearch}` : location.pathname, { replace: true });
+                return;
+            }
             exchangeKarmitisCode(code);
             params.delete('code');
             params.delete('state');
             const newSearch = params.toString();
-            navigate(`${location.pathname}?${newSearch}`, { replace: true });
+            navigate(newSearch ? `${location.pathname}?${newSearch}` : location.pathname, { replace: true });
         }
     }, [location, navigate, exchangeKarmitisCode]);
 
@@ -400,7 +426,7 @@ export default function SettingsRoute(props) {
         if (activeProvider) return;
         if (googleSignedIn) {
             setActiveProvider('google');
-        } else if (karmitisSignedIn) {
+        } else if (KARMITIS_ENABLED && karmitisSignedIn) {
             setActiveProvider('karmitis');
         }
     }, [googleSignedIn, karmitisSignedIn, activeProvider]);
@@ -774,19 +800,22 @@ export default function SettingsRoute(props) {
             description: 'Use your Google account.',
             detail: googleUser?.email || (googleSignedIn ? 'Google account' : ''),
             signedIn: googleSignedIn,
+            disabled: false,
         },
         {
             id: 'karmitis',
-            label: 'Karmitis (Beta)',
-            description: 'Use your Karmitis account.',
-            detail: karmitisDisplayName,
+            label: 'Karmitis',
+            description: KARMITIS_ENABLED ? 'Use your Karmitis account.' : 'Unavailable for now.',
+            detail: KARMITIS_ENABLED ? karmitisDisplayName : KARMITIS_DISABLED_DETAIL,
             signedIn: karmitisSignedIn,
+            disabled: !KARMITIS_ENABLED,
         },
     ];
 
     const selectedMeta = providerOptions.find((option) => option.id === selectedProvider);
     const continueDisabled =
         !selectedMeta ||
+        selectedMeta.disabled ||
         (selectedMeta.id === 'google' ? loading : false);
 
     const [providerSelected, setProviderSelected] = useState(false);
@@ -1264,7 +1293,9 @@ export default function SettingsRoute(props) {
                                                 <button
                                                     key={option.id}
                                                     type="button"
+                                                    disabled={option.disabled}
                                                     onClick={() => {
+                                                        if (option.disabled) return;
                                                         setSelectedProvider(option.id);
                                                         setProviderSelected(true);
                                                         if (pendingProvider && pendingProvider !== option.id) {
@@ -1280,8 +1311,9 @@ export default function SettingsRoute(props) {
                                                         borderRadius: '12px',
                                                         border: `1px solid ${isSelected ? accentColor : cardBorder}`,
                                                         background: 'transparent',
-                                                        cursor: 'pointer',
+                                                        cursor: option.disabled ? 'not-allowed' : 'pointer',
                                                         textAlign: 'left',
+                                                        opacity: option.disabled ? 0.6 : 1,
                                                     }}
                                                 >
                                                     <div style={{ display: 'grid', gap: '0.2rem' }}>
@@ -1305,7 +1337,7 @@ export default function SettingsRoute(props) {
                                                             whiteSpace: 'nowrap',
                                                         }}
                                                     >
-                                                        {option.signedIn ? 'Signed in' : 'Sign in'}
+                                                        {option.disabled ? 'In development' : option.signedIn ? 'Signed in' : 'Sign in'}
                                                     </span>
                                                 </button>
                                             );
@@ -1320,11 +1352,11 @@ export default function SettingsRoute(props) {
                                             (pendingProvider === 'karmitis' && karmitisSignedIn)
                                         ) && (
                                             <div style={{ fontSize: '0.85rem', color: mutedText }}>
-                                                Waiting for {pendingProvider === 'google' ? 'Google' : 'Karmitis (Beta)'} sign-in…
+                                                Waiting for {pendingProvider === 'google' ? 'Google' : 'Karmitis'} sign-in…
                                             </div>
                                         )}
 
-                                    {karmitisError && (
+                                    {KARMITIS_ENABLED && karmitisError && (
                                         <div style={{ color: '#fca5a5', fontSize: '0.9rem' }}>
                                             {karmitisError}
                                         </div>
@@ -1364,7 +1396,7 @@ export default function SettingsRoute(props) {
                                     >
                                         <div style={{ display: 'grid', gap: '0.2rem' }}>
                                             <span style={{ fontWeight: 600 }}>
-                                                Signed in with {activeProvider === 'google' ? 'Google' : 'Karmitis (Beta)'}
+                                                Signed in with {activeProvider === 'google' ? 'Google' : 'Karmitis'}
                                             </span>
                                             <span style={{ fontSize: '0.85rem', color: mutedText }}>
                                                 {activeProvider === 'google'

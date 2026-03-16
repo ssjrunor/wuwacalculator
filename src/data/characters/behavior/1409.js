@@ -60,9 +60,8 @@ export function applyCartethyiaLogic({
         skillMeta.amplify = (skillMeta.amplify ?? 0) + Math.min(combatState.aeroErosion * 20, 100);
     }
 
-    if (characterState?.activeStates?.divinity && characterState?.activeStates?.manifestActive && !mergedBuffs.__divinity) {
+    if (characterState?.activeStates?.divinity) {
         mergedBuffs.skillType.aeroErosion.amplify += 50;
-        mergedBuffs.__divinity = true;
     }
 
     const seq1Value = (characterState?.toggles?.['1_value'] ?? 0) / 30;

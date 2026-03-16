@@ -104,14 +104,12 @@ export const zhezhiMultipliers = {
     forteCircuit: [
         {
             name: "Infinite Legacy Stroke of Genius DMG",
-            multiplier: "0%",
             scaling: { atk: 1 }
         }
     ],
     resonanceLiberation: [
         {
             name: "Composition's Clue Inklit Spirit DMG",
-            multiplier: "0%",
             scaling: { atk: 1 }
         }
     ]
