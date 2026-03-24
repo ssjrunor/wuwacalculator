@@ -16,18 +16,11 @@ export function applyCalcharoLogic({
 
     const isToggleActiveLocal = (key) => characterState?.activeStates?.[key] === true;
     const name = skillMeta.name?.toLowerCase() ?? '';
-    const tab = skillMeta.tab ?? '';
 
     if (name === '"necessary means" damage') {
         skillMeta.skillType = 'intro';
     } else if (name.includes('hounds roar')) {
         skillMeta.skillType = 'basic';
-    } else if (tab === 'resonanceLiberation') {
-        if (name.includes('heavy')) {
-            skillMeta.skillType = 'ultimate';
-        } else if (name.includes('dodge')) {
-            skillMeta.skillType = 'ultimate';
-        }
     } else if (name === '"mercy" damage') {
         skillMeta.skillType = 'heavy';
     } else if (name === '"death messenger" damage') {

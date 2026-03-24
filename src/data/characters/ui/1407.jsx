@@ -1,5 +1,4 @@
 import React from "react";
-import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
 import {attributeColors} from "@shared/utils/attributeHelpers.js";
 
 export default function CiacconaUI({ activeStates, toggleState }) {

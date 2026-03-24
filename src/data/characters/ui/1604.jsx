@@ -1,5 +1,4 @@
 import React from "react";
-import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
 import {formatDescription} from "@shared/utils/formatDescription.js";
 import {highlightKeywordsInText} from "@shared/constants/echoSetData.jsx";
 

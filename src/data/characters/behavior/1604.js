@@ -63,7 +63,7 @@ export function applyHavocWLogic({
 export const havocWMultipliers = {
     outroSkill: [
         {
-            name: "Soundweaver",
+            name: "Soundweaver DMG",
             scaling: { atk: 1 },
         }
     ]

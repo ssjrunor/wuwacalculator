@@ -1,6 +1,4 @@
-import {formatDescription} from "@shared/utils/formatDescription.js";
 import React from "react";
-import DropdownSelect from "@/shared/ui/common/DropdownSelect.jsx";
 
 export default function JianxinUI() {
     const hasToggles = false;
