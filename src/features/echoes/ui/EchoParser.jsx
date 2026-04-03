@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import Tesseract from 'tesseract.js';
 import { echoImageMap, setNameImageMap } from '@shared/utils/autoEchoImageMap.js';
 import { applyParsedEchoesToEquipped } from "@shared/utils/buildEchoObjectsFromParsedResults.js";
-import {useNavigate} from "react-router-dom";
 import {getEchoScores, getTop5SubstatScoreDetails} from "@shared/utils/echoHelper.js";
 import { setIconMap } from "@shared/constants/echoSetData2.js";
 import {EchoGridPreview} from "@/features/overview/ui/OverviewDetailPane.jsx";
